@@ -1,0 +1,16 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "CoronaNet",
+    "section": "",
+    "text": "This is the permanent home for data and resources related to CoronaNet, a project to create a policy dataset for government actions in response to COVID-19. Data collection for this project has finished and current efforts are aimed at cleaning and systematizing the data. Currently there is coverage for most countries in the world and for hundreds of sub-national units, including provinces and cities, from January of 2020 through December of 2021. The most complete coverage is for the European Union and Russia thanks for a EU Horizons Initiative grant. Coverage of other countries has been increased through data integration from other COVID-19 policy projects, including the Oxford COVID-19 Government Response Tracker and COVID-AMP.\nAt present, the project is being led by PIs Cindy Cheng and Robert Kubinec. For questions about the data and accessing it or using it, please direct them to Robert Kubinec at rkubinec@mailbox.sc.edu."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "At present, CoronaNet is a project run by Principal Investigators Cindy Cheng and Robert Kubinec. Prior principal investigators include:\nJoan Barcelo, NYU-AD Luca Messerschmidt, TUM Caress Schenk, Nazarbayev University Vanja Grujic, University of Brasilia Tim Model, Data Scientist"
+  }
+]

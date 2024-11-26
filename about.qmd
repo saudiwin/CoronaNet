@@ -2,4 +2,11 @@
 title: "About"
 ---
 
-About this site
+At present, CoronaNet is a project run by Principal Investigators Cindy Cheng and 
+Robert Kubinec. Prior principal investigators include:
+
+Joan Barcelo, NYU-AD
+Luca Messerschmidt, TUM
+Caress Schenk, Nazarbayev University
+Vanja Grujic, University of Brasilia
+Tim Model, Data Scientist
