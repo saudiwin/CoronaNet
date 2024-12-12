@@ -2,11 +2,19 @@
 title: "About"
 ---
 
-At present, CoronaNet is a project run by Principal Investigators Cindy Cheng and 
-Robert Kubinec. Prior principal investigators include:
+See below for more information the current principal investigators of CoronaNet:
 
-Joan Barcelo, NYU-AD
-Luca Messerschmidt, TUM
-Caress Schenk, Nazarbayev University
-Vanja Grujic, University of Brasilia
-Tim Model, Data Scientist
+## Robert Kubinec
+
+I am a comparative political economist whose research examines the long-term drivers of wealth creation and democratization in developing countries. My book, Making Democracy Safe for Business: Corporate Politics During the Arab Uprisings (Cambridge University Press), examines the profound influence of prominent businesspeople on the political outcomes of the Arab Uprisings. I am also actively engaged in research into data-scientific methods, including causal inference, Bayesian statistics, and measurement, and is the author of the R packages idealstan and ordbetareg. I have published journal articles in Nature Human Behavior, The Journal of Politics, PLOS One, The Journal of the Royal Statistical Society: Series A, The Journal of Peace Research, Scientific Data, World Politics, Social Science Quarterly, Comparative Political Studies, and Political Analysis.
+
+Website: https://www.robertkubinec.com/
+
+## Cindy Cheng
+
+
+As a political scientist, my work has primarily engaged in examining the politics of crisis, including how both governments and people react to crisis and uncertainty as well as how their actions can contribute to it. I have explored these topics across a wide variety of issue areas common to the field of international political economy, including the COVID-19 pandemic, food safety, foreign aid and trade.
+
+As a data scientist, I have deep expertise in applying a wide variety of methodological approaches ( e.g. causal inference, predictive modeling) and tools (e.g. (non)linear modeling, machine learning, Bayesian statistics) to forward new insights and research.
+
+Website: http://cindyyawencheng.com/

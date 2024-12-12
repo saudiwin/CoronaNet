@@ -20,7 +20,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -107,8 +127,15 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#data-access" id="toc-data-access" class="nav-link active" data-scroll-target="#data-access">Data Access</a></li>
+  <li><a href="#publications" id="toc-publications" class="nav-link" data-scroll-target="#publications">Publications</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -133,9 +160,31 @@ ul.task-list li input[type="checkbox"] {
 
 
 <p>This is the permanent home for data and resources related to CoronaNet, a project to create a policy dataset for government actions in response to COVID-19. Data collection for this project has finished and current efforts are aimed at cleaning and systematizing the data. Currently there is coverage for most countries in the world and for hundreds of sub-national units, including provinces and cities, from January of 2020 through December of 2021. The most complete coverage is for the European Union and Russia thanks for a EU Horizons Initiative grant. Coverage of other countries has been increased through data integration from other COVID-19 policy projects, including the Oxford COVID-19 Government Response Tracker and COVID-AMP.</p>
-<p>At present, the project is being led by PIs Cindy Cheng and Robert Kubinec. For questions about the data and accessing it or using it, please direct them to Robert Kubinec at rkubinec@mailbox.sc.edu.</p>
+<p>At present, the project is being led by <a href="about.html">PIs Cindy Cheng and Robert Kubinec</a>.</p>
+<section id="data-access" class="level2">
+<h2 class="anchored" data-anchor-id="data-access">Data Access</h2>
+<p>For questions about the data and accessing it or using it, please direct them to Robert Kubinec at rkubinec@mailbox.sc.edu.</p>
+</section>
+<section id="publications" class="level2">
+<h2 class="anchored" data-anchor-id="publications">Publications</h2>
+<p>Some of the papers that have come out of this project include:</p>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-barceloWindowsRepressionUsing2022" class="csl-entry" role="listitem">
+Barceló, Joan, Robert Kubinec, Cindy Cheng, Tiril Høye Rahn, and Luca Messerschmidt. 2022. <span>“Windows of Repression: Using COVID-19 Policies Against Political Dissidents?”</span> <em>Journal of Peace Research</em> Forthcoming. <a href="https://osf.io/preprints/socarxiv/yuqw2/">https://osf.io/preprints/socarxiv/yuqw2/</a>.
+</div>
+<div id="ref-chengCOVID19GovernmentResponse2020" class="csl-entry" role="listitem">
+Cheng, Cindy, Joan Barcelo, Allison Spencer Hartnett, Robert Kubinec, and Luca Messerschmidt. 2020. <span>“COVID-19 Government Response Event Dataset (CoronaNet v.1.0).”</span> <em>Nature Human Behavior</em>. https://doi.org/<a href="https://doi.org/10.1038/s41562-020-0909-7">https://doi.org/10.1038/s41562-020-0909-7</a>.
+</div>
+<div id="ref-chengGeneralPrimerData2024" class="csl-entry" role="listitem">
+Cheng, Cindy, Luca Messerschmidt, Isaac Bravo, Marco Waldbauer, Rohan Bhavikatti, Caress Schenk, Vanja Grujic, Tim Model, Robert Kubinec, and Joan Barceló. 2024. <span>“A General Primer for Data Harmonization.”</span> <em>Scientific Data</em> 11 (1): 152. <a href="https://doi.org/10.1038/s41597-024-02956-3">https://doi.org/10.1038/s41597-024-02956-3</a>.
+</div>
+<div id="ref-kubinecCrossNationalMeasuresIntensity2024" class="csl-entry" role="listitem">
+Kubinec, Robert, Joan Barceló, Rafael Goldszmidt, Vanja Grujic, Timothy Model, Caress Schenk, Cindy Cheng, et al. 2024. <span>“Cross-National Measures of the Intensity of COVID-19 Public Health Policies.”</span> <em>Journal of Politics</em> Forthcoming. <a href="https://doi.org/10.31235/osf.io/rn9xk">https://doi.org/10.31235/osf.io/rn9xk</a>.
+</div>
+</div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
