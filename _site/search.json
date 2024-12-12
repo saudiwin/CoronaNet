@@ -1,0 +1,44 @@
+[
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "See below for more information the current principal investigators of CoronaNet:"
+  },
+  {
+    "objectID": "about.html#robert-kubinec",
+    "href": "about.html#robert-kubinec",
+    "title": "About",
+    "section": "Robert Kubinec",
+    "text": "Robert Kubinec\nI am a comparative political economist whose research examines the long-term drivers of wealth creation and democratization in developing countries. My book, Making Democracy Safe for Business: Corporate Politics During the Arab Uprisings (Cambridge University Press), examines the profound influence of prominent businesspeople on the political outcomes of the Arab Uprisings. I am also actively engaged in research into data-scientific methods, including causal inference, Bayesian statistics, and measurement, and is the author of the R packages idealstan and ordbetareg. I have published journal articles in Nature Human Behavior, The Journal of Politics, PLOS One, The Journal of the Royal Statistical Society: Series A, The Journal of Peace Research, Scientific Data, World Politics, Social Science Quarterly, Comparative Political Studies, and Political Analysis.\nWebsite: https://www.robertkubinec.com/"
+  },
+  {
+    "objectID": "about.html#cindy-cheng",
+    "href": "about.html#cindy-cheng",
+    "title": "About",
+    "section": "Cindy Cheng",
+    "text": "Cindy Cheng\nAs a political scientist, my work has primarily engaged in examining the politics of crisis, including how both governments and people react to crisis and uncertainty as well as how their actions can contribute to it. I have explored these topics across a wide variety of issue areas common to the field of international political economy, including the COVID-19 pandemic, food safety, foreign aid and trade.\nAs a data scientist, I have deep expertise in applying a wide variety of methodological approaches ( e.g. causal inference, predictive modeling) and tools (e.g. (non)linear modeling, machine learning, Bayesian statistics) to forward new insights and research.\nWebsite: http://cindyyawencheng.com/"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "CoronaNet",
+    "section": "",
+    "text": "This is the permanent home for data and resources related to CoronaNet, a project to create a policy dataset for government actions in response to COVID-19. Data collection for this project has finished and current efforts are aimed at cleaning and systematizing the data. Currently there is coverage for most countries in the world and for hundreds of sub-national units, including provinces and cities, from January of 2020 through December of 2021. The most complete coverage is for the European Union and Russia thanks for a EU Horizons Initiative grant. Coverage of other countries has been increased through data integration from other COVID-19 policy projects, including the Oxford COVID-19 Government Response Tracker and COVID-AMP.\nAt present, the project is being led by PIs Cindy Cheng and Robert Kubinec."
+  },
+  {
+    "objectID": "index.html#data-access",
+    "href": "index.html#data-access",
+    "title": "CoronaNet",
+    "section": "Data Access",
+    "text": "Data Access\nFor questions about the data and accessing it or using it, please direct them to Robert Kubinec at rkubinec@mailbox.sc.edu."
+  },
+  {
+    "objectID": "index.html#publications",
+    "href": "index.html#publications",
+    "title": "CoronaNet",
+    "section": "Publications",
+    "text": "Publications\nSome of the papers that have come out of this project include:\n\n\nBarceló, Joan, Robert Kubinec, Cindy Cheng, Tiril Høye Rahn, and Luca Messerschmidt. 2022. “Windows of Repression: Using COVID-19 Policies Against Political Dissidents?” Journal of Peace Research Forthcoming. https://osf.io/preprints/socarxiv/yuqw2/.\n\n\nCheng, Cindy, Joan Barcelo, Allison Spencer Hartnett, Robert Kubinec, and Luca Messerschmidt. 2020. “COVID-19 Government Response Event Dataset (CoronaNet v.1.0).” Nature Human Behavior. https://doi.org/https://doi.org/10.1038/s41562-020-0909-7.\n\n\nCheng, Cindy, Luca Messerschmidt, Isaac Bravo, Marco Waldbauer, Rohan Bhavikatti, Caress Schenk, Vanja Grujic, Tim Model, Robert Kubinec, and Joan Barceló. 2024. “A General Primer for Data Harmonization.” Scientific Data 11 (1): 152. https://doi.org/10.1038/s41597-024-02956-3.\n\n\nKubinec, Robert, Joan Barceló, Rafael Goldszmidt, Vanja Grujic, Timothy Model, Caress Schenk, Cindy Cheng, et al. 2024. “Cross-National Measures of the Intensity of COVID-19 Public Health Policies.” Journal of Politics Forthcoming. https://doi.org/10.31235/osf.io/rn9xk."
+  }
+]
