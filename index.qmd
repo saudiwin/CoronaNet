@@ -8,6 +8,16 @@ nocite: |
   @chengCOVID19GovernmentResponse2020, @kubinecCrossNationalMeasuresIntensity2024, @barceloWindowsRepressionUsing2022, @chengGeneralPrimerData2024
 ---
 
+```{r setup}
+
+library(readr)
+library(tidyverse)
+
+all_ind <- readRDS("files/all_ind.rds")
+
+```
+
+
 This is the permanent home for data and resources related to CoronaNet,
 a project to create a policy dataset for government actions in response
 to COVID-19. Data collection for this project has finished and current
@@ -24,6 +34,20 @@ At present, the project is being led by [PIs Cindy Cheng and Robert
 Kubinec](about.html).
 
 ## Data Access
+
+The policy record data from CoronaNet is very large--over 100,000 records in highly compressed form. Due to this complexity, we have compiled policy intensity scores that capture the relative level of public health policy in six distinct policy domains from 
+`r min(all_ind$date_policy` to `r max(all_ind$date_policy`. The policy domains are `r paste0(unique(all_ind$modtype, collapse=", ")` with a total of `r length(unique(modtype$country)` countries. 
+
+The indices can be downloaded is a CSV in country-day-index value format from [this link](files/all_ind.csv).
+
+The columns in the CSV are as follows:
+
+1. `country` Name of country
+2. `modtype` The type of index being estimated
+3. `date_policy` The date of the observation
+4. `low_est` The low 5% bound of the uncertainty interval of the index
+5. `med_est` The median (most likely) estimate of the index
+6. `high_est` The high 95% bound of the uncertainty interval of the index
 
 For questions about the data and accessing it or using it, please direct
 them to Robert Kubinec at rkubinec\@mailbox.sc.edu.
