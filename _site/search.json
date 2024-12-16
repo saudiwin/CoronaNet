@@ -32,7 +32,7 @@
     "href": "index.html#data-access",
     "title": "CoronaNet",
     "section": "Data Access",
-    "text": "Data Access\nFor questions about the data and accessing it or using it, please direct them to Robert Kubinec at rkubinec@mailbox.sc.edu."
+    "text": "Data Access\nThe policy record data from CoronaNet is very large–over 100,000 records in highly compressed form. Due to this complexity, we have compiled policy intensity scores that capture the relative level of public health policy in six distinct policy domains by aggregating across the distinct policy records as we describe in this paper that is forthcoming in the Journal of Politics. The scores run from 2020-01-01 to 2021-05-01 and also incorporate data from the Oxford COVID-19 Government Response Tracker to represent the best available evidence for COVID-19 policy levels during the pandemic. The policy domains included are Business Restrictions, Health Monitoring, Health Resources, Mask Policies, School Restrictions, Social Distancing with a total of 190 countries.\nThe indices can be downloaded is a CSV in country-day-index value format from this link.\nThe columns in the CSV are as follows:\n\ncountry Name of country\nmodtype The type of index being estimated\ndate_policy The date of the observation\nlow_est The low 5% bound of the uncertainty interval of the index\nmed_est The median (most likely) estimate of the index\nhigh_est The high 95% bound of the uncertainty interval of the index\n\nFor questions about the data and accessing it or using it, please direct them to Robert Kubinec at rkubinec@mailbox.sc.edu."
   },
   {
     "objectID": "index.html#publications",

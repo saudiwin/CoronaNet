@@ -163,6 +163,17 @@ div.csl-indent {
 <p>At present, the project is being led by <a href="about.html">PIs Cindy Cheng and Robert Kubinec</a>.</p>
 <section id="data-access" class="level2">
 <h2 class="anchored" data-anchor-id="data-access">Data Access</h2>
+<p>The policy record data from CoronaNet is very large–over 100,000 records in highly compressed form. Due to this complexity, we have compiled policy intensity scores that capture the relative level of public health policy in six distinct policy domains by aggregating across the distinct policy records as we describe <a href="https://osf.io/preprints/socarxiv/rn9xk">in this paper that is forthcoming in the Journal of Politics</a>. The scores run from 2020-01-01 to 2021-05-01 and also incorporate data from the Oxford COVID-19 Government Response Tracker to represent the best available evidence for COVID-19 policy levels during the pandemic. The policy domains included are Business Restrictions, Health Monitoring, Health Resources, Mask Policies, School Restrictions, Social Distancing with a total of 190 countries.</p>
+<p>The indices can be downloaded is a CSV in country-day-index value format from <a href="files/all_ind.csv">this link</a>.</p>
+<p>The columns in the CSV are as follows:</p>
+<ol type="1">
+<li><code>country</code> Name of country</li>
+<li><code>modtype</code> The type of index being estimated</li>
+<li><code>date_policy</code> The date of the observation</li>
+<li><code>low_est</code> The low 5% bound of the uncertainty interval of the index</li>
+<li><code>med_est</code> The median (most likely) estimate of the index</li>
+<li><code>high_est</code> The high 95% bound of the uncertainty interval of the index</li>
+</ol>
 <p>For questions about the data and accessing it or using it, please direct them to Robert Kubinec at rkubinec@mailbox.sc.edu.</p>
 </section>
 <section id="publications" class="level2">
