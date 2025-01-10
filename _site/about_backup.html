@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+    <link rel="stylesheet" type="text/css" href="style2.css">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="L-jK2R0bz2lbCyDSQ7Ulk6MW9il2PZzbXZ9DX6AkuuE" />
+    <meta name="description" content="The CoronaNet Research Project is a worldwide effort that tracks government COVID-19 policies.">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <title>About CoronaNet</title>
+    <script src="js/fontawesome.js" crossorigin="anonymous" async></script>
+    <script src="js/particles.js"></script>
+    <script src="app.js" async></script>
+    <div id="particles-js" style="position: relative;">
+        <img src="images/logo_transparent_slim.png" style="position: absolute; margin: auto; left: 0; right: 0; text-align: center; height: 80%; z-index: 2; cursor: pointer;" class="logoCoronanet" onclick="window.location='https://www.coronanet-project.org/index.html';"/>
+        <div><a id="menuButton" onclick="openNav()"><i class="fas fa-bars" style="cursor: pointer; font-size: 24px; text-shadow: 0 0 1px #000; z-index: 3;"></i></a></div>
+        <div class="containerMenu">
+            <label id="theme-switch" class="theme-switch" for="checkbox_theme">
+            <input type="checkbox" value='0' id="checkbox_theme" style="display: none;">
+            <i id="darkModeSwitch" class="fas fa-moon" style="background-color: transparent; cursor: pointer; font-size: 24px; text-shadow: 0 0 1px #000;"></i>
+            </label>
+            <a id="emailButton" href="mailto:admin@coronanet-project.org"><i class="fas fa-envelope" style="background-color: transparent; cursor: pointer; font-size: 24px; text-shadow: 0 0 1px #000;"></i></a>
+        </div>
+    </div>
+    <div id="navbarOverlay" style="z-index: 3;"></div>
+    <h1> About CoronaNet</h1>
+    <div id="mySidenav" class="sidenav" style="display: none; z-index: 3;">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <div class="sidebarOption"><img src="images/favicon_bw.png" style="width: 15px; display: inline;"><a target="_blank" href="index.html">Home</a></div>
+        <div class="sidebarOption"><img src="images/11_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="methods.html">Methodology</a>
+        <div class="sidebarSuboption">
+        <a target="_blank" href="methods.html">Data Collection Methods</a><br>
+        <a target="_blank" href="codebook.html">Codebook</a><br>
+        <a target="_blank" href="validationcheck.html">Validation and Reliability Checks</a>
+        </div></div>
+        <div class="sidebarOption"><img src="images/16_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="visualisations.html">Visualizations</a></div>
+        <div class="sidebarOption"><img src="images/14_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="reports.html">Reports</a></div>
+        <div class="sidebarOption"><img src="images/13_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="publications.html">Publications</a></div>
+        <div class="sidebarOption"><img src="images/10_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="inthemedia.html">In The Media</a></div>
+        <div class="sidebarOption"><img src="images/9_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="about.html">About CoronaNet</a></div>
+        <div class="sidebarOption"><img src="images/12_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="team.html">Our People</a>
+        <div class="sidebarSuboption">
+        <a target="_blank" href="team.html">Team</a><br>
+        <a target="_blank" href="interviews.html">Interviews</a><br>
+        </div></div>
+        <div class="sidebarOption"><img src="images/15_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="join.html">Join CoronaNet</a></div>
+    </div>
+    <script>
+        function openNav() {
+          document.getElementById("mySidenav").style.display = "block";
+          document.getElementById("navbarOverlay").style.display = "block";
+        }
+
+        function closeNav() {
+          document.getElementById("mySidenav").style.display = "none";
+          document.getElementById("navbarOverlay").style.display = "none";
+        }
+    </script>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DSF9RY2DVF"></script>
+    <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-DSF9RY2DVF');
+    </script>
+</head>
+    
+    <body>
+        
+        <div class="container">
+            <p class="block">
+            The CoronaNet Research Project compiles a database on government responses to COVID-19. Our primary focus is to collect as much information as possible about the various fine-grained actions governments take to address the pandemic. The data collection process includes gathering information about which governments respond to COVID-19, their policy targets (e.g., other countries), type of policies (e.g., travel restrictions), and the timeline of the policies. <br><br>
+                
+            Together with more than 500 political, social, and public health science scholars worldwide, we present an initial release of a large hand-coded dataset. The dataset consists of 100,000 separate policy announcements of governments from all over the world since 31 December 2019. Policymakers, academics, and journalists have already made use of this dataset to understand how governments have responded to the pandemic. As we collect more data, we expect to offer a more thorough analysis of government responses (determinants and effects).<br><br>
+                
+            Our principal investigators for this project are:<br>
+            </p><br>
+            
+            <ol class="circle">
+                <li class="unordered">Cindy Cheng, Hochschule für Politik at the Technical University of Munich: <a class="link" href="http://cindyyawencheng.com/">         http://cindyyawencheng.com/</a></li>
+                
+                <li class="unordered">Luca Messerschmidt, Hochschule für Politik at the Technical University of Munich: <a class="link" href="https://lumesserschmidt.github.io">https://lumesserschmidt.github.io</a></li>
+            </ol><br>
+            
+            <p class="block">
+            Co-Principal investigators for this project are:<br>
+            </p><br>
+            
+            <ol class="circle">
+                <li class="unordered">Joan Barceló, New York University Abu Dhabi: <a class= "link" href="https://www.joanbarcelo.com">https://www.joanbarcelo.com</a></li>
+                <li class="unordered">Vanja Grujic, Universidade de Brasília: <a class= "link" href= "http://buscatextual.cnpq.br/buscatextual/visualizacv.do?id=K8540383T4">http://buscatextual.cnpq.br</a></li>
+                <li class="unordered">Allison Spencer Hartnett, University of Southern California: <a class="link" href="http://www.allisonhartnett.io/">http://www.allisonhartnett.io/</a></li>
+                <li class="unordered">Robert Kubinec, New York University Abu Dhabi: <a class= "link" href= "http://www.robertkubinec.com/">www.robertkubinec.com</a></li>
+                <li class="unordered">Timothy A. Model, Havighurst Fellow at the Miami University: <a class="link" href="https://www.timothymodel.com/">https://www.timothymodel.com/</a></li>
+                <li class="unordered">Caress Schenk, Nazarbayev University: <a class="link" href="https://ssh.nu.edu.kz/faculty/caress-schenk/">https://ssh.nu.edu.kz/faculty/caress-schenk/</a></li>
+                <li class="unordered">Svanhildur Thorvaldsdottir, Hochschule für Politik at the Technical University of Munich: <a class="link" href="https://www.svanhildur.com/">https://www.svanhildur.com/</a></li>
+            </ol><br>
+            
+            <p class="block">Our core paper, which presents our initial findings, has been published by <a class="link" href="https://www.nature.com/articles/s41562-020-0909-7">Nature: Human Behaviour. </a></p><br>
+            
+            <form>
+                <button formaction= "https://github.com/saudiwin/corona_tscs/issues" class="button button1">Report Issues</button>
+            </form>
+            
+            <h3>Disclaimers</h3><br>
+            <p class="block">
+            If you require any more information or have any questions about our site’s disclaimer, please feel free contact us by email at to <a class="link" href="mailto:admin@coronanet-project.org"> admin@coronanet-project.org.</a>
+
+            All the information on this website is published in good faith and for general information purposes only. CoronaNet does not make any guarantees about the completeness, reliability and accuracy of this information. Any action you take upon the information you find on this website is strictly at your own risk. will not be liable for any losses and damages in connection with the use of our website.<br><br>
+
+            From our website, you can visit other websites by following hyperlinks to such external sites. While we strive to provide only quality links to useful and ethical websites, we have no control over the content and nature of these sites. These links to other websites do not imply a recommendation for all the content found on these sites. Site owners and content may change without notice and may occur before we have the opportunity to remove a link which may have gone ‘bad’.<br><br>
+
+            Please be also aware that other sites may have different privacy policies and terms that are beyond our control when you leave our website. Therefore, please check the other website's privacy policies and "Terms of Service" before engaging in any business or uploading any information.
+            </p>
+            
+            <br>
+            <h3>Licenses</h3><br>
+            <p class="block">
+            CC-By Attribution 4.0 International  <br><br>
+
+            Please cite the project and dataset as:  <br>
+
+            Cheng, Cindy, Joan Barceló, Allison Spencer Hartnett, Robert Kubinec, and Luca Messerschmidt. "COVID-19 Government Response Event Dataset (CoronaNet v. 1.0)." Nature human behaviour 4, no. 7 (2020): 756-768. <a class= "link" href="https://www.coronanet-project.org.">https://www.coronanet-project.org.</a>
+            </p>
+            
+            <br>
+            <h3>Consent</h3><br>
+            <p class="block">
+            By using our website, you hereby consent to our disclaimer and agree to its terms.
+            </p>
+            
+            <br>
+            <h3>Update</h3><br>
+            <p class="block">
+            Should we update, amend or make any changes to this document, those changes will be prominently posted here.
+            </p>
+            
+            <br>
+            <h3>Contact Us</h3><br>
+            <p class="block">
+            Please feel free to contact us via this mail: <a class="link" href="mailto:admin@coronanet-project.org"> admin@coronanet-project.org.</a><br><br>
+
+            <b>English and German: </b><br>
+
+            Luca Messerschmidt | Hochschule für Politik at the TU Munich <br><br>
+
+            <b>Chinese: </b><br>
+
+            Cindy Cheng | Hochschule für Politik at the TU Munich <br><br>
+
+            <b>Spanish</b>: <br>
+
+            Joan Barceló | Social Science Division, New York University – Abu Dhabi <br><br>
+
+            <b>Arabic: </b><br>
+
+            Robert Kubinec | Social Science Division, New York University – Abu Dhabi
+            </p>
+            
+        </div>
+    </body>
+    
+    <footer>
+        <h2>Partner Universities and Institutions</h2>
+        <br>
+        <a target="_blank" href="https://www.hfp.tum.de/en/home/"><img class="logo" src="images/hochschule%20.png" alt="Hochschule für Politik München logo"></a>
+        
+        <a target="_blank" href="https://www.tum.de/"><img class="logo" src="images/TUM.png" alt="Technical University of Munich logo"></a>
+    
+        <a target="_blank" href="https://nyuad.nyu.edu/en/"><img class="logo" src="images/NYU.png" alt="New York University Abu Dhabi logo"></a>
+    
+        <a target="_blank" href="https://www.wi.tum.de/"><img class="logo" src="images/SOM.png" alt="TUM School of Management at Technical University of Munich logo"></a>
+        
+        <br>
+        <br>
+        
+        <a target="_blank" href="https://nu.edu.kz/"><img class="logo" src="images/NU.png" alt="Nazarbayev University logo"></a>
+        
+        <a target="_blank" href="https://www.jataware.com/"><img class="logo" src="images/jataware_logo.png" alt="Jataware company logo"></a>
+    
+        <a target="_blank" href="https://www.leibniz-krisen.de/en.html"><img class="logo" src="images/LFV_logo.png" alt="Leibniz Research Alliance
+    Crises in a Globalised World logo"></a>
+    
+        <a target="_blank" href="https://www.overton.io/"><img class="logo" src="images/overton_logo.png" alt="Overton company logo"></a>
+        
+        <br>
+        <br>
+        <hr><br>
+        <h2 class="periscope">CoronaNet is part of the PERISCOPE consortium, a project funded by the European Commission under the Horizon 2020 Research and Innovation programme (agreement no. 101016233)</h2>
+        <br>
+        <a target="_blank" href="https://periscopeproject.eu/"><img class="logo funding" src="images/periscope.png" alt="Logo of the PERISCOPE consortium"></a>
+        <a target="_blank" href="https://ec.europa.eu/info/index_en"><img class="logo_eu" src="images/logo-ce-horizontal-en-quadri-lr.png" alt="Logo of the European Commission"></a>
+        <br><br>
+        <a target="_blank" href="https://github.com/saudiwin/corona_tscs"><img src="images/github.png" width="25px" alt="GitHub data repository for CoronaNet"></a>
+        <a target="_blank" href="https://www.linkedin.com/company/coronanet-research-group/mycompany/"><img src="images/linkedin.png" width="25px" alt="CoronaNet Research Group on LinkedIn"></a>
+        <a target="_blank" href="https://twitter.com/CoronaNet_org"><img src="images/twitter.png" width="25px" alt="CoronaNet Research Project on Twitter"></a>
+        <a target="_blank" href="https://www.instagram.com/coronanet_org/"><img src="images/instagram.png" width="25px" alt="CoronaNet Research Project on Instagram"></a>
+        <br>
+        <script src="js/darkMode.js"></script>
+    </footer></html>

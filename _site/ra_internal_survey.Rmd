@@ -1,0 +1,502 @@
+---
+title: "CoronaNet RA Internal Survey"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    toc_collapsed: true
+toc_depth: 3
+number_sections: true
+theme: lumen
+---
+
+<style>
+.tab-content{
+   margin-bottom: 75px;
+}
+
+body{
+  font-size: 12pt;
+}
+
+/* Headers */
+h1{
+  font-size: 22pt;
+}
+
+h2{
+  font-size: 16pt;
+}
+
+h3{
+  font-size: 14pt;
+}
+
+</style>
+
+
+RA Internal Survey - August 2021
+
+
+<br><br> 
+
+# Introduction
+
+At CoronaNet, we know that RAs are the backbone of the project. We are amazed at your continued engagement and for your continued support in this important project. 
+ 
+
+The aim of this RA Internal Assessment Survey is to gauge how you view your time at CoronaNet and will also help us identify and assess changes in countries and regions.
+
+
+Remember, there are no right or wrong answers, this survey will help us to see your point of view, so we would like if you are as honest as possible when answering. 
+
+ 
+
+This survey should take around 15-20 minutes.  If you code for multiple regions, please take a separate survey for each region that you code. 
+
+ 
+Thank you for your time and all of your hard work! If anything is unclear, please use the #ra-chat to post your question, as others may have the same issue, as well or email us at admin@coronanet-project.org 
+
+
+<br> 
+
+
+## [ra_name]
+
+
+
+Please select your name from the drop-down list. If you are not on the list and believe you should be, please contact one of the PIs listed above.
+
+Note: You can find your name more quickly by clicking on the dropdown menu below and typing your name. 
+
+ 
+
+* <span style="color:blue"> Joan Barcelo </span>
+* <span style="color:blue"> ... </span>
+* <span style="color:blue"> Patson Manda </span>
+
+
+<br><br>
+
+<!-- # languages -->
+
+<!--  -->
+<!-- ## [languages] -->
+
+
+<!-- Which languages do you speak? (for multiple choices, press Ctrl; answer only if you haven´t done in the last survey) -->
+
+<!--  -->
+
+<!-- * <span style="color:blue"> Acholi </span> -->
+<!-- * <span style="color:blue"> ... </span> -->
+<!-- * <span style="color:blue"> Yupik </span> -->
+
+<!-- <br> -->
+<!-- ## [other_lang]  -->
+
+<!-- Any other language not listed? -->
+
+
+<!-- <br><br>   -->
+
+
+<!-- # country -->
+
+<!--  -->
+
+<!-- ## [init_country]  -->
+
+<!-- Which country are you responsible for? -->
+
+<!--  -->
+
+<!-- * <span style="color:blue"> European Union </span> -->
+<!-- * <span style="color:blue"> ... </span> -->
+<!-- * <span style="color:blue"> Zimbabwe </span> -->
+
+<!-- <br><br> -->
+
+
+
+
+<!-- # province_initator -->
+
+<!-- ## [init_province] -->
+
+<!-- Please select the appropriate provinces for ${lm://Field/1}.  Note you can select more than one province by holding down CMD or CTRL and then clicking.  -->
+
+
+
+<!-- <br><br> -->
+
+
+<!-- # proj_materials -->
+
+<!--  -->
+
+<!-- ## [desc] -->
+
+<!-- There is a lot of information about government policies that doesn’t ultimately get captured in the dataset but is nevertheless very important to know. The following questions ask you about some of these qualitative dimensions of government COVID-19 policy-making. Please answer these questions as best as you can as they will play an important role in how we set goals and plan for the project in the following three months. -->
+<!-- <br> -->
+
+
+<!-- ## [proj_mat] -->
+
+<!-- To what extent was the project able to provide you information specific to your country or subnational region before you started coding for it? Please select all that apply:   -->
+
+<!--  -->
+
+<!-- * I had contact with the previous RA and they shared information about the region -->
+<!-- * The previous RA wrote an exit report which I was able to access -->
+<!-- * My regional/country manager had information about my region/subnational region which they shared with me -->
+<!-- * The project had other resources specific to my country or subnational region not mentioned above -->
+<!-- * The project did not have previous information specific to my country or subnational region -->
+
+
+<!-- <br><br> -->
+
+
+<!-- # proj_materials_help -->
+
+<!--  -->
+
+<!-- ## [proj_mat_help] -->
+<!-- In the previous question, you stated that: ${lm://Field/1}.  -->
+
+<!-- Now we would like to know, how helpful was this for you in getting started with coding for your country or subnational region?  -->
+
+<!--  -->
+
+<!-- * Extremely Helpful -->
+<!-- * Helpful -->
+<!-- * A little helpful -->
+<!-- * Not helpful -->
+
+
+<!-- <br><br> -->
+
+
+
+<!-- # ra_knowledge -->
+<!--  -->
+
+<!-- ## [ra_know]   -->
+
+<!-- How much previous personal knowledge did you have about the region you are coding before you got started? Please select all that apply: -->
+
+<!--  -->
+
+<!-- * I live in the region I am coding -->
+<!-- * I have personal ties to the region -->
+<!-- * I followed the news about this region closely -->
+<!-- * I had other personal knowledge not mentioned above: -->
+<!-- * I had little or no previous knowledge about this region -->
+
+
+<!-- <br><br>  -->
+
+
+<!-- # ra_know_help -->
+
+<!-- ## [ra_know_help]   -->
+
+<!-- In the previous question, you stated that: ${lm://Field/1} -->
+
+<!-- Now we would like to know, how helpful this was for you when coding policies for your country or subnational region -->
+
+<!--  -->
+
+<!-- * Extremely Helpful -->
+<!-- * Helpful -->
+<!-- * A little helpful -->
+<!-- * Not helpful -->
+
+
+<!-- <br><br> -->
+
+
+<!-- #  country_qual -->
+
+<!--  -->
+<br> 
+
+## [target_date]
+
+What  goal are you working towards to get your country region clean and complete until?
+
+
+
+*  <span style="color:blue"> October 1, 2020 </span>
+*  <span style="color:blue"> March 1, 2021 </span>
+*  <span style="color:blue"> Present day </span>
+
+
+<br> 
+
+## [actual_cat]
+
+We would now like to have a better of idea of how much progress you made toward this goal. First we would like to get a sense of how evenly coded the data for your country is across the different policy types. Please select one of the following, note that: 
+
+* `Evenly coded' data means that all or nearly all policy types are coded to the same date
+* `Unevenly coded' data means that there is a good deal of variation in terms of how up to date different policy types are
+* `Not sure means' that you are coding for certain policy types only and/or have not checked all policy types in your country
+
+Answers:
+ 
+ * <span style="color:blue">  Evenly coded </span>
+ *  <span style="color:blue">Unevenly coded </span>
+ *  <span style="color:blue"> Not sure </span>
+
+<br>
+
+## [actual_date]
+
+The survey distinuishes between [actual_date_even] and [actual_date_uneven]. Each of these two categories has its own question in the survey. Please be aware, though, that in the planning template these are combined into one variable, namely the column [actual_date].
+
+<!-- Answers: -->
+
+<!--  * <span style="color:blue"> 2020-10-07 </span> -->
+<!--  * <span style="color:blue"> ... </span>  -->
+<!--  * <span style="color:blue"> 2021-06-22 </span>  -->
+<!--  * <span style="color:blue"> NA </span>  -->
+
+ 
+
+
+### [actual_date_even]
+Based on your best estimate, please let us know to what date your country is evenly coded up until: 
+
+ * <span style="color:blue"> Text Entry [Date in Year-Month-Day format] </span>
+ 
+
+<br>
+
+### [actual_date_uneven]
+Based on your best estimate,  please let us know to the date to which each policy type in your country has been coded until:
+
+
+
+* <span style="color:blue"> Text Entry  [Date in Year-Month-Day format]  </span>
+
+
+
+## [actual_date_text]
+If there is anything you would like us to know what date the data for your country is up to date until, please let us know here: 
+
+
+ * <span style="color:blue"> Text Entry [...] </span>
+ 
+<!-- Answers: -->
+
+<!--  * <span style="color:blue"> NA </span> -->
+<!--  * <span style="color:blue"> No one has coded for this policy yet </span> -->
+<!--  * <span style="color:blue"> Quarantine until 05-26-2021 </span> -->
+<!--  * <span style="color:blue"> Previous dates which I wrote are the same here? </span> -->
+<!--  * <span style="color:blue"> Quarantine last policy 10/12/2020, Quarantine policy until 07/05/21 </span> -->
+<!--  * <span style="color:blue"> Above I indicated the dates the last policies for each category are coded. Although some policies appear to be coded as far as in December 2020, there are big gaps between the policies coded for almost each category. Thus, according to my estimate, policies are coded more or less fully until the middle of April, 2020. What I am working on is to make sure every single policy category is coded without any gaps. </span> -->
+<!--  * <span style="color:blue"> There are still some updates needed to be coded that were announced before April 2, 2020,there might need to be done some checking for the updates </span> -->
+<!--  * <span style="color:blue"> All policies up to June 15, 2020, are coded evenly. </span> -->
+<!--  * <span style="color:blue"> Data is unevenly spread across policy types, and there might be missing policies for policies that are coded up to date. </span> -->
+<!--  * <span style="color:blue"> I was coding all official policies coming from Governor Decrees as all other entities almost always just copy and paste the section of the decree as their own policies. The last decree I had been coding was GOvernor Decree UG36 of April 30, 2020. The very first decree from which I started to code was UG14 of March 17th, 2020.,I was coding all official policies coming from Governor Decrees as all other entities almost always just copy and paste the section of the decree as their own policies. The last decree I had been coding was GOvernor Decree UG36 of April 30, 2020. The very first decree from which I started to code was UG14 of March 17th, 2020. </span> -->
+
+
+
+## [complete]
+Based on your review of your country  until ${q://QID265/ChoiceGroup/SelectedChoices}, please let us know how 'complete' a given policy type is. 
+
+Recall that by 'completeness' we mean that based on looking through the data integration sheet and other resources available (e.g. Overton, Jataware, government websites), the CoronaNet data captures all government policies made for this policy type until ${q://QID265/ChoiceGroup/SelectedChoices}. 
+
+Note that you can choose 'The government made no or few policies for this policy type' if, based on your best assessment (e.g. from looking through the data integration sheet, Overton, Jataware, government websites etc.) there are not many policies for this policy type because the government itself actually didn’t make any.
+
+
+Answers:
+
+* <span style="color:blue"> 1: Looks complete to me </span>
+ * <span style="color:blue"> 2: Mostly there </span>
+ * <span style="color:blue"> 3: About halfway there </span>
+ * <span style="color:blue"> 4: A lot of work left to do </span>
+  * <span style="color:blue"> I don't know </span>
+ * <span style="color:blue"> Government made no or few policies for this policy type </span>
+ 
+## [complete_text]
+If there is anything you would like us to know about how complete the coding has been in your country, please let us know here:
+
+
+ * <span style="color:blue"> Text Entry [...] </span>
+ 
+ <!-- Answers: -->
+
+ <!-- * <span style="color:blue"> One policy from August 28, 2020, has not been coded. Except that October 29, 2020,It is possible that there are some policies made for policy types \"There is no policies made or very few\ </span> -->
+ <!-- * <span style="color:blue"> There are serious time gaps already when I was assigned the region, more work is to be done to fill the gaps in the second half of 2020. </span>   -->
+ <!-- * <span style="color:blue"> I assume that there are several missing policies </span> -->
+ <!-- * <span style="color:blue"> The coding has been finished until the document that was released on 06/11/2020 on kamgov.ru website. </span>   -->
+ <!-- * <span style="color:blue"> The coding before July 2, 2020 for Khabarovsk is mainly complete, however, April 2021 and May 2021 policies need more coding. </span> -->
+ <!-- * <span style="color:blue"> It is basically complete, nevertheless, overall,it is difficult to identify what policies Kirov region of Russia is going to implement regarding COVID-19,but there will be more policies. </span>   -->
+ <!-- * <span style="color:blue"> Overall, during this 72 policies were coded </span>   -->
+ <!-- * <span style="color:blue"> Not complete at all. Policies were coded randomly and not chronologically. The last 1.5 months I have been working on eradicating this issue. However, I need time to complete my task. </span>  -->
+ <!-- * <span style="color:blue"> I have used one official source only, which is tasks from head of Mordovia. That's why I think would be nice to check what is going on at Ministries and districts' level </span>   -->
+ <!-- * <span style="color:blue"> It only contains the first couple of monthes since the beginning of the quarantine, but it is pretty detailed, but there is still a lot of period to be done,until October 1, 2020 there are still a lot of materials to code </span>  -->
+ <!-- * <span style="color:blue"> All or almost all policies for the Voronezh region (Russia) are evenly coded up to June 15, 2020.,Since this graph about all policies up to date, a lot of work is left to do because policies are mostly coded up to June 15, 2020. </span>  -->
+ <!-- * <span style="color:blue"> It is not even across policy categories, and there are missing data in between big decrees, too. Governmental website of Republic of Crimea is currently on maintaneance (i.e not working) and sometimes sources of decrees go missing, leaving only data on news outlets (that are not always reliable).Region is not complete, missing data is between coded policies. Current absence of governmental website access, make it hard to identify what is missing. </span>  -->
+ <!-- * <span style="color:blue"> I did not code for Ukraine as a whole, just for the Sevastopol region </span>  -->
+ <!-- * <span style="color:blue"> NA </span>  -->
+
+
+
+## [clean]
+Based on your review of your country until ${q://QID265/ChoiceGroup/SelectedChoices}, please let us know how 'clean a given policy type is. 
+
+Recall that by 'clean' we mean that based on looking through the automated checker sheet and on your own assessment with the help of project resources (e.g. the Coding Guide), the CoronaNet data for this policy fits the current taxonomy up until this date.
+
+Answers:
+
+ * <span style="color:blue"> 1: Looks clean to me </span> 
+ * <span style="color:blue"> 2: Mostly there </span>
+ * <span style="color:blue"> 3: About halfway there </span> 
+ * <span style="color:blue"> 4: A lot of work left to do </span> 
+ * <span style="color:blue"> I don't know </span>
+
+## [clean_text]
+If there is anything you would like us to know how clean the data in your country is, please let us know here:
+
+
+ * <span style="color:blue"> Text Entry [...] </span>
+ 
+<!-- Answers: -->
+
+<!--  * <span style="color:blue"> There are some mistakes in the dates. Dates from descriptions are correct, however, the start date was typed incorrectly sometimes. Also, I have made an Excel for all policies on Bryansk until August 1, 2021 (present moment). I will pass this to Country Manager, and you can contact Olzhas.bolatov@nu.edu.kz for that excel spreadsheet. </span> -->
+<!--  * <span style="color:blue"> Please use the website http://gov.ivcons.ru/ in order to find government sources about policies </span> -->
+<!--  * <span style="color:blue"> It is neither messy neither too clean,nothing </span> -->
+<!--  * <span style="color:blue"> I assume that there are several inadvertently mistakes in policies. </span> -->
+<!--  * <span style="color:blue"> The cleaning audit was submitted but the policies have not been cleaned yet. </span> -->
+<!--  * <span style="color:blue"> In the end of my internship, I realized that there is no information about country in description of my policies. </span> -->
+<!--  * <span style="color:blue"> Make sure that country, region, and year are written in the description. </span> -->
+<!--  * <span style="color:blue"> In some policy types, there is a problem with start dates of the updates. The reason is that not each update to a particular policy is coded (for example, there has been 5 updates but only 3 of them are coded), so the start dates are wrong (the start date of the new update should be the end date of the previous update, but since this 'previous' update is not coded, the start date is wrong). </span> -->
+<!--  * <span style="color:blue"> Nothing to note </span> -->
+<!--  * <span style="color:blue"> I have already checked my cleaning region ( Kemerovo oblast) and written comments. </span> -->
+<!--  * <span style="color:blue"> I am 99% sure in the cleanness of policies coded by me. However, policies coded by previous RAs need to be cleaned. There are about 15-20 policies which need to be cleaned. </span> -->
+<!--  * <span style="color:blue"> I would advice to take a look at the document "Указ губернатора Нижегородской области от 2 апреля 2020 года № 48 "О внесении изменений в Указ Губернатора Нижегородской области от 13 марта 2020 г. № 27" first 30 policies, because some of them might contain policy updates, but I tried to check them all, and fill them into the database,there are still a lot of things that need to be coded into the database before the October 1st, because it only covers couple of months" -->
+<!-- [14] "There is no cleaning audit for this region,There is no cleaning audit for this region at all, so probably the data is not clean </span> -->
+<!--  * <span style="color:blue"> Needs some cleaning, mostly for entries by RA Madina Kazhen. </span> -->
+<!--  * <span style="color:blue"> Previous RA, had some problems with the descriptions, and they were incomplete and missing, country name, enforcers and dates. Policies I coded, too, have missing end dates as they are not always stated in the decrees. Crimean region needs to be cleaned or corrected, 26 of previous RA's policies need their descriptions rewritten.,70 policies I coded need to be reviewed for completeness, and previous RA's policies need corrections </span> -->
+<!--  * <span style="color:blue"> NA </span> -->
+
+                                                                                                                          
+ 
+
+## [complexity]
+Some policies are particularly complex to code. For example
+sometimes a given policies will only be in place if another condition is met
+there are constant changes to keep track of (e.g. countries which have travel bans which change weekly)
+
+ 
+To get a better sense of the complexity of coding policies for your country or region, we would like to ask, one a scale of 1 to 3, how complex is policy making for a given policy type in your country?  
+
+Answers:
+
+ * <span style="color:blue"> 1: Straightforward </span>
+ * <span style="color:blue"> 2: Somewhat complicated </span>
+ * <span style="color:blue"> 3: Very complicated </span>
+ 
+
+
+
+
+## [complexity_text]
+If there is anything you would like us to know the complexity of coding for your country/subnational region, please let us know here:
+
+
+ * <span style="color:blue"> Text Entry [...] </span>
+ 
+<!-- Answers: -->
+
+
+<!-- * <span style="color:blue"> NA </span> -->
+<!-- * <span style="color:blue"> The policies are available only in Russian In 2021, there is a little amount of new policies, mostly updates </span> -->
+<!-- * <span style="color:blue"> all sources are in the websites </span> -->
+<!-- * <span style="color:blue"> There is a complexity in coding updates. Often there is a main decree to which corrections and updates are made in the subsequent decrees. Sometimes some other new decrees refer to that updates. Therefore, a coder should carefully monitor the changes outlined in the decrees. </span> -->
+<!-- * <span style="color:blue"> Coding for Kirov presents its own set of unique challenges. While coding, the main focus always should be on official website, and for postonavlenies and rasporyazhenies. </span> -->
+<!-- * <span style="color:blue"> It was necessary to code at least 70 policies and I coded 72 </span> -->
+<!-- * <span style="color:blue"> Not very complex. What I do is I find official decrees and code according to them. All the decrees for my region and other regions of Russia are available on http://pravo.gov.ru/ </span> -->
+<!-- * <span style="color:blue"> no complexities </span> -->
+<!-- * <span style="color:blue"> It is not that complex. </span> -->
+<!-- * <span style="color:blue"> The official governmental website with accepted decrees does not cover all policies, some are not included or may be made on other platforms. 'Vesti Voronezh' can be tracked to cover all policies.,Different businesses open and close frequently depending on the epidemic situation, has to be watched closely. </span> -->
+<!-- * <span style="color:blue"> The decrees come either in 1-2 pages that consist of updates for couple of policies or as big decrees for 10-15 pages with new policies announced. Because of that, there may be missing data in between big decrees, that smaller ones do not cover. Additionally, some updates annex wrong paragraph, so that small update decree's might update one policy under different paragraphs. </span> -->
+<!-- * <span style="color:blue"> Nothing unusual except that now you have one website of all published official documents/decrees that you have to code. As a bonus, recent policies of the 2021 year can be seen in the separate website of  MinYust with all versions and changes interactively. </span> -->
+   
+ 
+
+
+<!-- ## [sub_nat_descr] -->
+<!-- Policy-making is said to take place at the subnational level if subnational governments or entities implement policies that deviate from policies set by the national government (or if the national government does not set any policies at all). In addition:  -->
+
+
+
+<!--  * <span style="color:blue"> Text Entry [...] </span> -->
+
+
+
+<!-- It is possible for policy-making to be national for one type of policies (e.g. a declaration of emergency for the entire country) but subnational for another set of policies (e.g. subnational governments make different schools policies) It is possible for policy-making to be national for one time period but subnational during another time period (e.g. From March to June 2020, policy making in schools was made at the national level but from June to September 2020, policy making in schools was made at the national level) -->
+
+
+<!-- ## [sub_nat] -->
+<!-- We are aware that it is often not actually possible to code for subnational policies, especially since as a country-level coder you are asked to focused on national level policies. Regardless of whether you are able to code subnational policies, for a given time period, please give your best assessment as to whether there was subnational policy making in your country or not.  -->
+
+
+
+<!--  -->
+
+
+<!-- # subnat -->
+
+
+<!-- ## [sub_nat] -->
+<!-- For which policies was there subnational policy making in the following time period: ${lm://Field/1}?  Please select all that apply: -->
+
+
+
+<!-- * Lockdown -->
+<!-- * Quarantine -->
+<!-- * External Border Restrictions -->
+<!-- * Internal Border Restrictions -->
+<!-- * Restrictions of Mass Gatherings -->
+<!-- * Social Distancing -->
+<!-- * Closure and Regulation of Schools -->
+<!-- * Restrictions and Regulations of Businesses -->
+<!-- * Restrictions and Regulations of Government Services -->
+<!-- * Health Monitoring -->
+<!-- * Health Testing -->
+<!-- * Health Resources -->
+<!-- * Hygiene -->
+<!-- * Declaration of Emergency -->
+<!-- * New Task Force -->
+<!-- * Public Awareness Measures -->
+<!-- * Anti-Disinformation Campaigns -->
+<!-- * COVID-19 Vaccines -->
+<!-- * There was no subnational policy making for any policy type -->
+<!-- * I don't know -->
+
+
+
+<!--  -->
+
+
+<!-- # subnat_open -->
+
+
+
+<!-- ## [sub_nat_open] -->
+
+
+<!-- If there is anything you would like us to know about subnational policy making in your country, please let us know here -->
+
+
+
+<!--  * <span style="color:blue"> Text Entry [...] </span> -->
+
+
+
+
+
+ 

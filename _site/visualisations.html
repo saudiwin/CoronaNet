@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+    <link rel="stylesheet" type="text/css" href="style2.css">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="L-jK2R0bz2lbCyDSQ7Ulk6MW9il2PZzbXZ9DX6AkuuE" />
+    <meta name="description" content="The CoronaNet Research Project is a worldwide effort that tracks government COVID-19 policies.">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <title>Visualisations</title>
+    <script src="js/fontawesome.js" crossorigin="anonymous" async></script>
+    <script src="js/particles.js"></script>
+    <script src="app.js" async></script>
+    <div id="particles-js" style="position: relative;">
+        <img src="images/logo_transparent_slim.png" style="position: absolute; margin: auto; left: 0; right: 0; text-align: center; height: 80%; z-index: 2; cursor: pointer;" class="logoCoronanet" onclick="window.location='https://www.coronanet-project.org/index.html';"/>
+        <div><a id="menuButton" onclick="openNav()"><i class="fas fa-bars" style="cursor: pointer; font-size: 24px; text-shadow: 0 0 1px #000; z-index: 3;"></i></a></div>
+        <div class="containerMenu">
+            <label id="theme-switch" class="theme-switch" for="checkbox_theme">
+            <input type="checkbox" value='0' id="checkbox_theme" style="display: none;">
+            <i id="darkModeSwitch" class="fas fa-moon" style="background-color: transparent; cursor: pointer; font-size: 24px; text-shadow: 0 0 1px #000;"></i>
+            </label>
+            <a id="emailButton" href="mailto:admin@coronanet-project.org"><i class="fas fa-envelope" style="background-color: transparent; cursor: pointer; font-size: 24px; text-shadow: 0 0 1px #000;"></i></a>
+        </div>
+    </div>
+    <div id="navbarOverlay" style="z-index: 3;"></div>
+    <h1> Visualisations</h1>
+    <div id="mySidenav" class="sidenav" style="display: none; z-index: 3;">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <div class="sidebarOption"><img src="images/favicon_bw.png" style="width: 15px; display: inline;"><a target="_blank" href="index.html">Home</a></div>
+        <div class="sidebarOption"><img src="images/11_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="methods.html">Methodology</a>
+        <div class="sidebarSuboption">
+        <a target="_blank" href="methods.html">Data Collection Methods</a><br>
+        <a target="_blank" href="codebook.html">Codebook</a><br>
+        <a target="_blank" href="validationcheck.html">Validation and Reliability Checks</a>
+        </div></div>
+        <div class="sidebarOption"><img src="images/16_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="visualisations.html">Visualizations</a></div>
+        <div class="sidebarOption"><img src="images/14_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="reports.html">Reports</a></div>
+        <div class="sidebarOption"><img src="images/13_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="publications.html">Publications</a></div>
+        <div class="sidebarOption"><img src="images/10_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="inthemedia.html">In The Media</a></div>
+        <div class="sidebarOption"><img src="images/9_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="about.html">About CoronaNet</a></div>
+        <div class="sidebarOption"><img src="images/12_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="team.html">Our People</a>
+        <div class="sidebarSuboption">
+        <a target="_blank" href="team.html">Team</a><br>
+        <a target="_blank" href="interviews.html">Interviews</a><br>
+        </div></div>
+        <div class="sidebarOption"><img src="images/15_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="join.html">Join CoronaNet</a></div>
+    </div>
+    <script>
+        function openNav() {
+          document.getElementById("mySidenav").style.display = "block";
+          document.getElementById("navbarOverlay").style.display = "block";
+        }
+
+        function closeNav() {
+          document.getElementById("mySidenav").style.display = "none";
+          document.getElementById("navbarOverlay").style.display = "none";
+        }
+    </script>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DSF9RY2DVF"></script>
+    <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-DSF9RY2DVF');
+    </script>
+</head>
+    
+    <body>
+        
+        <div class="container">
+            <p class="block">
+            The CoronaNet research project visualisations allows users to explore the data collected by our research assistants. The following tools makes it possible to discover the CoronaNet data by policy categories, policy levels, and initiating countries, cities, or provinces. Our daily indices track the policy intensity of policymakers to each of these policy domains from 1 January 2020 to 14 January 2021 for over 180 countries. For more information related to this research,
+                <a  target="_blank" class="link" href= "https://osf.io/preprints/socarxiv/rn9xk/"><b>here.</b></a>            
+            </p>
+
+            <br>
+
+            <button class="accordion">CoronaNet World Map</button>
+            <div class="panel"><br>
+                <div class='tableauPlaceholder' id='viz1643288074247' style='position: relative'><object class='tableauViz'  style='display:none;' width="1000" height="1000" ><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='CoronaNetWorldMapofCOVID-19Policies&#47;WorldMap' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-GB' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1643288074247');                    var vizElement = divElement.getElementsByTagName('object')[0];                    vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';                    var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);</script>
+            </p>  
+            </div>
+
+            <button class="accordion">CoronaNet Policy Intensity Scores Visualisation</button>
+            <div class="panel"><br>
+                <div class='tableauPlaceholder' id='viz1643640773405' style='position: relative'><object class='tableauViz'  style='display:none;' width="1000" height="1000" ><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='COVID-19PolicyIntensityScores&#47;SingleCountry' /><param name='tabs' value='yes' /><param name='toolbar' value='yes' /><param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-GB' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1643640773405');                    var vizElement = divElement.getElementsByTagName('object')[0];                    if ( divElement.offsetWidth > 800 ) { vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else if ( divElement.offsetWidth > 500 ) { vizElement.style.width='1000px';vizElement.style.height='850px';} else { vizElement.style.width='1000px';vizElement.style.height='850px';}                     var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
+            </p>  
+            </div>
+
+            <button class="accordion">CoronaNet Event Dataset Visualisations</button>
+            <div class="panel"><br>
+                <p class="block">
+                    <object data="https://www.coronanet-project.org/CoronaNetvisualization.html"
+                 width="1000"
+                 height="1000"
+                 type="text/html">
+                    </object>
+                 </p>  
+            </div>
+
+            <br>
+
+            <p class="block">
+                To access visualizations of our indicators, please see visit the DICE platform <a target="_blank" class="link" href= "https://dice.ifo.de/en/search?search_api_fulltext=coronanet&datarows_field_location=All&sort_by=search_api_relevance"><b>here.</b></a>            
+            </p>
+
+            <br>
+
+            <p class="block">
+                We are grateful for our collaboration with the Ifo Institute, in particular Christa Hainz, Tanja Sittenender, and Clara Albrecht for helping us create these visualizations. For more information behind these visualizations please see <a  target="_blank" class="link" href= "https://www.cesifo.org/DocDL/CESifo-Forum-2021-3-20-May.pdf#page=49"><b>here.</b></a>            
+            </p>
+
+        </div>
+
+        <script>
+            var acc = document.getElementsByClassName("accordion");
+            var i;
+    
+            for (i = 0; i < acc.length; i++) {
+              acc[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var panel = this.nextElementSibling;
+                if (panel.style.maxHeight) {
+                  panel.style.maxHeight = null;
+                } else {
+                  panel.style.maxHeight = panel.scrollHeight + "px";
+                } 
+              });
+            }
+            </script>
+            </div>
+    </body>
+    
+    <footer>
+        <h2>Partner Universities and Institutions</h2>
+        <br>
+        <a target="_blank" href="https://www.hfp.tum.de/en/home/"><img class="logo" src="images/hochschule%20.png" alt="Hochschule für Politik München logo"></a>
+        
+        <a target="_blank" href="https://www.tum.de/"><img class="logo" src="images/TUM.png" alt="Technical University of Munich logo"></a>
+    
+        <a target="_blank" href="https://nyuad.nyu.edu/en/"><img class="logo" src="images/NYU.png" alt="New York University Abu Dhabi logo"></a>
+    
+        <a target="_blank" href="https://www.wi.tum.de/"><img class="logo" src="images/SOM.png" alt="TUM School of Management at Technical University of Munich logo"></a>
+        
+        <br>
+        <br>
+        
+        <a target="_blank" href="https://nu.edu.kz/"><img class="logo" src="images/NU.png" alt="Nazarbayev University logo"></a>
+        
+        <a target="_blank" href="https://www.jataware.com/"><img class="logo" src="images/jataware_logo.png" alt="Jataware company logo"></a>
+    
+        <a target="_blank" href="https://www.leibniz-krisen.de/en.html"><img class="logo" src="images/LFV_logo.png" alt="Leibniz Research Alliance
+    Crises in a Globalised World logo"></a>
+    
+        <a target="_blank" href="https://www.overton.io/"><img class="logo" src="images/overton_logo.png" alt="Overton company logo"></a>
+        
+        <br>
+        <br>
+        <hr><br>
+        <h2 class="periscope">CoronaNet is part of the PERISCOPE consortium, a project funded by the European Commission under the Horizon 2020 Research and Innovation programme (agreement no. 101016233)</h2>
+        <br>
+        <a target="_blank" href="https://periscopeproject.eu/"><img class="logo funding" src="images/periscope.png" alt="Logo of the PERISCOPE consortium"></a>
+        <a target="_blank" href="https://ec.europa.eu/info/index_en"><img class="logo_eu" src="images/logo-ce-horizontal-en-quadri-lr.png" alt="Logo of the European Commission"></a>
+        <br><br>
+        <a target="_blank" href="https://github.com/saudiwin/corona_tscs"><img src="images/github.png" width="25px" alt="GitHub data repository for CoronaNet"></a>
+        <a target="_blank" href="https://www.linkedin.com/company/coronanet-research-group/mycompany/"><img src="images/linkedin.png" width="25px" alt="CoronaNet Research Group on LinkedIn"></a>
+        <a target="_blank" href="https://twitter.com/CoronaNet_org"><img src="images/twitter.png" width="25px" alt="CoronaNet Research Project on Twitter"></a>
+        <a target="_blank" href="https://www.instagram.com/coronanet_org/"><img src="images/instagram.png" width="25px" alt="CoronaNet Research Project on Instagram"></a>
+        <br>
+        <script src="js/darkMode.js"></script>
+    </footer></html>

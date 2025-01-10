@@ -1,0 +1,2469 @@
+---
+title: "CoronaNet Coding Guide"
+output: 
+    html_document
+---
+
+<style>
+
+.tab-content{
+   margin-bottom: 75px;
+}
+  .col2 {
+    columns: 2 200px;         /* number of columns and width in pixels*/
+    -webkit-columns: 2 200px; /* chrome, safari */
+    -moz-columns: 2 200px;    /* firefox */
+    background-color: #A3D6F3;
+  }
+  .col3 {
+    columns: 3 100px;
+    -webkit-columns: 3 100px;
+    -moz-columns: 3 100px;
+  }
+</style>
+
+<button onclick="topFunction()" id="myBtn" title="Go to top">Go to top!</button>
+<script>
+//Get the button
+var mybutton = document.getElementById("myBtn");
+
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    mybutton.style.display = "block";
+  } else {
+    mybutton.style.display = "none";
+  }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
+</script> 
+---
+
+
+Updates and corrections can sometimes be confusing. 
+
+* What does a quantiative change of policy update mean? 
+* What can I update and what can't I update? 
+* When should I correct something? 
+* What policy type should I code this policy as? 
+
+These are all questions we hope to answer in this coding guide. It is important to keep in mind...
+
+* **Sometimes there is no right answer** for a policy and it may fit into more than one category. For example, testing students before they go to school could be under health testing or closure and regulation of schools, but we code it as closure and regulation of schools. 
+* **What is important, is not being “right” but setting guidelines so that all entries are coded the same**. In this case, even though testing in schools could fit under health testing we need everyone to know that it should be coded as a closure and regulation of schools. We want two independent coders to see this policy and both code it correctly. This increases our intercoder reliability and makes our data very valuable for researchers.
+
+**Please click around the guide so that we can all consistently code policies across different coders and different regions**. In this guide, you can also find answers to the questions raised above as well as 'good' and 'bad' examples for coding various policy types among a wealth of other information. 
+
+As always, feel free to also ask questions in [#ra-chat!](https://corona-govt-response.slack.com/archives/C010V8MKHK2){target="_blank"}. If you want to suggest some more material that we can add to this coding guide, we will happily award you hogwarts points for it!
+
+
+<br>
+
+##### Videos! 
+
+* Please see here for [a video on how to do *updates*](https://www.youtube.com/watch?v=5hkfoxsA2R0){target="_blank"}! [(accompanying slides)](https://drive.google.com/file/d/1CdSVfmdYDi9jdWbP5LDfo3ijwyCI3NV8/view?usp=sharing){target="_blank"} [(general slides)](https://drive.google.com/file/d/13bRZ67rHMV5Fv2UTxI6ZtSz2qu1xxeEF/view?usp=sharing){target="_blank"}
+* Want to get involved in the missing end date competition? Check out this [video](https://www.youtube.com/watch?v=HFh6EyIRjYA){target="_blank"} for how to get started and this [link](https://drive.google.com/drive/folders/1L724VBmksAB6_Hdvdlvpf1YNx4m8qP6V){target="_blank"} to find the missing end dates in your region!
+* Confused about how to clean a complicated policy? Check out [this video](https://youtu.be/1uMW02eRm4A){target="_blank"} and [this text](https://docs.google.com/document/d/1ulHpv8zv7Y_P5EsQU2tB55-T7mY7ZQFGVY0R5n-e0_E/edit?ts=6014532f){target="_blank"} for some guidance
+* For guidance on *how to code openings and reopenings* in particular, you can also check out this video [here!](https://youtu.be/KldyTCekUhY){target="_blank"}
+* Check out this [short video](https://youtu.be/O6qPkVK6wew){target="_blank"} on *how to write a good description*
+
+* Videos on specific policy types:...
+  + [What's the difference between External and Internal Border Restrictions?](https://youtu.be/TLNvtEwpvX8){target="_blank"}
+  + [Health Monitoring and Health Testing](https://youtu.be/sHFM_mdlqc8){target="_blank"}
+  + [Public Awareness Measures](https://youtu.be/hkHsSrfJ9kA){target="_blank"}
+  + [COVID-19 Vaccines](https://youtu.be/rqTgXIwiPnQ){target="_blank"}
+
+<details>
+  <summary>All videos</summary>
+  <small>
+  
+  * Access all videos that have been created for CoronaNet's YouTube Channel [here!](https://www.youtube.com/playlist?list=PLU8d0pxV-EJP9TugotSYU6C-TZ4Eo3T5M){target="_blank"} </small>
+</details>
+
+
+ 
+
+
+## How do I... {.tabset}
+
+### Decide: correction or  update?
+
+It depends on what the issue is!
+
+
+* If the information you want to change in the policy was announced in the original source and you have just made a typo or miscoded something then you should correct the original entry.
+
+* If you have found a new source that later announces a new end date, compliance or another change to the policy then it should be updated.
+
+### Code a correction? 
+
+You can code a correction in:
+
+
+ <details>
+  <summary>Through a Qualtrics Link</summary>
+   + Go to the [Shiny App](https://kubinec.shinyapps.io/corona_validate/). Filter to find the record you want to correct and then click on the 'Policy Records Table'
+    + Click on the 'Correct' link 
+    
+   ![](../img/correct_link_shiny.png){width=50%}
+  + You will then be taken to the Qualtrics survey where you can make your corrections directly there.
+</details>
+
+ <details>
+  <summary>Directly in the Shiny App</summary>
+  
+  + You can also make corrections for a limited number of variables directly in the Policy Records Table in the Shiny App
+  + Please restrict the corrections you make in the Policy Records Table to the following:
+    + description
+    + demographic target variables
+    + date variables
+    + enforcer variables
+    + compliance mechanism
+  + For corrections involving the opening of institutions with conditions or the geographic target of a policy, please make these changes in Qualtrics as they involve display logics that are not replicable in the Shiny App
+</details>
+
+### Code an Update? {.tabset .tabset-fade .tabset-pills}
+
+#### What kind of updates are there?
+There are two types of updates: a 'change of policy' update and an 'end of policy' update. If a policy changes we should update it --- but which type of policy should you choose?  
+
+
+![](../img/update_types.jpg)
+
+
+#### What is a quantitative change update?
+It is only possible to make an update a ‘Change of Policy’ Update for the 5 policy types below. These are so-called ‘quantiative changes’ (as opposed to qualitative changes) :
+
+
+![](../img/update_quantitative.jpg)
+
+#### Strengthening and Relaxing
+
+There are two kinds of 'Change of Policy' Updates: updates that are 'strengthening' or 'relaxing'. You are given the choice to select between the two in the survey, but how to choose the right one?
+
+
+
+![](../img/update_str_relax.jpg)
+
+
+
+
+
+
+
+
+#### How do I code the 'dates' for an update?
+
+![](../img/update_dates.jpg)
+
+
+### How do I code end dates? {.tabset}
+
+#### What are the different types of end dates? 
+
+![](../img/update_date_end_spec.jpg)
+
+#### What does the data look like after I code for these different types of end dates?
+
+After you specify the what type of end date a policy has in [date_end_spec], [date_end] will be automatically filled as follows: 
+
+* Note that the automatic fill-down below is just an assumption; the beauty of having the information for [date_end_spec] is that anybody can now use different assumptions for different types of policies if they so choose (e.g. maybe a user wants to code a one time measure as lasting for 5 days after the start date ---> they can do this if they want because we've identified the policies for them in the [date_end_spec] measure )
+
+
+![](../img/date_end_auto.png)
+
+
+#### Examples of coding different end dates
+
+
+![](../img/end_date_example_1.png){width=150%}
+
+
+![](../img/end_date_example_2.png){width=150%}
+
+![](../img/end_date_example_3.png){width=150%}
+
+### Code different policy types? {.tabset .tabset-fade .tabset-pills}
+
+
+#### What is a policy sub-type? 
+![](../img/coding_guide/What is a policy sub-category.png)
+
+Visit [this page](https://docs.google.com/spreadsheets/d/10XiTrBSOJkJvCW0lYt2W6MJo3CCLANjvMjIG4RuOd6Q/edit?usp=sharing) to find out what all the possible policy sub types are!
+
+
+
+
+
+#### Anti-Disinformation Measures {.tabset}
+```{css echo=FALSE}
+<style>
+#customers {
+  font-family: Arial, Helvetica, sans-serif;
+  width: 100%;
+  table-layout:fixed;
+
+}
+
+#customers td, #customers th {
+  border: 1px back solid #f1f1f1;
+  padding: 10px;
+}
+
+#customers tr:nth-child(even){background-color: white;}
+
+#customers tr:hover {
+  background-color: #E2F0D9;}
+
+#customers tr {
+  background-color: white  
+}    
+    
+#customers th {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-align: center;
+  background-color: #0F4C81;
+  color: white;
+  font-size: 15px;
+  width: 200px;
+}
+
+#customers td + td,
+#customers th + th { 
+  border-left: 1.5px dashed #A5CD92; 
+}
+#customers tr + tr { 
+  border-top: 1.5px dashed #A5CD92;
+}
+
+#customers th {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-align: center;
+  background-color:  #A5CD92;
+  color: #000000;
+  font-size: 15px;
+  border-left: 1.5px dashed #A5CD92;
+  border-top: 1.5px dashed #A5CD92;
+}
+#customers td {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-align:left;
+  font-size:10pt;
+}
+
+#customers ul {
+    margin-left: 0;
+    padding-left: 20px;
+}
+
+#table2 {
+  font-family: Arial, Helvetica, sans-serif;
+  width: 100%;
+  table-layout:fixed;
+  border-collapse: collapse;
+}
+
+#table2 th {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-align: center;
+  background-color: #A5CD92;
+  color: #000000;
+  font-size: 12px;
+  border-top: 1.5px dashed #A5CD92;
+}
+
+#table2 tr {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-align: center;
+  background-color: white;
+  font-size: 10px;
+  border-top: 1.5px dashed #A5CD92;
+}
+
+#table2 td {
+  padding-top: 18px;
+  padding-bottom: 18px;
+  background-color: white;
+  font-size: 12px;
+  border-top: 1.5px dashed #A5CD92;
+}
+
+#table2 tr:nth-child(even){background-color: #f2f2f2;}
+
+#table2 td:hover {background-color: #E2F0D9;}
+
+#myBtn {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  z-index: 99;
+  font-size: 18px;
+  border: 4px;
+  outline: none;
+  background-color: #E2F0D9;
+  color: #000000;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 4px;
+}
+
+#myBtn:hover {
+  background-color: #A5CD92;
+  color: white;
+}
+
+#table3 tr:nth-child(even){background-color: #f2f2f2;}
+#table3 td:hover {background-color: #E2F0D9;}
+
+#table3 td {
+  padding-top: 18px;
+  padding-bottom: 18px;
+  background-color: white;
+  font-size: 12px;
+  border-top: 1.5px dashed #A5CD92;
+}
+#table3 th {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-align: center;
+  background-color: #A5CD92;
+  color: #000000;
+  font-size: 12px;
+  border-top: 1.5px dashed #A5CD92;
+}
+
+#myBtn {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  z-index: 99;
+  font-size: 18px;
+  border: 4px;
+  outline: none;
+  background-color: #E2F0D9;
+  color: #000000;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 4px;
+}
+
+#myBtn:hover {
+  background-color: #A5CD92;
+  color: white;
+}
+
+mark { 
+  background-color: #A5CD92;
+  color: black;
+  font-weight:bold;
+}
+
+</style>
+```
+
+
+![](../img/coding_guide/Anti-Disinformation Measures/What is it about.png)
+
+
+
+##### What are the policy sub types?
+
+<div style="background: ghostwhite; font-size: 13px; padding: 10px; border: 5px solid #F7C685; margin: 10px;">
+&#128073; There are currently no policy sub types for Anti-Disinformation Measures.
+</div>
+
+##### Good Updates
+
+![](../img/coding_guide/Anti-Disinformation Measures/Good examples.png)
+
+##### Bad Updates
+
+![](../img/coding_guide/Anti-Disinformation Measures/Bad examples.png)
+
+
+
+#### Closure and Regulation of Schools {.tabset}
+
+![](../img/coding_guide/Closure and Regulation of Schools/What is it about.png)
+
+![](../img/coding_guide/Closure and Regulation of Schools/sch_conditions.png)
+
+
+##### What are the policy sub types? 
+<table id="customers" width="100%">
+  <tr>
+  <th>Variable</th>
+  <th>Description</th>
+  </tr>
+  <tr>
+  <td><header><h5>**type_schools**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic"><br>
+    Please select all that apply in terms of which educational entities were closed:</p></td>
+  <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable provides additional detail on the types of educational institutions that are closed due to COVID-19, if available. Note that because educational institutions across countries differ, it may be hard to map on the conditions in your country to the categories provided below. Each category provides some guidelines for the approximate age range that the educational institution serves. 
+
+It can take on <strong>one or more</strong> of the following values. If the policy stipulates that ‘all schools’ are closed without further detail provided, please check all options. </p>
+<table id="table2" width="100%">
+        <tr>
+        <th>Category</th>
+        <th>Details</th>
+        </tr>
+        <tr>
+        <td>**Preschool or childcare facilities**</td>  
+        <td>These institutions are generally targeted for children ages 5 and under.</td>
+        </tr>
+        <tr> 
+        <td>**Primary Schools**</td>
+        <td>These institutions are generally targeted for children ages 5 to 10.</td>
+        </tr>
+        <tr> 
+        <td>**Secondary Schools**</td>
+        <td>These institutions are generally targeted for children ages 10 to 18.</td>
+        </tr>
+        <tr> 
+        <td>**Higher education**</td>
+        <td>These institutions are generally targeted towards degree granting institutions (e.g. BAs, MAs) or certification-granting institutions.</td>
+        </tr> 
+        </table> 
+  </p></td>
+    </tr> 
+    <tr>
+    <td><header><h5>**type_schools_level**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic"><br>
+    Please choose one of the following in terms of how are allowed to operate according to this policy:</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">For each type of educational establishment that is regulated by a given policy, this variable documents whether the educational establishment is one of the following:</p>
+  - **Allowed to open with no conditions**
+  - **Allowed to open with conditions**
+  - **Closed/locked down**
+    </p></td>
+    </tr>
+    <tr>
+    <td><header><h5>**type_school_var**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic"><br>
+    Please choose one of the following in terms of how are allowed to operate according to this policy:</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">
+For each type of educational establishment that is allowed to open with conditions, this variable documents one or more of the following conditions the educational establishment is allowed to operate under:</p>
+
+<table id="table2" width="100%">
+  <tr>
+    <th>Type of Condition</th>
+    <th>Example</th>
+  </tr>
+  <tr>
+    <td>**Number of people on the school premises are limited**</td>  
+    <td>Only 50 people allowed on school premises.</td>
+  </tr>
+    <tr> 
+    <td>**Types of people on school premises are limited**</td>
+    <td>No parents are allowed on school premises.</td>
+  </tr>
+    <tr> 
+    <td>**Regular cleaning and sanitary procedures applied to
+classrooms**</td>
+    <td>Classrooms must be aired out after each class.</td>
+    </tr>
+    <tr> 
+    <td>**Physical classroom hours or meeting times reduced**</td>
+    <td>Classes only meet in the morning.</td>
+    </tr>
+    <tr>
+    <td>**Special provisions exist for how teaching is done which
+applies to all teachers**</td>
+    <td>All teachers must tele-teach.</td>
+    </tr>
+    <tr>
+    <td>**Special provisions exist for how teaching is done which
+applies to some teachers**</td>
+    <td>Teachers with certain health conditions can
+tele-teach.</td>
+    </tr>
+    <tr>
+    <td>**Special provisions for all students in a school**</td>
+    <td>Students in primary school do not have to social distance.</td>
+    </tr>
+    <tr>
+    <td>**Special provisions exist for some students in a school**</td>
+    <td>Students living with essential workers can attend school while others must stay home.</td>
+    </tr>
+    <tr>
+    <td>**School event cancelled/postponed**</td>
+    <td>Cancellation of graduation ceremonies, exams, academic and school sports competitions would all fall under this category.</td>
+    </tr>
+    <tr>
+    <td>**Mask Wearing policy**</td>
+    <td>Mask wearing required either of students, teachers or some other population associated with a school.</td>
+    </tr>
+    <tr>
+    <td>**Keeping a distance of 6ft or 1.5 meters apart**</td>
+    <td>Keeping distance of 6ft or 1.5 meters apart required either of students, teachers or some other population associated with a school.</td>
+    </tr>
+    <tr>
+    <td> **Negative COVID-19 Test**</td>
+    <td> </td>
+    </tr><tr>
+    <td>**Proof of COVID-19 Vaccination**</td>
+    <td></td>
+    </tr>
+     </tr>
+</table>
+  <br>
+  
+<div style="background: ghostwhite; 
+            font-size: 13px; 
+            padding: 4px; 
+            border: 5px solid #A5CD92; 
+            margin: 5px;"><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal;"><strong><center><u>2G/3G Rules </u></center></strong></p>
+</div> 
+
+
+<table>
+    <tr>
+- **2G: Must be (i) either vaccinated or (ii) recovered from COVID-19**
+- **3G: Must be either (i) vaccinated, (ii) have a valid COVID-19 negative test within a certain time frame, or (iii) recovered from COVID-19**
+- **Institution can decide whether to enforce 2G or 3G (see above for definitions for 2G and 3G)**</ul></p></td>
+  </tr>
+ </table>
+  
+<div style="background: ghostwhite; 
+            font-size: 13px; 
+            padding: 4px; 
+            border: 5px solid #A5CD92; 
+            margin: 5px;"><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal;"><strong><center><u>Health Monitoring</u></center></strong></p>
+</div> 
+  </br>
+<table id="table2" width="100%">
+    <tr> 
+    <td>**Temperature Checks**</td>
+    <td>Temperature check policy implemented for a person to enter school property</td>
+    </tr>
+    <tr> 
+    <td>**Health Certificate**</td>
+    <td>Health certificate policy implemented for a person to enter school property</td>
+    </tr>
+    <tr>
+    <td>**Health Questionnaire**</td>
+    <td>Health questionnaire policy implemented for a person to enter school property</td>
+    </tr>
+    <tr>
+    <td>**Other Health Monitoring**</td>
+    <td>Other health monitoring policy implemented for a person to enter school property</td>
+    </tr>
+  </tr> 
+</table>
+</td>
+  </tr>
+    <tr>
+    <td><header><h5>**type_school_mask_who**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic"><br>
+    Please select all that apply in terms of who the mask wearing policy is directed toward:</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable captures additional information as to who the
+target of a mask wearing policy at school is. It can take on one or more of the following values:</p>
+- **Students**
+- **Teachers**
+- **Other Population**
+- **Not specified**
+ </p></td>
+  </tr>
+    <tr>
+    <td><header><h5>**type_school_soc_who**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic"><br>
+    Please select all that apply in terms of who keeping distance of at least 6ft or 15. meters is directed toward:</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable captures additional information as to who the target of a policy which states that people must keep physically distant for 6ft or 1 meter is. It can take on one or more of the following values:</p>
+- **Students**
+- **Teachers**
+- **Other Population**
+- **Not specified**
+ </p></td>
+  </tr>
+    <tr>
+    <td><header><h5>**type_school_mon_who**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic"><br>
+    Please select all that apply in terms of who the health
+monitoring policy is directed toward:</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable captures additional information as to who a health monitoring policy is directed towards. It can take on one or more of the following values:</p>
+- **Students**
+- **Teachers**
+- **Other Population**
+- **Not specified**
+ </p></td>
+  </tr>  
+ </table>
+ 
+##### Qualitative Change Example 
+
+![](../img/coding_guide/Closure and Regulation of Schools/sch1.png)
+
+![](../img/coding_guide/Closure and Regulation of Schools/sch2.png)
+
+
+##### Bad Examples
+
+![](../img/coding_guide/Closure and Regulation of Schools/Bad examples.png)
+
+#### Curfew {.tabset}
+
+![](../img/coding_guide/Curfew/Entire slide_Curfew_What is it about.png)
+
+ 
+##### What are the policy sub types?
+
+<table id="customers" width="100%">
+  <tr>
+    <th>Variable</th>
+    <th>Description</th>
+   </tr>
+    <tr>
+    <td><header><h5>**type_curfew_freq**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    Do the curfew times depend on the day of the week?.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable provides additional information on whether a curfew is the same time for each day of the week or is at different times depending on the day of the week. It can take on the following values:</p>
+- No, the curfew times are always the same regardless of the day of the week
+- Yes, the curfew times differ depending on the day of the week</td>
+   </tr>
+    <tr>
+    <td><header><h5>**type_curfew_day**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    If the curfew times differ depending on the day of the week, please (select the times of day per week there is a curfew).</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable provides additional information as to what times a curfew is in place for different days of the week. Research assistants should:</p><ul>
+- Choose the times of day in which the curfew starts or ends for a given day. Leave the 'Full Lockdown' and "No Lockdown" options unchecked for that day.
+- If people are not allowed to leave the house at all for a given day, please leave the 'start time' and 'end time' blank and click 'Full lockdown' for that day
+- If people are allowed to leave the house for the entire day, please leave the 'start time and 'end time' blank and click 'No Lockdown' for that day.</ul></td>
+   </tr>
+    <tr>
+    <td><header><h5>**type_curfew_start**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    At what time of the day does the curfew start?</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable provides additional information on the time of the day a curfew starts if it is the same time of day each day of the
+week. The response to this option is formatted to only accept calendar dates.</p></td>
+   </tr>    
+    <tr>
+    <td><header><h5>**type_curfew_end_spec**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    Does the policy note an explicit time of the day in which the curfew ends?</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable provides additional information as to whether there was an explicit end time given to a curfew. The possible responses to this option are:</p><ul>
+- Yes, an explicit time of the day is noted for when the curfew ends
+- No, an explicit time of the day is not noted for when the curfew ends</ul></td>
+   </tr>   
+    <tr>
+    <td><header><h5>**type_curfew_end**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    At what time of the day does the curfew end?</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable provides additional information on the time of the day a curfew ends if there is an explicit time of day noted (see
+type_curfew_end_spec) The response to this option is formatted to only accept calendar dates.</p></td>
+   </tr>
+</table>
+
+##### Good Examples
+
+![](../img/coding_guide/Curfew/Good Examples.png)
+
+##### Bad Examples
+
+![](../img/coding_guide/Curfew/Bad examples.png)
+
+
+
+
+
+#### COVID-19 Vaccines {.tabset}
+
+![](../img/coding_guide/Vaccines/1What is it about.png) 
+![](../img/coding_guide/Vaccines/2pur_dist_vac.png)
+
+![](../img/coding_guide/Vaccines/3who_vac.png)
+
+
+![](../img/coding_guide/Vaccines/4who_vac_ex.png)
+![](../img/coding_guide/Vaccines/5dist_purch_prod_vac.png)
+![](../img/coding_guide/Vaccines/6Not_vaccine.png)
+
+##### What are the policy sub types?
+
+<table id="customers" width="100%">
+  <tr>
+    <th>Variable</th>
+    <th>Description</th>
+   </tr>
+    <tr>
+    <td><header><h5>**type_vac**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    Please select the intended policy goal with regards to a given COVID-19 vaccine.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable documents the intended policy goal with regards to COVID-19 vaccines. It can take on **one of** the following values:</p>
+- Resources for research and development of a COVID-19 vaccine
+- Regulatory approval process for administering the COVID-19 vaccine
+- Production of COVID-19 vaccines
+- Purchase of COVID-19 vaccines
+- Distribution (shipping, storage, administration) of COVID-19 vaccines</td>
+   </tr>
+    <tr>
+    <td><header><h5>**type_vac_mix**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    Are mixing and matching of different vaccines allowed in the administration of COVID-19 vaccines (i.e. people are allowed to receive vaccines produced by more than one manufacturer)?</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable documents whether a government allows for the mixing and matching of different vaccines in the administration of the COVID-19 vaccine. This question is only available if one selects <mark>'Distribution (shipping, storage, administration) of COVID-19 vaccines'</mark> in response to the type_vac question. It can take one of the following values:</p><ul>
+- Yes
+- No
+- This distribution policy is not about mixing and matching of different vaccines.</ul></td>
+   </tr>
+    <tr>
+    <td><header><h5>**type_vac_cat**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    Please the particular vaccine for which a policy is being made.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable documents the specific COVID-19 vaccine for which policy is being made. It can take on one of the following when the policy is not about the mixing and matching of the administration of vaccines (type_vac_mix). In the latter case, one can select as many as applicable:</p><ul>
+- Bharat Biotech and Indian Council of Medical Research vaccine (BBV152)
+- Convidicea (Ad5-nCoV, by CanSino Biologics)<br>
+- Moderna vaccine (mRNA-1273)<br>
+- Oxford University and AstraZeneca vaccine (AZD1222; also known as the Jenner Institute/University of Oxford vaccine, ChAdOx1)<br>
+- Pfizer/BioNTech vaccine (BNT162b2 or Tozinameran)<br>
+- Sinovac vaccine (CoronaVac)<br>
+- Sinopharm vaccine (BBIBP-CorV)<br>
+- Sputnik V vaccine (Gam-COVID-Vac; by Gamaleya Research Institute of Epidemiology and Microbiology)<br>
+- Other [text entry]</ul></td>
+   </tr>    
+    <tr>
+    <td><header><h5>**type_vac_reg**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    Please select which part of the regulatory approval process the vaccine has undergone</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable documents what part of the regulatory process a COVID-19 vaccine has undergone. This variable is shown only if <mark>'Regulatory approval process for administering the COVID-19 vaccine'</mark> is selected in response to the type_vac question. It is possible to select one of the following options:</p><ul>
+- Emergency regulatory approval or authorization granted
+- Emergency regulatory approval or authorization denied
+- Emergency regulatory approval or authorization delayed pending the fulfillment of further requirements
+- Full regulatory approval or authorization granted
+- Full regulatory approval or authorization denied
+- Full regulatory approval or authorization delayed pending the fulfillment of further requirements
+- Voluntary recall of vaccine
+- Regulatory recall of vaccine
+- Regulatory approval revoked (originally granted, then later revoked)</ul></td>
+   </tr>   
+    <tr>
+    <td><header><h5>**type_vac_purchase**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    Under what conditions were the vaccines purchased?</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable documents the conditions under which a vaccine is purchased. This variable is shown only if <mark>'Purchase of COVID-19 vaccines'</mark> is selected in response to the type_vac question. It is possible to choose **one of** the following options:</p><ul>
+- Preorder without option of expanding the order
+- Preorder with the option of expanding the order
+- Regular order of vaccines</ul></td>
+   </tr>
+    <tr>
+    <td><header><h5>**type_vac_dist**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    Please select all that apply in terms of which part of the distribution process the policy is being made for.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable documents which part of the COVID-19
+distribution process a policy is being created for. This variable is shown only if <mark>'Distribution (shipping, storage, administration) of COVID-19 vaccines'</mark> is selected in response to the type_vac question.It is possible to choose **as many as applicable** of the following options:</p><ul>
+- Storage of the vaccine
+- Shipping of the vaccine
+- Administering of the vaccine (i.e. giving people the vaccine shot)</ul></td>
+   </tr>     
+    <tr>
+    <td><header><h5>**type_vac_who**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    Please select one of the following for how the vaccine is being distributed.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable documents the conditions under which a vaccine
+is purchased. This variable is shown only if <mark>'Distribution (shipping, storage, administration) of COVID-19 vaccines'</mark> is selected in response to the type_vac question.It is possible to choose **one of** the following options:</p><ul>
+- Storage of the vaccine
+- Shipping of the vaccine
+- Administering of the vaccine (i.e. giving people the vaccine shot)</ul></td>
+   </tr> 
+    <tr>
+    <td><header><h5>**type_vac_who_rank**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    How many target groups are given preference for vaccines?</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable documents how many groups are prioritized for receiving a COVID-19 vaccine. Note different types of people are defined as being in the same group if they are given the same priority for receiving a vaccine. This variable is shown only if <mark>'Certain populations based on demographic characteristics/epidemiological risk given preference for vaccinations'</mark> is chosen as the response to type_vac_dist. It is possible to choose:</p><ul>
+- 1, 2, 3, .. 15 groups</ul></td>
+   </tr>    
+    <tr>
+    <td><header><h5>**type_vac_who_gen**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    You have selected that certain populations are given preferences for vaccinations. Please list these populations in the order of priority they
+have been given by the government in the box on the left hand side.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable documents the specific demographic and/or
+epidemiological characteristics that are used as the criterion for ranking/prioritizing which populations to give a COVID-19 vaccine to first. This variable is shown only if <mark>'Certain populations based on demographic characteristics/epidemiological risk given preference for vaccinations'</mark> is chosen as the response to type_vac_dist. For each group that is chosen in 'type_vac_who_rank', it is possible to rank the following options:</p><ul>
+- Essential medical workers [text entry]
+- Essential non-medical workers (e.g. individuals working in grocery stores) [text entry]
+- Non-essential workers [text entry]
+- Teachers (for secondary, primary and pre-school)
+- Pre-school students (below the age of 5)
+- Primary school students (between the ages of 5 and 10)
+- Secondary school students (between the ages of 10 and 18)
+- Higher education school students (ages 18 and above)
+- Government officials
+- Pregnant women
+- People in nursing homes or long term care facilities
+- People of a certain age [list age in the text entry]
+- Homeless population
+- Asylum/refugee seekers
+- Prisoners
+- People with certain health conditions [list health conditions in the text entry]
+- Other [text entry]</ul></td>
+   </tr>      
+    <tr>
+    <td><header><h5>**type_vac_loc**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+      Please select all that apply in terms of where where vaccination is taking place.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable documents the location in which a given
+COVID-19 vaccine is administered. This variable is shown only
+if <mark>'Distribution (shipping, storage, administration) of COVID-19
+vaccines'</mark> is selected in response to the type_vac question. It is
+possible to choose as many as the following options as
+applicable:</p><ul>
+- Special/Temporary COVID-19 vaccination centers
+- Hospitals
+- Public clinics
+- Private clinics
+- Pharmacies
+- Nursing homes or long term care facilities
+- Physician/general practitioners offices
+- Prisons
+- Other vaccination location
+- All medical institutions allowed to administer vaccines</ul></td>
+   </tr>     
+    <tr>
+    <td><header><h5>**type_vac_amt**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+      Please note the resources devoted for the intended policy goal of: X, for this particular vaccine: Y.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable documents the amount of monetary or material resources devoted to either the R&D, production, purchase or
+distribution of a given COVID-19 vaccine. The information it captures is as follows:<br><br>
+E.g. if country A ships five million doses of Vaccine X for 10 billion USD, then the information is documented as follows:</p>
+
+<table id="table3" width="100%">
+    <tr>
+    <th> </th>
+    <th>Number</th>
+    <th>Scale</th>
+    <th>Unit</th>    
+    <th>% Government Contribution</th>    
+   </tr>
+    <tr> 
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal;">**Monetary Amount**</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal;"><center>10</center></p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal;"><center>Billion</center></p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal;"><center>USD</center></p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal;"><center>100</center></p></td>      
+    </tr>
+    <tr> 
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal;">**Number of Vaccines**</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal;"><center>5</center></p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal;"><center>Million</center></p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal;"><center>doses</center></p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal;"><center>100</center></p></td>      
+    </tr>
+</table></tr></td>
+   </tr>
+    <tr>
+    <td><header><h5>**type_vac_dist_admin**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    Please select what kind of entity has been placed in primary charge of the vaccine distribution process of: xx for this particular vaccine: y.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable documents the entity that has been placed in primary charge of a given part of the vaccine distribution process for a particular vaccine. This variable is shown only if <mark>'Distribution (shipping, storage, administration) of COVID-19 vaccines'</mark> is selected in response to the type_vac question. It is possible to choose one of the following options:</p><ul> 
+- National government entity
+- Subnational government entity
+- Public/Private Partnership
+- Private Entity</ul></td>
+   </tr> 
+    <tr>
+    <td><header><h5>**type_vac_costs**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    What are the economic costs to the individual of getting this COVID-19 vaccine?</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable documents the economic costs to the individual of getting a COVID-19 vaccine. This variable is shown only if
+<mark>'Distribution (shipping, storage, administration) of COVID-19 vaccines'</mark> is selected in response to the type_vac question. It is possible to choose one of the following options:</p><ul> 
+- Vaccine is free for the individual
+- Vaccine is subsidized by the government for all individuals
+- Vaccine is subsidized by the government for a subset of the population (list population subset in the text entry)
+- Partial coverage by health insurance
+- Full coverage by health insurance
+- Individual must pay full cost of the COVID-19 vaccine
+- Other financial arrangement
+- No information provided on how much vaccine cost to the individual</ul></td>
+   </tr>    
+</table>
+
+
+
+##### General information on Updates
+
+
+![](../img/coding_guide/Vaccines/7Updates_gen_vac.png)
+
+
+
+
+
+#### Declaration of Emergency {.tabset}
+
+![](../img/coding_guide/Declaration of Emergency/What is it about.png)
+
+
+
+
+##### What are the policy sub types?
+
+<div style="background: ghostwhite; font-size: 13px; padding: 10px; border: 5px solid #F7C685; margin: 10px;">
+&#128073; There are currently no policy sub types for Declaration of Emergency Measures.
+</div>
+
+##### Good Updates
+
+![](../img/coding_guide/Declaration of Emergency/Good examples.png)
+
+##### Bad Updates
+
+![](../img/coding_guide/Declaration of Emergency/Bad examples.png)
+
+
+
+
+
+
+#### External Border Restrictions {.tabset}
+
+![](../img/coding_guide/External Border Restrictions/What is it about.png)
+
+##### External or Internal?
+![](../img/coding_guide/int_ext.png)
+Check out this short video to find out more about [ the difference between External and Internal Border Restrictions](https://youtu.be/TLNvtEwpvX8){target="_blank"}
+
+
+##### What are the policy sub types? 
+
+<table id="customers" width="100%">
+  <tr>
+    <th>Variable</th>
+    <th>Description</th>
+   </tr>
+   <tr>
+    <td><header><h5>**type_ext_restrict**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    Please select all that apply in terms of the strategies that are employed to restrict movement on the external border.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable provides additional detail on what strategies the government used to restrict movement across borders.</p>
+<div style="background: ghostwhite; 
+            font-size: 13px; 
+            padding: 10px; 
+            border: 5px solid lightgray; 
+            margin: 10px;">
+&#128161; **Notes:**<br><ul>
+- The distinction between the 'Health Testing' variable in the type question and the 'Health screening' option given below is that the 'Health Testing' option refers to testing of the general population for the purpose of ascertaining the underlying infection rate while the 'Health Screening' option below refers to the testing of a general population for the purpose of restricting movement across borders.</ul>
+</div>  
+<table id="table2" width="100%">
+    <tr>
+    <th>Type of Strategy</th>
+    <th>Example</th>
+   </tr>
+    <tr> 
+    <td><ul><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">**Health Screenings:**</p><p style="font-style:italic">Health screenings done at ports of entry to ascertain the health of travelers in general.</p></ul></td>
+    <td><ul><span class='bigger'>&#10157;</span> E.g. "As of 12:00 a.m. on March 3 the Republic of Korea began temperature screening all passengers on direct flights from the Republic of Korea to the United States. This mandatory screening applies to all passengers on U.S.-bound flights."</ul></td>
+    </tr>
+    <tr> 
+    <td><ul><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">**Health Certificates:**</p><p style="font-style:italic">Certifications given by a medical professional which verify that at the time of the certification, the traveler did not have COVID-19 or symptoms associated with COVID-19.</p></ul></td>
+    <td><ul><span class='bigger'>&#10157;</span> E.g. As of March 15, according to the Myanmar government travelers not from Daegu or Gyeonbuk
+Provinces in South Korea "need a medical certificate from Korean health officials showing no symptoms of acute respiratory illness to board a plane to Myanmar, where they will be quarantined at home for 14 days."</ul></td>
+    </tr>  
+    <tr> 
+    <td><ul><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">**Travel History Form:**</p><p style="font-style:italic">A form in which travelers document which countries
+they've recently visited.</p></ul></td>
+    <td><ul><span class='bigger'>&#10157;</span> E.g. In the Dominican Republic, as of March 19, "all travelers arriving in the country must complete a travel history form".</ul></td>
+    </tr>
+    <tr> 
+    <td><ul><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">**Visa restrictions:**</p><p style="font-style:italic">Measures that make the process for obtaining a visa to visit/reside in a country more difficult. Note this was
+previously in the 'travel_mechanism' question but has now been moved to here.</p></ul></td>
+    <td><ul><span class='bigger'>&#10157;</span> E.g. Kyrgyzstan "has suspended the issuance of visas to foreign citizens," on March 19.</ul></td>
+    </tr>     
+    <tr> 
+    <td><ul><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">**Visa extensions:**</p><p style="font-style:italic">Measures that make the process for obtaining a visa to visit/reside in a country more easier.</p></ul></td>
+    <td><ul><span class='bigger'>&#10157;</span> E.g. "Myanmar eases visa rules for in-country foreign employees starting March 24."</ul></td>
+    </tr> 
+    <tr> 
+    <td colspan="2"><ul><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">**Proof of COVID-19 Vaccination:**</p><p style="font-style:italic">Documentation which demonstrates that has a traveler has received a COVID-19 vaccination.</p></ul></td>
+    </tr>
+         <tr> 
+    <td colspan="2"><ul><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">**Other border restriction**</p><p style="font-style:italic">Other border restrictions not specified above and not a total border crossing ban. Text entry is required to specificy what kind of restriction it is.</p></ul></td>
+    </tr> 
+   </tr>
+     <tr> 
+    <td colspan="2"><ul><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">**Total Border Crossing Ban:**</p><p style="font-style:italic">Measures that categorically prohibit the entry or exit from a geographical region.</p></ul></td>
+    </tr></table>
+   </tr>
+</table>
+ 
+
+
+
+##### Good Examples
+
+![](../img/coding_guide/External Border Restrictions/Good Updates.png)
+
+##### Bad Examples
+
+![](../img/coding_guide/External Border Restrictions/Bad updates.png)
+
+#### Internal Border Restrictions {.tabset}
+
+![](../img/coding_guide/Internal Border Restrictions/What is it about.png)
+
+
+##### What are the policy sub types?
+
+<table id="customers" width="100%">
+  <tr>
+    <th>Variable</th>
+    <th>Description</th>
+   </tr>
+   <tr>
+    <td><header><h5>**type_int_restrict**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    Please select all that apply in terms of the strategies that are employed to restrict movement on the internal border.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable provides additional detail on what strategies the government used to restrict movement across internal borders.</p>
+
+<table id="table2" width="100%">
+    <tr>
+    <th>Type of Strategy</th>
+    <th>Example</th>
+   </tr>
+    <tr> 
+    <td><ul><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">**Health Screenings:**</p><p style="font-style:italic">Health screenings done at ports of entry to ascertain the health of travelers in general.</p></ul></td>
+    <td><ul><span class='bigger'>&#10157;</span> E.g. "Bihar, India is enforcing internal travel restrictions on all domestic passengers after 24 May 2020. Asymptomatic passengers will be permitted to go provided the self-moniter their health for 14 days and inform distric surveillance officer or call state/national call center (1075) in case they develop symptoms. Symptomatic patients will be taken to the nearest health facility and tested for clinical severity."</ul></td>
+    </tr>
+    <tr> 
+    <td><ul><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">**Health Certificates:**</p><p style="font-style:italic">Certifications given by a medical professional which verify that at the time of the certification, the traveler did not have COVID-19 or symptoms associated with COVID-19.</p></ul></td>
+    <td><ul><span class='bigger'>&#10157;</span> E.g. "Citizens arriving in Primorye from different regions of the Russian Federation will be obliged to present a certificate of the absence of infection with coronavirus infection, according to Governor Oleg Kozhemyako with the heads of municipalities on Friday, May 29."</ul></td>
+    </tr>  
+    <tr> 
+    <td><ul><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">**Travel History Form:**</p><p style="font-style:italic">A form in which travelers document which countries
+they've recently visited.</p></ul></td>
+    <td><ul><span class='bigger'>&#10157;</span> E.g. "Gov. Herbert of Utah, USA, on April 9 2020, has issued an Executive Order establishing a requirement for individuals entering Utah to complete a travel declaration form."</ul></td>
+    </tr>
+    <tr> 
+    <td><ul><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">**Visa restrictions:**</p><p style="font-style:italic">Measures that make the process for obtaining a visa to visit/reside in a country more difficult. Note this was previously in the 'travel_mechanism' question but has now been moved to here.</p></ul></td>
+    <td><ul><span class='bigger'>&#10157;</span> E.g. "No visa restrictions/extensions for internal border restrictions."</ul></td>
+    </tr>     
+    <tr> 
+    <td><ul><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">**Visa extensions:**</p><p style="font-style:italic">Measures that make the process for obtaining a visa to visit/reside in a country more easier.</p></ul></td>
+    <td><ul><span class='bigger'>&#10157;</span> E.g. "No visa restrictions/extensions for internal border restrictions."</ul></td>
+    </tr> 
+    <tr> 
+    <td><ul><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">**Proof of COVID-19 Vaccination:**</p><p style="font-style:italic">Documentation which demonstrates that has a traveler has received a COVID-19 vaccination.</p></ul></td>
+    <td><ul><span class='bigger'>&#10157;</span> E.g. "In Russia, Yamalo-Nenets region, starting from 6 July 2021, citizens arriving in the district by air, rail, or water transport are required to present either a negative result of a PCR test made no later than three days before arrival, or a certificate of full vaccination with a QR code. The measure applies only to those who do not have a Yamal residence permit."</ul></td>
+    </tr>
+    <tr> 
+    <td><ul><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">**Total Border Crossing Ban:**</p><p style="font-style:italic">Measures that categorically prohibit the entry or exit from a geographical region.</p></ul></td>
+    <td><ul><span class='bigger'>&#10157;</span> E.g. "Starting 22nd March, 2020, the Greek Authorities and Hellenic (Greek) Police installed permanent roadblocks and intensified checks of vehicles in all national roads and highways across the country, as well of travellers at the airports, ports, railway and bus stations.
+Anyone travelling by car without a valid reason to a destination other than his permanent residency is charged with a fine of 300 euros, is obliged to return to his place of origin and the vehicle registration plates are seized for 60 days."</ul></td>
+    </tr></table>
+   </tr>
+</table>
+
+
+##### External or Internal?
+![](../img/coding_guide/int_ext.png)
+
+
+##### Good Examples
+
+![](../img/coding_guide/Internal Border Restrictions/Good updates.png)
+
+##### Bad Examples
+
+![](../img/coding_guide/Internal Border Restrictions/Bad updates.png)
+
+
+
+
+
+#### Health Monitoring {.tabset}
+
+![](../img/coding_guide/Health Monitoring/What is it about.png)
+![](../img/coding_guide/Health Monitoring/mon_sub.png)
+![](../img/coding_guide/Health Monitoring/loc_cont_mon.png)
+![](../img/coding_guide/Health Monitoring/mon_snap.png)
+![](../img/coding_guide/Health Monitoring/Not_mon.png)
+
+
+##### What are the policy sub types?
+
+<table id="customers" width="100%">
+  <tr>
+    <th>Variable</th>
+    <th>Description</th>
+   </tr>
+    <tr>
+    <td><header><h5>**type_health_mon**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic"><br>
+    Please choose all that apply in terms of what is being monitored.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable provides additional detail as to the type of health monitoring strategy employed to track a person's health status and likelihood of COVID-19 infection. Options include:</p>
+    
+<table id="table2" width="100%">
+    <tr>
+    <th>Condition</th>
+    <th>Example</th>
+   </tr>
+    <tr> 
+    <td><ul><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">**A snapshot of a person's health at a given point in time:**</p><br>
+    <p style="font-style:italic">Government policy which monitors a person's health at particular, discrete, points in time for particular locations, as opposed to building a history of a person's movements continuously over time.</p></ul></td>
+    <td><ul>In Myanmar, "The Ministry of Social Welfare, Relied and Resettlement notifies management committees and temporary residents of IDP (internally displaced person) camps to check the body temperature every time they enter and leave camps, announced on April 28".</ul></td>
+    </tr>
+    <tr> 
+    <td><ul><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">**A person's absolute (e.g. GPS) location over time:**</p><br>
+    <p style="font-style:italic">Government policies that seek to monitor where in geographical space a person is over time.</p></ul></td>
+    <td><ul>"Bahrain announced on April 6 that along with the
+electronic tracking bracelet, Ministry of Health officials may randomly send picture requests to which self-isolating individuals must respond with a photo that clearly shows their face and bracelet to regulate and enforce quarantine measures and to bring awareness to contact tracing".</ul></td>
+    </tr>
+    <tr> 
+    <td><ul><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">**Who a person has come into contact with over time:**</p><br>
+    <p style="font-style:italic">Government policies which seek to monitor who a person has come into contact with over time.</p></ul></td>
+    <td><ul>"Bahrain launches contact tracing app to contain the spread of Coronavirus (COVID-19) - March 20".</ul></td>
+    </tr>
+    <tr> 
+    <td><ul><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">**A community's epidemiological status:**</p><br>
+    <p style="font-style:italic">Government policies that seek to monitor the health of individuals in one geographic area according to the overall epidemiological situation (e.g. number of infected people per 100 thousand people) and/or capacity of the health system in that area. Please note the criterion for
+evaluating the overall epidemiological situation in the text entry.</p></ul></td>
+    <td><ul>In Mexico there are four metrics to determine the colors in the Mexican government's stoplight system: the trend
+in numbers of new cases; hospital occupancy trends; current hospital occupancy rates; and percentage of positive cases.</ul></td></tr>
+</table></tr></td>
+    </tr> 
+    <tr>
+    <td><header><h5>**type_health_mon_snap**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    Please choose all that apply in terms of what kind of snapshot is taken.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable documents what information is recorded with
+regards to [A snapshot of a person's health at a given point in time] (see question type_health_mon). It can take on one or more of the following values:</p>
+- **Temperature Check**
+- **Health Certificate**
+- **Health Questionnaire**
+- **Other**</td>
+   </tr>
+   <tr>
+    <td><header><h5>**type_health_mon_loc**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    Please choose all that apply in terms of where the health
+monitoring snapshot is taken.
+</br></br> 
+Note, if the snapshot is taken in during an external border restriction, or in a school, business, or when providing a government service, please code this under 'External Border Restriction', 'Closure of Schools', 'Restrictions and Regulations of Businesses' or 'Restrictions and Regulations of Government Services' respectively.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">If in response to type_health_mon, the policy is coded as a 'A snapshot of a person's health at a given point in time' then this additional follow up question provides more detail as to where the snapshot was taken. Options include:</p>
+    <p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal;"><strong><left><u>Public Transportation</u></left></strong></p>
+- **Trains**
+- **Buses**
+- **Subway/sTrams**
+- **Other Publicat Transportation**
+- **Nursing Homes**
+- **Religious Establishments**
+- **Other Health Monitoring Locations**</td>
+   </tr>   
+   <tr>
+    <td><header><h5>**type_health_mon_stra**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    Please choose all that apply in terms of the types strategies that the government has employed to monitor people's health.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">If in response to type_health_mon, the policy is coded as a 'A person's absolute (e.g. GPS) location over time', 'Who a person has come into contact with over time' or 'A community's epidemiological status', additional detail is provided as to what strategy was used to monitor people's likelihood of COVID-19 infection. Options include:</p>
+- **Contact tracing through human teams**
+- **Contact tracing through smart phones (e.g. apps)**
+- **Wearable technology (e.g. bracelets, anklets, beacons)**
+- **Other**</td>
+   </tr>
+   <tr>
+    <td><header><h5>**type_health_mon_tech**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    Please indicate the technology used to support these health monitoring strategies.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">If in response to [type_health_mon_stra] the policy is coded as Contact tracing through smart phones (e.g. apps) , Wearable technology (e.g. bracelets, anklets, beacons), or Other, this variable captures additional detail as to what kind of technology was used. Options include:</p>
+- **QR codes**
+- **Bluetooth technology**
+- **GPS technology**
+- **Other**</td>
+   </tr>
+   <tr>
+    <td><header><h5>**type_health_tech_hum**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    Please indicate the technology used to support these health monitoring strategies.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">If in response to [type_health_mon_stra] the policy is coded as Contact tracing through human teams this variable captures additional detail as to what kind of technology was used. Options include:</p>
+- **Home visits**
+- **Telephone calls**
+- **Other**</td>
+   </tr>
+</table>
+
+
+##### Good Updates
+
+![](../img/coding_guide/Health Monitoring/Good updates.png)
+
+
+##### Bad Updates
+
+![](../img/coding_guide/Health Monitoring/Bad updates.png)
+
+
+#### Health Resources {.tabset}
+
+![](../img/coding_guide/Health Resources/What is it about.png)
+
+
+##### What are the policy sub types?
+
+<table id="customers" width="100%">
+  <tr>
+    <th>Variable</th>
+    <th>Description</th>
+   </tr>
+    <tr>
+    <td><header><h5>**type_health_resource**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic"><br>
+    Please choose all that apply in terms of the type of health resources that the government policy affects.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable codes additional detail about the nature of the health resource the policy deals with.</p><p>For each of the following values below:</p>
+<table id="table2" width="100%">
+    <tr>
+    <th>Condition</th>
+    <th>Example</th>
+   </tr>
+    <tr> 
+    <td><ul>If there is additional information about the number of health resources in question, please briefly write it in the provided text box, otherwise leave the text box empty</ul></td>
+    <td><ul>If 8 new hospitals are built, in the text entry for 'Hospitals', fill in the text entry box with '8 new hospitals'.</ul></td>
+    </tr>
+    <tr> 
+    <td><ul>To the extent possible, please try to find a source that provides more specific information about the type of health resource. When this is not possible, you canchoose an option that notes the type of medical resource
+is 'Unspecified'.</ul></td>
+    <td><ul>'Unspecified Health Materials', this means that the event description describes an increase in, for example, medical equipment for a country, but does not provide more detail on what kind of medical equipment.</ul></td>
+    </tr>
+  </tr> 
+</table><br><p>It can take on <strong>one or more</strong> of the following values.</p>
+
+<div style="background: ghostwhite; 
+            font-size: 13px; 
+            padding: 4px; 
+            border: 5px solid #A5CD92; 
+            margin: 5px;"><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal;"><strong><center><u>Health Materials</u></center></strong></p>
+</div> 
+
+<table id="table2" width="100%">
+    <tr> 
+    <td>**Masks**</td>
+    <td>This refers to masks that cover the face which help filter out pollutants in the air. E.g. On March 24, "Taiwan bans exports of face masks"</td>
+    </tr>
+    <tr> 
+    <td>**Ventilators**</td>
+    <td>This refers to medical equipment which aids breathing in patients who are no longer able to do so on their own.</td>
+    </tr>
+    <tr>
+    <td>**Personal Protective Equipment**</td>
+    <td>This refers to medical-grade articles of clothing and goggles which help prevent the transmission of disease.</td>
+    </tr>
+    <tr>
+    <td>**Hand Sanitizers**</td>
+    <td>This refers to liquids or gels used to decrease infectious agents on the hands</td>
+    </tr>
+    <tr> 
+    <td>**Test Kits**</td>
+    <td>This refers to the procedure/materials need to determine the presence of COVID-19</td>
+    </tr>
+    <tr> 
+    <td>**Non-COVID-19 Vaccines**</td>
+    <td>This refers to vaccines that target non-COVID-19 vaccines, e.g. flu shots.</td>
+    </tr>
+    <tr>
+    <td>**Medicine/Drugs**</td>
+    <td>This refers to medicines or drugs that are used to address the health effects of COVID-19.</td>
+    </tr>
+    <tr>
+    <td>**Thermal cyclers (PCR machines/DNA amplifiers)**</td>
+    <td>This refers to a laboratory apparatus that is used to amplify segments of DNA via the polymerase chain reaction (PCR)</td>
+    </tr>
+    <tr>
+    <td>**Dry ice for COVID-19 vaccine storage**</td>
+    <td>This refers to the solid form of carbon dioxide and should be coded if it is used as a cooling agent for the storage of COVID-19 vaccines.</td>
+    </tr>
+    <tr>
+    <td>**Cold storage capacity for COVID-19 vacci**</td>
+    <td>This refers to any equipment or apparatus that is used to ensure that COVID-19 vaccines are stored at low temperatures.</td>
+    </tr>
+    <tr>
+    <td>**Syringes**</td>
+    <td>This refers to a piece of medical equipment that is used to deliver injections of vaccines, drugs or medicines.</td>
+    </tr>
+    <tr>
+    <td>**Unspecified Health Materials**</td>
+    <td>Medical or health related materials for which there is no further elaboration given in the source or sources found.</td>
+    </tr>
+     <tr>
+    <td>**Other Health Materials**</td>
+    <td>Medical or health related materials other than those listed above.</td>
+    </tr>
+  </tr> 
+</table><br>
+
+<div style="background: ghostwhite; 
+            font-size: 13px; 
+            padding: 4px; 
+            border: 5px solid #A5CD92; 
+            margin: 5px;"><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal;"><strong><center><u>Health Infrastructure</u></center></strong></p>
+</div> 
+
+<table id="table2" width="100%">
+    <tr> 
+    <td>**Hospitals**</td>
+    <td>Medical institutions that provide general health services.</td>
+    </tr>
+    <tr> 
+    <td>**Temporary Quarantine Centers**</td>
+    <td>Physical structures that have been temporarily erected
+for the purpose of accommodating people under quarantine.</td>
+    </tr>
+    <tr>
+    <td>**Temporary Medical Centers**</td>
+    <td>Physical structures that have been temporarily erected
+for the explicit purpose of treating COVID-19 patients.</td>
+    </tr>
+    <tr>
+    <td>**Public Testing Facilities**</td>
+    <td>Entities or structures which provide testing for COVID-19 to the general public. E.g. In Brunei, the Sultan announced on March 22, "to increase testing capacity, a new virology laboratory is being built with the hope to increase the country's testing capacity by 10 fold to meet the testing need."</td>
+    </tr>
+    <tr>
+    <td>**Health Research Facilities**</td>
+    <td>Facilities which conduct medical or public health research.</td>
+    </tr>
+    <tr>
+    <td>**Unspecified Health Infrastructure**</td>
+    <td>Health infrastructures for which there is no further
+elaboration given in the source or sources found.</td>
+    </tr>
+    <tr>
+    <td>**Other Health Infrastructure**</td>
+    <td>Health Infrastructures other than those listed above.
+Please provide more details in the text box entry.</td>
+    </tr>
+  </tr> 
+</table><br>
+
+<div style="background: ghostwhite; 
+            font-size: 13px; 
+            padding: 4px; 
+            border: 5px solid #A5CD92; 
+            margin: 5px;"><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal;"><strong><center><u>Health Staff</u></center></strong></p>
+</div> 
+
+<table id="table2" width="100%">
+    <tr> 
+    <td>**Doctors**</td>
+    <td>Accredited professionals with a license to provide
+medical treatment and services and are permitted to make medical decisions.</td>
+    </tr>
+    <tr> 
+    <td>**Nurses**</td>
+    <td>Accredited professionals with a license to support
+medical treatment and services but cannot make medical decisions.</td>
+    </tr>
+    <tr>
+    <td>**Health Volunteers**</td>
+    <td>Unaccredited volunteers who may support medical
+treatment and outcomes.</td>
+    </tr>
+    <tr>
+    <td>**Army (medical) corps**</td>
+    <td>Military personnel who may support or provide medical
+treatment and services.</td>
+    </tr>
+    <tr>
+    <td>**Unspecified Health Staff**</td>
+    <td>Medical or health related staff or personnel for which
+there is no further elaboration given in the source or sources found.</td>
+    </tr>
+    <tr>
+    <td>**Other Health Staff**</td>
+    <td>Medical or health related staff or personnel other than
+those listed above. Please provide more details in the text box entry.</td>
+    </tr>
+    <tr>
+    <td>**Health Insurance**</td>
+    <td>Medical/health-related insurance.</td>
+    </tr>
+  </tr> 
+</table><br></td>
+    <tr>
+    <td><header><h5>**type_health_material**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    Please select all that apply in terms of the intended policy goal for this health material resource.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable provides additional detail as to the intended policy goal for a given material health resource. It is possible to choose all of the following that apply:</p>
+- **Increase new production capacities for this health material**
+- **Repurpose existing production to increase amount of this health material**
+- **Increased purchase of this health material**
+- **Increase distribution of this health material**
+- **Other health material policy goal**
+- **Not applicable**
+ </p></td>
+   </tr>
+    <tr>
+    <td><header><h5>**type_health_infra**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>Please select all that apply in terms of the intended policy goal for this health infrastructure resource.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable provides additional detail as to the intended policy goal for a given health infrastructure resource. It is possible to choose all of the following that apply:</p><ul>
+- **New construction or building to provide this health infrastructure**
+- **Repurposing of existing infrastructure to provide this given health infrastructure**
+- **Increase patient capacity**
+- **Cancellation of non-COVID-19 related/elective health provision**
+- **Delay of non-COVID-19 related/elective health provision**
+- **Resumption of non COVID-19 related/elective health provision**
+- **Increase testing capacity**
+- **Increase research and development capacities**
+- **Other health infrastructure policy goal**
+- **Not applicable**</ul>
+ </p></td>
+   </tr>   
+    <tr>
+    <td><header><h5>**type_health_staff**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>Please select all that apply in terms of the intended policy goal for this health staff resource.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable provides additional detail as to the intended policy goal for a given health staff resource. It is possible to choose all of the following that apply:</p><ul>
+- **Increase in hiring of health staff to address health effects of COVID-19**
+- **Increase in hiring of health staff to administer COVID-19 tests**
+- **Increase in hiring of health staff to administer of COVID-19 vaccines**
+- **Tele-medicine/Virtual care services**
+- **Mental Health Service provision**
+- **Medical licensing waivers**
+- **Other health staff policy goal**
+- **Not applicable**</ul>
+ </p></td>
+   </tr>   
+  </tr> 
+ </table>
+ 
+ 
+##### Good Updates
+
+![](../img/coding_guide/Health Resources/Good updates.png)
+
+##### Bad Updates
+
+![](../img/coding_guide/Health Resources/Bad examples.png)
+
+
+#### Health Testing {.tabset}
+
+![](../img/coding_guide/Health Testing/What is it about.png)
+
+![](../img/coding_guide/Health Testing/Not_health_testing.png)
+
+![](../img/coding_guide/Health Testing/testing_sub.png)
+![](../img/coding_guide/Health Testing/testing_who.png)
+![](../img/coding_guide/Health Testing/eco_how_testing.png)
+![](../img/coding_guide/Health Testing/testing_test_results.png)
+![](../img/coding_guide/Health Testing/testing_loc.png)
+
+
+##### What are the policy sub types?
+
+<table id="customers" width="100%">
+  <tr>
+    <th>Variable</th>
+    <th>Description</th>
+   </tr>
+   <tr>
+    <td><header><h5>**type_health_testing**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+   Please choose all that apply in terms of how health testing is conducted.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable provides additional detail about what type of
+health testing strategy was employed in order to gather data on the incidence of COVID-19 infections in a given population. Options include:</p>
+- **Self-testing**
+- **Drive-in testing centers**
+- **Mobile Health testing station (excluding drive-ins)**
+- **Fixed Health testing stations (excluding drive-ins)**
+- **Door-to-door testing**
+- **Health testing of entire population under the government's jurisdiction**
+- **Other**</td>
+   </tr>
+   <tr>
+    <td><header><h5>**type_health_test_loc**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    Please select all that apply in terms of the fixed locations that are being used as health testing sites.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">If in response to [type_health_testing] a policy is coded as
+<mark>'Fixed Health testing stations (excluding drive-ins)'</mark> this variable
+captures additional detail as to what kind of fixed health testing
+stations were used. Options include:</p>
+- **Hospitals**
+- **Pharmacies**
+- **Health Clinics**
+- **Private doctors offices**
+- **Other medical locations**
+- **Other non-medical locations**
+- **Not specified**</td>
+   </tr>
+   <tr>
+    <td><header><h5>**type_health_test_cat**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    If the policy announcement takes note of what kind of health test is being conducted, please select all that apply.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable provides additional detail about what type of
+health test was used for assessing the incidence of COVID-19 infection in a given population. Options include:</p>
+- **PCR test**
+- **Antibody/serological test**
+- **Antigen test**
+- **Other**
+- **Not specified**</td>
+   </tr>
+   <tr>
+    <td><header><h5>**type_health_test_who**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    Please select all that apply in terms of who is eligible for a test.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable provides more detail as to what human targets a
+health testing strategy is intended to target. Options include:</p>
+- **Asymptomatic people**
+- **Symptomatic people**
+- **Everyone (i.e. Asymptomatic and symptomatic people)**
+- **Confirmed contact to a person infected with COVID-19**
+- **Not specified**</td>
+   </tr>
+   <tr>
+    <td><header><h5>**type_health_test_hrs**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    If the government makes an explicit commitment to provide test results within a certain period of time, please note the time frame in terms of the number of hours here.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable provides more detail as to the time expected
+before a given health testing strategy reports test results. Options include:</p>
+- **Number of hours (text entry)**
+- **Other time frame (text entry)**
+- **Not specified**</td>
+   </tr>      
+   <tr>
+    <td><header><h5>**type_health_test_results**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    Please choose all that apply in terms of how people find out the results of their COVID-19 tests.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable provides more detail as to how a person receives notification of his/her COVID-19 health test. Options include:</p><ul>
+- **Paper results picked up in person**
+- **Phone call**
+- **Mobile text**
+- **Through app or website(e.g. testing app, Existing web health portal)**
+- **Email**
+- **Other**
+- **Unspecified**</ul></td>
+   </tr>  
+   <tr>
+    <td><header><h5>**type_health_test_eco**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    What are the economic costs to the individual of getting a COVID-19 test?</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable provides additional detail as to how much an
+individual must pay in order to get tested for COVID-19. Options include:</p><ul>
+- **Testing is free for the individual**
+- **Testing is subsidized by the government for all individuals**
+- **Testing is subsidized by the government for a subset of the population (list population subset in the text entry)**
+- **Individual must pay full cost of the COVID-19 test**
+- **No information provided on how much tests cost to the individual**</ul></td>
+   </tr>     
+</table>
+
+##### Good Updates
+
+![](../img/coding_guide/Health Testing/Good examples.png)
+
+
+##### Bad Updates
+
+![](../img/coding_guide/Health Testing/Bad examples.png)
+
+
+
+
+#### Hygiene {.tabset}
+
+![](../img/coding_guide/Hygiene/What is it about.png)
+
+##### What are the policy sub types?
+
+<table id="customers" width="100%">
+  <tr>
+    <th>Variable</th>
+    <th>Description</th>
+   </tr>
+   <tr>
+    <td><header><h5>**type_hygiene**</h5></header></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable provides additional detail about the nature of
+where the hygiene or disinfection measure is applied. It can take on one or more of the following values:</p>
+
+
+<table id="table2" width="100%">
+    <tr>
+    <th>Type of Measure</th>
+    <th>Example</th>
+   </tr>
+    <tr> 
+    <td>- **Commercial areas (e.g. shopping malls, markets)**</td>
+    <td><span class='bigger'>&#10157;</span> E.g. On 20th March 2020, Kenya has asked supermarkets, and open air markets to be regularly disinfected and observe social distance.</td>
+    </tr>
+    <tr> 
+    <td>- **Public areas (e.g. mosques, government buildings, schools)**</td>
+    <td><span class='bigger'>&#10157;</span> E,g, "All mosques in Kyrgyzstan to be disinfected because of coronavirus" as of March 6.</td>
+    </tr>
+    <tr>
+    <td>- **Public Transport (e.g. subways, trains)**</td>
+    <td><span class='bigger'>&#10157;</span> E.g. Spain (Madrid, region) will disinfect all vehicles involved in the scheduled passenger transport on a daily basis starting from March 11 for at least 15 days.</td>
+    </tr>
+    <tr>
+    <td>- **Burial procedures**</td>
+    <td><span class='bigger'>&#10157;</span> E.g. On March 30, Kazakhstan: "A special place for burial of people who died from COVID-19 has been designated in Almaty. According to the algorithm, in case of death from the COVID-19, the body is immediately disinfected, placed in certain protective equipment. There's no cremation."</td>
+    </tr>
+    <tr>
+    <td colspan="2"> - **Other**</td>
+    </tr>
+  </tr> 
+</table></td>
+   </tr>
+</table>
+ 
+
+##### Good Updates
+
+![](../img/coding_guide/Hygiene/Good examples.png)
+
+##### Bad Updates
+
+![](../img/coding_guide/Hygiene/Bad examples.png)
+
+
+#### Lockdown {.tabset}
+
+![](../img/coding_guide/Lockdown/What is it about.png)
+
+
+##### What are the policy sub types?
+
+<div style="background: ghostwhite; font-size: 13px; padding: 10px; border: 5px solid #F7C685; margin: 10px;">
+&#128073; There are currently no policy sub types for Lockdown Measures.
+</div>
+
+ 
+##### Good Examples
+
+![](../img/coding_guide/Lockdown/Good examples.png)
+
+
+##### Bad Examples
+
+![](../img/coding_guide/Lockdown/Bad Examples.png)
+
+
+#### New Task Force, Bureau or Administrative Configuration {.tabset}
+
+![](../img/coding_guide/New Task Force/What is it about.png)
+
+
+##### What are the policy sub types?
+
+<table id="customers" width="100%">
+  <tr>
+    <th>Variable</th>
+    <th>Description</th>
+   </tr>
+   <tr>
+    <td><header><h5>**type_new_admin**</h5></header></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable documents the type of administrative reconfiguration that has taken place in response to the COVID-19 pandemic. It can take on **one of** the following values.</p>
+
+<table id="table2" width="100%">
+  <tr>
+    <th>Type of Measure</th>
+    <th>Example</th>
+   </tr>
+    <tr> 
+    <td><ul><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">**New Task Force or Bureau (i.e. establishment of a temporary body):**</p><br>
+    <p style="font-style:italic">Government policy that creates a temporary new administrative body to respond to the crisis. Note, the old broad policy type "New Task Force or Bureau' captured the information in this, now, sub-policy type.</p></ul></td>
+    <td><span class='bigger'>&#10157;</span> E.g. On January 20, 2020, "Taiwan activated the Central Epidemic Command Center (CECC) which mobilizes government funds and military personnel to facilitate face mask production".</td>
+    </tr>
+    <tr> 
+    <td><ul><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">**Existing government entity given new powers:**</p><br>
+    <p style="font-style:italic">An existing government entity is given new or heightened powers to respond to the COVID-19 pandemic.</p></ul></td>
+    <td><span class='bigger'>&#10157;</span> E.g. "Spain declares that during the state of emergency decisions are centralised to the national Health Ministry starting from March 15. The autonomous regions are obliged to notify the government on any containment measures they take regarding the Virus. Autonomous
+communities which have COVID-19 cases in their hospitals as well as affected private hospitals have to pass information on them to the central government."</td>
+    </tr>
+    <tr> 
+    <td><ul><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">**Cooperation among different jurisdictional entities (e.g. treaties or agreements among countries or provinces):**</p><br>
+    <p style="font-style:italic">Governments with powers over different jurisdictions enter into agreements or treaties to cooperate on their response to the COVID-19 pandemic.</p></ul></td>
+    <td><span class='bigger'>&#10157;</span> E.g. "On Apr 13, Washington Gov. Jay Inslee, California Gov. Gavin Newsom and Oregon Gov. Kate Brown announced an agreement on a shared vision for reopening their economies and controlling COVID-19 into the future".</td></table></td>
+    </tr>
+   <tr>
+    <td><header><h5>**type_new_admin_cop**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    Please select all that apply in terms of how these entities are cooperating.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This documents the type of cooperation that is undertaken given that the policy is about cooperation among entities with powers over different jurisdictions. It can take on one of of the following values:</p>
+- Sharing information
+- Sharing material resources
+- Sharing human resources
+- Coordinating timing on a policy roll out</td>
+   </tr>
+</table>
+ 
+
+##### Good Updates
+
+![](../img/coding_guide/New Task Force/Good update.png)
+
+##### Bad Updates
+
+![](../img/coding_guide/New Task Force/Bad examples.png)
+
+
+#### Public Awareness Measures {.tabset}
+
+![](../img/coding_guide/Public Awareness Measures/What is it about.png)
+ ![](../img/coding_guide/Public Awareness Measures/sub_PAM.png)
+![](../img/coding_guide/Public Awareness Measures/long_short_PAM.png) 
+![](../img/coding_guide/Public Awareness Measures/call_centre.png)
+
+
+
+![](../img/coding_guide/Public Awareness Measures/Not_PAM.png)
+
+##### What are the policy sub types?
+
+<table id="customers" width="100%">
+  <tr>
+    <th>Variable</th>
+    <th>Description</th>
+   </tr>
+   <tr>
+    <td><header><h5>**type_pub_awareness**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic"><br>
+    Please select the type of public awareness measure which best applies.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable documents whether the public awareness
+measure is about disseminating or gathering information. It can
+take on **one of** the following values:</p>
+
+<table id="table2" width="100%">
+    <th>Type of Measure</th>
+    <th>Example</th>
+   </tr>
+   <tr>
+    <tr> 
+    <td><ul><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">**Disseminating information related to COVID-19 to the public that is reliable and factually accurate:**</p><br>
+    <p style="font-style:italic">Efforts to disseminate and convey reliable information about COVID-19, including ways to prevent or mitigate the health effects of COVID-19. Note that the older 'Public Awareness Campaign' policy type was designed to document these types of policies.</p></ul></td>
+    <td><span class='bigger'>&#10157;</span> E.g. "On March 22, it was announced that "the Provincial Youth Council in Namibia carried out an intense public awareness campaign on methods of disease prevention, during which, young associates distributed pamphlets with statements about the pandemic and ways of prevention.</td>
+    </tr>
+    <tr> 
+    <td><ul><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">**Gathering information related to COVID-19 from the public refers:**</p><br>
+    <p style="font-style:italic">Efforts to gather information related to COVID-19, including information that would help mitigate or suppress the health effects of COVID-19.</p></ul></td>
+    <td><span class='bigger'>&#10157;</span> E.g. "On March 8, the Moscow Department of Transport began operating a 24-hour hotline allowing people to report on the sanitary condition of car sharing and taxi cars. In case of problems, the Department carries out an inspection and removes the car from circulation as needed."</td>
+    </tr>
+    <tr>
+    <td colspan="2"><ul><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">**Both Disseminating and Gathering information related to COVID-19**</p></ul></td>
+    </tr>
+  </tr> 
+</table></td>
+   </tr>
+    <tr>
+    <td><header><h5>**type_pub_cat**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    Please select the whether the measure is a sustained policy (e.g. campaign) or a short-term effort/event.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable captures additional detail as to level of
+engagement a government undertakes in order to implement a public awareness measure. Options include:</p>
+
+<table id="table2" width="100%">
+    <tr>    
+      <th>Category</th>
+      <th>Examples</th>
+    </tr>    
+    <tr> 
+    <td><ul><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">**Sustained policy or campaign**</p><br>
+    <p style="font-style:italic">**Definition:** A policy or campaign: a decision or strategy to gather and/or disseminate information in a new way and/or for a sustained period of time.</p></ul></td>
+    <td>
+- The introduction of daily reports/monitoring that give citizens up to date information on coronavirus developments.<br>
+-  The establishment of a call center where citizens can ask questions, learn about government services, and receive up to date information.
+    - If a call center collects contact tracing, recent travel, or health information STOP. This should be coded as a HEALTH MONITORING policy.
+- An effort to distribute printed materials (e.g. booklets, signs, etc.) to the public.</td>
+    </tr>
+    <tr> 
+    <td><ul><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">**Short-term effort or event**</p><br>
+    <p style="font-style:italic">**Definition:** Short-term effort or event (to disseminate or gather reliable information about COVID-19, including ways to prevent or mitigate the health effects of COVID-19) could be information, advice, or recommendations for citizens that is not contained in any other policy category.</p><p style="font-style:italic">If a government official makes a once-off statement in a personal capacity (e.g. Trump's tweets on hydroxychloroquine) or gives their professional opinion in an interview, we do NOT code these</p></ul></td>
+    <td><ul>
+- An article published by the Ministry of Health giving advice on how to reduce anxiety during a quarantine or lockdown period.
+    - If the announcement is advertising mental health resources available to the public (i.e. telephone or online counseling services) STOP. This should be coded as a HEALTH RESOURCES policy.
+- The publication of tips on hygiene or disinfecting personal spaces.
+    - If the announcement is recommending or requiring disinfection of work/public spaces STOP. These should be coded as HYGIENE policies.
+- A Q/A session held by the Ministry of Health or other government agency.</ul></td>
+    </tr>
+ </tr> 
+</table></td>
+   </tr>
+    <tr>
+    <td><header><h5>**type_pub_content**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    Select all that apply to the content of the policy/campai gn or message.
+Public awareness campaigns or messages are aimed at disseminating.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable seeks to provide additional detail on the content of the public awareness campaign. Options are listed below.
+
+<div style="background: ghostwhite; 
+            font-size: 13px; 
+            padding: 10px; 
+            border: 5px solid lightgray; 
+            margin: 10px;">
+&#128161; **Notes:**<br><ul>
+- We do NOT collect the actual COVID-19 statistics themselves.
+- If a government offers counseling services to the public to support their mental health STOP. This should be coded as Health Resources.</ul>
+</div>
+
+<p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal;"><strong><left><u>Information about the virus</u></left></strong></p>
+- Information about the way COVID-19 statistics will be calculated or reported
+- Instructions/tips on COVID-19 prevention
+- Announcements about approved treatment procedures
+- Information/reminders about how COVID-19 spreads
+- Information about the risks and dangers of COVID-19 for individuals' health
+- Information about the risks and dangers of COVID-19 for the community
+- Other (text box)**
+
+<p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal;"><strong><left><u>Information about the social effects of policies or the
+virus</u></left></strong></p>
+- Tips for effective remote work or distance learning
+- Tips for staying physically fit/healthy during lockdown/quarantine situations
+- Tips on supporting mental health during the pandemic
+- Anti-stigmatization measures for those who are infected with the virus
+- Tips for preventing conflict (e.g. domestic violence) during lockdown/quarantine situations
+- Other (text box)
+
+<p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal;"><strong><left><u>Information about the social effects of policies or the
+virus</u></left></strong></p>
+- Information on how COVID-19 vaccines work
+- Information on how to receive a COVID-19 vaccine
+- Information about the benefits of COVID-19 vaccination
+- Information about the potential risks of COVID-19 vaccination
+- Other information about COVID-19 vaccinations</td>
+   </tr>
+    <tr>
+    <td><header><h5>**type_pub_format**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    Select all that apply with regards to the format in which the information is either disseminated or gathered.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable provides additional information as to the message format of the public awareness measure. Options include:</p>
+- Call center/hotline
+- TV/radio/newspaper (traditional media)
+- Internet-based news outlets
+- Government portals, websites, apps
+- Social media pages of local government agencies or state officials
+- Booklets, leaflets, other individual printed materials
+- Billboards, signs, publicly displayed visuals
+- Press-conferences, briefings
+- Information to be conveyed by other agencies (schools, NGOs, medical organizations)
+- Other (text box)</td>
+   </tr>
+    <tr>
+    <td><header><h5>**type_pub_source**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    Select all that apply to the origin of information of the policy/campaign or message.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable provides more detail as to the origin of information for a public awareness measure. In all cases, we capture policies/campaigns or messages that are coming from the government. However, sometimes governments will reproduce/reprint/translate information from other sources in order to inform the public. Options include:</p>
+- Government
+- Non-governmental organizations
+- International organizations
+- Pharmaceutical companies and other medical industry
+- Media
+- Scientific/academic
+- Other (text box)
+- Not specified</td>
+   </tr>   
+</table>
+
+##### Good Examples
+
+![](../img/coding_guide/Public Awareness Measures/Good updates.png)
+
+##### Bad Examples
+
+![](../img/coding_guide/Public Awareness Measures/Bad Examples.png)
+
+
+
+
+#### Quarantine {.tabset}
+
+![](../img/coding_guide/Quarantine/What is it about.png)
+
+
+
+
+##### What are the policy sub types?
+
+<table id="customers" width="100%">
+  <tr>
+    <th>Variable</th>
+    <th>Description</th>
+   </tr>
+    <tr>
+    <td><header><h5>**type_quarantine**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic"><br>
+    Please choose all that apply in terms of the conditions of the quarantine.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable provides additional detail on the conditions of the quarantine, if available. It can take on **one or more** of the following values:</p>
+    
+<table id="table2" width="100%">
+    <tr>
+    <th>Type of Quarantine</th>
+    <th>Example</th>
+   </tr>
+    <tr> 
+    <td><ul><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">**Self-Quarantine:**</p><p style="font-style:italic">Accommodations for the quarantine are made privately and are not dictated by the policy. This can be a private
+home.</p></ul></td>
+    <td><ul><span class='bigger'>&#10157;</span> E.g. "As of March 14, all foreign nationals who enter Nepal must remain in self-quarantine for 14 days from their arrival date, according to the country's Department of Immigration."</ul></td>
+    </tr>
+    <tr> 
+    <td><ul><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">**Government Quarantine:**</p><p style="font-style:italic">Accommodations for the quarantine are restricted to government facilities.</p></ul></td>
+    <td><ul><span class='bigger'>&#10157;</span> E.g. On March 15, "Myanmar nationals returning from those areas will be quarantined in a public hospital for 14 days, according to the country's Ministry of Foreign Affairs.</ul></td>
+    </tr>  
+    <tr> 
+    <td><ul><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">**Quarantine outside the home or government facility:**</p><p style="font-style:italic">Accommodations for the quarantine are dictated by the policy but do not include being in a home or a government facility.</p></ul></td>
+    <td><ul><span class='bigger'>&#10157;</span> E.g. "Starting March 16, most new arrivals in Beijing, China's capital, have had to undergo a 14-day
+quarantine at a designated hotel or other assigned location. Previously new arrivals could spend their quarantine at home, but officials said the new rules would only allow that option for limited cases."</ul></td>
+    </tr> 
+    <tr> 
+    <td colspan="2"><ul><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">**Other**</p><p style="font-style:italic">Conditions of quarantine are other than those listed above. Please provide some detail about the nature of these conditions in the text box.</p></ul></td>
+    </tr></table>
+   </tr>
+   <tr>
+    <td><header><h5>**type_quar_spec**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    Does the policy explicitly state the time length of the quarantine (e.g. 14 days, 5 days, etc?).</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable provides additional detail as to whether the length of the quarantine was specified or not. Possible responses to this question are:</p>
+- Yes, the length of the quarantine is explicitly specified
+- No, the length of the quarantine is not explicitly specified</td>
+   </tr>
+   <tr>
+    <td><header><h5>**type_quarantine_days**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    If the number o days that the quarantine is in place is different from 14 days, please enter the number in the text entry below.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable provides additional detail on the length of the quarantine, if the quarantine is a length of time other than 14 days if the length of time of the quarantine is explicitly specified (see type_quar_spec). If so, please enter the number of days in the text entry box.</p>
+<div style="background: ghostwhite; 
+            font-size: 13px; 
+            padding: 10px; 
+            border: 5px solid lightgray; 
+            margin: 10px;">
+&#128161; **Notes:**<br><ul>
+- if this is an update to a previous entry and the quarantine has been extended, in the update, note the total number of days that the quarantine is in place..</ul>
+</div>    
+<ul><span class='bigger'>&#10157;</span>E.g. On March 25, "Travelers from certain countries - Switzerland, Iran, Romania, Spain, Germany, France,
+Austria, Slovenia and Greece - will be quarantined for 28 days"</ul></td>
+   </tr>
+</table>
+ 
+
+##### Qualitative Change Example 
+
+![](../img/coding_guide/Quarantine/qua1.png)
+![](../img/coding_guide/Quarantine/qua2.png)
+
+
+##### Bad Examples
+
+![](../img/coding_guide/Quarantine/Bad examples.png)
+
+
+#### Restriction and Regulation of Businesses {.tabset}
+
+
+![](../img/coding_guide/Restriction and Regulation of Businesses/What is it about.png)
+![](../img/coding_guide/Restriction and Regulation of Businesses/bus_conditions.png)
+
+
+
+##### What are the policy sub types?
+
+<table id="customers" width="100%">
+  <tr>
+    <th>Variable</th>
+    <th>Description</th>
+   </tr>
+    <tr>
+    <td><header><h5>**type_business_cat**</h5></header></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable provides information on whether a business is
+considered essential or non-essential from the point of view of the initiating government. It can take on one of the following values:</p>
+- Non-Essential Businesses
+- Essential Businesses
+- No information in the policy about whether the business is considered essential or non-essential
+ </p></td>
+   </tr> 
+    <tr>
+    <td><header><h5>**type_business**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic"><br>
+    Please choose all that apply in terms of the types of business activity that was restricted.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable provides additional detail on the types of business activity that have been restricted COVID-19, if available.</p><p>It can take on <strong>one or more</strong> of the following values:</p>
+
+<table id="table2" width="100%">
+    <tr> 
+    <td>**Retail Businesses**</td>
+    <td>This refers to shops such as clothing stores, specialty goods, flower shops, etc.</td>
+    </tr>
+    <tr> 
+    <td>**Restaurants**</td>
+    <td>This refers to establishments that provide food and drink services to patrons.</td>
+    </tr>
+    <tr>
+    <td>**Bars**</td>
+    <td>This refers to establishments that primarily provide alcoholic drink services to patrons.</td>
+    </tr>
+    <tr>
+    <td>**Shopping Centers**</td>
+    <td>This refers to commercial centers in which retail businesses are available in a centralized location.</td>
+    </tr>
+    <tr> 
+    <td>**Commercial Businesses**</td>
+    <td>These refer to establishments that provide recreational services such as movie theaters, gyms.</td>
+    </tr>
+    <tr> 
+    <td>**Personal Grooming**</td>
+    <td>These refer to establishments that provide services for personal care or hygiene, e.g. hair or nail salons.</td>
+    </tr>
+    <tr>
+    <td>**Private Health Offices**</td>
+    <td>These refer to establishments through which private doctors provide medical care.</td>
+    </tr>
+    <tr>
+    <td>**Pharmacies**</td>
+    <td>These refer to establishments which sell prescription drugs.</td>
+    </tr>
+    <tr>
+    <td>**Paid Lodgings**</td>
+    <td>These refer to establishments that provide rental services of short-term dwellings (e.g. hotel, motel, hostel, inn).</td>
+    </tr>
+    <tr>
+    <td>**Other**</td>
+    <td>If the type of business is not otherwise listed in the above, please check this box and provide some detail about in the text box provided.</td>
+    </tr>
+  </tr> 
+</table>
+ </p></td>
+  </tr>
+    <tr>
+    <td><header><h5>**type_business_level**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic"><br>
+    Please choose one of the following in terms of how activity related to business X is regulated by this policy.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">For each business that is regulated by a given policy, this
+variable documents whether the business is one of the following:</p>
+- **Allowed to open with no conditions**
+- **Allowed to open with conditions**
+- **Closed/locked down**</p></td>
+  </tr>
+  <tr>
+    <td><header><h5>**type_business_var**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic"><br>
+    Select all that apply in terms of the conditions under which businesses [X]
+are allowed to operate.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">For each business that has a restriction imposed on it and is
+not in complete lockdown (i.e. not completely closed) as documented by type_business_level, this variable documents details about the conditions under which it is allowed to operate. This variable can take on **one or more** of the following options:</p><ul>
+- **Hygiene and sanitation measures required**
+- **Restriction of number of customers**
+- **Restriction of working hours for employees (if applicable note the hours of business in text entry)**
+- **Maximum size of business meetings**
+- **Maximum number of employees**
+- **Size of store limited (e.g. stores smaller than 800 sq meters)**
+- **Contact tracing measures**
+- **Keeping a distance of at least 6 feet or 1.5 meters apart**
+- **Mask Wearing policy: **Mask wearing policy implemented for a given business.</ul></p>
+- **Negative COVID-19 Test**
+- **Proof of COVID-19 Vaccination**
+<<<<<<< Updated upstream
+=======
+
+<div style="background: ghostwhite; 
+            font-size: 13px; 
+            padding: 4px; 
+            border: 5px solid #A5CD92; 
+            margin: 5px;"><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal;"><strong><center><u>2G/3G Rules </u></center></strong></p>
+</div> 
+>>>>>>> Stashed changes
+
+
+<table>
+    <tr>
+- **2G: Must be (i) either vaccinated or (ii) recovered from COVID-19**
+- **3G: Must be either (i) vaccinated, (ii) have a valid COVID-19 negative test within a certain time frame, or (iii) recovered from COVID-19**
+- **Institution can decide whether to enforce 2G or 3G (see above for definitions for 2G and 3G)**</ul></p></td>
+  </tr>
+ </table>
+ 
+<div style="background: ghostwhite; 
+            font-size: 13px; 
+            padding: 4px; 
+            border: 5px solid #A5CD92; 
+            margin: 5px;"><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal;"><strong><center><u>2G/3G Rules </u></center></strong></p>
+</div> 
+
+
+<table>
+    <tr>
+- **2G: Must be (i) either vaccinated or (ii) recovered from COVID-19**
+- **3G: Must be either (i) vaccinated, (ii) have a valid COVID-19 negative test within a certain time frame, or (iii) recovered from COVID-19**
+- **Institution can decide whether to enforce 2G or 3G (see above for definitions for 2G and 3G)**</ul></p></td>
+  </tr>
+ </table>
+ 
+<div style="background: ghostwhite; 
+            font-size: 13px; 
+            padding: 4px; 
+            border: 5px solid #A5CD92; 
+            margin: 5px;"><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal;"><strong><center><u>Health Monitoring</u></center></strong></p>
+</div> 
+
+<table id="table2" width="100%">
+    <tr> 
+    <td>**Temperature Checks**</td>
+    <td>Temperature check policy implemented for a person to enter a given business</td>
+    </tr>
+    <tr> 
+    <td>**Health Certificate**</td>
+    <td>Health certificate policy implemented for a person to enter a given business</td>
+    </tr>
+    <tr>
+    <td>**Health Questionnaire**</td>
+    <td>Health questionnaire policy implemented for a person to enter a given business</td>
+    </tr>
+    <tr>
+    <td>**Other Health Monitoring**</td>
+    <td>Other health monitoring policy implemented for a person to enter a given
+business</td> 
+    </tr>
+  </tr> 
+ </table>
+ 
+ 
+ <div style="background: ghostwhite; 
+            font-size: 13px; 
+            padding: 4px; 
+            border: 5px solid #A5CD92; 
+            margin: 5px;"><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal;"><strong><center><u>Shops </u></center></strong></p>
+</div> 
+
+
+<table>
+    <tr>
+- **Delivery Only**
+- **Takeaway Only**
+- **Delivery and Takeaway Only**
+  </tr>
+ </table>
+ 
+ - **Other Condition**
+ 
+ 
+ 
+
+
+##### Qualitative Change Example 
+
+![](../img/coding_guide/Restriction and Regulation of Businesses/bus1.png)
+
+![](../img/coding_guide/Restriction and Regulation of Businesses/Qual2.png)
+
+
+##### Bad Examples
+
+![](../img/coding_guide/Restriction and Regulation of Businesses/Bad examples.png)
+
+
+
+#### Restriction and Regulation of Government Services {.tabset}
+
+![](../img/coding_guide/Restriction and Regulation of Government Services/What is it about.png)
+
+![](../img/coding_guide/Restriction and Regulation of Government Services/gov_conditions.png)
+
+
+##### What are the policy sub types?
+
+
+<table id="customers" width="100%">
+  <tr>
+    <th>Variable</th>
+    <th>Description</th>
+   </tr>
+    <tr>
+    <td><header><h5>**type_gov_cat**</h5></header></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable provides information on whether a government
+service is considered essential or non-essential from the point of view of the initiating government. It can take on one of the following values:</p>
+- Non-Essential Government Services
+- Essential Government Services
+- No information in the policy about whether the government service is considered essential or non-essential
+ </p></td>
+   </tr> 
+    <tr>
+    <td><header><h5>**type_gov_serv**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic"><br>
+    Please select all that apply in terms of the types of non-essential government services that have been restricted.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable provides additional detail on the types of
+government services that have been restricted COVID-19, if
+available.</p><p>It can take on <strong>one or more</strong> of the following values.</p><ul>
+- **Issuing of permits/certificates and/or processing of government documents**
+- **Regulations on publicly provided waste management services**
+- **Elections**</ul>
+
+<div style="background: ghostwhite; 
+            font-size: 13px; 
+            padding: 4px; 
+            border: 5px solid #A5CD92; 
+            margin: 5px;"><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal;"><strong><center><u>Restricted use of public outdoor spaces</u></center></strong></p>
+</div>   
+- Beaches
+- Campsites
+- Parks
+- Public Gardens
+- Tourist Sites
+- Unspecified outdoor spaces
+- Other [text entry]
+
+<div style="background: ghostwhite; 
+            font-size: 13px; 
+            padding: 4px; 
+            border: 5px solid #A5CD92; 
+            margin: 5px;"><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal;"><strong><center><u>Restricted use of public facilities</u></center></strong></p>
+</div>
+- Public Libraries
+- Public museums/galleries
+- Unspecified Public Facilities
+- Other public facilities
+- Restricted government working hours (e.g. work from home policies for government workers)
+- All non-essential government services restricted</td>
+  </tr>
+  <tr>
+    <td><header><h5>**type_gov_level**</h5></header></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">For each government service that is regulated by a given
+policy, this variable documents whether the government services is one of the following:</p>
+- **Provided by the government with no conditions**
+- **Provided by the government with conditions**
+- **No longer provided by the government**</p></td>
+  </tr>
+  <tr>
+    <td><header><h5>**type_gov_var**</h5></header></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">For each government service that has a restriction imposed on
+it and is allowed to be provided with conditions as documented by type_gov_level, this variable documents details about the conditions under which it is allowed to operate. This variable can take on <strong>one or more</strong> of the following options:</p><ul>
+- **Hygiene and sanitation measures required**
+- **Restriction of number of people allowed to access as service**
+- **Restriction of hours of service provided**
+- **Keeping a distance of at least 6 feet or 1.5 meters apart**
+- **Mask Wearing policy: ** Mask wearing policy implemented on government
+property or when government service activity is performed.</ul></p>
+
+- **Negative COVID-19 Test**
+- **Proof of COVID-19 Vaccination**
+
+<div style="background: ghostwhite; 
+            font-size: 13px; 
+            padding: 4px; 
+            border: 5px solid #A5CD92; 
+            margin: 5px;"><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal;"><strong><center><u>2G/3G Rules </u></center></strong></p>
+</div> 
+
+
+<table>
+    <tr>
+- **2G: Must be (i) either vaccinated or (ii) recovered from COVID-19**
+- **3G: Must be either (i) vaccinated, (ii) have a valid COVID-19 negative test within a certain time frame, or (iii) recovered from COVID-19**
+- **Institution can decide whether to enforce 2G or 3G (see above for definitions for 2G and 3G)**</ul></p></td>
+  </tr>
+ </table>
+
+
+<div style="background: ghostwhite; 
+            font-size: 13px; 
+            padding: 4px; 
+            border: 5px solid #A5CD92; 
+            margin: 5px;"><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal;"><strong><center><u>Health Monitoring</u></center></strong></p>
+</div>
+
+<table id="table2" width="100%">
+    <tr> 
+    <td>**Temperature Checks**</td>
+    <td>Temperature check policy implemented for a person to government property or for a person to use a government service</td>
+    </tr>
+    <tr> 
+    <td>**Health Certificate**</td>
+    <td>Health certificate policy implemented for a person to government property or for a person to use a government service</td>
+    </tr>
+    <tr>
+    <td>**Health Questionnaire**</td>
+    <td>Health questionnaire policy implemented for a person to government property or for a person to use a government service</td>
+    </tr>
+    <tr>
+    <td>**Other Health Monitoring**</td>
+    <td>Other health monitoring policy implemented for a person to government
+property or for a person to use a government service</td>
+    </tr>
+  </tr> 
+</table>
+
+<br>
+    
+<table>
+<tr>
+    <p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">If 'Elections' are chosen in [type_gov_serv] then the following options are also shown:</p>
+    <p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal;"><strong><left><u>Elections</u></left></strong></p><ul>
+- **Mail in voting only**
+- **Mail in voting expanded, in person voting still allowed**
+- **Mail-in voting ballot request period extended**
+- **Other election policy**</ul>
+ </p></td>
+  </tr> 
+ </table>
+<br>
+- **Other Conditions not specified above** 
+
+
+##### Good Updates
+
+![](../img/coding_guide/Restriction and Regulation of Government Services/Good updates.png)
+
+
+##### Bad Updates
+
+![](../img/coding_guide/Restriction and Regulation of Government Services/Bad updates.png)
+
+
+
+
+
+#### Restrictions of Mass Gatherings {.tabset}
+
+![](../img/coding_guide/Restrictions of Mass Gatherings/What is it about.png)
+ 
+##### What are the policy sub types?
+
+<table id="customers" width="100%">
+  <tr>
+    <th>Variable</th>
+    <th>Description</th>
+   </tr>
+    <tr>
+    <td><header><h5>**type_mass_gathering**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic"><br>
+    If the number of people who are restricted from gathering en masse is specified, please enter the number in the text entry below.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable provides additional detail on the number of people who are restricted from gathering en masse, if available. If so,
+please enter the number of people in the text entry box provided.</p>
+
+<div style="background: ghostwhite; 
+            font-size: 13px; 
+            padding: 10px; 
+            border: 5px solid #0F4C81; 
+            margin: 10px;">
+&#128161; **Example:**<br><ul>
+In Switzerland from data collected on March 22, "Gatherings in public spaces of more than 5 people are prohibited. This includes public spaces such as public squares, park, playgrounds, walking paths, etc.".</ul>
+</div> 
+</td>
+   </tr>
+   <tr>
+    <td><header><h5>**type_mass_category**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    Please select the most appropriate choice in terms of what kind of mass gathering that has been restricted, when applicable.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable provides additional detail on the type of mass gathering that has been restricted, when applicable. It can take **on one** of the following values:</p>
+- Postponement of an annually recurring event (e.g. national festival)
+- Cancellation of a recreational or commercial event (e.g. sports game, music concert)
+- Annually recurring event allowed to occur with certain conditions (e.g. national festival)
+- Postponement of a recreational or commercial event (e.g. sports game, music concert)
+- Attendance at religious services prohibited (e.g. mosque/church closings)
+- Prison population reduced (e.g. early release of prisoners)
+- Events at private residencies restricted (e.g. parties held at home)
+- Funerals and mourning rituals
+- Weddings and marriage rituals
+- Events allowed to occur but no audience is allowed
+- Other mass gatherings not specified above restricted [Text Entry]
+- All/Unspecified mass gatherings</td>
+   </tr>
+   <tr>
+    <td><header><h5>**type_mass_var**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    Please select all that apply with regards to the conditions of this mass gathering restriction.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This question gathers information on the conditions under
+which a mass gatherings is allowed to take place if the following options are chosen in the [type_mass_cateogry] question:</p>
+
+<div style="background: ghostwhite; 
+            font-size: 13px; 
+            padding: 10px; 
+            border: 5px solid #0F4C81; 
+            margin: 10px;"><ul>
+<span class='bigger'>&#10157;</span> Annually recurring event allowed to occur with certain conditions (e.g. national festival)'<br>
+<span class='bigger'>&#10157;</span> Attendance at religious services restricted (e.g. mosque/church closings)'<br>
+<span class='bigger'>&#10157;</span> Weddings'<br>
+<span class='bigger'>&#10157;</span> Funerals'<br>
+<span class='bigger'>&#10157;</span> Other mass gatherings not specified above restricted'<br>
+<span class='bigger'>&#10157;</span> All/Unspecified mass gatherings'</ul></div> 
+
+<p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">If any of there options are chosen, then it is possible to select all that apply below:</p>
+- This mass gathering is completely restricted
+- Mass gathering held online
+
+<p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal"><u>Mass gathering can occur in person if the following
+conditions are observed:</u></p>
+- Event(s) allowed to occur but no audience is allowed
+- Physical space between participants (e.g. keeping 6ft or
+- 1 meter apart, every other seat occupied)
+- Contact tracing
+- Health Questionnaire
+- Mask wearing
+- Negative COVID-19 test
+- Proof of COVID-19 Vaccination
+- Other mass gathering condition [Text entry]</td>
+   </tr>
+   <tr>
+    <td><header><h5>**type_mass_loc**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    For a restriction of mass gathering which applies to all or unspecified mass gatherings, please further specify whether it restricts gatherings in
+the following settings.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">If a restriction is of 'All/Unspecified mass gatherings', this variable captures additional information as to the location of such mass gatherings. It can take on the following values:</p>
+- Indoor settings
+- Outdoor settings
+- Indoor and outdoor settings
+- Not specified</td>
+   </tr>
+</table>
+ 
+ 
+##### Good Examples
+
+![](../img/coding_guide/Restrictions of Mass Gatherings/Good Examples.png)
+
+##### Bad Examples
+
+![](../img/coding_guide/Restrictions of Mass Gatherings/Bad examples.png)
+
+
+
+#### Social Distancing {.tabset}
+
+![](../img/coding_guide/Social Distancing/What is it about.png)
+![](../img/coding_guide/Social Distancing/face_masks.png)
+ 
+##### What are the policy sub types?
+
+<table id="customers" width="100%">
+  <tr>
+    <th>Variable</th>
+    <th>Description</th>
+   </tr>
+    <tr>
+    <td><header><h5>**type_soc_distance**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic"><br>
+    Please select all that apply in terms of the types of social distancing rules that are applied.</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">This variable provides additional detail about the type of social distancing rules being applied. It can take on one or more of the following values:</p>
+- **Keeping a distance of at least 6 feet or 1.5 meters apart:** E.g. On April 5 it was announced in Stt. Kitts and Nevis that people "should maintain a physical distance of at least six feet (6 ft) in or outside of any business place that you must visit."<br>
+- **Keep a distance of some other distance not listed above.**
+**Please note the distance in meters in the text entry.**
+
+<div style="background: ghostwhite; 
+            font-size: 13px; 
+            padding: 1px; 
+            border: 5px solid #A5CD92; 
+            margin: 5px;"><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal;"><strong><center><u>Regulation of transportation</u></center></strong></p>
+</div>
+These policies relate to measures that seek to reduce the number of people via different transportation networks. Options include:</p>
+- Regulating private vehicles in public circulation
+- Regulating ridership of subways and trams
+- Regulating ridership of trains
+- Regulating ridership of buses
+- Regulating ridership of other forms of public transportation
+
+<div style="background: ghostwhite; 
+            font-size: 13px; 
+            padding: 1px; 
+            border: 5px solid #A5CD92; 
+            margin: 5px;"><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal;"><strong><center><u>Restrictions on Visitation</u></center></strong></p>
+</div>
+- Restrictions on visiting nursing homes/long term care facilities
+- Restrictions on visiting hospitals
+- Restrictions on visiting prisons
+- Restrictions on visiting cemeteries
+- Restrictions on visiting other group residential facilities (e.g. orphanages, group homes) [Text entry]
+- Restrictions on visiting other locations [Text entry]
+
+<div style="background: ghostwhite; 
+            font-size: 13px; 
+            padding: 1px; 
+            border: 5px solid #A5CD92; 
+            margin: 5px;"><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal;"><strong><center><u>Wearing Masks</u></center></strong></p>
+</div>
+- All public spaces / everywhere
+- All Indoor spaces
+- Unspecified
+- Other</td>
+   </tr>
+   <tr>
+    <td><header><h5>**type_soc_visit**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    Please select all that apply in terms of the conditions under which visits are restricted for: [Restriction on visitation selected in type_soc_distance].</p></td>
+    <td><p style="font-family: Arial, Helvetica, sans-serif; font-size:10pt; font-style:normal">For any option chosen under 'Restrictions on Visitation' in the [type_soc_distance] question, the following question is asked to
+ascertain the conditions under which visits are restricted. It is possible to select all that apply of the following:</p>
+- No visitors allowed at all
+- No visitors allowed except for exceptional situations, e.g. end of life
+- Number of visitors are limited
+- Visitors are allowed if they follow hygiene and/or social distancing rules
+- Visitors are allowed if they wear masks
+- Visitors are allowed if they test negative for COVID-19
+- Visitors are allowed if they are COVID-19 vaccinated
+- Other condition for allowing visitors [Text entry]</td>
+   </tr>
+</table>
+
+##### Good Updates
+
+![](../img/coding_guide/Social Distancing/Good updates.png)
+![](../img/coding_guide/Social Distancing/Good examples_2.png)
+
+##### Bad Updates
+
+![](../img/coding_guide/Social Distancing/Bad examples.png)
+
+![](../img/coding_guide/Social Distancing/Bad examples_2.png)
+
+#### Other {.tabset}
+
+##### What are the policy sub types?
+
+<table id="customers" width="100%">
+  <tr>
+    <th>Variable</th>
+    <th>Description</th>
+   </tr>
+    <tr>
+    <td><header><h5>**type_other**</h5></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:8pt; font-style:italic""><br>
+    You selected 'Other Policy Not Listed Above' as the policy type.</p></td>
+    <td>
+    <div style="background: ghostwhite; 
+            font-size: 13px; 
+            padding: 10px; 
+            border: 5px solid lightgray; 
+            margin: 10px;">
+&#128073; This documents a policy type not otherwise captured in the type variable. After verifying this is the case, please provide a brief
+description of the policy here.</ul>
+</div></td>
+   </tr>
+</table>
+
+
+
+
+

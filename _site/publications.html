@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+    <link rel="stylesheet" type="text/css" href="style2.css" >
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="L-jK2R0bz2lbCyDSQ7Ulk6MW9il2PZzbXZ9DX6AkuuE" />
+    <meta name="description" content="The CoronaNet Research Project is a worldwide effort that tracks government COVID-19 policies.">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <title>Publications</title>
+    <script src="js/fontawesome.js" crossorigin="anonymous" async></script>
+    <script src="js/particles.js"></script>
+    <script src="app.js" async></script>
+    <div id="particles-js" style="position: relative;">
+        <img src="images/logo_transparent_slim.png" style="position: absolute; margin: auto; left: 0; right: 0; text-align: center; height: 80%; z-index: 2; cursor: pointer;" class="logoCoronanet" onclick="window.location='https://www.coronanet-project.org/index.html';"/>
+        <div><a id="menuButton" onclick="openNav()"><i class="fas fa-bars" style="cursor: pointer; font-size: 24px; text-shadow: 0 0 1px #000; z-index: 3;"></i></a></div>
+        <div class="containerMenu">
+            <label id="theme-switch" class="theme-switch" for="checkbox_theme">
+            <input type="checkbox" value='0' id="checkbox_theme" style="display: none;">
+            <i id="darkModeSwitch" class="fas fa-moon" style="background-color: transparent; cursor: pointer; font-size: 24px; text-shadow: 0 0 1px #000;"></i>
+            </label>
+            <a id="emailButton" href="mailto:admin@coronanet-project.org"><i class="fas fa-envelope" style="background-color: transparent; cursor: pointer; font-size: 24px; text-shadow: 0 0 1px #000;"></i></a>
+        </div>
+    </div>
+    <div id="navbarOverlay" style="z-index: 3;"></div>
+    <h1>Publications</h1>
+    <div id="mySidenav" class="sidenav" style="display: none; z-index: 3;">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <div class="sidebarOption"><img src="images/favicon.png" style="width: 15px; display: inline;"><a target="_blank" href="index.html">Home</a></div>
+        <div class="sidebarOption"><img src="images/11_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="methods.html">Methodology</a>
+        <div class="sidebarSuboption">
+        <a target="_blank" href="methods.html">Data Collection Methods</a><br>
+        <a target="_blank" href="codebook.html">Codebook</a><br>
+        <a target="_blank" href="validationcheck.html">Validation and Reliability Checks</a>
+        </div></div>
+        <div class="sidebarOption"><img src="images/16_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="visualisations.html">Visualizations</a></div>
+        <div class="sidebarOption"><img src="images/14_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="reports.html">Reports</a></div>
+        <div class="sidebarOption"><img src="images/13_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="publications.html">Publications</a></div>
+        <div class="sidebarOption"><img src="images/10_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="inthemedia.html">In The Media</a></div>
+        <div class="sidebarOption"><img src="images/9_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="about.html">About CoronaNet</a></div>
+        <div class="sidebarOption"><img src="images/12_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="team.html">Our People</a>
+        <div class="sidebarSuboption">
+        <a target="_blank" href="team.html">Team</a><br>
+        <a target="_blank" href="interviews.html">Interviews</a><br>
+        </div></div>
+        <div class="sidebarOption"><img src="images/15_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="join.html">Join CoronaNet</a></div>
+    </div>
+    <script>
+        function openNav() {
+          document.getElementById("mySidenav").style.display = "block";
+          document.getElementById("navbarOverlay").style.display = "block";
+        }
+
+        function closeNav() {
+          document.getElementById("mySidenav").style.display = "none";
+          document.getElementById("navbarOverlay").style.display = "none";
+        }
+    </script>
+            <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DSF9RY2DVF"></script>
+    <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-DSF9RY2DVF');
+    </script>
+</head>
+    
+    <body>
+        
+        <div class="container">
+
+
+    <br><hr><br>
+        <h3>Cross-National Measures of the Intensity of COVID-19 Public Health Policies</h3><br>
+
+        <p class="block">
+        Author: Robert Kubinec, Joan Barceló, Rafael Goldszmidt, Vanja Grujic, Timothy Model, Caress Schenk, Cindy Cheng, Thomas Hale, Allison Spencer Hartnett, and Luca Messerschmidt.<br>
+        Date Published: Forthcoming, 2025<br>
+        <br>Abstract: <br>       
+        
+        We show in this research note that the complex nature of COVID-19 policy responses means that models trying to identify the effect of individual policies can produce spurious results unless they take into account systematic measurement error. Employing a simulation of the policymaking process, we find that regression analyses of multiple related policy indicators results in spurious inferences due to measurement error. To remedy this issue, we estimate six new indices of the overall intensity of different types of COVID-19 restrictions that incorporate policymaker intentions behind the design of similar policies. These indices are derived from novel granular data on COVID-19 restrictions from the CoronaNet dataset, and we augment this data with the Oxford COVID-19 Government dataset. To gain estimates with uncertainty, we use a Bayesian time-varying measurement model that provides time-varying policy intensity scores from 1 January, 2020 to 1 May, 2021 for over 180 countries. We show with these measures that regression models of policy scores on important pandemic outcomes are robust to measurement error and fully incorporate uncertainty. Supplementary material for this article is available in the appendix in the online edition.<br><br>
+            
+        Kubinec, Robert & Barceló, Joan & Goldszmidt, Rafael & Grujic, Vanja & Model, Timothy & Schenk, Caress & Cheng, Cindy & Hale, Thomas & Hartnett, Allison Spencer & Messerschmidt, Luca, 2021. "Cross-National Measures of the Intensity of COVID-19 Public Health Policies," Accepted at Journal of Politics. <a class="link" href="https://osf.io/preprints/socarxiv/rn9xk">Available at: https://ideas.repec.org/p/osf/socarx/rn9xk.html</a>.
+        <br><br>
+        
+        Download the paper <a class="link" href= "https://osf.io/preprints/socarxiv/rn9xk">here.</a>
+        </p>
+
+        <br><hr><br>
+        
+
+         <h3>A Bayesian latent variable model for the optimal identification of disease incidence rates given information constraints</h3><br>
+            
+            
+        <p class="block">
+        Author: Robert Kubinec, Luiz Carvalho, Joan Barceló, Cindy Cheng, Luca Messerschmidt, Matthew Cottrell<br>
+        Date Published: May 7, 2024<br>        <br> Abstract: <br>
+        
+        We present an original approach for measuring infections as a latent variable and making use of serological and expert surveys to provide ground truth identification during the early pandemic period. Compared to existing approaches, our model relies more on empirical information than strong structural forms, permitting inference with relatively few assumptions of cumulative infections. We also incorporate a range of political, economic, and social covariates to richly parameterize the relationship between epidemic spread and human behaviour. To show the utility of the model, we provide robust estimates of total infections that account for biases in COVID-19 cases and tests counts in the U.S. from March to July of 2020, a period of time when accurate data about the nature of the SARS-CoV-2 virus was of limited availability. In addition, we can show how sociopolitical factors like the Black Lives Matter protests and support for President Donald Trump are associated with the spread of the virus via changes in fear of the virus and cell phone mobility. A reproducible version of this article is available as an Rmarkdown file at https://github.com/CoronaNetDataScience/covid_model.<br><br>
+            
+        Citation: Kubinec, Robert, Luiz Max Carvalho, Joan Barceló, Cindy Cheng, Luca Messerschmidt, and Matthew Sean Cottrell. "A Bayesian latent variable model for the optimal identification of disease incidence rates given information constraints." Journal of the Royal Statistical Society Series A: Statistics in Society (2024): qnae040. <a class="link" href="https://doi.org/10.1093/jrsssa/qnae040">https://doi.org/10.1093/jrsssa/qnae040</a>.
+        <br><br>   
+            
+        Download <a class="link" href= "https://doi.org/10.1093/jrsssa/qnae040">here.</a>
+        </p>
+
+
+        <br><hr><br>
+        
+
+        <h3>State capacity during crisis: exploring varieties of state capacity in the COVID-19 pandemic</h3><br>
+            
+            
+        <p class="block">
+        Author: Paula Ganga and Caress Schenk <br>
+        Date Published: May 7, 2024<br>        
+        <br> Abstract: <br>
+        
+        This article examines coercive state responses during the coronavirus disease 2019 (COVID-19) pandemic as one option among several types of state capacity that may be mobilised in times of crisis. While states respond to crises with their available capacity, strategies change over time, especially as deploying coercive capacities can be costly. We use variables from the CoronaNet Research Project, an original dataset of over 170,000 policy entries from 195 countries, including nearly 26,000 policies on Russia, to show timing and substitution effects where different types of state capacity were leveraged in different policy arenas and at different times in the pandemic.<br><br>
+            
+        Citation: Ganga, Paula D., and Caress Schenk. "State capacity during crisis: exploring varieties of state capacity in the COVID-19 pandemic." Territory, Politics, Governance (2024): 1-22. <a class="link" href="https://www.tandfonline.com/doi/full/10.1080/21622671.2024.2426584">https://www.tandfonline.com/doi/full/10.1080/21622671.2024.2426584</a>.
+        <br><br>   
+            
+        Download <a class="link" href= "https://www.tandfonline.com/doi/full/10.1080/21622671.2024.2426584">here.</a>
+        </p>
+            
+            
+        <br><hr><br> 
+
+
+        <h3>Harmonizing government responses to the COVID-19 pandemic</h3><br>
+
+        <p class="block">
+        Author:  Cheng, Cindy, Luca Messerschmidt, Isaac Bravo, Marco Waldbauer, Rohan Bhavikatti, Caress Schenk, Vanja Grujic, Tim Model, Robert Kubinec, and Joan Barceló.<br>
+        Date Published: Feburary 14, 2024<br>
+        <br> Abstract: <br>      
+        
+        Public health and safety measures (PHSM) made in response to the COVID-19 pandemic have been singular, rapid, and profuse compared to the content, speed, and volume of normal policy-making. Not only can they have a profound effect on the spread of the disease, but they may also have multitudinous secondary effects, in both the social and natural worlds. Unfortunately, despite the best efforts by numerous research groups, existing data on COVID-19 PHSM only partially captures their full geographical scale and policy scope for any significant duration of time. This paper introduces our effort to harmonize data from the eight largest such efforts for policies made before September 21, 2021 into the taxonomy developed by the CoronaNet Research Project in order to respond to the need for comprehensive, high quality COVID-19 data. In doing so, we present a comprehensive comparative analysis of existing data from different COVID-19 PHSM datasets, introduce our novel methodology for harmonizing COVID-19 PHSM data, and provide a clear-eyed assessment of the pros and cons of our efforts.<br><br>
+
+       Cheng, Cindy, Luca Messerschmidt, Isaac Bravo, Marco Waldbauer, Rohan Bhavikatti, Caress Schenk, Vanja Grujic, Tim Model, Robert Kubinec, and Joan Barceló. "Harmonizing government responses to the COVID-19 pandemic." Scientific data 11, no. 1 (2024): 204 <a class="link" href="https://www.nature.com/articles/s41597-023-02881-x">Available at: https://www.nature.com/articles/s41597-023-02881-x</a>.
+        <br><br>
+        
+        Download the paper <a class="link" href= "https://www.nature.com/articles/s41597-023-02881-x">here.</a>
+        </p>
+
+
+
+        <br><hr><br>
+
+
+        <h3>A General Primer for Data Harmonization</h3><br>
+
+        <p class="block">
+        Author:  Cheng, Cindy, Luca Messerschmidt, Isaac Bravo, Marco Waldbauer, Rohan Bhavikatti, Caress Schenk, Vanja Grujic, Tim Model, Robert Kubinec, and Joan Barceló.<br>
+        Date Published: January 31, 2024<br>
+        <br> Abstract: <br>      
+        
+        Public health and safety measures (PHSM) made in response to the COVID-19 pandemic have been singular, rapid, and profuse compared to the content, speed, and volume of normal policy-making. Not only can they have a profound effect on the spread of the disease, but they may also have multitudinous secondary effects, in both the social and natural worlds. Unfortunately, despite the best efforts by numerous research groups, existing data on COVID-19 PHSM only partially captures their full geographical scale and policy scope for any significant duration of time. This paper introduces our effort to harmonize data from the eight largest such efforts for policies made before September 21, 2021 into the taxonomy developed by the CoronaNet Research Project in order to respond to the need for comprehensive, high quality COVID-19 data. In doing so, we present a comprehensive comparative analysis of existing data from different COVID-19 PHSM datasets, introduce our novel methodology for harmonizing COVID-19 PHSM data, and provide a clear-eyed assessment of the pros and cons of our efforts.<br><br>
+
+       Cheng, Cindy, Luca Messerschmidt, Isaac Bravo, Marco Waldbauer, Rohan Bhavikatti, Caress Schenk, Vanja Grujic, Tim Model, Robert Kubinec, and Joan Barceló. "A general primer for data harmonization." Scientific data 11, no. 1 (2024): 152. <a class="link" href="https://www.nature.com/articles/s41597-024-02956-3">Available at: https://www.nature.com/articles/s41597-024-02956-3</a>.
+        <br><br>
+        
+        Download the paper <a class="link" href= "https://www.nature.com/articles/s41597-024-02956-3">here.</a>
+        </p>
+
+
+
+        <br><hr><br>
+
+        <h3>A comparative analysis of the effects of containment policies on the epidemiological manifestation of the COVID-19 pandemic across nine European countries</h3><br>
+
+        <p class="block">
+        Author:  Chiara Podrecca, Enea Parimbelli, Daniele Pala, Cindy Cheng, Luca Messerschmidt, Tim Büthe, Riccardo Bellazzi<br>
+        Date Published: July 19, 2023<br>
+        <br> Abstract: <br>      
+        
+        The COVID-19 pandemic has been a catastrophic event that has seriously endangered the world’s population. Governments have largely been unprepared to deal with such an unprecedented calamity, partially due to the lack of sufficient or adequately fine-grained data necessary for forecasting the pandemic’s evolution. To fill this gap, researchers worldwide have been collecting data about different aspects of COVID-19’s evolution and government responses to them so as to provide the foundation for informative models and tools that can be used to mitigate the current pandemic and possibly prevent future ones. Indeed, since the early stages of the pandemic, a number of research initiatives were launched with this goal, including the PERISCOPE (Pan-European Response to the ImpactS of COVID-19 and future Pandemics and Epidemics) Project, funded by the European Commission. PERISCOPE aims to investigate the broad socio-economic and behavioral impacts of the COVID-19 pandemic, with the goal of making Europe more resilient and prepared for future large-scale risks. The purpose of this study, carried out as part of the PERISCOPE project, is to provide a first European-level analysis of the effect of government policies on the spread of the virus. To do so, we assessed the relationship between a novel index, the Policy Intensity Index, and four epidemiological variables collected by the European Centre for Disease Control and Prevention, and then applied a comprehensive Pan-European population model based on Multilevel Vector Autoregression. This model aims at identifying effects that are common to some European countries while treating country-specific policies as covariates, explaining the different evolution of the pandemic in nine selected countries due to data availability: Spain, France, Netherlands, Latvia, Slovenia, Greece, Ireland, Cyprus, Estonia. Results show that specific policies’ effectiveness tend to vary consistently within the different countries, although in general policies related to Health Monitoring and Health Resources are the most effective for all countries.<br><br>
+
+       Podrecca, Chiara, Enea Parimbelli, Daniele Pala, Cindy Cheng, Luca Messerschmidt, Tim Buethe, and Riccardo Bellazzi. "A comparative analysis of the effects of containment policies on the epidemiological manifestation of the COVID-19 pandemic across nine European countries." Scientific Reports 13, no. 1 (2023): 11631. <a class="link" href="https://www.nature.com/articles/s41598-023-37751-4">Available at: https://www.nature.com/articles/s41598-023-37751-4</a>.
+        <br><br>
+        
+        Download the paper <a class="link" href= "https://www.nature.com/articles/s41598-023-37751-4">here.</a>
+        </p>
+
+
+
+        <br><hr><br>
+
+        <h3>Capturing the COVID-19 Crisis through Public Health and Social Measures Data Science</h3><br>
+        <p class="block">
+        Author: Cindy Cheng, Amélie Desvars-Larrive, Bernhard Ebbinghaus, Thomas Hale, Alexandra Howes, Lukas Lehner , Luca Messerschmidt, Angeliki Nika, Steve Penson, Anna Petherick, Hanmeng Xu, Alexander John Zapf, Yuxi Zhang, Sophia Alison Zweig<br>
+        Date Published: August 26, 2022<br>
+        <br> Abstract: <br>
+        In response to COVID-19, governments worldwide are implementing public health and social measures (PHSM) that substantially impact many areas beyond public health. The new field of PHSM data science collects, structures, and disseminates data on PHSM; here, we report the main achievements, challenges, and focus areas of this novel field of research.<br> <br>
+
+        Citation: Cheng, C., Desvars-Larrive, A., Ebbinghaus, B. et al. Capturing the COVID-19 Crisis through Public Health and Social Measures Data Science. Sci Data 9, 520 (2022). https://doi.org/10.1038/s41597-022-01616-8</a><br> <br>
+
+        Download the paper <a class="link" href= "https://www.nature.com/articles/s41597-022-01616-8">here.</a>
+        </p>
+
+        <br><hr><br>
+        <h3>Dyadic Analysis of Fragile Middle Eastern States and Humanitarian Implications of Restrictive COVID-19 Policies.</h3><br>
+            
+        <p class="block">
+        Author: Daniel Habib, Naela Elmore, Seth Gulas, Nathan Ruhde, Daniel Mathew, and Nicholas Parente.<br>
+        Date Published: March 30, 2022<br>
+        <br> Abstract: <br>
+                
+        The COVID-19 pandemic has pressured governments to respond with restrictive and health resource-oriented policies to contain the spread of the virus. The aim of this paper is to assess differential policy implementation due to state fragility with a spatial scope of the Middle Eastern region. The policies implemented by the four strongest and six most fragile Middle Eastern countries were extracted from the CoronaNet Government Response Database and grouped into restrictive and resource-oriented categories. Clustering based on these categories informed dyadic analysis. Drawing from the Oxford Government Response Policy Tracker and covid-19 World Symptom Survey, we found that fragile states tended to be characterized by a higher proportion of restrictive policies, lower government stringency, and lower compliance. The results identify sectors that would benefit most from humanitarian aid and raise the issue of whether restrictions are disproportionately implemented due to covert political agendas or lack of political and economic power.
+        <br><br>
+                
+        Citation: Habib, D., Elmore, N., Gulas, S., Ruhde, N., Mathew, D., & Parente, N. (2022). Dyadic Analysis of Fragile Middle Eastern States and Humanitarian Implications of Restrictive covid-19 Policies, Middle East Law and Governance, 14(1), 26-61. Available at: <a class="link" href="https://brill.com/view/journals/melg/14/1/article-p26_003.xml">doi: https://doi.org/10.1163/18763375-14010008.</a> 
+        <br><br>
+                
+        Download the paper <a class="link" href= "https://brill.com/view/journals/melg/14/1/article-p26_003.xml">here.</a>
+        </p> 
+
+        <br><hr><br> 
+        <h3>Mobile Apps Leveraged in the COVID-19 Pandemic in East and South-East Asia: Review and Content Analysis</h3><br>
+            
+        <p class="block">
+        Author: Lee B, Ibrahim SA, Zhang T<br>
+        Date Published: Nov 11, 2021<br>
+        <br> Abstract: <br>
+        
+        The COVID-19 pandemic increased attention to digital tools to support governmental public health policies in East and South-East Asia. Mobile apps related to the COVID-19 pandemic continue to emerge and evolve with a wide variety of characteristics and functions. However, there is a paucity of studies evaluating such apps in this region, with most of the available studies conducted in the early days of the pandemic.
+        <br><br>
+            
+        Lee B, Ibrahim SA, Zhang T. Mobile Apps Leveraged in the COVID-19 Pandemic in East and South-East Asia: Review and Content Analysis. JMIR Mhealth Uhealth. 2021 Nov 11;9(11):e32093. doi: 10.2196/32093. PMID: 34748515; PMCID: PMC8589041.
+        <br><br>
+            
+        Download the paper <a class="link" href= "https://pubmed.ncbi.nlm.nih.gov/34748515/">here.</a>
+        </p>
+
+        <br><hr><br>
+        
+       
+        
+        
+        <h3>Tracking Government Responses To Covid-19: The CoronaNet Research Project</h3><br>
+            
+        <p class="block">
+        Author: Cindy Cheng, Luca Messerschmidt, Svanhildur Thorvaldsdottir, Clara Albrecht, Christa Hainz, Tanja Stitteneder, Joan Barceló, Vanja Grujicx, Allison Spencer Hartnett, Robert Kubinec, Timothy Model, and Caress Schenk.<br>
+        Date Published: May 3, 2021<br>
+        <br> Abstract: <br>
+                
+        Governments around the world have taken a significant number and variety of actions in response to the Covid-19 pandemic. To understand this flood of government actions, policymakers and researchers need access not only to high-quality, up-to-date data on government responses, but also tools to help them make sense of that data. In a joint initiative, the data collected in CoronaNet are visualized on the ifo Institute’s DICE website. The following article introduces the CoronaNet research project and explains some of the data collected and how they are presented on DICE.
+        <br><br>
+                
+        Citation: Cheng, C., Messerschmidt, L., Thorvaldsdottir, S., Albrecht, C., Hainz, C., Stitteneder, T., Barcelo, J., Grujic, V., Hartnett, A. S., Kubinec, R., Model, T., & Schenk, C. (2021). Tracking Government Responses To Covid-19: The CoronaNet Research Project. CESifo Forum, 22(3), 47-50. Available at: <a class="link" href="https://www.cesifo.org/DocDL/CESifo-Forum-2021-3-20-May.pdf#page=49">https://www.cesifo.org/DocDL/CESifo-Forum-2021-3-20-May.pdf#page=49</a> 
+        <br><br>
+                
+        Download the paper <a class="link" href= "https://www.cesifo.org/DocDL/CESifo-Forum-2021-3-20-May.pdf#page=49">here.</a>
+        </p>
+
+        <br><hr><br>
+
+        <h3>Windows of Repression: Using COVID-19 Policies against Political Dissidents?</h3><br>
+            
+        <p class="block">
+        Author: Joan Barceló, Tiril Høye Rahn, Cindy Cheng, Robert Kubinec, Luca Messerschmidt<br>
+        Date Published: March 6, 2021<br>
+        <br> Abstract: <br>      
+        
+        What explains the great variation in the adoption, timing, and duration of government policies made in response to the COVID-19 pandemic? In this paper, we explore whether government incentives to repress domestic dissidents influence their responses to the COVID-19 pandemic. We argue that containment policies are observationally equivalent to those that abusive governments would use to limit domestic dissent --- i.e., policies that restrict citizen's freedom of movement. This creates an opportunity for abusive governments to engage in repressive behavior without countervailing pressure from citizens and the international community. Following this logic, we expect abusive governments to be more likely to adopt restrictive policies, adopt them earlier in the course of the pandemic, and take longer to relax restrictions. Empirically, we find that governments that have recently engaged in state violence against civilians or abused citizens' human rights were about 10 percent more likely to enact lockdown and curfew policies, and these policies were implemented approximately 48 days earlier in the course of the pandemic and kept in place for approximately 23 more days than less repressive countries. Overall, our results advance our understanding of how the repressiveness of state institutions can shape policy responses to a global health crisis.
+        <br><br>
+            
+        Citation: Barceló, Joan, Robert Kubinec, Cindy Cheng, Tiril Høye Rahn, and Luca Messerschmidt. "Windows of repression: Using COVID-19 policies against political dissidents?." Journal of Peace Research 59, no. 1 (2022): 73-89. <a class="link" href="https://journals.sagepub.com/doi/abs/10.1177/00223433211062389/">Available at: https://journals.sagepub.com/doi/abs/10.1177/00223433211062389</a>.
+        <br><br>
+        
+        Download the paper <a class="link" href= "https://journals.sagepub.com/doi/abs/10.1177/00223433211062389/">here.</a>
+        </p>
+            
+        <br><hr><br>
+        <h3>Women's rights in childbirth during the Covid-19 Pandemic: A Comparison of WHO Guidelines to Policies, Recommendations, and Practices in the US And Germany.</h3><br>
+            
+        <p class="block">
+        Author: Nikolina Klatt, and Ines Böhret.<br>
+        Date Published: August 24, 2021<br>
+        <br> Abstract: <br>
+                
+        Women's rights to respectful care in childbirth are often violated, especially during health emergencies. This article evaluates to which degree policies and recommendations implemented in response to the COVID-19 pandemic strengthen or violate women's rights in birth in Germany and the US. Therefore, recommendations and policies on a subnational level in Baden-Wuerttemberg and New York State are compared to the recommendations given by the WHO for a safe and positive childbirth experience during the COVID-19 pandemic. This article demonstrates that policies approved in New York have the potential to increase the options for birthing women and thus strengthen their rights. In contrast, little evidence was found for subnational policies in Baden-Wuerttemberg that aimed to safeguard women's rights at birth. This article concludes that women's rights in birth must be supported at the federal, state, and institutional level to ensure respectful and safe birth experiences, even in times of pandemics.
+        <br><br>
+                
+        Citation: Klatt N and Böhret I, ‘WOMEN'S RIGHTS IN CHILDBIRTH DURING THE COVID-19 PANDEMIC: A Comparison of WHO Guidelines to Policies, Recommendations, and Practices in the US and Germany’ (2021) 3 Cross-cultural Human Rights Review 1 DOI: http://doi.org/10.52854/cchrr.51. Available at: <a class="link" href="http://doi.org/10.52854/cchrr.51">http://doi.org/10.52854/cchrr.51</a> 
+        <br><br>
+                
+        Download the paper <a class="link" href= "http://doi.org/10.52854/cchrr.51">here.</a>
+        </p>   
+            
+        <br><hr><br>
+
+        <h3>Patterns of Policy Responses to the COVID-19 Pandemic in Federal vs. Unitary European Democracies</h3><br>
+            
+        <p class="block">
+        Author: Tim Buthe, Joan Barceló, Cindy Cheng, Paula Ganga, Luca Messerschmidt, Allison Spencer Hartnett, Robert Kubinec<br>
+        Date Published: September 7, 2020<br>
+        <br> Abstract: <br>
+            
+        Do countries with federal political structures develop more or less effective policies compared to those with unitary political structures? We seek to resolve this long-standing theoretical debate by arguing that the extent to which federalist countries reap the benefits or suffer the costs of giving sub-national units greater autonomy depends on whether a given policy is itself more optimally implemented homogenously or heterogeneously across different regions. Using both statistical and qualitative case study methods, we analyse national and sub-national policy responses to COVID-19 in 2 federal (Germany and Switzerland) and 2 unitary countries (France and Italy). We find that overall, federal countries are more likely to possess heterogeneity in their policy responses than unitary countries. We find mixed evidence as to whether federal or unitary countries' policies are more responsive to the severity of the COVID-19 crisis at the sub-national level. 
+        <br><br>
+            
+        Citation: Buthe, Tim and Barceló, Joan and Cheng, Cindy and Ganga, Paula and Messerschmidt, Luca and Hartnett, Allison Spencer and Kubinec, Robert, Patterns of Policy Responses to the COVID-19 Pandemic in Federal vs. Unitary European Democracies (September 7, 2020). Available at SSRN: <a class="link" href="https://ssrn.com/abstract=3692035">https://ssrn.com/abstract=3692035</a> or <a class="link" href="http://dx.doi.org/10.2139/ssrn.3692035">http://dx.doi.org/10.2139/ssrn.3692035</a> 
+        <br><br>
+            
+        Download the paper <a class="link" href= "https://ssrn.com/abstract=3692035">here.</a>
+        </p>
+            
+        <br><hr><br>
+
+        <h3>COVID-19 Government Response Event Dataset (CoronaNet v.1.0)</h3><br>
+
+       
+        <p class="block">
+        Author: Cindy Cheng, Joan Barceló, Allison Spencer Hartnett, Robert Kubinec, Luca Messerschmidt<br>
+        Date Published: June 23, 2020<br>
+        <br> Abstract: <br>
+        Governments worldwide have implemented countless policies in response to the COVID-19 pandemic. We present an initial public release of a large hand-coded dataset of over 12,000 such policy announcements across more than 190 countries. The dataset is updated daily, with a 5-day lag for validity checking. We document policies across numerous dimensions, including the type of policy; national vs. sub-national enforcement; the specific human group and geographic region targeted by the policy; and the time frame within which each policy is implemented. We further analyze the dataset using a Bayesian measurement model which shows the quick acceleration of the adoption of costly policies across countries beginning in mid-March and continuing to the present. We believe that the data will be instrumental for helping policy makers and researchers assess, among other objectives, how effective different policies are in addressing the spread and health outcomes of COVID-19. <br> <br>
+
+        Citation: Cheng, Cindy, Joan Barceló, Allison Hartnett, Robert Kubinec, and Luca Messerschmidt. 2020. COVID-19 Government Response Event Dataset (CoronaNet v1.0). Nature Human Behaviour (2020). <a class="link" href= "https://doi.org/10.1038/s41562-020-0909-7">https://doi.org/10.1038/s41562-020-0909-7</a><br> <br>
+            
+        Download the paper <a class="link" href= "https://doi.org/10.1038/s41562-020-0909-7">here.</a>
+        </p>
+
+        <br><hr><br>
+      
+        <h3>Policy Responses to the Coronavirus in Germany</h3><br>
+            
+            
+        <p class="block">
+        Author: Tim Buthe, Luca Messerschmidt, Cindy Cheng <br>
+        Date Published: May 8, 2020<br>
+        <br> Abstract: <br>
+        
+        Faced with major crises, policymakers are at risk of various pathologies, even in the absence of such pathologies, governments, when faced with a major crisis such as the COVID-19 pandemic, have strong incentives to try to go it alone at the national level: Both policy implementation and political accountability still mostly take place at the national level. Federal political systems, such as Germany, face similar challenges at the sub-national level. At the same time, Louis Brandeis’ classic depiction of U.S. states as “laboratories of democracy” reminds us that federalism offers opportunities for trying different policy responses and learning from the differing results, especially when federalism has “experimentalist” characteristics to encourage feedback and learning. We provide a brief overview of the public and political discourse in Germany, as well as the German federal and state-level policy responses, during the first months of the pandemic and an early, tentative assessment of commonalities, divergence, pathologies, and learning – as well as broader implications for conflict and cooperation in Europe and beyond.
+        <br><br>
+            
+        Citation: Buthe, Tim and Messerschmidt, Luca and Cheng, Cindy, Policy Responses to the Coronavirus in Germany (May 8, 2020). In The World Before and After COVID-19: Intellectual Reflections on Politics, Diplomacy and International Relations, edited by Gian Luca Gardini. Stockholm – Salamanca: European Institute of International Relations, 2020. Available at SSRN: <a class="link" href= "https://ssrn.com/abstract=3614794">https://ssrn.com/abstract=3614794.</a>
+        <br><br>
+            
+        Download the paper <a class="link" href= "https://ssrn.com/abstract=3614794">here.</a>
+        </p>
+            
+        
+     
+
+        
+
+        </div>
+
+   <!--      <div class="container">
+
+            <button class="accordion" style="display: block; margin-bottom: 20px">
+                General Public Citations
+            </button>
+
+            <div class="panel" style="margin-bottom: 20px">
+                <div id="citations-wrapper"></div>
+            </div>
+
+        </div> -->
+    </body>
+    
+    <footer>
+        <h2>Partner Universities and Institutions</h2>
+        <br>
+        <a target="_blank" href="https://www.hfp.tum.de/en/home/"><img class="logo" src="images/hochschule%20.png" alt="Hochschule für Politik München logo"></a>
+        
+        <a target="_blank" href="https://www.tum.de/"><img class="logo" src="images/TUM.png" alt="Technical University of Munich logo"></a>
+    
+        <a target="_blank" href="https://nyuad.nyu.edu/en/"><img class="logo" src="images/NYU.png" alt="New York University Abu Dhabi logo"></a>
+    
+        <a target="_blank" href="https://www.wi.tum.de/"><img class="logo" src="images/SOM.png" alt="TUM School of Management at Technical University of Munich logo"></a>
+        
+        <br>
+        <br>
+        
+        <a target="_blank" href="https://nu.edu.kz/"><img class="logo" src="images/NU.png" alt="Nazarbayev University logo"></a>
+        
+        <a target="_blank" href="https://www.jataware.com/"><img class="logo" src="images/jataware_logo.png" alt="Jataware company logo"></a>
+    
+        <a target="_blank" href="https://www.leibniz-krisen.de/en.html"><img class="logo" src="images/LFV_logo.png" alt="Leibniz Research Alliance
+    Crises in a Globalised World logo"></a>
+    
+        <a target="_blank" href="https://www.overton.io/"><img class="logo" src="images/overton_logo.png" alt="Overton company logo"></a>
+        
+        <br>
+        <br>
+        <hr><br>
+        <h2 class="periscope">CoronaNet is part of the PERISCOPE consortium, a project funded by the European Commission under the Horizon 2020 Research and Innovation programme (agreement no. 101016233)</h2>
+        <br>
+        <a target="_blank" href="https://periscopeproject.eu/"><img class="logo funding" src="images/periscope.png" alt="Logo of the PERISCOPE consortium"></a>
+        <a target="_blank" href="https://ec.europa.eu/info/index_en"><img class="logo_eu" src="images/logo-ce-horizontal-en-quadri-lr.png" alt="Logo of the European Commission"></a>
+        <br><br>
+        <a target="_blank" href="https://github.com/saudiwin/corona_tscs"><img src="images/github.png" width="25px" alt="GitHub data repository for CoronaNet"></a>
+        <a target="_blank" href="https://www.linkedin.com/company/coronanet-research-group/mycompany/"><img src="images/linkedin.png" width="25px" alt="CoronaNet Research Group on LinkedIn"></a>
+        <a target="_blank" href="https://twitter.com/CoronaNet_org"><img src="images/twitter.png" width="25px" alt="CoronaNet Research Project on Twitter"></a>
+        <a target="_blank" href="https://www.instagram.com/coronanet_org/"><img src="images/instagram.png" width="25px" alt="CoronaNet Research Project on Instagram"></a>
+        <br>
+        <script src="js/darkMode.js"></script>
+    </footer></html>
+
+<script src="fetchCitations.js"></script>
+
+<script>
+    var acc = document.getElementsByClassName("accordion");
+    var i;
+
+    for (i = 0; i < acc.length; i++) {
+      acc[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var panel = this.nextElementSibling;
+        if (panel.style.maxHeight) {
+          panel.style.maxHeight = null;
+        } else {
+          panel.style.maxHeight = panel.scrollHeight + "px";
+        }
+      });
+    }
+</script>

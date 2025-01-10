@@ -1,0 +1,354 @@
+---
+title: "Data Integration Guidelines"
+output: html_document
+---
+
+```{css, echo=FALSE}
+.block1 {
+  padding: 1em 1em 1em 1em;
+  margin-bottom: 10px;
+  background: ghostwhite;
+  position:relative;
+  font-size: 16px; 
+}
+
+table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+  background-color: white;
+  border: 5px solid rgb(119,136,153); 
+}
+
+th {
+  padding: 8px;
+  font-size: 16px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+  -o-transition: all 4.5s ease;
+  -ms-transition: all 4.5s ease;
+  -moz-transition: all 4.5s ease;
+  -webkit-transition: all 4.5s ease;
+  transition: all 4.5s ease;
+}
+
+td {
+  padding: 8px;
+  font-size: 16px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  
+}
+
+th:hover {
+  background-color: #708090;
+  color: white;
+  font-size: 20px;
+}
+
+td:hover {
+
+  
+}
+
+.tips{
+  background: ghostwhite; 
+  font-size: 16px; 
+  padding: 10px; 
+  border: 5px solid lightgray; 
+  margin: 10px;
+}
+
+.tips-header{
+  font-size: 25px;
+  margin: 10px;
+  
+}
+
+.add-info {
+  background: ghostwhite; 
+  font-size: 16px; 
+  padding: 10px; 
+  border: 5px solid lightgray; 
+  margin: 10px;
+}
+
+.add-info-header {
+  font-size: 25px;
+  margin: 10px;
+  
+}
+
+.sub-step {
+  background: white; 
+  font-size: 16px; 
+  padding: 10px; 
+  border: 5px solid rgb(119,136,153); 
+  margin: 10px;
+}
+
+#bold:hover {
+  font-weight: bolder;
+}
+
+
+.number{
+    background: ghostwhite; 
+    font-size: 25px; 
+    border-bottom: 0px solid black;
+    
+    -o-transition: all 4.5s ease;
+    -ms-transition: all 4.5s ease;
+    -moz-transition: all 4.5s ease;
+    -webkit-transition: all 4.5s ease;
+    transition: all 4.5s ease;
+}
+
+.number:hover{
+    font-size: 120%;
+}
+
+#icon-list{
+    font-size: 30px; 
+    color: rgb(102,176,50);
+}
+
+#icon {
+    color: rgb(0,87,87);
+}
+
+#bullet {
+  font-size: 25px;
+}
+
+#arrow {
+  font-size: 28px;
+  padding; 0px;
+  margin: 0px;
+}
+
+
+```
+
+
+<div class="add-info">
+<div class="add-info-header">&#128270; **What is data integration?**</div>
+
+Data integration is assessing the overlap between data external to CoronaNet and recoding data that is currently missing from CoronaNet into the CoronaNet taxonomy, while giving proper attribution to the original coders. To this end, we have compiled a pool of external data to integrate from the following datasets up until September 10, 2021:
+
+* [ACAPS](https://www.acaps.org/covid-19-government-measures-dataset){target="_blank"}
+* [CIHI](https://www.cihi.ca/en/covid-19-intervention-scan){target="_blank"}
+* [COVIDAMP](https://covidamp.org){target="_blank"}
+* [John Hopkins HIT-COVID data](https://github.com/HopkinsIDD/hit-covid){target="_blank"}
+* [OxCGRT](https://github.com/OxCGRT/covid-policy-tracker){target="_blank"}
+* [WHO PHSMs](https://www.who.int/emergencies/diseases/novel-coronavirus-2019/phsm){target="_blank"} (for which we are assessing data for the CDC and WHO EURO) 
+
+
+There is in total **around 150,000 policies** that we have identified in the external data which we can potentially integrate into the CoronaNet dataset. We have done our best to map this external data to the CoronaNet taxonomy but **there are some things that we cannot control and we need your help to work through**:  
+
+  + 2449 observations do not have descriptions, only links
+  + 4934 observations do not have links, only descriptions
+  + We have tried our best to automatically deduplicate the external data but we know we have not been 100% successful and rely on your help to get us there manually!
+  + Often descriptions are very vague or poorly written (note: such policies that are integrated should be rewritten according to [our standard](https://www.youtube.com/watch?v=O6qPkVK6wew&list=PLU8d0pxV-EJP9TugotSYU6C-TZ4Eo3T5M&index=9){target="_blank"}).
+  + The mappings are not perfect in part because i) there are often no one-to-one perfect mappings and ii) the external data has mistakes
+* The comparative strength of the CoronaNet data is our subnational data; as such the external datasets have comparatively few subnational data (the exception being COVIDAMP's US subnational data and CIHI's Canada data). In these cases, RAs internal assessment of the completeness for that subnational region will be especially important.
+</div> 
+
+
+<div class="add-info">
+<div class="add-info-header">
+<div class="number">**Why are we integrating external data?**</div></div>
+
+* The external data should be seen as **an additional source of information** that we hope will make it **easier and faster** for RAs to identify policies to document for their country or subnational region. However, like all sources of information we use, we **still need to vet this information carefully** before incorporating into the CoronaNet data. 
+
+* Many datasets have stopped their data collection (e.g. ACAPS, COVIDAMP, JHU HIT-COVID, CDC). By integrating their data, we can not only ensure that **CoronaNet has the most complete dataset** on government policies available which is an important foundation for future research, but we can also **ensure that the contributions of thousands of other coders can live on** in our dataset. 
+</div>
+
+
+<div class="add-info">
+<div class="add-info-header">
+<div class="number">**How much external data are we planning to integrate?**</div></div>
+
+While there are around 150,000 observations in the external data, that doesn't mean we aim to increase the CoronaNet database by 150,000 observations! This is for a variety of reasons:
+
+* There is definitely some amount of overlap between what we already have in CoronaNet and what is in the pooled external dataset. We can't know for sure without your help, but based on our pilot studies we think the overlap is around 20-30%.
+* As mentioned above, there are definitely still duplicates and observations that we wouldn't code in the CoronaNet taxonomy in the external dataset, which means the true number of policies to integrate is definitely lower than 150,000.
+* Some of the data in the external dataset goes beyond [our project goals](https://www.coronanet-project.org/coronanet_goals){target="_blank"} which also lowers the number of policies we will likely integrate. 
+  + However, we're providing you all the data in the external dataset recorded until September 10, 2021 because i) there may be mistakes in the data such that even though the external data says a policy takes place outside of our project goals, it actually is within the scope of our project goals and ii) depending on how quickly/successfully we can integrate data up to our project goals, we can start moving past them!
+  
+  
+
+
+
+</div>
+
+
+
+<div class="add-info">
+<div class="add-info-header">
+<div class="number">**How do I get started?**</div></div>
+
+
+<span id="bullet">&#128204;</span> **You can access this external data [here](https://docs.google.com/spreadsheets/d/1Aq1ydsjUtfhiOXuqxmX6l1pIOvIxNY5a35iYrBtTE8k/edit#gid=0){target="_blank"}**
+
+<span id="bullet">&#128204;</span> **In order to integrate data from other datasets, please follow the following steps (or [check out video](https://youtu.be/hx7ppuBSX9w){target="_blank"} for the instructions in video format) :**
+
+
+
+<div class="add-info">
+<div class="add-info-header">
+<div class="number">**1 Identify data that other datasets have documented but which are not currently in the CoronaNet dataset**</div></div>
+
+<span id="icon">&#9658;</span> You should fill in this information in the overlap_assess column in the CoronaNet data Integration sheet and the following table explains how to code this variable:  
+
+  <table class="table table-hover">
+    <thead class="head">
+      <tr>
+        <th>How to code the <br> overlap_assess variable</th>
+        <th>What to do with the information in the overlap_assess variable</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>If the overlap_assess value reads ‘Yes’, then this observation is already in the CoronaNet data and you can find the corresponding CoronaNet record_id in the match_record_id column next to it</td>
+        <td>In the matched_record_id column in the  CoronaNet Data Integration sheet, please copy and paste the CoronaNet record_id that matches this record. Then you're done! No need to move onto Step 2.</td>
+      </tr>
+      <tr>
+        <td>If the overlap_assess value reads ‘No’, then this observation is not in the CoronaNet data yet but should be included</td>
+        <td>Please recode this data into the CoronaNet taxonomy, see step 2. below for more info</td>
+      </tr>
+      <tr>
+        <td>If the overlap_dum value reads ‘NA’, then based on our automated assessment of the overlap between the two datasets, it was not possible to make a judgement as to whether this observation is in CoronaNet or not</td>
+        <td>You should manually check to see whether this observation should be coded as ‘Yes’ or ‘No’. If ‘Yes’, then please also record the corresponding CoronaNet ID in the match_record_id column. If ‘No’, then please recode this data into the CoronaNet taxonomy, see step 2. below for more info.</td>
+      </tr>
+    </tbody>
+ 
+  </table>
+
+**How to get credit for overlap assessment:**  
+
+* Please make sure to write your RA id number in the ra_id_overlap column in order to get credit for your work in assessing the overlap between the CoronaNet and external data. You can find your [RA id number here](https://docs.google.com/spreadsheets/d/15NWRPP1ATc4H-b6513czzOe9dPO5vG1_tmuiauSmPt8/edit#gid=0){target="_blank"}
+  + Feel free to also fill out the ra_name_overlap column since we aren't robots and it makes it easier for your regional manager to see what you've been up to! However, because it can be very difficult to give people proper credit based on just their name (e.g. computers are case-sensitive/very unforgiving with alternative spellings) we can only give credit when the ra_id_overlap is properly filled out
+  
+  
+**Note before moving onto Step 2**:
+
+* **Make sure that you have at least skimmed through all of the descriptions for the entire external dataset for your country or subnational region.**
+* **To the extent possible, it is better to assess the overlap for the entire external dataset for your country or subnational region before recoding the data**. 
+  + This is because the external data is not completely clean and it is better to have an entire overview first in order to identify potential miscodings before moving on to the second step.  
+</div>     
+
+
+
+<div class="add-info">
+<div class="add-info-header">
+<div class="number">**2 Recode the data that is currently not in CoronaNet**</div></div>
+
+<span id="icon">&#9658;</span> In order to recode this data, RAs should follow the following steps:  
+
+<ul><span id="icon-list">&#128505;</span><span id="bold"> 2.1. Identify policies that are not currently in the CoronaNet dataset by searching for rows that have the value ‘No’ in the overlap_assess column</span></ul>
+<ul><span id="icon-list">&#128505;</span><span id="bold">    2.2. Click on the ‘link’ or ‘pdf_link’ for that observation and read through the information in the raw data source.</span></ul>  
+<ul><span id="icon-list">&#128505;</span><span id="bold">    2.3. Code the information that you find in that link into the CoronaNet Qualtrics survey. You can use the other column information which maps in the CoronaNet Integration Sheet as a guide for how you can code certain fields.</span></ul>  
+<ul><span id="icon-list">&#128505;</span><span id="bold">    2.4 At the end of the CoronaNet Qualtrics Survey, you will be asked two questions:</span> 
+
+<div class="sub-step">   
+  * [collab] “If (one of) the sources that you used to document this policy came from another dataset, please note which dataset’ <span id="arrow">&#10154;</span> Information about the dataset that you are integrating will be found in the ‘data’ column in the CoronaNet Data; if you used a source/link that you yourself found, please choose ‘I found this source myself’ instead.  
+  * [collab_id] ‘Please copy and paste the unique id of the record that you used from the other dataset in the text entry below’ <span id="arrow">&#10154;</span> If you use a source from an external dataset, in this field, copy and paste the ‘unique_id’ found in the ‘unique_id’ column for this observation found in the CoronaNet Data Integration sheet.      
+</div></ul>  
+    
+<ul><span id="icon-list">&#128505;</span><span id="bold">   2.5. In the ‘integrated’ column in the CoronaNet Data Integration sheet, please choose one of the following:</span>  
+
+<div class="sub-step">     
+
+* ‘Integrated’; this means you have identified a policy that was in another dataset and recoded it into the CoronaNet taxonomy.  
+
+* ‘Integrated with additional original research’: You may have to do some additional research for any number of reasons. E.g. the information that you receive from the link or pdf_link of the external dataset may be unclear or require additional context/knowledge to code well. In such cases, please note what additional research you had to do in the 'Notes' column and click this option.   
+  
+* ‘Integrated with additional work to find a new link’ means that the original link for the policy as noted in the CoronaNet Data Integration sheet is dead but that the RA was able to find a new link that corroborates the information described in the ‘description’ column. In this case please choose ‘I found this source myself’ option in 2.4 and click this option in the data integration sheet. Note that if you were able to find the information from the original link using the [Way Back Machine](http://web.archive.org/){target="_blank"} then choose the ‘Integrated or ‘Integrated with additional original research’ option as appropriate.  
+
+* ‘Integrated with additional original research AND with additional work to find a new link’: means fulfilled both the criterion under: ‘Integrated with additional original research’ and ‘Integrated with additional work to find a new link’. See above for more information. 
+
+* 'Duplicated policy': this means that there were multiple external policies that were duplicates of each other. In this case, please only integrate one of them (and choose one of the 'integrated' options above). When you click this option, this means you do not integrate this particular policy because it is a duplicate. If the data is already in CoronaNet, pick one policy to mark as 'Yes' in the overlap_assessment and find the corresponding record_id to paste into the matched_record_id column. In general, for  duplicated data, the overlap_assessment should be 'No'. 
+
+* ‘Not a relevant policy’: this means that after having taken a closer look at the link for the observation is not one that we would code in CoronaNet. The corresponding overlap_assessment should be 'No' in this case. 
+
+* ‘Link dead, no other link found’ means that the original link for the policy as noted in the CoronaNet Data Integration sheet is dead and the RA was unable to i) use the [Way Back Machine](http://web.archive.org/){target="_blank"} to find the original data ii) find another link to corroborate this information. In this case, please do not recode this data.
+</div></ul>
+
+
+
+**How to get credit for integration:**  
+
+You can get credit for integration when you:
+
+1. Make sure to write your RA id number in the ra_id_integrate column in order to get credit for your work in assessing the overlap between the CoronaNet and external data. You can find your [RA id number here](https://docs.google.com/spreadsheets/d/15NWRPP1ATc4H-b6513czzOe9dPO5vG1_tmuiauSmPt8/edit#gid=0){target="_blank"}
+    
+    + Feel free to also fill out the ra_name_integrate column since we aren't robots and it makes it easier for your regional manager to see what you've been up to! However, because it can be very difficult to give people proper credit based on just their name (e.g. computers are case-sensitive/very unforgiving with alternative spellings) we can only give credit when the ra_id_integrate is properly filled out 
+  
+2. Enter in the integrated data through qualtrics. We'll pull your information from the survey directly!
+
+
+**Note**: 
+
+* If you *only* fill out the ra_id_integrate column but do not actually enter in the external data through qualtrics, you will not get any credit for integration. Make sure that you've copy and pasted the correct unique_id of the integrated data to Qualtrics to get credit for you work! 
+* If you enter in the external data through qualtrics but do not fill out the ra_id_integrate column, you will get credit for the qualtrics integration, but not the ra_id_integrate column. Be sure to fill out both! </div> 
+</div>    
+
+
+   <div class="tips">
+<div class="tips-header">&#10067; **Worried you might have made a mistake?**</div>
+<p>Check out the [Data Integration Errors](https://docs.google.com/spreadsheets/d/11I9636EuNVoBLK3Hood0qZ4zkq3NjTcAXLFIpqOqbMI/edit#gid=1583171788) sheet to see if you might have made an error and get credit for your work when the mistake is fixed! 
+</p>   
+
+Problems that can occur include:
+
+* Forgetting to put your ra_id in either the ra_id_overlap or ra_id_integrate column
+* Forgetting to put a value for the overlap_missing column when you have already filled out the integrate_assessment column
+* Putting the CoronaNet record_id when asked to put in the external unique_id in the Qualtrics survey when recoding an external policy 
+* Entering in a value other than what is available in the drop down menues for the overlap_assessment and integrate_assessment columns
+* Marking an external policy as having been integrated in the data integration sheets without then recoding it into Qualtrics
+* Marking the overlap_assessment as 'Yes' but then subsequently filling out something in the integration assessment column 
+
+</div>    
+
+<div class="tips">
+<div class="tips-header">&#128161; **Tips and things to watch out for:**</div>
+<p>We have spent the summer piloting data integration^1^ for a number of countries and as such have come up with a list of issues to watch out for when integrating data and strategies for how to deal with them: 
+</p>
+
+* Overlap Assessment Tips
+  * Start by doing the overlap assessment for all or most of the policies. This way you get acquainted with the data first.
+  * Work from category to category, starting with the policy types which are most important (e.g. Lockdown, Curfew, Quarantine) and then proceeding to the other categories.  
+  * If the last **recorded_date** of a policy in CoronaNet for a given policy type occurs before the **date_start** of a policy in the external dataset, this external policy is likely not in the CoronaNet data set and you can click 'No' in the overlap assessment. Just keep in mind the **date_start** variable in the external data will not always be clean however. 
+  * After you successfully mark the policy as "integrated", do *not* change the **overlap_assess** variable to "Yes"
+
+* Integration Assessment and Coding Tips
+  * Some policies may be mentioned multiple times in the Data Integration sheet. Look out for those duplicates and code the policy only once.
+  * When there are multiple duplicates in the dataset, you can mark the overlap_assessment as 'No' and the integration_assessment as 'Duplicated policy'.
+  * A good resource that you should try to use if a link is dead and you're trying to corroborate the information in the external dataset is the [Way Back Machine](https://archive.org/web/)  
+   * Be aware that other datasets often do not code updates in the same way as we do and as such what may be one observation in the CoronaNet Data Integration sheet would actually be coded as several observations in the CoronaNet taxonomy.
+  * You may have to code some policies as an 'Update' (e.g. 'End of Policy Update') to an older policy, and not as a New Entry. Try to work chronologically so that you can detect these situations easier.
+  * Some policy descriptions in the Data Integration sheet include various policies of different categories when they are compared to the CoronaNet taxonomy. In this case, code the different policies separately. You can paste the CoronaNet record_id's of the different observations you just integrated in the matched_record_id column.
+ 
+* General Tips
+  * In the Integration sheet, there is a **type** and a **type_alt** variable. They can help you when choosing the right CoronaNet category for the policy you have to integrate. Nevertheless, they sometimes do not match, so always double-check if they are right. You can have a look at the [CoronaNet Coding Guide](https://www.coronanet-project.org/coding_guide.html){target="_blank"} if you are unsure about the matching category.
+  * For 'External Border Restriction' policies it may happen that a policy in the Integration sheet belongs to another country and not to the one you are coding for. In this case, contact your regional manager and inform them about this policy
+
+<br> OXCGRT-specific tips:
+
+* Data from the OXCGRT tracker especially may have polices that are 'Not relevant.' That is, if there was no change to a given policy, OXCGRT coders often write something to the effect of 'No change' in the description. We have tried to remove as many of these as we could automatically but we weren't able to get them all. As such:  
+  + When the description says that there is no change and there is no additional information in the description of the policy, mark this as 'Not a relevant policy' in the 'integration_assessment' column
+  + When the description says there is no change but there is some additional information in the description, do check whether this additional descriptive information is something we would code. It may be the case that while there wasn't a change that OXCGRT would capture in their taxonomy, CoronaNet's taxonomy would capture it. 
+* Data from the OXCGRT tracker may have many duplicated descriptions. That is, coders from OXCGRT are encouraged to note when something *didn't* change, which means that sometimes a coder will copy and paste the same description over and over across time. We have tried to remove as many as possible but we know we could not get everything. In such cases, please identify when the policy first started, its end date if there is one, and then mark the other policies as 'Duplicated policies.'
+* National level data from OXCGRT may include information about subnational policies. This is because the OXCGRT data tries to provide an overall view of the policy making process in a country and as such, its national level data notes whether a certain type of policy took place or not even if the initiating government was a subnational government. In these cases, please focus on integrating the truly national level policies, that is policies that originate from the national level government first and if there is time, you can try to integrate the subnational data. 
+* OXCGRT currently collects subnational data for the United States, Brazil and China^2^. Please be aware that they may code a policy initiated at the national level but which applies to the subnational level as a subnational policy. E.g. a travel ban initiated by the national government may be coded as a subnational policy in OXCGRT. In these cases, please follow the CoronaNet taxonomy and do not code these as subnational policies but rather flag these polices to the person in charge of national level policies for your country. 
+
+</div>    
+
+
+  
+ 
+***
+^1^ Big shout out to the following people for their work on piloting our data integration efforts: Marco Waldbauer, Rohan Bhavikatti, Isaac Bravo, Joseph Shim, Natalia Filkina Spreizer, Audrey Firrone, Silvia Biagioli, Mayuiri A.,Maanya Cheekati, Laura Eckoff, Fiona Valad, Katelyn Thomas, Humza Q, Amy Nguyen, Rawaf al Rawaf, Sella Devita, Paula Ganga, Tim Bishop, Jaimi Plater, Rose Pasty, Natalie Ellis, Maryam AlHammadi, Shreeya Mhade, Shrajit Jain, Kyle Oliver, Shaila Sarathy, Alisher Shariyazdanov,Emma Baker, Jurgen Kadriaj, Celine Heng and Augusto Teixeira
+
+^2^ Technically OXCGRT also collects subnational data for Canada but since their data largely comes from CIHI, we do not include their subnational data for Canada in our pool of policies. 

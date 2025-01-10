@@ -1,0 +1,7412 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>CoronaNet Data Skeleton</title>
+
+<script src="site_libs/header-attrs-2.7.2/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-sm-12 col-md-4 col-lg-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-sm-12 col-md-8 col-lg-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">CoronaNet</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">CoronaNet Data Skeleton</h1>
+
+</div>
+
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>In this document, we first provide a skeleton which describes the different possible combinations of different fields in the CoronaNet data before then providing examples of how cleaned data for different types of policies and policy updates should look like.</p>
+<p>Note the syntax of the document is such that when a word is written within a brackets: [], it refers to a field within the released version of the CoronaNet data (e.g. [type]).</p>
+</div>
+<div id="coronanet-skeleton" class="section level1">
+<h1>CoronaNet Skeleton</h1>
+<p>In this section, we specify the different possible combinations of different fields in the CoronaNet data. We also evaluate the extent to which the data comply with these specifications. We start by first describing the unit of analysis of a unique record, how records are tracked over time using the [policy_id], before detailing how dates are captured in the dataset. We then outline different combinations possible for policy types ([type]) and subtypes ([type_sub_cat]), before detailing how policy initiators are defined.</p>
+<div id="unit-of-analysis" class="section level2">
+<h2>Unit of analysis</h2>
+<p>Each record receives a unique [record_id] which documents different dimensions of a policy. At a minimum, the record_id should include the following information:</p>
+<ul>
+<li>A textual description of the policy
+<ul>
+<li>[description]</li>
+</ul></li>
+<li>Policy Initiator
+<ul>
+<li>[country], always recorded</li>
+<li>[province], recorded if applicable</li>
+<li>[city], recorded if applicable</li>
+</ul></li>
+<li>Policy Type
+<ul>
+<li>[type]</li>
+<li>[type_sub_cat], recorded if applicable</li>
+</ul></li>
+<li>Policy Geographic Target
+<ul>
+<li>[target_country], always recorded</li>
+<li>[target_province], recorded if applicable</li>
+<li>[target_city], recorded if applicable</li>
+<li>[target_other], recorded if applicable</li>
+</ul></li>
+<li>Policy Demographic Target
+<ul>
+<li>[target_who_what], recorded if applicable</li>
+<li>[target_who_gen] (note, this variable is not yet released and still needs to be backcoded), always recorded</li>
+</ul></li>
+<li>De Jure compliance
+<ul>
+<li>[compliance]</li>
+</ul></li>
+<li>Organizational entity in charge of enforcing a policy
+<ul>
+<li>[enforcer]</li>
+</ul></li>
+<li>Timing of a policy
+<ul>
+<li>[date_announced]</li>
+<li>[date_start]</li>
+<li>[date_end]</li>
+</ul></li>
+</ul>
+<p>Where applicable, the following information may also be documented:</p>
+<ul>
+<li>Whether an institution is closed, open with conditions or closed
+<ul>
+<li>[institution_status], only applicable for “Closure and Regulations of Schools”, “Restrictions and Regulations of Government Services”, “Restrictions and Regulations of Businesses”</li>
+</ul></li>
+<li>The target direction of a policy
+<ul>
+<li>[target_direction]</li>
+</ul></li>
+<li>The mode of travel a policy affects
+<ul>
+<li>[travel_mechanism]</li>
+</ul></li>
+</ul>
+<p>Additional meta data that is captured include:</p>
+<ul>
+<li>Whether the policy is a new_entry or an update
+<ul>
+<li>[entry_type]</li>
+</ul></li>
+<li>Whether any mistakes in the original coding of a policy have been corrected or not, ‘original’, or ‘corrected’
+<ul>
+<li>[correct_type]</li>
+</ul></li>
+<li>The type of update, ‘Change of Policy’, ‘End of Policy’
+<ul>
+<li>update_type</li>
+</ul></li>
+<li>When the policy was recorded
+<ul>
+<li>[recorded_date]</li>
+</ul></li>
+<li>The last time a research assistant reported that they had searched for an update for a given policy type for a given government
+<ul>
+<li>[date_updated]</li>
+</ul></li>
+<li>Link to the source URL
+<ul>
+<li>[link]</li>
+</ul></li>
+</ul>
+<p>Data on the CoronaNet Policy Activity Index is recorded in the following variables:</p>
+<ul>
+<li>[index_high_est]</li>
+<li>[index_med_est]</li>
+<li>[index_low_est]</li>
+<li>[index_country_rank]</li>
+</ul>
+<div id="policy-updates" class="section level3">
+<h3>Policy Updates</h3>
+<p>The [policy_id] allows for the tracking of a policy history over time; one can use a policy_id to track whether there have been updates to a policy.</p>
+<p>It is possible to update the following dimensions of a policy including:</p>
+<ul>
+<li>‘volume’ of a policy</li>
+<li>the directionality of a policy (inbound/outbound) [travel_direction]</li>
+<li>the travel mechanism of a policy (e.g. flights) [travel_mechanism]</li>
+<li>the compliance of a policy</li>
+<li>the enforcer of a policy</li>
+<li>the timing of a policy</li>
+</ul>
+<p>Updates to a policy should have the following fields be identical:</p>
+<ul>
+<li>Policy Initiator
+<ul>
+<li>[country]</li>
+<li>[province]</li>
+<li>[city]</li>
+</ul></li>
+<li>Policy Type
+<ul>
+<li>[type]</li>
+<li>type_sub_cat</li>
+</ul></li>
+<li>Policy Geographic Target
+<ul>
+<li>[target_country]</li>
+<li>[target_province]</li>
+<li>[target_city]</li>
+<li>[target_other]</li>
+</ul></li>
+<li>Policy Demographic Target
+<ul>
+<li>[target_who_what]</li>
+<li>[target_who_gen] (note, this variable is not yet released)</li>
+</ul></li>
+</ul>
+<p>In other words, it is not possible to update the policy initiator, policy type, policy geographic target or policy demographic target — when these dimensions of a policy change, then the orignal policy should be ended and a new policy must be coded.</p>
+<p>The following code evaluates the extent to which these coding rules have been followed. Note that changes to the survey have been made to try and minimize the ability to make such errors:</p>
+<pre class="r"><code>check_updates = coronanet %&gt;%
+  mutate(check_id = paste(country,
+                          province,
+                          city,
+                          type,
+                          type_sub_cat,
+                          target_country,
+                          target_province,
+                          target_city,
+                          target_other,
+                          target_who_what) )%&gt;%
+  group_by(policy_id, type_sub_cat) %&gt;%
+  summarise(unique_rows = n_distinct(check_id)) %&gt;%
+  ungroup()</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;policy_id&#39;. You can override using the `.groups` argument.</code></pre>
+<pre class="r"><code>if (table(check_updates$unique_rows)[1] == dim(check_updates)[1]){
+  print(&#39;All Good!&#39;)
+} else{
+  print(paste0(&#39;Errors in coding updates found for  &#39;, sum(table(check_updates$unique_rows)[-1]), &#39; records&#39;))
+}</code></pre>
+<pre><code>## [1] &quot;Errors in coding updates found for  34 records&quot;</code></pre>
+</div>
+<div id="dates" class="section level3">
+<h3>Dates</h3>
+<p>Updates to a policy should have different announced, start and end dates from the original new_entry. In other words, an original new_entry of a policy and an update to that new_entry should not have identical announced, start and end dates.</p>
+<p>The following code evaluates the extent to which these coding rules have been followed. Note that changes to the survey have been made to try and minimize the ability to make such errors:</p>
+<pre class="r"><code>check_dates = coronanet %&gt;%
+  mutate(check_date = paste(date_announced, date_start, date_end ))%&gt;%
+  group_by(policy_id, type_sub_cat) %&gt;%
+  summarise(unique_rows = n_distinct(check_date),
+            date_error_dum = ifelse(unique_rows != n(), 1,0)
+            
+            ) %&gt;%
+  ungroup()</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;policy_id&#39;. You can override using the `.groups` argument.</code></pre>
+<pre class="r"><code>if (all(check_dates$date_error_dum == 0)){
+  print(&#39;All Good!&#39;)
+} else{
+  print(paste0(&#39;Errors in coding dates found for  &#39;, table(check_dates$date_error_dum)[2], &#39; records&#39;))
+}</code></pre>
+<pre><code>## [1] &quot;Errors in coding dates found for  1977 records&quot;</code></pre>
+</div>
+</div>
+<div id="type-type_sub_cat-combinations" class="section level2">
+<h2>[type]-[type_sub_cat] combinations</h2>
+<p>Policies are divided into 20 broad types (variable ‘type’) and 100+ (variable ‘type_sub_cat’). The broad policy types available in the data are as follows:</p>
+<ul>
+<li>Anti-Disinformation Measures</li>
+<li>Closure and Regulation of Schools</li>
+<li>COVID-19 Vaccines</li>
+<li>Curfew</li>
+<li>Declaration of Emergency</li>
+<li>External Border Restrictions</li>
+<li>Health Monitoring</li>
+<li>Health Resources</li>
+<li>Health Testing</li>
+<li>Hygiene</li>
+<li>Internal Border Restrictions</li>
+<li>Lockdown</li>
+<li>New Task Force, Bureau or Administrative Configuration</li>
+<li>Public Awareness Measures</li>
+<li>Quarantine</li>
+<li>Restriction and Regulation of Businesses</li>
+<li>Restriction and Regulation of Government Services</li>
+<li>Restrictions of Mass Gatherings</li>
+<li>Social Distancing</li>
+<li>Other Policy Not Listed Above</li>
+</ul>
+<p>Policy sub-types (variable ‘type’) are linked to specific types (variable ‘type_sub_cat’). Because of changes over time to the CoronaNet taxonomy, some sub types may be deprecated and will need to be cleaned in order to be consistent with the current taxonomy. For more information about when changes were made to the CoronaNet taxonomy for a given variable, please see the <a href="https://docs.google.com/spreadsheets/d/1FJqssZZqjQcA-jZhRnC_Av9rlii3abG8r7utBeuzTEQ/edit?usp=sharing">CoronaNet Data Availability Sheet</a></p>
+<div id="types-that-do-not-have-any-associated-type_sub_cat" class="section level3">
+<h3>[type]s that do not have any associated [type_sub_cat]</h3>
+<p>The following variables do not have sub_types associated with them:</p>
+<pre class="r"><code># 
+
+type_nosubtype = coronanet %&gt;%
+                  filter(type %in% c( &#39;Declaration of Emergency&#39;,
+                        &#39;Lockdown&#39;,
+                        &#39;Other Policy Not Listed Above&#39;)) %&gt;%
+              select(type_sub_cat) %&gt;%
+              pull %&gt;%
+              unique
+
+
+suppressWarnings(if (is.na(type_nosubtype)) {
+  print(&#39;All Good&#39;)
+} else{
+  print(&quot;Error: Policy types that shouldn&#39;t have sub_types have sub_types associated with them&quot;)
+})</code></pre>
+<pre><code>## [1] &quot;All Good&quot;</code></pre>
+<p>Aside from the policy types above, the following shows the unique ‘type-type_sub_cat’ combinations that should in theory be possible. When this is not the case, the number of policies associated with a given deprecated sub type is shown.</p>
+</div>
+<div id="closure-and-regulation-of-schools-type-type_sub_cat-combinations" class="section level3">
+<h3>Closure and Regulation of Schools [type]-[type_sub_cat] combinations</h3>
+<p>The ‘Closure and Regulation of Schools’ policy type can only take on one of the following sub types:</p>
+<ul>
+<li>Preschool or childcare facilities (generally for children ages 5 and below)</li>
+<li>Primary Schools (generally for children ages 10 and below)</li>
+<li>Secondary Schools (generally for children ages 10 to 18)</li>
+<li>Higher education institutions (i.e. degree granting institutions)</li>
+</ul>
+<pre class="r"><code>type_schools = coronanet %&gt;%
+      filter(type == &#39;Closure and Regulation of Schools&#39;)%&gt;%
+      select(type_sub_cat) %&gt;%
+      pull %&gt;%
+      table
+
+type_schools_true &lt;- c(
+  &quot;Preschool or childcare facilities (generally for children ages 5 and below)&quot; ,
+  &quot;Primary Schools (generally for children ages 10 and below)&quot;  ,
+  &quot;Secondary Schools (generally for children ages 10 to 18)&quot;  ,
+  &quot;Higher education institutions (i.e. degree granting institutions)&quot;,
+   &quot;Higher education (i.e. degree granting institutions)&quot; 
+)
+
+if (all(names(type_schools) %in% type_schools_true))
+ {
+  print(&#39;All Good&#39;)
+} else{
+  print(&quot;Error: &#39;Closure and Regulation of Schools&#39; policy type has an incorrect policy sub-type associated with it&quot;)
+  
+     
+type_schools[which( names(type_schools) %in% setdiff(names(type_schools), type_schools_true))]
+
+  
+}</code></pre>
+<pre><code>## [1] &quot;All Good&quot;</code></pre>
+</div>
+<div id="covid-19-vaccines-type-type_sub_cat-combinations" class="section level3">
+<h3>COVID-19 Vaccines [type]-[type_sub_cat] combinations</h3>
+<p>The ‘COVID-19 Vaccines’ policy type can only take on one of the following sub types:</p>
+<ul>
+<li>Resources for research and development of a COVID-19 vaccine</li>
+<li>Regulatory approval process for administering the COVID-19 vaccine</li>
+<li>Production of COVID-19 vaccines</li>
+<li>Purchase of COVID-19 vaccines <!-- * Distribution (shipping; storage; administration) of COVID-19 vaccines --></li>
+<li>Storage of the vaccine"<br />
+</li>
+<li>Shipping of the vaccine",</li>
+<li>"Administering of the vaccine (i.e. giving people the vaccine shot)</li>
+<li>Donations of the vaccine (i.e. from one government to another)</li>
+<li>Recognition of full vaccination status</li>
+</ul>
+<pre class="r"><code>type_vaccines = coronanet %&gt;%
+  filter(type == &#39;COVID-19 Vaccines&#39;)%&gt;%
+  select(type_sub_cat) %&gt;%
+  pull %&gt;%
+ table
+
+
+type_vaccines_true &lt;- c(
+  &quot;Resources for research and development of a COVID-19 vaccine&quot;  ,
+  &quot;Regulatory approval process for administering the COVID-19 vaccine&quot;  ,
+  &quot;Production of COVID-19 vaccines&quot;,
+  &quot;Purchase of COVID-19 vaccines&quot;,
+  &quot;Shipping of the vaccine&quot;,
+  &quot;Storage of the vaccine&quot; ,
+  &quot;Administering of the vaccine (i.e. giving people the vaccine shot)&quot;,
+  &quot;Donations of the vaccine (i.e. from one government to another)&quot;,
+  &quot;Recognition of full vaccination status&quot;
+)
+
+if (all(names(type_vaccines) %in% type_vaccines_true )
+) {
+  print(&#39;All Good&#39;)
+} else{
+  print(&quot;Error: &#39;COVID-19 Vaccines&#39; policy type has an incorrect policy sub-type associated with it: &quot;)
+  
+   
+type_vaccines[which( names(type_vaccines) %in% setdiff(names(type_vaccines), type_vaccines_true ))]
+
+
+
+}</code></pre>
+<pre><code>## [1] &quot;Error: &#39;COVID-19 Vaccines&#39; policy type has an incorrect policy sub-type associated with it: &quot;</code></pre>
+<pre><code>## Distribution (shipping; storage; administration) of COVID-19 vaccines 
+##                                                                   163</code></pre>
+</div>
+<div id="external-border-restrictions-type-type_sub_cat-combinations" class="section level3">
+<h3>External Border Restrictions [type]-[type_sub_cat] combinations</h3>
+<p>The ‘External Border Restrictions’ policy type can only take on one of the following sub types:</p>
+<ul>
+<li>Health Screenings (e.g. temperature checks)</li>
+<li>Health Certificates</li>
+<li>Travel History Form (e.g. documents where traveler has recently been)</li>
+<li>Visa restrictions (e.g. suspend issuance of visa)</li>
+<li>Visa extensions (e.g. visa validity extended)</li>
+<li>Other External Border Restriction</li>
+<li>Total border crossing ban</li>
+</ul>
+<pre class="r"><code>type_ext_border= coronanet %&gt;%
+  filter(type == &#39;External Border Restrictions&#39;)%&gt;%
+  select(type_sub_cat) %&gt;%
+  pull %&gt;%
+ table
+
+type_ext_border_true &lt;- c(  
+    &quot;Health Screenings (e.g. temperature checks)&quot; ,
+    &quot;Health Certificates&quot;,
+    &quot;Travel History Form (e.g. documents where traveler has recently been)&quot;,
+    &quot;Negative COVID-19 Test&quot;  ,
+    &quot;Proof of COVID-19 vaccination&quot;,
+    &quot;3G: Must be either (i) vaccinated (ii) have a valid COVID-19 negative test within a certain time frame or (iii) recovered from COVID-19&quot;,
+    &quot;2G: Must be (i) either vaccinated or (ii) recovered from COVID-19&quot; ,
+    &quot;Institution can decide whether to enforce 2G or 3G (see above for definitions for 2G and 3G)&quot; ,
+    &quot;Visa restrictions (e.g. suspend issuance of visa)&quot;,
+    &quot;Visa extensions (e.g. visa validity extended)&quot;,
+    &quot;Other External Border Restriction&quot;,
+    &quot;Total border crossing ban&quot;)
+
+if (all(names(type_ext_border) %in% type_ext_border_true)) {
+  print(&#39;All Good&#39;)
+} else{
+  print(&quot;Error: &#39;External Border Restrictions&#39; policy type has an incorrect policy sub-type associated with it&quot;)
+  
+type_ext_border[which( names(type_ext_border) %in% setdiff(names(type_ext_border),type_ext_border_true
+))]
+}</code></pre>
+<pre><code>## [1] &quot;All Good&quot;</code></pre>
+</div>
+<div id="health-monitoring-type-type_sub_cat-combinations" class="section level3">
+<h3>Health Monitoring [type]-[type_sub_cat] combinations</h3>
+<p>The Health Monitoring policy type can only take on one of the following sub types:</p>
+<ul>
+<li>A snapshot of a person’s health at a given point in time</li>
+<li>A person’s absolute (e.g. GPS) location over time</li>
+<li>Who a person has come into contact with over time</li>
+<li>A community’s epidemiological status</li>
+</ul>
+<pre class="r"><code>type_health_mon= coronanet %&gt;%
+  filter(type == &#39;Health Monitoring&#39;)%&gt;%
+  select(type_sub_cat) %&gt;%
+  pull %&gt;%
+ table
+
+type_health_mon_true &lt;- c(
+    &quot;A snapshot of a person’s health at a given point in time&quot;  ,
+    &quot;A person’s absolute (e.g. GPS) location over time&quot;  ,
+    &quot;Who a person has come into contact with over time&quot;,
+    &quot;A community’s epidemiological status&quot;
+)
+
+if (all(names(type_health_mon) %in% type_health_mon_true)
+) {
+  print(&#39;All Good&#39;)
+} else{
+  print(&quot;Error: &#39;Health Monitoring&#39; policy type has an incorrect policy sub-type associated with it&quot;)
+  
+type_health_mon[which( names(type_health_mon) %in% setdiff(names(type_health_mon),type_health_mon_true
+))]
+}</code></pre>
+<pre><code>## [1] &quot;All Good&quot;</code></pre>
+</div>
+<div id="health-resources-type-type_sub_cat-combinations" class="section level3">
+<h3>Health Resources [type]-[type_sub_cat] combinations</h3>
+<p>The Health Resources policy type can only take on one of the following sub types:</p>
+<ul>
+<li>Masks</li>
+<li>Ventilators</li>
+<li>Personal Protective Equipment</li>
+<li>Hand Sanitizer</li>
+<li>Test Kits</li>
+<li>Medicine/Drugs</li>
+<li>Non COVID-19 Vaccines</li>
+<li>Dry ice for COVID-19 vaccine storage</li>
+<li>Cold storage capacity for COVID-19 vaccines</li>
+<li>Thermal cyclers (PCR machines/DNA amplifiers)</li>
+<li>Syringes</li>
+<li>Unspecified Health Materials</li>
+<li>Other Health Materials</li>
+<li>Hospitals</li>
+<li>Temporary Quarantine Centers</li>
+<li>Temporary Medical Centers</li>
+<li>Public Testing Facilities (e.g. drive-in testing for COVID-19)</li>
+<li>Health Research Facilities</li>
+<li>Unspecified Health Infrastructure</li>
+<li>Other Health Infrastructure</li>
+<li>Doctors</li>
+<li>Nurses</li>
+<li>Army (medical) corps</li>
+<li>Health Volunteers</li>
+<li>Unspecified Health Staff</li>
+<li>Other Heath Staff</li>
+<li>Health Insurance</li>
+</ul>
+<pre class="r"><code>type_health_resource= coronanet %&gt;%
+  filter(type == &#39;Health Resources&#39;)%&gt;%
+  select(type_sub_cat) %&gt;%
+  pull %&gt;%
+table
+
+type_health_resource_true &lt;-c(
+         &quot;Masks&quot;,
+        &quot;Ventilators&quot;,
+        &quot;Personal Protective Equipment&quot;,
+        &quot;Hand Sanitizer&quot; ,
+        &quot;Test Kits&quot; ,
+        &quot;Medicine/Drugs&quot;,
+        &quot;Non COVID-19 Vaccines&quot;,
+        &#39;Dry ice for COVID-19 vaccine storage&#39;,
+        &#39;Cold storage capacity for COVID-19 vaccines&#39;,
+        &#39;Thermal cyclers (PCR machines/DNA amplifiers)&#39;,
+        &#39;Syringes&#39;,
+        &quot;Unspecified Health Materials&quot;,
+        &quot;Other Health Materials&quot;,
+        &quot;Hospitals&quot;,
+        &quot;Temporary Quarantine Centers&quot;,
+        &quot;Temporary Medical Centers&quot;,
+        &quot;Public Testing Facilities (e.g. drive-in testing for COVID-19)&quot; ,
+        &quot;Health Research Facilities&quot;,
+        &quot;Unspecified Health Infrastructure&quot;,
+        &quot;Other Health Infrastructure&quot;,
+        &quot;Doctors&quot; ,
+        &quot;Nurses&quot; ,
+        &quot;Non-COVID-19 Vaccines&quot;,
+        &#39;Army (medical) corps&#39;,
+        &quot;Health Volunteers&quot; ,
+        &quot;Unspecified Health Staff&quot; ,
+        &quot;Other Heath Staff&quot;,
+        &quot;Health Insurance&quot;
+)
+
+if (all(names(type_health_resource) %in% type_health_resource_true)) {
+  print(&#39;All Good&#39;)
+} else{
+  print(&quot;Error: &#39;Health Resources&#39; policy type has an incorrect policy sub-type associated with it:&quot;)
+  
+   
+type_health_resource[which( names(type_health_resource) %in% setdiff(names(type_health_resource), type_health_resource_true
+))]  
+  
+}</code></pre>
+<pre><code>## [1] &quot;All Good&quot;</code></pre>
+</div>
+<div id="health-testing-type-type_sub_cat-combinations" class="section level3">
+<h3>Health Testing [type]-[type_sub_cat] combinations</h3>
+<p>The Health Testing policy type can only take on one of the following sub types:</p>
+<ul>
+<li>Self-testing</li>
+<li>Drive-in Testing Centers</li>
+<li>Mobile Health Testing Stations (excluding drive-ins)</li>
+<li>Fixed Health Testing stations (excluding drive-ins)</li>
+<li>Door-to-door Testing</li>
+<li>Health testing of entire population under the government’s jurisdiction</li>
+<li>Other Health Testing</li>
+</ul>
+<pre class="r"><code>type_health_testing= coronanet %&gt;%
+  filter(type == &#39;Health Testing&#39;)%&gt;%
+  select(type_sub_cat) %&gt;%
+  pull %&gt;%
+table
+
+type_health_testing_true &lt;- c(
+         &quot;Self-testing (e.g. at home)&quot;  ,
+        &quot;Drive-in Testing Centers&quot;  ,
+        &quot;Mobile Health Testing Stations (excluding drive-ins)&quot;,
+        &quot;Fixed Health Testing stations (excluding drive-ins)&quot;,
+        &quot;Door-to-door Testing&quot;,
+        &quot;Health testing of entire population under the government&#39;s jurisdiction&quot;,
+        &quot;Other Health Testing&quot;
+)
+
+if (all(names(type_health_testing) %in% type_health_testing_true ))
+ {
+  print(&#39;All Good&#39;)
+} else{
+ print(&quot;Error: &#39;Health Testing&#39; policy type has an incorrect policy sub-type associated with it&quot;)
+  
+type_health_testing[which( names(type_health_testing) %in% setdiff(names(type_health_testing), type_health_testing_true
+))]  
+}</code></pre>
+<pre><code>## [1] &quot;All Good&quot;</code></pre>
+</div>
+<div id="hygiene-type-type_sub_cat-combinations" class="section level3">
+<h3>Hygiene [type]-[type_sub_cat] combinations</h3>
+<p>The ‘Hygiene’ policy type can only take on one of the following sub types:</p>
+<ul>
+<li>Hygiene measures for commercial areas</li>
+<li>Hygiene measures for public areas</li>
+<li>Hygiene measures for public transport</li>
+<li>Burial procedures</li>
+<li>Other Areas Hygiene Measures Applied</li>
+</ul>
+<pre class="r"><code>type_hygiene= coronanet %&gt;%
+  filter(type == &#39;Hygiene&#39;)%&gt;%
+  select(type_sub_cat) %&gt;%
+  pull %&gt;%
+table
+
+type_hygiene_true &lt;- c(
+        &quot;Hygiene measures for commercial areas&quot;  ,
+        &quot;Hygiene measures for public areas&quot;   ,
+        &quot;Hygiene measures for public transport&quot;  ,
+        &quot;Burial procedures&quot;,
+        &quot;Other Areas Hygiene Measures Applied&quot;
+)
+
+if (all(names(type_hygiene) %in% type_hygiene_true)
+) {
+  print(&#39;All Good&#39;)
+} else{
+  print(&quot;Error: &#39;Hygiene&#39; policy type has an incorrect policy sub-type associated with it&quot;)
+  
+  type_hygiene[which( names(type_hygiene) %in% setdiff(names(type_hygiene), type_hygiene_true
+))]  
+}</code></pre>
+<pre><code>## [1] &quot;All Good&quot;</code></pre>
+</div>
+<div id="new-task-force-bureau-or-administrative-configuration-type-type_sub_cat-combinations" class="section level3">
+<h3>New Task Force, Bureau or Administrative Configuration [type]-[type_sub_cat] combinations</h3>
+<p>The ‘New Task Force, Bureau or Administrative Configuration’ policy type can only take on one of the following sub types:</p>
+<ul>
+<li>New Task Force or Bureau (i.e. establishment of a temporary body)</li>
+<li>Existing government entity given new powers</li>
+<li>Cooperation among different jurisdictional entities (e.g. treaties or agreements among countries or provinces)</li>
+<li>Other Administrative Configurations</li>
+</ul>
+<pre class="r"><code>type_new_task= coronanet %&gt;%
+  filter(type == &#39;New Task Force, Bureau or Administrative Configuration&#39;)%&gt;%
+  select(type_sub_cat) %&gt;%
+  pull %&gt;%
+table
+
+type_new_task_true &lt;-c(
+    &quot;New Task Force or Bureau (i.e. establishment of a temporary body)&quot;  ,
+        &quot;Existing government entity given new powers&quot;  ,
+        &quot;Cooperation among different jurisdictional entities (e.g. treaties or agreements among countries or provinces)&quot;,
+        &quot;Other Administrative Configurations&quot;
+
+)
+
+if (all(names(type_new_task) %in% type_new_task_true)
+) {
+  print(&#39;All Good&#39;)
+} else{
+  print(&quot;Error: &#39;New Task Force, Bureau or Administrative Configuration&#39; policy type has an incorrect policy sub-type associated with it&quot;)
+  
+ type_new_task[which( names(type_new_task) %in% setdiff(names(type_new_task), type_new_task_true
+))]  
+  
+}</code></pre>
+<pre><code>## [1] &quot;All Good&quot;</code></pre>
+</div>
+<div id="public-awareness-measures-type-type_sub_cat-combinations" class="section level3">
+<h3>Public Awareness Measures [type]-[type_sub_cat] combinations</h3>
+<p>The ‘Public Awareness Measures’ policy type can only take on one of the following sub types:</p>
+<ul>
+<li>Disseminating information related to COVID-19 to the public that is reliable and factually accurate</li>
+<li>Gathering information related to COVID-19 from the public</li>
+<li>Both Disseminating and Gathering information related to COVID-19</li>
+</ul>
+<pre class="r"><code>type_pub_awareness= coronanet %&gt;%
+  filter(type == &#39;Public Awareness Measures&#39;)%&gt;%
+  select(type_sub_cat) %&gt;%
+  pull %&gt;%
+table
+
+type_pub_awareness_true &lt;-c(
+   &quot;Disseminating information related to COVID-19 to the public that is reliable and factually accurate&quot;  ,
+        &quot;Gathering information related to COVID-19 from the public&quot;  ,
+        &quot;Both Disseminating and Gathering information related to COVID-19&quot;
+
+
+)
+
+if (all(names(type_pub_awareness) %in% type_pub_awareness_true)
+) {
+  print(&#39;All Good&#39;)
+} else{
+  print(&quot;Error: &#39;Public Awareness Measures&#39; policy type has an incorrect policy sub-type associated with it&quot;)
+  
+ type_pub_awareness[which( names(type_pub_awareness) %in% setdiff(names(type_pub_awareness), type_pub_awareness_true
+))]  
+}</code></pre>
+<pre><code>## [1] &quot;All Good&quot;</code></pre>
+</div>
+<div id="quarantine-type-type_sub_cat-combinations" class="section level3">
+<h3>Quarantine [type]-[type_sub_cat] combinations</h3>
+<p>The ‘Quarantine’ policy type can only take on one of the following sub types:</p>
+<ul>
+<li>Self-Quarantine (i.e. quarantine at home)</li>
+<li>Government Quarantine (i.e. quarantine at a government hotel or facility)</li>
+<li>Quarantine outside the home or government facility (i.e. quarantine in a hotel)</li>
+<li>Other Quarantine</li>
+</ul>
+<pre class="r"><code>type_quarantine = coronanet %&gt;%
+  filter(type %in% c( &quot;Quarantine&quot;)) %&gt;%
+  select(type_sub_cat) %&gt;%
+  pull %&gt;%
+table
+
+type_quarantine_true &lt;- c(
+  &quot;Self-Quarantine (i.e. quarantine at home)&quot;,
+  &quot;Government Quarantine (i.e. quarantine at a government hotel or facility)&quot;,
+  &quot;Quarantine outside the home or government facility (i.e. quarantine in a hotel)&quot;,
+  &quot;Other Quarantine&quot;
+)
+
+if (all(names(type_quarantine) %in% type_quarantine_true)
+) {
+  print(&#39;All Good&#39;)
+} else{
+  print(&quot;Error: Quarantine policy type has an incorrect policy sub-type associated with it&quot;)
+  
+  
+ type_quarantine[which( names(type_quarantine) %in% setdiff(names(type_quarantines), type_quarantine_true
+))]  
+}</code></pre>
+<pre><code>## [1] &quot;All Good&quot;</code></pre>
+</div>
+<div id="restriction-and-regulation-of-businesses-type-type_sub_cat-combinations" class="section level3">
+<h3>Restriction and Regulation of Businesses [type]-[type_sub_cat] combinations</h3>
+<p>The ‘Restriction and Regulation of Businesses’ policy type can only take on one of the following sub types:</p>
+<ul>
+<li>Retail Businesses</li>
+<li>Restaurants</li>
+<li>Bars</li>
+<li>Shopping Centers</li>
+<li>Commercial Businesses</li>
+<li>Personal Grooming Businesses (e.g. hair salons)</li>
+<li>Other Businesses</li>
+<li>Supermarkets/grocery stores</li>
+<li>Private health offices (e.g. doctors offices, dentists, etc)</li>
+<li>Private health offices</li>
+<li>Paid lodgings (e.g. hotels; motels)</li>
+<li>Pharmacies</li>
+<li>Agriculture, forestry and fishing</li>
+<li>Agriculture; forestry and fishing</li>
+<li>Mining and quarrying</li>
+<li>Electricity; gas, ;steam ;and air conditioning supply</li>
+<li>Water supply; sewerage; waste management and remediation activities</li>
+<li>Construction</li>
+<li>Telecommunications</li>
+<li>Information service activities</li>
+<li>Publishing activities</li>
+<li>Financial service activities except insurance and pension funding</li>
+<li>Insurance; reinsurance; and pension funding except compulsory social security</li>
+<li>Transportation (land; water and air)</li>
+<li>Warehousing and support activities for transportation</li>
+<li>Other Businesses</li>
+<li>All or unspecified businesses</li>
+</ul>
+<pre class="r"><code>type_biz = coronanet %&gt;%
+  filter(type %in% c( &quot;Restriction and Regulation of Businesses&quot;)) %&gt;%
+  select(type_sub_cat) %&gt;%
+  pull %&gt;%
+  table
+
+type_biz_true &lt;- c(
+   &quot;Retail Businesses&quot;,
+        &quot;Restaurants&quot;,
+        &quot;Bars&quot;,
+        &quot;Shopping Centers&quot; ,
+        &quot;Non-Essential Commercial Businesses&quot; ,
+        &quot;Commercial Businesses&quot; ,
+        &quot;Personal Grooming Businesses (e.g. hair salons)&quot;,
+        &quot;Other Businesses&quot;,
+        &quot;Supermarkets/grocery stores&quot;,
+        &quot;Private health offices (e.g. doctors offices, dentists, etc)&quot;,
+        &quot;Private health offices&quot;,
+        &quot;Paid lodgings (e.g. hotels; motels)&quot;,
+        &quot;Pharmacies&quot;,
+        &quot;Agriculture, forestry and fishing&quot;,
+        &quot;Agriculture; forestry and fishing&quot;,
+        &quot;Mining and quarrying&quot;,
+        &quot;Electricity; gas; steam ;and air conditioning supply &quot;,
+        &quot;Water supply; sewerage; waste management and remediation activities&quot;,
+        &quot;Construction&quot;,
+        &quot;Telecommunications&quot;,
+        &quot;Information service activities&quot;,
+        &quot;Publishing activities&quot;,
+        &quot;Financial service activities except insurance and pension funding&quot;,
+        &quot;Insurance; reinsurance; and pension funding except compulsory social security&quot;,
+        &quot;Transportation (land; water and air)&quot;,
+        &quot;Warehousing and support activities for transportation&quot;,
+        &quot;Other Businesses&quot;,
+        &quot;All or unspecified businesses&quot;
+)
+
+if (all(names(type_biz) %in% type_biz_true)
+) {
+  print(&#39;All Good&#39;)
+} else{
+  print(&quot;Error: &#39;Restriction and Regulation of Businesses&#39; policy type has an incorrect policy sub-type associated with it&quot;)
+  
+  
+type_biz[which( names(type_biz) %in% setdiff(names(type_biz),  type_biz_true
+))]    
+  
+}</code></pre>
+<pre><code>## [1] &quot;Error: &#39;Restriction and Regulation of Businesses&#39; policy type has an incorrect policy sub-type associated with it&quot;</code></pre>
+<pre><code>## .
+##              All or unspecified essential businesses 
+##                                                   21 
+##          All or unspecified non-essential businesses 
+##                                                   12 
+## Electricity; gas; steam ;and air conditioning supply 
+##                                                  188 
+##                           Other Essential Businesses 
+##                                                   13 
+##                       Other Non-Essential Businesses 
+##                                                   68</code></pre>
+</div>
+<div id="restriction-and-regulation-of-government-services-type-type_sub_cat-combinations" class="section level3">
+<h3>Restriction and Regulation of Government Services [type]-[type_sub_cat] combinations</h3>
+<p>The “Restriction and Regulation of Government Services” policy type can only take on one of the following sub types:</p>
+<ul>
+<li>Issuing of permits/certificates and/or processing of government documents</li>
+<li>Election procedures (e.g. mail-in voting)</li>
+<li>Regulations on publicly provided waste management services</li>
+<li>Beaches</li>
+<li>Campsites</li>
+<li>Parks</li>
+<li>Tourist Sites</li>
+<li>Unspecified outdoor spaces</li>
+<li>Other public outdoor spaces</li>
+<li>Public libraries</li>
+<li>Public museums/galleries</li>
+<li>Public courts</li>
+<li>Unspecified public facilities</li>
+<li>Other public facilities</li>
+<li>Regulated hours government services available (e.g. government services office open for certain hours only)</li>
+<li>Regulated government working hours (e.g. work from home policies for government workers)</li>
+<li>Regulations on government meetings (including e.g. suspension of parliament)</li>
+<li>All government services restricted</li>
+</ul>
+<pre class="r"><code>type_gov = coronanet %&gt;%
+  filter(type %in% c( &quot;Restriction and Regulation of Government Services&quot;)) %&gt;%
+  select(type_sub_cat) %&gt;%
+  pull %&gt;%
+table
+
+type_gov_true &lt;-  c(
+         &quot;Issuing of permits/certificates and/or processing of government documents&quot;,
+        &quot;Elections&quot;,
+        &quot;Regulations on publicly provided waste management services&quot;,
+         &quot;Issuing of documents (paper or digital) for validating COVID-19 health status&quot;,
+        &quot;Beaches&quot;  ,
+        &quot;Campsites&quot;,
+        &quot;Parks&quot;,
+        &quot;Tourist Sites&quot;,
+        &quot;Unspecified outdoor spaces&quot;,
+        &quot;Other public outdoor spaces&quot;,
+        &#39;Public libraries&#39;,
+        &#39;Public museums/galleries&#39;,
+        &quot;Public courts&quot;,
+        &#39;Unspecified public facilities&#39;,
+        &#39;Other public facilities&#39;,
+        &quot;Regulated hours government services available (e.g. government services office open for certain hours only)&quot;,
+        &quot;Regulated government working hours (e.g. work from home policies for government workers)&quot;,
+        &quot;Regulations on government meetings (including e.g. suspension of parliament)&quot;,
+         &quot;Other government service not specified above&quot; ,
+      &quot;All government services regulated&quot;  
+)
+
+if (all(names(type_gov) %in% type_gov_true)
+) {
+  print(&#39;All Good&#39;)
+} else{
+  print(&quot;Error: &#39;Restriction and Regulation of Government Services&#39; policy type has an incorrect policy sub-type associated with it&quot;)
+  
+  type_gov[which( names(type_gov) %in% setdiff(names(type_gov),  type_gov_true
+))]   
+}</code></pre>
+<pre><code>## [1] &quot;All Good&quot;</code></pre>
+</div>
+<div id="restrictions-of-mass-gatherings-type-type_sub_cat-combinations" class="section level3">
+<h3>Restrictions of Mass Gatherings [type]-[type_sub_cat] combinations</h3>
+<p>The ‘Restrictions of Mass Gatherings’ policy type can only take on one of the following sub types:</p>
+<ul>
+<li>Annually recurring event allowed to occur with certain conditions</li>
+<li>Cancellation of an annually recurring event</li>
+<li>Postponement of an annually recurring event</li>
+<li>Cancellation of a recreational or commercial event</li>
+<li>Postponement of a recreational or commercial event</li>
+<li>Attendance at religious services restricted (e.g. mosque/church closings)</li>
+<li>Prison population reduced (e.g. early release of prisoners)</li>
+<li>Events at private residencies restricted</li>
+<li>Events at private residencies restricted (e.g. parties held at home)</li>
+<li>Event(s) allowed to occur but no audience is allowed</li>
+<li>Other mass gatherings not specified above restricted</li>
+</ul>
+<pre class="r"><code>type_mass = coronanet %&gt;%
+  filter(type %in% c( &quot;Restrictions of Mass Gatherings&quot;)) %&gt;%
+  select(type_sub_cat) %&gt;%
+  pull %&gt;%
+table
+
+type_mass_true &lt;-
+  c(
+      &quot;All/Unspecified mass gatherings restricted&quot;,
+      &quot;All Recreational or commercial events allowed to occur with conditions&quot;, 
+      &quot;Annually recurring event allowed to occur with certain conditions&quot;, 
+      &quot;Cancellation of a recreational or commercial event&quot;, 
+      &quot;Cancellation of an annually recurring event&quot;, 
+      &quot;Postponement of a recreational or commercial event&quot;, 
+      &quot;Postponement of an annually recurring event&quot;, 
+      &quot;Attendance at religious services restricted (e.g. mosque/church closings)&quot;, 
+      &quot;Prison population reduced (e.g. early release of prisoners)&quot;, 
+      &quot;Funeral and mourning rituals&quot;, 
+      &quot;Weddings and marriage rituals&quot;, 
+      &quot;Events at private residencies restricted&quot;,
+      &quot;Single Recreational or commercial event allowed to occur with conditions&quot;,
+      &quot;Other mass gatherings not specified above restricted&quot;
+)
+
+if (all(names(type_mass) %in% type_mass_true)
+) {
+  print(&#39;All Good&#39;)
+} else{
+  print(&quot;Error: &#39;Restrictions of Mass Gatherings&#39; policy type has an incorrect policy sub-type associated with it&quot;)
+  
+    type_mass[which( names(type_mass) %in% setdiff(names(type_mass),  type_mass_true
+))]   
+}</code></pre>
+<pre><code>## [1] &quot;All Good&quot;</code></pre>
+</div>
+<div id="social-distancing-type-type_sub_cat-combinations" class="section level3">
+<h3>Social Distancing [type]-[type_sub_cat] combinations</h3>
+<p>The ‘Social Distancing’ policy type can only take on one of the following sub types:</p>
+<ul>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart</li>
+<li>Keep a distance of some other distance not listed above. Please note the distance in meters in the text entry.</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at All government services regulated</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at All or unspecified businesses</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at Bars * Keeping a distance of at least 6 feet or 1.5 meters apart at Beaches</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at Campsites</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at Commercial Businesses</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at Construction</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at Electricity; gas; steam ;and air conditioning supply</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at Financial service activities except insurance and pension funding * Keeping a distance of at least 6 feet or 1.5 meters apart at Higher education institutions (i.e. degree granting institutions)</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at Information service activities</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at Insurance; reinsurance; and pension funding except compulsory social security * Keeping a distance of at least 6 feet or 1.5 meters apart at Issuing of documents (paper or digital) for validating COVID-19 health status</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at Issuing of permits/certificates and/or processing of government documents</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at Mining and quarrying</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at Other Businesses</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at Other government service not specified above</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at Other public facilities</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at Other public outdoor spaces</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at Paid lodgings (e.g. hotels; motels)</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at Parks</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at Personal Grooming Businesses (e.g. hair salons)</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at Pharmacies</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at Preschool or childcare facilities (generally for children ages 5 and below)</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at Primary Schools (generally for children ages 10 and below)</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at Private health offices</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at Public courts * Keeping a distance of at least 6 feet or 1.5 meters apart at Public libraries</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at Public museums/galleries</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at Publishing activities</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at Regulated government working hours (e.g. work from home policies for government workers)</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at Regulated hours government services available (e.g. government services office open for certain hours only)</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at Regulations on government meetings (including e.g. suspension of parliament)</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at Regulations on publicly provided waste management services</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at Restaurants</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at Retail Businesses</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at Secondary Schools (generally for children ages 10 to 18)</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at Shopping Centers</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at Supermarkets/grocery stores</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at Telecommunications</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at Tourist Sites</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at Transportation (land; water and air)</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at Unspecified outdoor spaces</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at Unspecified public facilities</li>
+<li>Keeping a distance of at least 6 feet or 1.5 meters apart at Warehousing and support activities for transportation</li>
+<li>Restrictions on private vehicles in public circulation</li>
+<li>Restrictions on patients leaving nursing home/long term care facility</li>
+<li>Restrictions on ridership of buses</li>
+<li>Restrictions on ridership of subways and trams</li>
+<li>Restrictions on ridership of trains</li>
+<li>Restrictions on visiting cemeteries</li>
+<li>Restrictions on visiting hospitals</li>
+<li>Restrictions on visiting nursing homes/long term care facilities</li>
+<li>Restrictions on visiting other group residential facilities (e.g. orphanages; group homes)</li>
+<li>Restrictions on visiting other locations</li>
+<li>Restrictions on visiting prisons</li>
+<li>Restrictions ridership of other forms of public transportation (please include details in the text entry)</li>
+<li>Closing/suspending operations of nursing homes/long term care facilities</li>
+<li>Wearing Masks in all indoor spaces</li>
+<li>Wearing Masks in all public spaces/everywhere</li>
+<li>Wearing Masks inside All government services regulated</li>
+<li>Wearing Masks inside All or unspecified businesses</li>
+<li>Wearing Masks inside Bars</li>
+<li>Wearing Masks inside Beaches</li>
+<li>Wearing Masks inside Campsites</li>
+<li>Wearing Masks inside Commercial Businesses</li>
+<li>Wearing Masks inside Construction</li>
+<li>Wearing Masks inside Electricity; gas; steam ;and air conditioning supply</li>
+<li>Wearing Masks inside Financial service activities except insurance and pension funding</li>
+<li>Wearing Masks inside Higher education institutions (i.e. degree granting institutions)</li>
+<li>Wearing Masks inside Information service activities</li>
+<li>Wearing Masks inside Insurance; reinsurance; and pension funding except compulsory social security</li>
+<li>Wearing Masks inside Issuing of documents (paper or digital) for validating COVID-19 health status</li>
+<li>Wearing Masks inside Issuing of permits/certificates and/or processing of government documents</li>
+<li>Wearing Masks inside Mining and quarrying</li>
+<li>Wearing Masks inside Other Businesses</li>
+<li>Wearing Masks inside Other government service not specified above</li>
+<li>Wearing Masks inside Other public facilities</li>
+<li>Wearing Masks inside Other public outdoor spaces</li>
+<li>Wearing Masks inside Paid lodgings (e.g. hotels; motels)</li>
+<li>Wearing Masks inside Parks</li>
+<li>Wearing Masks inside Personal Grooming Businesses (e.g. hair salons)</li>
+<li>Wearing Masks inside Pharmacies</li>
+<li>Wearing Masks inside Preschool or childcare facilities (generally for children ages 5 and below)</li>
+<li>Wearing Masks inside Preschools or childcare facilities (generally for children age 5 and below)</li>
+<li>Wearing Masks inside Primary Schools (generally for children ages 10 and below)</li>
+<li>Wearing Masks inside Private health offices</li>
+<li>Wearing Masks inside Public courts</li>
+<li>Wearing Masks inside Public libraries</li>
+<li>Wearing Masks inside Public museums/galleries</li>
+<li>Wearing Masks inside Public transportation</li>
+<li>Wearing Masks inside Publishing activities</li>
+<li>Wearing Masks inside Regulated government working hours (e.g. work from home policies for government workers)</li>
+<li>Wearing Masks inside Regulated hours government services available (e.g. government services office open for certain hours only)</li>
+<li>Wearing Masks inside Regulations on government meetings (including e.g. suspension of parliament)</li>
+<li>Wearing Masks inside Regulations on publicly provided waste management services</li>
+<li>Wearing Masks inside Restaurants</li>
+<li>Wearing Masks inside Retail Businesses</li>
+<li>Wearing Masks inside Secondary Schools (generally for children ages 10 to 18)</li>
+<li>Wearing Masks inside Shopping Centers</li>
+<li>Wearing Masks inside Supermarkets/grocery stores</li>
+<li>Wearing Masks inside Telecommunications</li>
+<li>Wearing Masks inside Tourist Sites</li>
+<li>Wearing Masks inside Transportation (land; water and air)</li>
+<li>Wearing Masks inside Unspecified outdoor spaces</li>
+<li>Wearing Masks inside Unspecified public facilities</li>
+<li>Wearing Masks inside Warehousing and support activities for transportation</li>
+<li>Unspecified Mask Wearing Policy</li>
+<li>Other Mask Wearing Policy</li>
+</ul>
+<pre class="r"><code>type_soc = coronanet %&gt;%
+  filter(type %in% c( &quot;Social Distancing&quot;)) %&gt;%
+  select(type_sub_cat) %&gt;%
+  pull %&gt;%
+table
+
+type_soc_true &lt;-c(&quot;Closing/suspending operations of nursing homes/long term care facilities&quot;, 
+&quot;Keep a distance of some other distance not listed above. Please note the distance in meters in the text entry.&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at All government services regulated&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at All or unspecified businesses&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Bars&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Beaches&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Campsites&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Commercial Businesses&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Construction&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Electricity; gas; steam ;and air conditioning supply&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Financial service activities except insurance and pension funding&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Higher education institutions (i.e. degree granting institutions)&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Information service activities&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Insurance; reinsurance; and pension funding except compulsory social security&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Issuing of documents (paper or digital) for validating COVID-19 health status&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Issuing of permits/certificates and/or processing of government documents&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Mining and quarrying&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Other Businesses&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Other government service not specified above&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Other public facilities&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Other public outdoor spaces&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Paid lodgings (e.g. hotels; motels)&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Parks&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Personal Grooming Businesses (e.g. hair salons)&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Pharmacies&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Preschool or childcare facilities (generally for children ages 5 and below)&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Primary Schools (generally for children ages 10 and below)&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Private health offices&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Public courts&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Public libraries&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Public museums/galleries&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Publishing activities&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Regulated government working hours (e.g. work from home policies for government workers)&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Regulated hours government services available (e.g. government services office open for certain hours only)&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Regulations on government meetings (including e.g. suspension of parliament)&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Regulations on publicly provided waste management services&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Restaurants&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Retail Businesses&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Secondary Schools (generally for children ages 10 to 18)&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Shopping Centers&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Supermarkets/grocery stores&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Telecommunications&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Tourist Sites&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Transportation (land; water and air)&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Unspecified outdoor spaces&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Unspecified public facilities&quot;, 
+&quot;Keeping a distance of at least 6 feet or 1.5 meters apart at Warehousing and support activities for transportation&quot;, 
+&quot;Restrictions on  private vehicles in public circulation&quot;,
+&quot;Restrictions on patients leaving nursing home/long term care facility&quot;, 
+&quot;Restrictions on ridership of buses&quot;, 
+&quot;Restrictions on ridership of subways and trams&quot;, 
+&quot;Restrictions on ridership of trains&quot;,
+&quot;Restrictions on visiting cemeteries&quot;, 
+&quot;Restrictions on visiting hospitals&quot;, 
+&quot;Restrictions on visiting nursing homes/long term care facilities&quot;, 
+&quot;Restrictions on visiting other group residential facilities (e.g. orphanages; group homes)&quot;, 
+&quot;Restrictions on visiting other locations&quot;, 
+&quot;Restrictions on visiting prisons&quot;, 
+&quot;Restrictions ridership of other forms of public transportation (please include details in the text entry)&quot;, 
+&quot;Wearing Masks in all indoor spaces&quot;, 
+&quot;Wearing Masks in all public spaces/everywhere&quot;,
+&quot;Wearing Masks inside All government services regulated&quot;, 
+&quot;Wearing Masks inside All or unspecified businesses&quot;, 
+&quot;Wearing Masks inside Bars&quot;, 
+&quot;Wearing Masks inside Beaches&quot;,
+&quot;Wearing Masks inside Campsites&quot;, 
+&quot;Wearing Masks inside Commercial Businesses&quot;,
+&quot;Wearing Masks inside Construction&quot;, 
+&quot;Wearing Masks inside Electricity; gas; steam ;and air conditioning supply&quot;, 
+&quot;Wearing Masks inside Financial service activities except insurance and pension funding&quot;, 
+&quot;Wearing Masks inside Higher education institutions (i.e. degree granting institutions)&quot;, 
+&quot;Wearing Masks inside Information service activities&quot;, 
+&quot;Wearing Masks inside Insurance; reinsurance; and pension funding except compulsory social security&quot;, 
+&quot;Wearing Masks inside Issuing of documents (paper or digital) for validating COVID-19 health status&quot;, 
+&quot;Wearing Masks inside Issuing of permits/certificates and/or processing of government documents&quot;, 
+&quot;Wearing Masks inside Mining and quarrying&quot;,
+&quot;Wearing Masks inside Other Businesses&quot;, 
+&quot;Wearing Masks inside Other government service not specified above&quot;, 
+&quot;Wearing Masks inside Other public facilities&quot;,
+&quot;Wearing Masks inside Other public outdoor spaces&quot;, 
+&quot;Wearing Masks inside Paid lodgings (e.g. hotels; motels)&quot;,
+&quot;Wearing Masks inside Parks&quot;, 
+&quot;Wearing Masks inside Personal Grooming Businesses (e.g. hair salons)&quot;, 
+&quot;Wearing Masks inside Pharmacies&quot;,
+&quot;Wearing Masks inside Preschool or childcare facilities (generally for children ages 5 and below)&quot;, 
+&quot;Wearing Masks inside Preschools or childcare facilities (generally for children age 5 and below)&quot;, 
+&quot;Wearing Masks inside Primary Schools (generally for children ages 10 and below)&quot;, 
+&quot;Wearing Masks inside Private health offices&quot;, 
+&quot;Wearing Masks inside Public courts&quot;,
+&quot;Wearing Masks inside Public libraries&quot;, 
+&quot;Wearing Masks inside Public museums/galleries&quot;,
+&#39;Wearing Masks inside Private Transportation (e.g. taxis)&#39;,
+&quot;Wearing Masks inside Public transportation&quot;,
+&quot;Wearing Masks inside Publishing activities&quot;, 
+&quot;Wearing Masks inside Regulated government working hours (e.g. work from home policies for government workers)&quot;, 
+&quot;Wearing Masks inside Regulated hours government services available (e.g. government services office open for certain hours only)&quot;, 
+&quot;Wearing Masks inside Regulations on government meetings (including e.g. suspension of parliament)&quot;, 
+&quot;Wearing Masks inside Regulations on publicly provided waste management services&quot;, 
+&quot;Wearing Masks inside Restaurants&quot;, 
+&quot;Wearing Masks inside Retail Businesses&quot;, 
+&quot;Wearing Masks inside Secondary Schools (generally for children ages 10 to 18)&quot;, 
+&quot;Wearing Masks inside Shopping Centers&quot;, 
+&quot;Wearing Masks inside Supermarkets/grocery stores&quot;, 
+&quot;Wearing Masks inside Telecommunications&quot;, 
+&quot;Wearing Masks inside Tourist Sites&quot;, 
+&quot;Wearing Masks inside Transportation (land; water and air)&quot;, 
+&quot;Wearing Masks inside Unspecified outdoor spaces&quot;, 
+&quot;Wearing Masks inside Unspecified public facilities&quot;, 
+&quot;Wearing Masks inside Warehousing and support activities for transportation&quot;,
+&quot;Unspecified Mask Wearing Policy&quot;,
+&quot;Other Mask Wearing Policy&quot;
+)
+
+
+
+if (all(names(type_soc) %in% c(type_soc_true
+
+))
+) {
+  print(&#39;All Good&#39;)
+} else{
+  print(&quot;Error: &#39;Social Distancing&#39; policy type has an incorrect policy sub-type associated with it&quot;)
+  
+      type_soc[which( names(type_soc) %in% setdiff(names(type_soc),  type_soc_true
+))]   
+}</code></pre>
+<pre><code>## [1] &quot;Error: &#39;Social Distancing&#39; policy type has an incorrect policy sub-type associated with it&quot;</code></pre>
+<pre><code>## Wearing masks 
+##             1</code></pre>
+</div>
+</div>
+<div id="policy-initiator" class="section level2">
+<h2>Policy Initiator</h2>
+<p>A policy should only have one policy initiator.</p>
+<p>Exceptions:</p>
+<ul>
+<li>The only exception is the policy type is “‘New Task Force, Bureau or Administrative Configuration’” and the policy sub type “Cooperation among different jurisdictional entities (e.g. treaties or agreements among countries or provinces)” where there may be multiple initiators</li>
+</ul>
+<p>Reasons why it may be technically possible for a policy to have more than one initiator:</p>
+<ul>
+<li>If a policy is initiated by an ISO level 2 government, it is recorded in the ‘province’ field. For a time, this field was a text entry such that it was technically possible to write in more than one policy initiator; this is no longer possible.</li>
+<li>If a policy is initiated by a municipal government, it is recorded in the ‘city’ field. This field is a text entry such that it was technically possible to write in more than one policy initiator.</li>
+<li>Note, it is not technically possible for there to be more than one country initiator because of checks in the survey design</li>
+</ul>
+<p>The following code evaluates the extent to which these coding rules have been followed:</p>
+<pre class="r"><code>province_problem = coronanet %&gt;%
+  filter(grepl(&#39;\\,|;&#39;, province) &amp;
+         province != &#39;Washington, D.C.&#39;
+           ) %&gt;% select(
+    province
+  ) %&gt;%
+  pull
+
+
+if (length(province_problem) ==0){
+  print(&#39;All Good!&#39;)
+} else{
+
+  print(paste0(&#39;Multiple provincial initiators found for: &#39;, length(province_problem), &#39; records&#39;))
+}</code></pre>
+<pre><code>## [1] &quot;Multiple provincial initiators found for: 7 records&quot;</code></pre>
+<pre class="r"><code>city_problem = coronanet %&gt;%
+  filter(grepl(&#39;\\,|;&#39;, city)
+  ) %&gt;% select(
+    city,
+  ) %&gt;%
+  pull
+
+
+if (length(city_problem) ==0){
+  print(&#39;All Good!&#39;)
+} else{
+
+
+  print(paste0(&#39;Multiple city initiators found for: &#39;, length(city_problem), &#39; records&#39;))
+}</code></pre>
+<pre><code>## [1] &quot;Multiple city initiators found for: 274 records&quot;</code></pre>
+</div>
+</div>
+<div id="examples-of-clean-data" class="section level1">
+<h1>Examples of Clean Data</h1>
+<p>The following section provides examples of clean data for various scenarios under which a policy may be initiated.</p>
+<div id="policies-without-updates" class="section level2">
+<h2>Policies Without updates</h2>
+<p>In this section, you can find examples of policies without updates:</p>
+<div id="same-policy-initiator-and-policy-geographic-target" class="section level3">
+<h3>Same policy initiator and policy geographic target</h3>
+<p>In this section, you can find examples of policies that were initiated by one level of government and which applies to the same level of government</p>
+<table class="table table-striped table-hover" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+Lockdown in Italy: Initiated by the Italian national government and applied to the entire country
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+record_id
+</th>
+<th style="text-align:right;">
+policy_id
+</th>
+<th style="text-align:left;">
+entry_type
+</th>
+<th style="text-align:left;">
+correct_type
+</th>
+<th style="text-align:left;">
+update_type
+</th>
+<th style="text-align:left;">
+update_level
+</th>
+<th style="text-align:left;">
+description
+</th>
+<th style="text-align:left;">
+date_announced
+</th>
+<th style="text-align:left;">
+date_start
+</th>
+<th style="text-align:left;">
+date_end
+</th>
+<th style="text-align:left;">
+country
+</th>
+<th style="text-align:left;">
+ISO_A3
+</th>
+<th style="text-align:left;">
+ISO_A2
+</th>
+<th style="text-align:left;">
+init_country_level
+</th>
+<th style="text-align:right;">
+domestic_policy
+</th>
+<th style="text-align:left;">
+province
+</th>
+<th style="text-align:left;">
+ISO_L2
+</th>
+<th style="text-align:left;">
+city
+</th>
+<th style="text-align:left;">
+type
+</th>
+<th style="text-align:left;">
+type_sub_cat
+</th>
+<th style="text-align:left;">
+type_text
+</th>
+<th style="text-align:left;">
+institution_status
+</th>
+<th style="text-align:left;">
+target_country
+</th>
+<th style="text-align:left;">
+target_geog_level
+</th>
+<th style="text-align:left;">
+target_region
+</th>
+<th style="text-align:left;">
+target_province
+</th>
+<th style="text-align:left;">
+target_city
+</th>
+<th style="text-align:left;">
+target_other
+</th>
+<th style="text-align:left;">
+target_who_what
+</th>
+<th style="text-align:left;">
+target_direction
+</th>
+<th style="text-align:left;">
+travel_mechanism
+</th>
+<th style="text-align:left;">
+compliance
+</th>
+<th style="text-align:left;">
+enforcer
+</th>
+<th style="text-align:right;">
+index_high_est
+</th>
+<th style="text-align:right;">
+index_med_est
+</th>
+<th style="text-align:right;">
+index_low_est
+</th>
+<th style="text-align:right;">
+index_country_rank
+</th>
+<th style="text-align:left;">
+link
+</th>
+<th style="text-align:left;">
+date_updated
+</th>
+<th style="text-align:left;">
+recorded_date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+R_3JqP2KB9ehJBvtFNA
+</td>
+<td style="text-align:right;">
+1546385
+</td>
+<td style="text-align:left;">
+new_entry
+</td>
+<td style="text-align:left;">
+original
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;min-width: 3in; ">
+On April 26, 2020, the Italian Prime Minister announced a national lockdown (except for essential services and activites) from May 4 to May 17, 2020.
+</td>
+<td style="text-align:left;">
+2020-04-26
+</td>
+<td style="text-align:left;">
+2020-05-04
+</td>
+<td style="text-align:left;">
+2020-05-17
+</td>
+<td style="text-align:left;">
+Italy
+</td>
+<td style="text-align:left;">
+ITA
+</td>
+<td style="text-align:left;">
+IT
+</td>
+<td style="text-align:left;">
+National
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Lockdown
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Italy
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Mandatory (Unspecified/Implied)
+</td>
+<td style="text-align:left;">
+National Government
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+<a href="https://anci.lombardia.it/documenti/9875-DPCM%20e%20allegato%20del%2026%20aprile%202020.pdf.pdf" class="uri">https://anci.lombardia.it/documenti/9875-DPCM%20e%20allegato%20del%2026%20aprile%202020.pdf.pdf</a>
+</td>
+<td style="text-align:left;">
+2020-12-24
+</td>
+<td style="text-align:left;">
+2020-12-24 16:46:14
+</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-striped table-hover" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+Lockdown in Brandenburg, Germany : Initiated by the provincial government of Brandenburg and applied to Brandenburg province
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+record_id
+</th>
+<th style="text-align:right;">
+policy_id
+</th>
+<th style="text-align:left;">
+entry_type
+</th>
+<th style="text-align:left;">
+correct_type
+</th>
+<th style="text-align:left;">
+update_type
+</th>
+<th style="text-align:left;">
+update_level
+</th>
+<th style="text-align:left;">
+description
+</th>
+<th style="text-align:left;">
+date_announced
+</th>
+<th style="text-align:left;">
+date_start
+</th>
+<th style="text-align:left;">
+date_end
+</th>
+<th style="text-align:left;">
+country
+</th>
+<th style="text-align:left;">
+ISO_A3
+</th>
+<th style="text-align:left;">
+ISO_A2
+</th>
+<th style="text-align:left;">
+init_country_level
+</th>
+<th style="text-align:right;">
+domestic_policy
+</th>
+<th style="text-align:left;">
+province
+</th>
+<th style="text-align:left;">
+ISO_L2
+</th>
+<th style="text-align:left;">
+city
+</th>
+<th style="text-align:left;">
+type
+</th>
+<th style="text-align:left;">
+type_sub_cat
+</th>
+<th style="text-align:left;">
+type_text
+</th>
+<th style="text-align:left;">
+institution_status
+</th>
+<th style="text-align:left;">
+target_country
+</th>
+<th style="text-align:left;">
+target_geog_level
+</th>
+<th style="text-align:left;">
+target_region
+</th>
+<th style="text-align:left;">
+target_province
+</th>
+<th style="text-align:left;">
+target_city
+</th>
+<th style="text-align:left;">
+target_other
+</th>
+<th style="text-align:left;">
+target_who_what
+</th>
+<th style="text-align:left;">
+target_direction
+</th>
+<th style="text-align:left;">
+travel_mechanism
+</th>
+<th style="text-align:left;">
+compliance
+</th>
+<th style="text-align:left;">
+enforcer
+</th>
+<th style="text-align:right;">
+index_high_est
+</th>
+<th style="text-align:right;">
+index_med_est
+</th>
+<th style="text-align:right;">
+index_low_est
+</th>
+<th style="text-align:right;">
+index_country_rank
+</th>
+<th style="text-align:left;">
+link
+</th>
+<th style="text-align:left;">
+date_updated
+</th>
+<th style="text-align:left;">
+recorded_date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+R_2CcPS1wmkAQ6ZtxNA
+</td>
+<td style="text-align:right;">
+3880162
+</td>
+<td style="text-align:left;">
+new_entry
+</td>
+<td style="text-align:left;">
+original
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;min-width: 3in; ">
+Brandenburg (Germany) enforces a Lockdown from March 23 until April 19. People may only leave their homes for urgent reasons.
+</td>
+<td style="text-align:left;">
+2020-03-23
+</td>
+<td style="text-align:left;">
+2020-03-23
+</td>
+<td style="text-align:left;">
+2020-04-19
+</td>
+<td style="text-align:left;">
+Germany
+</td>
+<td style="text-align:left;">
+DEU
+</td>
+<td style="text-align:left;">
+DE
+</td>
+<td style="text-align:left;">
+Provincial
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Brandenburg
+</td>
+<td style="text-align:left;">
+DE-BR
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Lockdown
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Germany
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Mandatory (Unspecified/Implied)
+</td>
+<td style="text-align:left;">
+Provincial/State Government
+</td>
+<td style="text-align:right;">
+54.33498
+</td>
+<td style="text-align:right;">
+53.11978
+</td>
+<td style="text-align:right;">
+51.82168
+</td>
+<td style="text-align:right;">
+148
+</td>
+<td style="text-align:left;">
+<a href="https://www.rbb24.de/politik/thema/2020/coronavirus/beitraege/brandenburg-kontaktverbot-ausgangsbeschraenkung-ausnahmen-erlaub.html" class="uri">https://www.rbb24.de/politik/thema/2020/coronavirus/beitraege/brandenburg-kontaktverbot-ausgangsbeschraenkung-ausnahmen-erlaub.html</a>
+</td>
+<td style="text-align:left;">
+2020-08-08
+</td>
+<td style="text-align:left;">
+2020-08-08 10:28:54
+</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-striped table-hover" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+Closure of primary schools in Saarland, Germany: Initiated by the Saarland provincial government and applied to the Saarland province
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+record_id
+</th>
+<th style="text-align:right;">
+policy_id
+</th>
+<th style="text-align:left;">
+entry_type
+</th>
+<th style="text-align:left;">
+correct_type
+</th>
+<th style="text-align:left;">
+update_type
+</th>
+<th style="text-align:left;">
+update_level
+</th>
+<th style="text-align:left;">
+description
+</th>
+<th style="text-align:left;">
+date_announced
+</th>
+<th style="text-align:left;">
+date_start
+</th>
+<th style="text-align:left;">
+date_end
+</th>
+<th style="text-align:left;">
+country
+</th>
+<th style="text-align:left;">
+ISO_A3
+</th>
+<th style="text-align:left;">
+ISO_A2
+</th>
+<th style="text-align:left;">
+init_country_level
+</th>
+<th style="text-align:right;">
+domestic_policy
+</th>
+<th style="text-align:left;">
+province
+</th>
+<th style="text-align:left;">
+ISO_L2
+</th>
+<th style="text-align:left;">
+city
+</th>
+<th style="text-align:left;">
+type
+</th>
+<th style="text-align:left;">
+type_sub_cat
+</th>
+<th style="text-align:left;">
+type_text
+</th>
+<th style="text-align:left;">
+institution_status
+</th>
+<th style="text-align:left;">
+target_country
+</th>
+<th style="text-align:left;">
+target_geog_level
+</th>
+<th style="text-align:left;">
+target_region
+</th>
+<th style="text-align:left;">
+target_province
+</th>
+<th style="text-align:left;">
+target_city
+</th>
+<th style="text-align:left;">
+target_other
+</th>
+<th style="text-align:left;">
+target_who_what
+</th>
+<th style="text-align:left;">
+target_direction
+</th>
+<th style="text-align:left;">
+travel_mechanism
+</th>
+<th style="text-align:left;">
+compliance
+</th>
+<th style="text-align:left;">
+enforcer
+</th>
+<th style="text-align:right;">
+index_high_est
+</th>
+<th style="text-align:right;">
+index_med_est
+</th>
+<th style="text-align:right;">
+index_low_est
+</th>
+<th style="text-align:right;">
+index_country_rank
+</th>
+<th style="text-align:left;">
+link
+</th>
+<th style="text-align:left;">
+date_updated
+</th>
+<th style="text-align:left;">
+recorded_date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+R_TjbfyTSD4dmfYE9NA
+</td>
+<td style="text-align:right;">
+6594252
+</td>
+<td style="text-align:left;">
+new_entry
+</td>
+<td style="text-align:left;">
+original
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;min-width: 3in; ">
+The German state of Saarland will go into lockdown, winding down public life almost totally. This will go into effect for an initial period of 2 weeks starting March 20.
+</td>
+<td style="text-align:left;">
+2020-03-20
+</td>
+<td style="text-align:left;">
+2020-03-20
+</td>
+<td style="text-align:left;">
+2020-04-03
+</td>
+<td style="text-align:left;">
+Germany
+</td>
+<td style="text-align:left;">
+DEU
+</td>
+<td style="text-align:left;">
+DE
+</td>
+<td style="text-align:left;">
+Provincial
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Saarland
+</td>
+<td style="text-align:left;">
+DE-SL
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Lockdown
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Germany
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Mandatory (Unspecified/Implied)
+</td>
+<td style="text-align:left;">
+Provincial/State Government
+</td>
+<td style="text-align:right;">
+54.26155
+</td>
+<td style="text-align:right;">
+52.83143
+</td>
+<td style="text-align:right;">
+51.32842
+</td>
+<td style="text-align:right;">
+143
+</td>
+<td style="text-align:left;">
+<a href="https://www.thelocal.de/20200320/bavaria-becomes-first-german-state-to-impose-lockdown" class="uri">https://www.thelocal.de/20200320/bavaria-becomes-first-german-state-to-impose-lockdown</a>
+</td>
+<td style="text-align:left;">
+2020-09-03
+</td>
+<td style="text-align:left;">
+2020-09-03 01:39:13
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="policy-initiator-that-is-different-from-the-policy-geographic-target" class="section level3">
+<h3>Policy initiator that is different from the policy geographic target</h3>
+<p>Here you can find examples of policies that were initiated by one level of government but applies to a domestically lower level of government.</p>
+<table class="table table-striped table-hover" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+Lockdown in Italy: Initiated by the provincial government of Calabria and applied to municipal residents of Palmi
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+record_id
+</th>
+<th style="text-align:right;">
+policy_id
+</th>
+<th style="text-align:left;">
+entry_type
+</th>
+<th style="text-align:left;">
+correct_type
+</th>
+<th style="text-align:left;">
+update_type
+</th>
+<th style="text-align:left;">
+update_level
+</th>
+<th style="text-align:left;">
+description
+</th>
+<th style="text-align:left;">
+date_announced
+</th>
+<th style="text-align:left;">
+date_start
+</th>
+<th style="text-align:left;">
+date_end
+</th>
+<th style="text-align:left;">
+country
+</th>
+<th style="text-align:left;">
+ISO_A3
+</th>
+<th style="text-align:left;">
+ISO_A2
+</th>
+<th style="text-align:left;">
+init_country_level
+</th>
+<th style="text-align:right;">
+domestic_policy
+</th>
+<th style="text-align:left;">
+province
+</th>
+<th style="text-align:left;">
+ISO_L2
+</th>
+<th style="text-align:left;">
+city
+</th>
+<th style="text-align:left;">
+type
+</th>
+<th style="text-align:left;">
+type_sub_cat
+</th>
+<th style="text-align:left;">
+type_text
+</th>
+<th style="text-align:left;">
+institution_status
+</th>
+<th style="text-align:left;">
+target_country
+</th>
+<th style="text-align:left;">
+target_geog_level
+</th>
+<th style="text-align:left;">
+target_region
+</th>
+<th style="text-align:left;">
+target_province
+</th>
+<th style="text-align:left;">
+target_city
+</th>
+<th style="text-align:left;">
+target_other
+</th>
+<th style="text-align:left;">
+target_who_what
+</th>
+<th style="text-align:left;">
+target_direction
+</th>
+<th style="text-align:left;">
+travel_mechanism
+</th>
+<th style="text-align:left;">
+compliance
+</th>
+<th style="text-align:left;">
+enforcer
+</th>
+<th style="text-align:right;">
+index_high_est
+</th>
+<th style="text-align:right;">
+index_med_est
+</th>
+<th style="text-align:right;">
+index_low_est
+</th>
+<th style="text-align:right;">
+index_country_rank
+</th>
+<th style="text-align:left;">
+link
+</th>
+<th style="text-align:left;">
+date_updated
+</th>
+<th style="text-align:left;">
+recorded_date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+R_1mq6imEuRfMhvBHNA
+</td>
+<td style="text-align:right;">
+1445515
+</td>
+<td style="text-align:left;">
+new_entry
+</td>
+<td style="text-align:left;">
+correction
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;min-width: 3in; ">
+From June 22, 2020 until June 26, 2020, the region of Calabria (Italy) has enforced a 4-day lockdown for “all individuals in the Municipality of Palmi (RC), specifically in the neighbourhoods of Pietrenere, Tonnara, Scinà.”
+</td>
+<td style="text-align:left;">
+2020-06-21
+</td>
+<td style="text-align:left;">
+2020-06-22
+</td>
+<td style="text-align:left;">
+2020-06-26
+</td>
+<td style="text-align:left;">
+Italy
+</td>
+<td style="text-align:left;">
+ITA
+</td>
+<td style="text-align:left;">
+IT
+</td>
+<td style="text-align:left;">
+Provincial
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Calabria
+</td>
+<td style="text-align:left;">
+IT-78
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Lockdown
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Italy
+</td>
+<td style="text-align:left;">
+One or more cities within a country
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Palmi (RC)
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+All Residents (Citizen Residents +Foreign Residents)
+</td>
+<td style="text-align:left;">
+Inbound/Outbound
+</td>
+<td style="text-align:left;">
+Not Applicable
+</td>
+<td style="text-align:left;">
+Mandatory with Fines
+</td>
+<td style="text-align:left;">
+Provincial/State Government,Municipal Government,Police
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+2020-09-18
+</td>
+<td style="text-align:left;">
+2020-09-18 11:09:10
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="policies-with-updates" class="section level2">
+<h2>Policies With Updates</h2>
+<p>In this section, you can find examples of policies with updates. When possible, the column that is being updated is highlighted in green.</p>
+<div id="changes-in-the-timing-of-the-policy" class="section level3">
+<h3>Changes in the timing of the policy</h3>
+<table class="table table-striped table-hover" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+Closure of primary schools in Italy: Initiated by the Italian national government and applied to the entire country. The lockdown has been extended once.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+record_id
+</th>
+<th style="text-align:right;">
+policy_id
+</th>
+<th style="text-align:left;">
+entry_type
+</th>
+<th style="text-align:left;">
+correct_type
+</th>
+<th style="text-align:left;">
+update_type
+</th>
+<th style="text-align:left;">
+update_level
+</th>
+<th style="text-align:left;">
+description
+</th>
+<th style="text-align:left;">
+date_announced
+</th>
+<th style="text-align:left;">
+date_start
+</th>
+<th style="text-align:left;">
+date_end
+</th>
+<th style="text-align:left;">
+country
+</th>
+<th style="text-align:left;">
+ISO_A3
+</th>
+<th style="text-align:left;">
+ISO_A2
+</th>
+<th style="text-align:left;">
+init_country_level
+</th>
+<th style="text-align:right;">
+domestic_policy
+</th>
+<th style="text-align:left;">
+province
+</th>
+<th style="text-align:left;">
+ISO_L2
+</th>
+<th style="text-align:left;">
+city
+</th>
+<th style="text-align:left;">
+type
+</th>
+<th style="text-align:left;">
+type_sub_cat
+</th>
+<th style="text-align:left;">
+type_text
+</th>
+<th style="text-align:left;">
+institution_status
+</th>
+<th style="text-align:left;">
+target_country
+</th>
+<th style="text-align:left;">
+target_geog_level
+</th>
+<th style="text-align:left;">
+target_region
+</th>
+<th style="text-align:left;">
+target_province
+</th>
+<th style="text-align:left;">
+target_city
+</th>
+<th style="text-align:left;">
+target_other
+</th>
+<th style="text-align:left;">
+target_who_what
+</th>
+<th style="text-align:left;">
+target_direction
+</th>
+<th style="text-align:left;">
+travel_mechanism
+</th>
+<th style="text-align:left;">
+compliance
+</th>
+<th style="text-align:left;">
+enforcer
+</th>
+<th style="text-align:right;">
+index_high_est
+</th>
+<th style="text-align:right;">
+index_med_est
+</th>
+<th style="text-align:right;">
+index_low_est
+</th>
+<th style="text-align:right;">
+index_country_rank
+</th>
+<th style="text-align:left;">
+link
+</th>
+<th style="text-align:left;">
+date_updated
+</th>
+<th style="text-align:left;">
+recorded_date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+R_3kiVnKMOSq1p5S7Dn
+</td>
+<td style="text-align:right;">
+6769009
+</td>
+<td style="text-align:left;">
+new_entry
+</td>
+<td style="text-align:left;">
+original
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;min-width: 3in; ">
+March 9, 2020: With DPCM 9 Marzo, the Governments declares that in-person activities will be suspended for all school levels. This includes pre-school, Universities and all degree-granting institutions. The proceedings do not apply to specialization courses and traineeship for medical schools and healthcare professions.
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+2020-03-09
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+2020-03-10
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+2020-04-13
+</td>
+<td style="text-align:left;">
+Italy
+</td>
+<td style="text-align:left;">
+ITA
+</td>
+<td style="text-align:left;">
+IT
+</td>
+<td style="text-align:left;">
+National
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Closure and Regulation of Schools
+</td>
+<td style="text-align:left;">
+Primary Schools (generally for children ages 10 and below)
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Primary Schools closed/locked down
+</td>
+<td style="text-align:left;">
+Italy
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Mandatory (Unspecified/Implied)
+</td>
+<td style="text-align:left;">
+National Government,Ministry/Department of Health
+</td>
+<td style="text-align:right;">
+54.43529
+</td>
+<td style="text-align:right;">
+53.57062
+</td>
+<td style="text-align:right;">
+52.55726
+</td>
+<td style="text-align:right;">
+191
+</td>
+<td style="text-align:left;">
+<a href="https://www2.slideshare.net/Palazzo_Chigi/dpcm-9-marzo-2020" class="uri">https://www2.slideshare.net/Palazzo_Chigi/dpcm-9-marzo-2020</a> ; <a href="https://www.gazzettaufficiale.it/eli/gu/2020/03/08/59/sg/pdf" class="uri">https://www.gazzettaufficiale.it/eli/gu/2020/03/08/59/sg/pdf</a>
+</td>
+<td style="text-align:left;">
+2020-12-18
+</td>
+<td style="text-align:left;">
+2020-12-18 19:24:58
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+R_3G6QuDBR5C7KnfoDn
+</td>
+<td style="text-align:right;">
+6769009
+</td>
+<td style="text-align:left;">
+update
+</td>
+<td style="text-align:left;">
+original
+</td>
+<td style="text-align:left;">
+Change of Policy
+</td>
+<td style="text-align:left;">
+Strengthening
+</td>
+<td style="text-align:left;min-width: 3in; ">
+March 9, 2020: With DPCM 9 Marzo, the Governments declares that in-person activities will be suspended for all school levels. This includes pre-school, Universities and all degree-granting institutions. The proceedings do not apply to specialization courses and traineeship for medical schools and healthcare professions. UPDATE: April 1, 2020: With DPCM 1 Aprile, the end for this policy previously set for April 3 is extended to April 13.
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+2020-03-09
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+2020-04-04
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+2020-04-13
+</td>
+<td style="text-align:left;">
+Italy
+</td>
+<td style="text-align:left;">
+ITA
+</td>
+<td style="text-align:left;">
+IT
+</td>
+<td style="text-align:left;">
+National
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Closure and Regulation of Schools
+</td>
+<td style="text-align:left;">
+Primary Schools (generally for children ages 10 and below)
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Primary Schools closed/locked down
+</td>
+<td style="text-align:left;">
+Italy
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Mandatory (Unspecified/Implied)
+</td>
+<td style="text-align:left;">
+National Government,Ministry/Department of Health
+</td>
+<td style="text-align:right;">
+57.28769
+</td>
+<td style="text-align:right;">
+53.63008
+</td>
+<td style="text-align:right;">
+50.20719
+</td>
+<td style="text-align:right;">
+143
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+2021-01-17
+</td>
+<td style="text-align:left;">
+2021-01-17 19:01:49
+</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-striped table-hover" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+Lockdown in Berlin, Germany: The lockdown in Berlin has been extended once.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+record_id
+</th>
+<th style="text-align:right;">
+policy_id
+</th>
+<th style="text-align:left;">
+entry_type
+</th>
+<th style="text-align:left;">
+correct_type
+</th>
+<th style="text-align:left;">
+update_type
+</th>
+<th style="text-align:left;">
+update_level
+</th>
+<th style="text-align:left;">
+description
+</th>
+<th style="text-align:left;">
+date_announced
+</th>
+<th style="text-align:left;">
+date_start
+</th>
+<th style="text-align:left;">
+date_end
+</th>
+<th style="text-align:left;">
+country
+</th>
+<th style="text-align:left;">
+ISO_A3
+</th>
+<th style="text-align:left;">
+ISO_A2
+</th>
+<th style="text-align:left;">
+init_country_level
+</th>
+<th style="text-align:right;">
+domestic_policy
+</th>
+<th style="text-align:left;">
+province
+</th>
+<th style="text-align:left;">
+ISO_L2
+</th>
+<th style="text-align:left;">
+city
+</th>
+<th style="text-align:left;">
+type
+</th>
+<th style="text-align:left;">
+type_sub_cat
+</th>
+<th style="text-align:left;">
+type_text
+</th>
+<th style="text-align:left;">
+institution_status
+</th>
+<th style="text-align:left;">
+target_country
+</th>
+<th style="text-align:left;">
+target_geog_level
+</th>
+<th style="text-align:left;">
+target_region
+</th>
+<th style="text-align:left;">
+target_province
+</th>
+<th style="text-align:left;">
+target_city
+</th>
+<th style="text-align:left;">
+target_other
+</th>
+<th style="text-align:left;">
+target_who_what
+</th>
+<th style="text-align:left;">
+target_direction
+</th>
+<th style="text-align:left;">
+travel_mechanism
+</th>
+<th style="text-align:left;">
+compliance
+</th>
+<th style="text-align:left;">
+enforcer
+</th>
+<th style="text-align:right;">
+index_high_est
+</th>
+<th style="text-align:right;">
+index_med_est
+</th>
+<th style="text-align:right;">
+index_low_est
+</th>
+<th style="text-align:right;">
+index_country_rank
+</th>
+<th style="text-align:left;">
+link
+</th>
+<th style="text-align:left;">
+date_updated
+</th>
+<th style="text-align:left;">
+recorded_date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+R_10CrmXDwVp87PgQNA
+</td>
+<td style="text-align:right;">
+2877147
+</td>
+<td style="text-align:left;">
+new_entry
+</td>
+<td style="text-align:left;">
+original
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;min-width: 3in; ">
+Berlin (Germany) enforces a lockdown from March 23 until April 19. People may only leave their homes for urgent reasons.
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+2020-03-23
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+2020-03-23
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+2020-04-26
+</td>
+<td style="text-align:left;">
+Germany
+</td>
+<td style="text-align:left;">
+DEU
+</td>
+<td style="text-align:left;">
+DE
+</td>
+<td style="text-align:left;">
+Provincial
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Berlin
+</td>
+<td style="text-align:left;">
+DE-BE
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Lockdown
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Germany
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Mandatory (Unspecified/Implied)
+</td>
+<td style="text-align:left;">
+Provincial/State Government
+</td>
+<td style="text-align:right;">
+54.33498
+</td>
+<td style="text-align:right;">
+53.11978
+</td>
+<td style="text-align:right;">
+51.82168
+</td>
+<td style="text-align:right;">
+148
+</td>
+<td style="text-align:left;">
+<a href="https://www.rbb24.de/politik/thema/2020/coronavirus/beitraege/ausgangsbeschraenkung-kontaktverbot-berlin-was-ist-erlaubt.html" class="uri">https://www.rbb24.de/politik/thema/2020/coronavirus/beitraege/ausgangsbeschraenkung-kontaktverbot-berlin-was-ist-erlaubt.html</a>
+</td>
+<td style="text-align:left;">
+2020-08-08
+</td>
+<td style="text-align:left;">
+2020-08-08 10:25:38
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+R_32YfIuFAGRoqL1BNA
+</td>
+<td style="text-align:right;">
+2877147
+</td>
+<td style="text-align:left;">
+update
+</td>
+<td style="text-align:left;">
+original
+</td>
+<td style="text-align:left;">
+Change of Policy
+</td>
+<td style="text-align:left;">
+Strengthening
+</td>
+<td style="text-align:left;min-width: 3in; ">
+Berlin (Germany) enforces a lockdown from March 23 until April 19. People may only leave their homes for urgent reasons. The policy is extended until April 26. UPDATE: The policy is extended until April 26.
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+2020-04-17
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+2020-04-19
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+2020-04-26
+</td>
+<td style="text-align:left;">
+Germany
+</td>
+<td style="text-align:left;">
+DEU
+</td>
+<td style="text-align:left;">
+DE
+</td>
+<td style="text-align:left;">
+Provincial
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Berlin
+</td>
+<td style="text-align:left;">
+DE-BE
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Lockdown
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Germany
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Mandatory (Unspecified/Implied)
+</td>
+<td style="text-align:left;">
+Provincial/State Government
+</td>
+<td style="text-align:right;">
+55.20335
+</td>
+<td style="text-align:right;">
+53.29597
+</td>
+<td style="text-align:right;">
+51.85294
+</td>
+<td style="text-align:right;">
+111
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+2020-08-21
+</td>
+<td style="text-align:left;">
+2020-08-21 10:37:48
+</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-striped table-hover" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+Lockdown in Saarland, Germany: The lockdown in Saarland has been extended once.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+record_id
+</th>
+<th style="text-align:right;">
+policy_id
+</th>
+<th style="text-align:left;">
+entry_type
+</th>
+<th style="text-align:left;">
+correct_type
+</th>
+<th style="text-align:left;">
+update_type
+</th>
+<th style="text-align:left;">
+update_level
+</th>
+<th style="text-align:left;">
+description
+</th>
+<th style="text-align:left;">
+date_announced
+</th>
+<th style="text-align:left;">
+date_start
+</th>
+<th style="text-align:left;">
+date_end
+</th>
+<th style="text-align:left;">
+country
+</th>
+<th style="text-align:left;">
+ISO_A3
+</th>
+<th style="text-align:left;">
+ISO_A2
+</th>
+<th style="text-align:left;">
+init_country_level
+</th>
+<th style="text-align:right;">
+domestic_policy
+</th>
+<th style="text-align:left;">
+province
+</th>
+<th style="text-align:left;">
+ISO_L2
+</th>
+<th style="text-align:left;">
+city
+</th>
+<th style="text-align:left;">
+type
+</th>
+<th style="text-align:left;">
+type_sub_cat
+</th>
+<th style="text-align:left;">
+type_text
+</th>
+<th style="text-align:left;">
+institution_status
+</th>
+<th style="text-align:left;">
+target_country
+</th>
+<th style="text-align:left;">
+target_geog_level
+</th>
+<th style="text-align:left;">
+target_region
+</th>
+<th style="text-align:left;">
+target_province
+</th>
+<th style="text-align:left;">
+target_city
+</th>
+<th style="text-align:left;">
+target_other
+</th>
+<th style="text-align:left;">
+target_who_what
+</th>
+<th style="text-align:left;">
+target_direction
+</th>
+<th style="text-align:left;">
+travel_mechanism
+</th>
+<th style="text-align:left;">
+compliance
+</th>
+<th style="text-align:left;">
+enforcer
+</th>
+<th style="text-align:right;">
+index_high_est
+</th>
+<th style="text-align:right;">
+index_med_est
+</th>
+<th style="text-align:right;">
+index_low_est
+</th>
+<th style="text-align:right;">
+index_country_rank
+</th>
+<th style="text-align:left;">
+link
+</th>
+<th style="text-align:left;">
+date_updated
+</th>
+<th style="text-align:left;">
+recorded_date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+R_2dg0xvPyfE3F8xeNA
+</td>
+<td style="text-align:right;">
+5767119
+</td>
+<td style="text-align:left;">
+new_entry
+</td>
+<td style="text-align:left;">
+original
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;min-width: 3in; ">
+Saarland (Germany) is imposing a lockdown on all citizens on March 21. People may not leave their homes except for urgent reasons.
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+2020-03-21
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+2020-03-21
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+2020-04-28
+</td>
+<td style="text-align:left;">
+Germany
+</td>
+<td style="text-align:left;">
+DEU
+</td>
+<td style="text-align:left;">
+DE
+</td>
+<td style="text-align:left;">
+Provincial
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Saarland
+</td>
+<td style="text-align:left;">
+DE-SL
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Lockdown
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Germany
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Mandatory (Unspecified/Implied)
+</td>
+<td style="text-align:left;">
+Provincial/State Government
+</td>
+<td style="text-align:right;">
+54.07251
+</td>
+<td style="text-align:right;">
+52.8680
+</td>
+<td style="text-align:right;">
+51.62689
+</td>
+<td style="text-align:right;">
+143
+</td>
+<td style="text-align:left;">
+<a href="https://www.sr.de/sr/home/nachrichten/politik_wirtschaft/corona_hans_ausgangsbeschraenkungen_100.html" class="uri">https://www.sr.de/sr/home/nachrichten/politik_wirtschaft/corona_hans_ausgangsbeschraenkungen_100.html</a>
+</td>
+<td style="text-align:left;">
+2020-08-08
+</td>
+<td style="text-align:left;">
+2020-08-08 10:12:54
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+R_2TsZminIXjjDOIBNA
+</td>
+<td style="text-align:right;">
+5767119
+</td>
+<td style="text-align:left;">
+update
+</td>
+<td style="text-align:left;">
+original
+</td>
+<td style="text-align:left;">
+End of Policy
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;min-width: 3in; ">
+Saarland (Germany) is imposing a lockdown on all citizens on March 21. People may not leave their homes except for urgent reasons. The policy ends on April 28. UPDATE: The policy ends on April 28.
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+2020-04-28
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+2020-04-28
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+2020-04-28
+</td>
+<td style="text-align:left;">
+Germany
+</td>
+<td style="text-align:left;">
+DEU
+</td>
+<td style="text-align:left;">
+DE
+</td>
+<td style="text-align:left;">
+Provincial
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Saarland
+</td>
+<td style="text-align:left;">
+DE-SL
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Lockdown
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Germany
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Mandatory (Unspecified/Implied)
+</td>
+<td style="text-align:left;">
+Provincial/State Government
+</td>
+<td style="text-align:right;">
+56.40825
+</td>
+<td style="text-align:right;">
+53.3124
+</td>
+<td style="text-align:right;">
+49.79913
+</td>
+<td style="text-align:right;">
+112
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+2020-08-08
+</td>
+<td style="text-align:left;">
+2020-08-08 10:15:32
+</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-striped table-hover" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+External Border restrictions by Italy: The external border restrictions by Italy against Bangladesh has been extended twice
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+record_id
+</th>
+<th style="text-align:right;">
+policy_id
+</th>
+<th style="text-align:left;">
+entry_type
+</th>
+<th style="text-align:left;">
+correct_type
+</th>
+<th style="text-align:left;">
+update_type
+</th>
+<th style="text-align:left;">
+update_level
+</th>
+<th style="text-align:left;">
+description
+</th>
+<th style="text-align:left;">
+date_announced
+</th>
+<th style="text-align:left;">
+date_start
+</th>
+<th style="text-align:left;">
+date_end
+</th>
+<th style="text-align:left;">
+country
+</th>
+<th style="text-align:left;">
+ISO_A3
+</th>
+<th style="text-align:left;">
+ISO_A2
+</th>
+<th style="text-align:left;">
+init_country_level
+</th>
+<th style="text-align:right;">
+domestic_policy
+</th>
+<th style="text-align:left;">
+province
+</th>
+<th style="text-align:left;">
+ISO_L2
+</th>
+<th style="text-align:left;">
+city
+</th>
+<th style="text-align:left;">
+type
+</th>
+<th style="text-align:left;">
+type_sub_cat
+</th>
+<th style="text-align:left;">
+type_text
+</th>
+<th style="text-align:left;">
+institution_status
+</th>
+<th style="text-align:left;">
+target_country
+</th>
+<th style="text-align:left;">
+target_geog_level
+</th>
+<th style="text-align:left;">
+target_region
+</th>
+<th style="text-align:left;">
+target_province
+</th>
+<th style="text-align:left;">
+target_city
+</th>
+<th style="text-align:left;">
+target_other
+</th>
+<th style="text-align:left;">
+target_who_what
+</th>
+<th style="text-align:left;">
+target_direction
+</th>
+<th style="text-align:left;">
+travel_mechanism
+</th>
+<th style="text-align:left;">
+compliance
+</th>
+<th style="text-align:left;">
+enforcer
+</th>
+<th style="text-align:right;">
+index_high_est
+</th>
+<th style="text-align:right;">
+index_med_est
+</th>
+<th style="text-align:right;">
+index_low_est
+</th>
+<th style="text-align:right;">
+index_country_rank
+</th>
+<th style="text-align:left;">
+link
+</th>
+<th style="text-align:left;">
+date_updated
+</th>
+<th style="text-align:left;">
+recorded_date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+R_2q7xWY5lEebZd6oFl
+</td>
+<td style="text-align:right;">
+1915518
+</td>
+<td style="text-align:left;">
+new_entry
+</td>
+<td style="text-align:left;">
+correction
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;min-width: 3in; ">
+On July 8 2020, Italy announced a 3 month ban on Bangladeshi citizens and travelers from Bangladesh after COVID-19 positive people found with fake certificates, ban will remain until October 05.
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+2020-07-08
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+2020-07-08
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+2020-10-05
+</td>
+<td style="text-align:left;">
+Italy
+</td>
+<td style="text-align:left;">
+ITA
+</td>
+<td style="text-align:left;">
+IT
+</td>
+<td style="text-align:left;">
+National
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+External Border Restrictions
+</td>
+<td style="text-align:left;">
+Visa restrictions (e.g. suspend issuance of visa)
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Bangladesh
+</td>
+<td style="text-align:left;">
+One or more countries and one or more regional groupings
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+All (Travelers + Residents)
+</td>
+<td style="text-align:left;">
+Inbound
+</td>
+<td style="text-align:left;">
+Flights
+</td>
+<td style="text-align:left;">
+Mandatory (Unspecified/Implied)
+</td>
+<td style="text-align:left;">
+National Government,Ministry/Department of Health
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+2021-01-15
+</td>
+<td style="text-align:left;">
+2021-01-15 13:06:49
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+R_2THJm65VVzXNPPSFl
+</td>
+<td style="text-align:right;">
+1915518
+</td>
+<td style="text-align:left;">
+update
+</td>
+<td style="text-align:left;">
+original
+</td>
+<td style="text-align:left;">
+Change of Policy
+</td>
+<td style="text-align:left;">
+Relaxing
+</td>
+<td style="text-align:left;min-width: 3in; ">
+Italy slaps a 3 month ban on Bangladeshi citizens and travelers from Bangladesh after COVID-19 positive people found with fake certificates, ban will remain until October 05. announced on July 08. UPDATE: On July 16th, the ban has been shortened and extended till July 31st.
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+2020-07-16
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+2020-07-16
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+2020-10-05
+</td>
+<td style="text-align:left;">
+Italy
+</td>
+<td style="text-align:left;">
+ITA
+</td>
+<td style="text-align:left;">
+IT
+</td>
+<td style="text-align:left;">
+National
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+External Border Restrictions
+</td>
+<td style="text-align:left;">
+Visa restrictions (e.g. suspend issuance of visa)
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Bangladesh
+</td>
+<td style="text-align:left;">
+One or more countries and one or more regional groupings
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+All (Travelers + Residents)
+</td>
+<td style="text-align:left;">
+Inbound
+</td>
+<td style="text-align:left;">
+Flights
+</td>
+<td style="text-align:left;">
+Mandatory (Unspecified/Implied)
+</td>
+<td style="text-align:left;">
+National Government,Ministry/Department of Health
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+2020-10-27
+</td>
+<td style="text-align:left;">
+2020-10-27 17:22:32
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+R_XobZJo31ncgE0JbFl
+</td>
+<td style="text-align:right;">
+1915518
+</td>
+<td style="text-align:left;">
+update
+</td>
+<td style="text-align:left;">
+original
+</td>
+<td style="text-align:left;">
+Change of Policy
+</td>
+<td style="text-align:left;">
+Strengthening
+</td>
+<td style="text-align:left;min-width: 3in; ">
+Italy slaps a 3 month ban on Bangladeshi citizens and travelers from Bangladesh after COVID-19 positive people found with fake certificates, ban will remain until October 05. announced on July 08. UPDATE: On August 1st, the restrictions has been extended to August 31st.
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+2020-08-01
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+2020-08-01
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+2020-10-05
+</td>
+<td style="text-align:left;">
+Italy
+</td>
+<td style="text-align:left;">
+ITA
+</td>
+<td style="text-align:left;">
+IT
+</td>
+<td style="text-align:left;">
+National
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+External Border Restrictions
+</td>
+<td style="text-align:left;">
+Visa restrictions (e.g. suspend issuance of visa)
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Bangladesh
+</td>
+<td style="text-align:left;">
+One or more countries and one or more regional groupings
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+All (Travelers + Residents)
+</td>
+<td style="text-align:left;">
+Inbound
+</td>
+<td style="text-align:left;">
+Flights
+</td>
+<td style="text-align:left;">
+Mandatory (Unspecified/Implied)
+</td>
+<td style="text-align:left;">
+National Government,Ministry/Department of Health
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+2020-10-15
+</td>
+<td style="text-align:left;">
+2020-10-15 17:52:21
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="changes-in-compliance" class="section level3">
+<h3>Changes in compliance</h3>
+<table class="table table-striped table-hover" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+Restrictions of Mass Gatherings in Denmark: The restriction of mass gathering was originally voluntary but now it is mandatory
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+record_id
+</th>
+<th style="text-align:right;">
+policy_id
+</th>
+<th style="text-align:left;">
+entry_type
+</th>
+<th style="text-align:left;">
+correct_type
+</th>
+<th style="text-align:left;">
+update_type
+</th>
+<th style="text-align:left;">
+update_level
+</th>
+<th style="text-align:left;">
+description
+</th>
+<th style="text-align:left;">
+date_announced
+</th>
+<th style="text-align:left;">
+date_start
+</th>
+<th style="text-align:left;">
+date_end
+</th>
+<th style="text-align:left;">
+country
+</th>
+<th style="text-align:left;">
+ISO_A3
+</th>
+<th style="text-align:left;">
+ISO_A2
+</th>
+<th style="text-align:left;">
+init_country_level
+</th>
+<th style="text-align:right;">
+domestic_policy
+</th>
+<th style="text-align:left;">
+province
+</th>
+<th style="text-align:left;">
+ISO_L2
+</th>
+<th style="text-align:left;">
+city
+</th>
+<th style="text-align:left;">
+type
+</th>
+<th style="text-align:left;">
+type_sub_cat
+</th>
+<th style="text-align:left;">
+type_text
+</th>
+<th style="text-align:left;">
+institution_status
+</th>
+<th style="text-align:left;">
+target_country
+</th>
+<th style="text-align:left;">
+target_geog_level
+</th>
+<th style="text-align:left;">
+target_region
+</th>
+<th style="text-align:left;">
+target_province
+</th>
+<th style="text-align:left;">
+target_city
+</th>
+<th style="text-align:left;">
+target_other
+</th>
+<th style="text-align:left;">
+target_who_what
+</th>
+<th style="text-align:left;">
+target_direction
+</th>
+<th style="text-align:left;">
+travel_mechanism
+</th>
+<th style="text-align:left;">
+compliance
+</th>
+<th style="text-align:left;">
+enforcer
+</th>
+<th style="text-align:right;">
+index_high_est
+</th>
+<th style="text-align:right;">
+index_med_est
+</th>
+<th style="text-align:right;">
+index_low_est
+</th>
+<th style="text-align:right;">
+index_country_rank
+</th>
+<th style="text-align:left;">
+link
+</th>
+<th style="text-align:left;">
+date_updated
+</th>
+<th style="text-align:left;">
+recorded_date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+R_3JmvZFetXpQ0uMyNA
+</td>
+<td style="text-align:right;">
+465517
+</td>
+<td style="text-align:left;">
+new_entry
+</td>
+<td style="text-align:left;">
+original
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;min-width: 3in; ">
+Denmark is enforcing a restriction of mass gatherings after march 11: it is recommending to cancel events with more than 100 participants.
+</td>
+<td style="text-align:left;">
+2020-03-11
+</td>
+<td style="text-align:left;">
+2020-03-11
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Denmark
+</td>
+<td style="text-align:left;">
+DNK
+</td>
+<td style="text-align:left;">
+DK
+</td>
+<td style="text-align:left;">
+National
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Restrictions of Mass Gatherings
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Denmark
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+Voluntary/Recommended but No Penalties
+</td>
+<td style="text-align:left;">
+National Government,Ministry/Department of Health
+</td>
+<td style="text-align:right;">
+51.67880
+</td>
+<td style="text-align:right;">
+50.51108
+</td>
+<td style="text-align:right;">
+49.34015
+</td>
+<td style="text-align:right;">
+105
+</td>
+<td style="text-align:left;">
+<a href="https://nyheder.tv2.dk/samfund/2020-03-11-mette-f-forsamlinger-over-100-mennesker-skal-forbydes" class="uri">https://nyheder.tv2.dk/samfund/2020-03-11-mette-f-forsamlinger-over-100-mennesker-skal-forbydes</a>
+</td>
+<td style="text-align:left;">
+2020-04-02
+</td>
+<td style="text-align:left;">
+2020-04-02 10:41:15
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+R_3knpYSiXOygHo5wNA
+</td>
+<td style="text-align:right;">
+465517
+</td>
+<td style="text-align:left;">
+update
+</td>
+<td style="text-align:left;">
+original
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;min-width: 3in; ">
+Denmark is enforcing a restriction of mass gatherings: It became illegal to assemble more than ten people in public after march 18. UPDATE: Now the number of people allowed in public space are only 10, and now it’s not volunatry anymore but enforced with fines
+</td>
+<td style="text-align:left;">
+2020-03-18
+</td>
+<td style="text-align:left;">
+2020-03-18
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Denmark
+</td>
+<td style="text-align:left;">
+DNK
+</td>
+<td style="text-align:left;">
+DK
+</td>
+<td style="text-align:left;">
+National
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Restrictions of Mass Gatherings
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Denmark
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+Mandatory with Fines
+</td>
+<td style="text-align:left;">
+National Government,Police
+</td>
+<td style="text-align:right;">
+54.24649
+</td>
+<td style="text-align:right;">
+53.32735
+</td>
+<td style="text-align:right;">
+52.37032
+</td>
+<td style="text-align:right;">
+167
+</td>
+<td style="text-align:left;">
+<a href="https://www.dr.dk/nyheder/politik/faa-overblikket-over-de-nye-corona-tiltag-se-hvad-du-ikke-maa-fra-i-dag-klokken-10" class="uri">https://www.dr.dk/nyheder/politik/faa-overblikket-over-de-nye-corona-tiltag-se-hvad-du-ikke-maa-fra-i-dag-klokken-10</a>
+</td>
+<td style="text-align:left;">
+2020-04-02
+</td>
+<td style="text-align:left;">
+2020-04-02 10:57:52
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="closing-and-reopenings" class="section level3">
+<h3>Closing and reopenings</h3>
+<p>The following two policy_ids (9472025 and 5450669) track the closing and reopening of playgrounds in Baden-Wurrtemberg. Note that the announcement of the reopening of playgrounds leads to two additional measures:</p>
+<ul>
+<li>(1): the ending of the policy that stated that playgrounds were closed (record_id: R_3CIvUWy14r0Uc9PDa) and ;</li>
+<li>(2): the beginning of a new policy that documented when playgrounds were allowed to reopen (record_id: R_3mmBThrGGhbuXrgDa)</li>
+</ul>
+<table class="table table-striped table-hover" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+Restrictions of and Regulation of Government Services in Baden-Wurrtemberg, Germany: The provincial government of Baden-Wurttemberg closes its playgrounds from March 16 to May 6
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+record_id
+</th>
+<th style="text-align:right;">
+policy_id
+</th>
+<th style="text-align:left;">
+entry_type
+</th>
+<th style="text-align:left;">
+correct_type
+</th>
+<th style="text-align:left;">
+update_type
+</th>
+<th style="text-align:left;">
+update_level
+</th>
+<th style="text-align:left;">
+description
+</th>
+<th style="text-align:left;">
+date_announced
+</th>
+<th style="text-align:left;">
+date_start
+</th>
+<th style="text-align:left;">
+date_end
+</th>
+<th style="text-align:left;">
+country
+</th>
+<th style="text-align:left;">
+ISO_A3
+</th>
+<th style="text-align:left;">
+ISO_A2
+</th>
+<th style="text-align:left;">
+init_country_level
+</th>
+<th style="text-align:right;">
+domestic_policy
+</th>
+<th style="text-align:left;">
+province
+</th>
+<th style="text-align:left;">
+ISO_L2
+</th>
+<th style="text-align:left;">
+city
+</th>
+<th style="text-align:left;">
+type
+</th>
+<th style="text-align:left;">
+type_sub_cat
+</th>
+<th style="text-align:left;">
+type_text
+</th>
+<th style="text-align:left;">
+institution_status
+</th>
+<th style="text-align:left;">
+target_country
+</th>
+<th style="text-align:left;">
+target_geog_level
+</th>
+<th style="text-align:left;">
+target_region
+</th>
+<th style="text-align:left;">
+target_province
+</th>
+<th style="text-align:left;">
+target_city
+</th>
+<th style="text-align:left;">
+target_other
+</th>
+<th style="text-align:left;">
+target_who_what
+</th>
+<th style="text-align:left;">
+target_direction
+</th>
+<th style="text-align:left;">
+travel_mechanism
+</th>
+<th style="text-align:left;">
+compliance
+</th>
+<th style="text-align:left;">
+enforcer
+</th>
+<th style="text-align:right;">
+index_high_est
+</th>
+<th style="text-align:right;">
+index_med_est
+</th>
+<th style="text-align:right;">
+index_low_est
+</th>
+<th style="text-align:right;">
+index_country_rank
+</th>
+<th style="text-align:left;">
+link
+</th>
+<th style="text-align:left;">
+date_updated
+</th>
+<th style="text-align:left;">
+recorded_date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+R_1l3JRUIHyWdfcBiDa
+</td>
+<td style="text-align:right;">
+9472025
+</td>
+<td style="text-align:left;">
+new_entry
+</td>
+<td style="text-align:left;">
+correction
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;min-width: 3in; ">
+Baden-Württemberg (Germany) closes its playgrounds on March 16.
+</td>
+<td style="text-align:left;">
+2020-03-16
+</td>
+<td style="text-align:left;">
+2020-03-16
+</td>
+<td style="text-align:left;">
+2020-05-06
+</td>
+<td style="text-align:left;">
+Germany
+</td>
+<td style="text-align:left;">
+DEU
+</td>
+<td style="text-align:left;">
+DE
+</td>
+<td style="text-align:left;">
+Provincial
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Baden-Wuerttemberg
+</td>
+<td style="text-align:left;">
+DE-BW
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Restriction and Regulation of Government Services
+</td>
+<td style="text-align:left;">
+Other public outdoor spaces
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+This service is no longer provided by the government
+</td>
+<td style="text-align:left;">
+Germany
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Mandatory (Unspecified/Implied)
+</td>
+<td style="text-align:left;">
+Provincial/State Government
+</td>
+<td style="text-align:right;">
+53.46084
+</td>
+<td style="text-align:right;">
+52.57323
+</td>
+<td style="text-align:right;">
+51.68923
+</td>
+<td style="text-align:right;">
+150
+</td>
+<td style="text-align:left;">
+<a href="https://www.schwarzwaelder-bote.de/inhalt.coronavirus-bald-auch-geschaefte-und-spielplaetze-dicht.ee000143-5cb9-4f85-9646-f5cdacaa1217.html" class="uri">https://www.schwarzwaelder-bote.de/inhalt.coronavirus-bald-auch-geschaefte-und-spielplaetze-dicht.ee000143-5cb9-4f85-9646-f5cdacaa1217.html</a>
+</td>
+<td style="text-align:left;">
+2021-01-19
+</td>
+<td style="text-align:left;">
+2021-01-19 14:34:51
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+R_3CIvUWy14r0Uc9PDa
+</td>
+<td style="text-align:right;">
+9472025
+</td>
+<td style="text-align:left;">
+update
+</td>
+<td style="text-align:left;">
+original
+</td>
+<td style="text-align:left;">
+End of Policy
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;min-width: 3in; ">
+Baden-Württemberg (Germany) closes its playgrounds on March 16. The policy ends on May 6. UPDATE: The policy ends on May 6.
+</td>
+<td style="text-align:left;">
+2020-04-30
+</td>
+<td style="text-align:left;">
+2020-05-06
+</td>
+<td style="text-align:left;">
+2020-05-06
+</td>
+<td style="text-align:left;">
+Germany
+</td>
+<td style="text-align:left;">
+DEU
+</td>
+<td style="text-align:left;">
+DE
+</td>
+<td style="text-align:left;">
+Provincial
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Baden-Wuerttemberg
+</td>
+<td style="text-align:left;">
+DE-BW
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Restriction and Regulation of Government Services
+</td>
+<td style="text-align:left;">
+Other public outdoor spaces
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+This service is no longer provided by the government
+</td>
+<td style="text-align:left;">
+Germany
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Mandatory (Unspecified/Implied)
+</td>
+<td style="text-align:left;">
+Provincial/State Government
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+2020-08-19
+</td>
+<td style="text-align:left;">
+2020-08-19 07:15:06
+</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-striped table-hover" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+Restrictions of and Regulation of Government Services in Baden-Wurrtemberg, Germany: The provincial government of Baden-Wurttemberg reopens its playgrounds on May 6
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+record_id
+</th>
+<th style="text-align:right;">
+policy_id
+</th>
+<th style="text-align:left;">
+entry_type
+</th>
+<th style="text-align:left;">
+correct_type
+</th>
+<th style="text-align:left;">
+update_type
+</th>
+<th style="text-align:left;">
+update_level
+</th>
+<th style="text-align:left;">
+description
+</th>
+<th style="text-align:left;">
+date_announced
+</th>
+<th style="text-align:left;">
+date_start
+</th>
+<th style="text-align:left;">
+date_end
+</th>
+<th style="text-align:left;">
+country
+</th>
+<th style="text-align:left;">
+ISO_A3
+</th>
+<th style="text-align:left;">
+ISO_A2
+</th>
+<th style="text-align:left;">
+init_country_level
+</th>
+<th style="text-align:right;">
+domestic_policy
+</th>
+<th style="text-align:left;">
+province
+</th>
+<th style="text-align:left;">
+ISO_L2
+</th>
+<th style="text-align:left;">
+city
+</th>
+<th style="text-align:left;">
+type
+</th>
+<th style="text-align:left;">
+type_sub_cat
+</th>
+<th style="text-align:left;">
+type_text
+</th>
+<th style="text-align:left;">
+institution_status
+</th>
+<th style="text-align:left;">
+target_country
+</th>
+<th style="text-align:left;">
+target_geog_level
+</th>
+<th style="text-align:left;">
+target_region
+</th>
+<th style="text-align:left;">
+target_province
+</th>
+<th style="text-align:left;">
+target_city
+</th>
+<th style="text-align:left;">
+target_other
+</th>
+<th style="text-align:left;">
+target_who_what
+</th>
+<th style="text-align:left;">
+target_direction
+</th>
+<th style="text-align:left;">
+travel_mechanism
+</th>
+<th style="text-align:left;">
+compliance
+</th>
+<th style="text-align:left;">
+enforcer
+</th>
+<th style="text-align:right;">
+index_high_est
+</th>
+<th style="text-align:right;">
+index_med_est
+</th>
+<th style="text-align:right;">
+index_low_est
+</th>
+<th style="text-align:right;">
+index_country_rank
+</th>
+<th style="text-align:left;">
+link
+</th>
+<th style="text-align:left;">
+date_updated
+</th>
+<th style="text-align:left;">
+recorded_date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+R_3mmBThrGGhbuXrgDa
+</td>
+<td style="text-align:right;">
+5450669
+</td>
+<td style="text-align:left;">
+new_entry
+</td>
+<td style="text-align:left;">
+original
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;min-width: 3in; ">
+Baden-Württemberg (Germany) allows its playgrounds to open from May 6 (hygiene measures required).
+</td>
+<td style="text-align:left;">
+2020-04-30
+</td>
+<td style="text-align:left;">
+2020-05-06
+</td>
+<td style="text-align:left;">
+2020-05-06
+</td>
+<td style="text-align:left;">
+Germany
+</td>
+<td style="text-align:left;">
+DEU
+</td>
+<td style="text-align:left;">
+DE
+</td>
+<td style="text-align:left;">
+Provincial
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Baden-Wuerttemberg
+</td>
+<td style="text-align:left;">
+DE-BW
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Restriction and Regulation of Government Services
+</td>
+<td style="text-align:left;">
+Other public outdoor spaces
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+This service provided by the government is provided with conditions atttached
+</td>
+<td style="text-align:left;">
+Germany
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Mandatory (Unspecified/Implied)
+</td>
+<td style="text-align:left;">
+Provincial/State Government
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+<a href="https://www.baden-wuerttemberg.de/de/service/alle-meldungen/meldung/pid/weitere-lockerungen-der-corona-verordnung/" class="uri">https://www.baden-wuerttemberg.de/de/service/alle-meldungen/meldung/pid/weitere-lockerungen-der-corona-verordnung/</a>
+</td>
+<td style="text-align:left;">
+2020-08-19
+</td>
+<td style="text-align:left;">
+2020-08-19 07:28:30
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="changes-in-the-volume-of-a-policy" class="section level3">
+<h3>Changes in the ‘volume’ of a policy</h3>
+<p>These policies document changes in the ‘volume’ of a policy.</p>
+<p>Note that is only possible to change the ‘volume’ of a policy for the 5 following policy types:</p>
+<ul>
+<li>Quarantine — number of days a person must stay in quarantine</li>
+<li>Restrictions of Mass gatherings — the number of people who are restricted from gathering</li>
+<li>Curfew — the time of day that one is obliged to stay at home during a curfew</li>
+<li>Health Resources – the amount of health resources (e.g. masks, doctors)</li>
+<li>COVID-19 vaccines — the amount of vaccines produced, purchased or distributed</li>
+</ul>
+<p>Note also that additional information on the ‘volume’ of the policy is recorded in a separate variable but has not yet been processed in the CoronaNet data pipeline for release. This separate variable, when processed, would be included as a separate column.</p>
+<table class="table table-striped table-hover" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+Restrictions of Mass Gatherings in Denmark: The restriction of mass gathering originally applied to 100 people and now it applies to 10 people
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+record_id
+</th>
+<th style="text-align:right;">
+policy_id
+</th>
+<th style="text-align:left;">
+entry_type
+</th>
+<th style="text-align:left;">
+correct_type
+</th>
+<th style="text-align:left;">
+update_type
+</th>
+<th style="text-align:left;">
+update_level
+</th>
+<th style="text-align:left;">
+description
+</th>
+<th style="text-align:left;">
+date_announced
+</th>
+<th style="text-align:left;">
+date_start
+</th>
+<th style="text-align:left;">
+date_end
+</th>
+<th style="text-align:left;">
+country
+</th>
+<th style="text-align:left;">
+ISO_A3
+</th>
+<th style="text-align:left;">
+ISO_A2
+</th>
+<th style="text-align:left;">
+init_country_level
+</th>
+<th style="text-align:right;">
+domestic_policy
+</th>
+<th style="text-align:left;">
+province
+</th>
+<th style="text-align:left;">
+ISO_L2
+</th>
+<th style="text-align:left;">
+city
+</th>
+<th style="text-align:left;">
+type
+</th>
+<th style="text-align:left;">
+type_sub_cat
+</th>
+<th style="text-align:left;">
+type_text
+</th>
+<th style="text-align:left;">
+institution_status
+</th>
+<th style="text-align:left;">
+target_country
+</th>
+<th style="text-align:left;">
+target_geog_level
+</th>
+<th style="text-align:left;">
+target_region
+</th>
+<th style="text-align:left;">
+target_province
+</th>
+<th style="text-align:left;">
+target_city
+</th>
+<th style="text-align:left;">
+target_other
+</th>
+<th style="text-align:left;">
+target_who_what
+</th>
+<th style="text-align:left;">
+target_direction
+</th>
+<th style="text-align:left;">
+travel_mechanism
+</th>
+<th style="text-align:left;">
+compliance
+</th>
+<th style="text-align:left;">
+enforcer
+</th>
+<th style="text-align:right;">
+index_high_est
+</th>
+<th style="text-align:right;">
+index_med_est
+</th>
+<th style="text-align:right;">
+index_low_est
+</th>
+<th style="text-align:right;">
+index_country_rank
+</th>
+<th style="text-align:left;">
+link
+</th>
+<th style="text-align:left;">
+date_updated
+</th>
+<th style="text-align:left;">
+recorded_date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+R_3JmvZFetXpQ0uMyNA
+</td>
+<td style="text-align:right;">
+465517
+</td>
+<td style="text-align:left;">
+new_entry
+</td>
+<td style="text-align:left;">
+original
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;min-width: 3in; ">
+Denmark is enforcing a restriction of mass gatherings after march 11: it is recommending to cancel events with more than 100 participants.
+</td>
+<td style="text-align:left;">
+2020-03-11
+</td>
+<td style="text-align:left;">
+2020-03-11
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Denmark
+</td>
+<td style="text-align:left;">
+DNK
+</td>
+<td style="text-align:left;">
+DK
+</td>
+<td style="text-align:left;">
+National
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Restrictions of Mass Gatherings
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Denmark
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+Voluntary/Recommended but No Penalties
+</td>
+<td style="text-align:left;">
+National Government,Ministry/Department of Health
+</td>
+<td style="text-align:right;">
+51.67880
+</td>
+<td style="text-align:right;">
+50.51108
+</td>
+<td style="text-align:right;">
+49.34015
+</td>
+<td style="text-align:right;">
+105
+</td>
+<td style="text-align:left;">
+<a href="https://nyheder.tv2.dk/samfund/2020-03-11-mette-f-forsamlinger-over-100-mennesker-skal-forbydes" class="uri">https://nyheder.tv2.dk/samfund/2020-03-11-mette-f-forsamlinger-over-100-mennesker-skal-forbydes</a>
+</td>
+<td style="text-align:left;">
+2020-04-02
+</td>
+<td style="text-align:left;">
+2020-04-02 10:41:15
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+R_3knpYSiXOygHo5wNA
+</td>
+<td style="text-align:right;">
+465517
+</td>
+<td style="text-align:left;">
+update
+</td>
+<td style="text-align:left;">
+original
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;min-width: 3in; ">
+Denmark is enforcing a restriction of mass gatherings: It became illegal to assemble more than ten people in public after march 18. UPDATE: Now the number of people allowed in public space are only 10, and now it’s not volunatry anymore but enforced with fines
+</td>
+<td style="text-align:left;">
+2020-03-18
+</td>
+<td style="text-align:left;">
+2020-03-18
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Denmark
+</td>
+<td style="text-align:left;">
+DNK
+</td>
+<td style="text-align:left;">
+DK
+</td>
+<td style="text-align:left;">
+National
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Restrictions of Mass Gatherings
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Denmark
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+Mandatory with Fines
+</td>
+<td style="text-align:left;">
+National Government,Police
+</td>
+<td style="text-align:right;">
+54.24649
+</td>
+<td style="text-align:right;">
+53.32735
+</td>
+<td style="text-align:right;">
+52.37032
+</td>
+<td style="text-align:right;">
+167
+</td>
+<td style="text-align:left;">
+<a href="https://www.dr.dk/nyheder/politik/faa-overblikket-over-de-nye-corona-tiltag-se-hvad-du-ikke-maa-fra-i-dag-klokken-10" class="uri">https://www.dr.dk/nyheder/politik/faa-overblikket-over-de-nye-corona-tiltag-se-hvad-du-ikke-maa-fra-i-dag-klokken-10</a>
+</td>
+<td style="text-align:left;">
+2020-04-02
+</td>
+<td style="text-align:left;">
+2020-04-02 10:57:52
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="changes-in-the-geographic-target" class="section level3">
+<h3>Changes in the geographic target</h3>
+<p>The following two policy_ids (8340357 and 9214528) track external border restrictions in Switzerland. Note that once the geographic target of a policy changes, then the first policy must end and a second polcy is started such that at two new records are created:</p>
+<ul>
+<li>(1): the ending of the policy that stated the geographic target were foreign travelers from Italy, France, Austria and Germany (record_id: R_3kqfLMRqISoiZ6HEy) and ;</li>
+<li>(2): the beginning of a new policy that documents that the geographic target of the external border restrictions are now Italy, France, Austria, Germany Spain and all non-Schengen states (record_id: R_DCbPMHXV7xTHU5zEy)</li>
+</ul>
+<p>Note that the geographic target in 9214528 also changes such that it must be ended (as [record_id]: R_27J5WXCzKeDbSs5Ey does) and a new policy must start. This new policy is documented in [policy_id ]: 2729617 but not shown here.</p>
+<table class="table table-striped table-hover" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+External Border Restriction in Switzerland: The policy is originally geographically targeted toward foreign travelers from Italy, France, Austria and Germany on March 17. This ban is expanded to Spain and all non Schengen states on March 18 so the original policy ends on March 18
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+record_id
+</th>
+<th style="text-align:right;">
+policy_id
+</th>
+<th style="text-align:left;">
+entry_type
+</th>
+<th style="text-align:left;">
+correct_type
+</th>
+<th style="text-align:left;">
+update_type
+</th>
+<th style="text-align:left;">
+update_level
+</th>
+<th style="text-align:left;">
+description
+</th>
+<th style="text-align:left;">
+date_announced
+</th>
+<th style="text-align:left;">
+date_start
+</th>
+<th style="text-align:left;">
+date_end
+</th>
+<th style="text-align:left;">
+country
+</th>
+<th style="text-align:left;">
+ISO_A3
+</th>
+<th style="text-align:left;">
+ISO_A2
+</th>
+<th style="text-align:left;">
+init_country_level
+</th>
+<th style="text-align:right;">
+domestic_policy
+</th>
+<th style="text-align:left;">
+province
+</th>
+<th style="text-align:left;">
+ISO_L2
+</th>
+<th style="text-align:left;">
+city
+</th>
+<th style="text-align:left;">
+type
+</th>
+<th style="text-align:left;">
+type_sub_cat
+</th>
+<th style="text-align:left;">
+type_text
+</th>
+<th style="text-align:left;">
+institution_status
+</th>
+<th style="text-align:left;">
+target_country
+</th>
+<th style="text-align:left;">
+target_geog_level
+</th>
+<th style="text-align:left;">
+target_region
+</th>
+<th style="text-align:left;">
+target_province
+</th>
+<th style="text-align:left;">
+target_city
+</th>
+<th style="text-align:left;">
+target_other
+</th>
+<th style="text-align:left;">
+target_who_what
+</th>
+<th style="text-align:left;">
+target_direction
+</th>
+<th style="text-align:left;">
+travel_mechanism
+</th>
+<th style="text-align:left;">
+compliance
+</th>
+<th style="text-align:left;">
+enforcer
+</th>
+<th style="text-align:right;">
+index_high_est
+</th>
+<th style="text-align:right;">
+index_med_est
+</th>
+<th style="text-align:right;">
+index_low_est
+</th>
+<th style="text-align:right;">
+index_country_rank
+</th>
+<th style="text-align:left;">
+link
+</th>
+<th style="text-align:left;">
+date_updated
+</th>
+<th style="text-align:left;">
+recorded_date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+R_QoxocsTPMg7ub5fEy
+</td>
+<td style="text-align:right;">
+8340357
+</td>
+<td style="text-align:left;">
+new_entry
+</td>
+<td style="text-align:left;">
+original
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;min-width: 3in; ">
+From the 17 March 2020 onwards, the Swiss Federal Council extends the entrance ban introduced to Italy to France, Austria and Germany. Entrance remains allowed for Swiss citizens, people with a residence permit in Switzerland, people traveling through Switzerland, and people who have to travel to Switzerland for professional reasons. Transit and goods traffic are also allowed. Finally, people in a situation of absolute necessity may also enter from these countries.
+</td>
+<td style="text-align:left;">
+2020-03-17
+</td>
+<td style="text-align:left;">
+2020-03-17
+</td>
+<td style="text-align:left;">
+2020-03-18
+</td>
+<td style="text-align:left;">
+Switzerland
+</td>
+<td style="text-align:left;">
+CHE
+</td>
+<td style="text-align:left;">
+CH
+</td>
+<td style="text-align:left;">
+National
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+External Border Restrictions
+</td>
+<td style="text-align:left;">
+Total border crossing ban
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+Austria,France,Germany,Italy
+</td>
+<td style="text-align:left;">
+One or more countries, but not all countries
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Foreign Travelers
+</td>
+<td style="text-align:left;">
+Inbound
+</td>
+<td style="text-align:left;">
+Flights,Land Border,Trains,Buses
+</td>
+<td style="text-align:left;">
+Mandatory with Legal Penalties (Jail Time),Mandatory with Fines,Mandatory with Exceptions (Please list exceptions in the text entry),Mandatory (Other; please list other enforcement mechanisms in the text entry)
+</td>
+<td style="text-align:left;">
+National Government,Other (Please specify in the text box)
+</td>
+<td style="text-align:right;">
+55.49802
+</td>
+<td style="text-align:right;">
+54.46123
+</td>
+<td style="text-align:right;">
+53.55807
+</td>
+<td style="text-align:right;">
+190
+</td>
+<td style="text-align:left;">
+<a href="https://www.admin.ch/opc/de/classified-compilation/20200744/202003170000/818.101.24.pdf" class="uri">https://www.admin.ch/opc/de/classified-compilation/20200744/202003170000/818.101.24.pdf</a>
+</td>
+<td style="text-align:left;">
+2021-01-14
+</td>
+<td style="text-align:left;">
+2021-01-14 12:11:13
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+R_3kqfLMRqISoiZ6HEy
+</td>
+<td style="text-align:right;">
+8340357
+</td>
+<td style="text-align:left;">
+update
+</td>
+<td style="text-align:left;">
+original
+</td>
+<td style="text-align:left;">
+End of Policy
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;min-width: 3in; ">
+From the 17 March 2020 onwards, the Swiss Federal Council extends the entrance ban introduced to Italy to France, Austria and Germany. Entrance remains allowed for Swiss citizens, people with a residence permit in Switzerland, people traveling through Switzerland, and people who have to travel to Switzerland for professional reasons. Transit and goods traffic are also allowed. Finally, people in a situation of absolute necessity may also enter from these countries. UPDATE: The original entrance ban introduced to foreign travelers from Germany, Austria, Italy and France from March 17, 2020 has been expanded to Spain and all non-Schengen states on March 18, 2020.
+</td>
+<td style="text-align:left;">
+2020-03-18
+</td>
+<td style="text-align:left;">
+2020-03-18
+</td>
+<td style="text-align:left;">
+2020-03-18
+</td>
+<td style="text-align:left;">
+Switzerland
+</td>
+<td style="text-align:left;">
+CHE
+</td>
+<td style="text-align:left;">
+CH
+</td>
+<td style="text-align:left;">
+National
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+External Border Restrictions
+</td>
+<td style="text-align:left;">
+Total border crossing ban
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+Austria,France,Germany,Italy
+</td>
+<td style="text-align:left;">
+One or more countries, but not all countries
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Foreign Travelers
+</td>
+<td style="text-align:left;">
+Inbound
+</td>
+<td style="text-align:left;">
+Flights,Land Border,Trains,Buses
+</td>
+<td style="text-align:left;">
+Mandatory with Legal Penalties (Jail Time),Mandatory with Fines,Mandatory with Exceptions (Please list exceptions in the text entry),Mandatory (Other; please list other enforcement mechanisms in the text entry)
+</td>
+<td style="text-align:left;">
+National Government,Other (Please specify in the text box)
+</td>
+<td style="text-align:right;">
+55.79416
+</td>
+<td style="text-align:right;">
+54.50990
+</td>
+<td style="text-align:right;">
+53.40572
+</td>
+<td style="text-align:right;">
+189
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+2021-01-14
+</td>
+<td style="text-align:left;">
+2021-01-14 12:16:38
+</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-striped table-hover" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+External Border Restriction in Switzerland: The policy is geographically targeted toward foreign travelers from Italy, France, Austria, Germany, Spain and all non-Schengen states on March 18. The geographic target is expanded to all countries except Liechtenstein on March 25 so this policy ends on March 25.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+record_id
+</th>
+<th style="text-align:right;">
+policy_id
+</th>
+<th style="text-align:left;">
+entry_type
+</th>
+<th style="text-align:left;">
+correct_type
+</th>
+<th style="text-align:left;">
+update_type
+</th>
+<th style="text-align:left;">
+update_level
+</th>
+<th style="text-align:left;">
+description
+</th>
+<th style="text-align:left;">
+date_announced
+</th>
+<th style="text-align:left;">
+date_start
+</th>
+<th style="text-align:left;">
+date_end
+</th>
+<th style="text-align:left;">
+country
+</th>
+<th style="text-align:left;">
+ISO_A3
+</th>
+<th style="text-align:left;">
+ISO_A2
+</th>
+<th style="text-align:left;">
+init_country_level
+</th>
+<th style="text-align:right;">
+domestic_policy
+</th>
+<th style="text-align:left;">
+province
+</th>
+<th style="text-align:left;">
+ISO_L2
+</th>
+<th style="text-align:left;">
+city
+</th>
+<th style="text-align:left;">
+type
+</th>
+<th style="text-align:left;">
+type_sub_cat
+</th>
+<th style="text-align:left;">
+type_text
+</th>
+<th style="text-align:left;">
+institution_status
+</th>
+<th style="text-align:left;">
+target_country
+</th>
+<th style="text-align:left;">
+target_geog_level
+</th>
+<th style="text-align:left;">
+target_region
+</th>
+<th style="text-align:left;">
+target_province
+</th>
+<th style="text-align:left;">
+target_city
+</th>
+<th style="text-align:left;">
+target_other
+</th>
+<th style="text-align:left;">
+target_who_what
+</th>
+<th style="text-align:left;">
+target_direction
+</th>
+<th style="text-align:left;">
+travel_mechanism
+</th>
+<th style="text-align:left;">
+compliance
+</th>
+<th style="text-align:left;">
+enforcer
+</th>
+<th style="text-align:right;">
+index_high_est
+</th>
+<th style="text-align:right;">
+index_med_est
+</th>
+<th style="text-align:right;">
+index_low_est
+</th>
+<th style="text-align:right;">
+index_country_rank
+</th>
+<th style="text-align:left;">
+link
+</th>
+<th style="text-align:left;">
+date_updated
+</th>
+<th style="text-align:left;">
+recorded_date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+R_DCbPMHXV7xTHU5zEy
+</td>
+<td style="text-align:right;">
+9214528
+</td>
+<td style="text-align:left;">
+new_entry
+</td>
+<td style="text-align:left;">
+correction
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;min-width: 3in; ">
+On March 18, the Swiss Federal Council extends the entrance ban introduced to Germany, Austria, Italy and France to foreign travelers from Spain and all non-Schengen states. Entrance remains allowed for Swiss citizens, people with a residence permit in Switzerland, people traveling through Switzerland, and people who have to travel to Switzerland for professional reasons as well as supporting health care workers. Transit and goods traffic are also allowed. Finally, people in a situation of absolute necessity may also enter from these countries.
+</td>
+<td style="text-align:left;">
+2020-03-18
+</td>
+<td style="text-align:left;">
+2020-03-18
+</td>
+<td style="text-align:left;">
+2020-03-25
+</td>
+<td style="text-align:left;">
+Switzerland
+</td>
+<td style="text-align:left;">
+CHE
+</td>
+<td style="text-align:left;">
+CH
+</td>
+<td style="text-align:left;">
+National
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+External Border Restrictions
+</td>
+<td style="text-align:left;">
+Total border crossing ban
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+Afghanistan,Albania,Algeria,Andorra,Angola,Antigua and Barbuda,Argentina,Armenia,Australia,Austria,Azerbaijan,Bahamas,Bahrain,Bangladesh,Barbados,Belarus,Belize,Benin,Bhutan,Bolivia,Bosnia and Herzegovina,Botswana,Brazil,Brunei,Bulgaria,Burkina Faso,Burundi,Cabo Verde,Cambodia,Cameroon,Canada,Central African Republic,Chad,Chile,China,Colombia,Comoros,Costa Rica,Croatia,Cuba,Cyprus,Democratic Republic of the Congo,Djibouti,Dominica,Dominican Republic,Ecuador,Egypt,El Salvador,Equatorial Guinea,Eritrea,Eswatini,Ethiopia,Fiji,France,Gabon,Gambia,Georgia,Germany,Ghana,Grenada,Guatemala,Guinea,Guinea-Bissau,Guyana,Haiti,Honduras,Hong Kong,India,Indonesia,Iran,Iraq,Ireland,Israel,Italy,Ivory Coast,Jamaica,Japan,Jordan,Kazakhstan,Kenya,Kiribati,Kosovo,Kuwait,Kyrgyzstan,Laos,Lebanon,Lesotho,Liberia,Libya,Macau,Madagascar,Malawi,Malaysia,Maldives,Mali,Marshall Islands,Mauritania,Mauritius,Mexico,Micronesia,Moldova,Monaco,Mongolia,Montenegro,Morocco,Mozambique,Myanmar,Namibia,Nauru,Nepal,New Zealand,Nicaragua,Niger,Nigeria,North Korea,North Macedonia,Northern Cyprus,Oman,Pakistan,Palau,Palestine,Panama,Papua New Guinea,Paraguay,Peru,Philippines,Portugal,Qatar,Republic of the Congo,Romania,Russia,Rwanda,Saint Kitts and Nevis,Saint Lucia,Saint Vincent and the Grenadines,Samoa,San Marino,Sao Tome and Principe,Saudi Arabia,Senegal,Serbia,Seychelles,Sierra Leone,Singapore,Solomon Islands,Somalia,South Africa,South Korea,South Sudan,Spain,Sri Lanka,Sudan,Suriname,Syria,Taiwan,Tajikistan,Tanzania,Thailand,Timor Leste,Togo,Tonga,Trinidad and Tobago,Tunisia,Turkey,Turkmenistan,Tuvalu,Uganda,Ukraine,United Arab Emirates,United Kingdom,United States,Uruguay,Uzbekistan,Vanuatu,Vatican,Venezuela,Vietnam,Yemen,Zambia,Zimbabwe
+</td>
+<td style="text-align:left;">
+One or more countries, but not all countries
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Foreign Travelers
+</td>
+<td style="text-align:left;">
+Inbound
+</td>
+<td style="text-align:left;">
+Flights,Land Border,Trains,Buses
+</td>
+<td style="text-align:left;">
+Mandatory with Legal Penalties (Jail Time),Mandatory with Fines,Mandatory with Exceptions (Please list exceptions in the text entry),Mandatory (Other; please list other enforcement mechanisms in the text entry)
+</td>
+<td style="text-align:left;">
+National Government,Other (Please specify in the text box)
+</td>
+<td style="text-align:right;">
+55.79416
+</td>
+<td style="text-align:right;">
+54.5099
+</td>
+<td style="text-align:right;">
+53.40572
+</td>
+<td style="text-align:right;">
+189
+</td>
+<td style="text-align:left;">
+<a href="https://www.admin.ch/opc/de/classified-compilation/20200744/202003190000/818.101.24.pdf" class="uri">https://www.admin.ch/opc/de/classified-compilation/20200744/202003190000/818.101.24.pdf</a>
+</td>
+<td style="text-align:left;">
+2021-01-14
+</td>
+<td style="text-align:left;">
+2021-01-14 12:20:55
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+R_27J5WXCzKeDbSs5Ey
+</td>
+<td style="text-align:right;">
+9214528
+</td>
+<td style="text-align:left;">
+update
+</td>
+<td style="text-align:left;">
+original
+</td>
+<td style="text-align:left;">
+End of Policy
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;min-width: 3in; ">
+On March 18, the Swiss Federal Council extends the external border checks introduced to Germany, Austria, Italy and France to foreign travelers from Spain and all non-Schengen states. Entrance remains allowed for Swiss citizens, people with a residence permit in Switzerland, people traveling through Switzerland, and people who have to travel to Switzerland for professional reasons as well as supporting health care workers. Transit and goods traffic are also allowed. Finally, people in a situation of absolute necessity may also enter from these countries. UPDATE: On March 25, the external border restrictions’ geographical target was extended to all states except for Liechtenstein.
+</td>
+<td style="text-align:left;">
+2020-03-25
+</td>
+<td style="text-align:left;">
+2020-03-25
+</td>
+<td style="text-align:left;">
+2020-03-25
+</td>
+<td style="text-align:left;">
+Switzerland
+</td>
+<td style="text-align:left;">
+CHE
+</td>
+<td style="text-align:left;">
+CH
+</td>
+<td style="text-align:left;">
+National
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+External Border Restrictions
+</td>
+<td style="text-align:left;">
+Total border crossing ban
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+Afghanistan,Albania,Algeria,Andorra,Angola,Antigua and Barbuda,Argentina,Armenia,Australia,Austria,Azerbaijan,Bahamas,Bahrain,Bangladesh,Barbados,Belarus,Belize,Benin,Bhutan,Bolivia,Bosnia and Herzegovina,Botswana,Brazil,Brunei,Bulgaria,Burkina Faso,Burundi,Cabo Verde,Cambodia,Cameroon,Canada,Central African Republic,Chad,Chile,China,Colombia,Comoros,Costa Rica,Croatia,Cuba,Cyprus,Democratic Republic of the Congo,Djibouti,Dominica,Dominican Republic,Ecuador,Egypt,El Salvador,Equatorial Guinea,Eritrea,Eswatini,Ethiopia,Fiji,France,Gabon,Gambia,Georgia,Germany,Ghana,Grenada,Guatemala,Guinea,Guinea-Bissau,Guyana,Haiti,Honduras,Hong Kong,India,Indonesia,Iran,Iraq,Ireland,Israel,Italy,Ivory Coast,Jamaica,Japan,Jordan,Kazakhstan,Kenya,Kiribati,Kosovo,Kuwait,Kyrgyzstan,Laos,Lebanon,Lesotho,Liberia,Libya,Macau,Madagascar,Malawi,Malaysia,Maldives,Mali,Marshall Islands,Mauritania,Mauritius,Mexico,Micronesia,Moldova,Monaco,Mongolia,Montenegro,Morocco,Mozambique,Myanmar,Namibia,Nauru,Nepal,New Zealand,Nicaragua,Niger,Nigeria,North Korea,North Macedonia,Northern Cyprus,Oman,Pakistan,Palau,Palestine,Panama,Papua New Guinea,Paraguay,Peru,Philippines,Portugal,Qatar,Republic of the Congo,Romania,Russia,Rwanda,Saint Kitts and Nevis,Saint Lucia,Saint Vincent and the Grenadines,Samoa,San Marino,Sao Tome and Principe,Saudi Arabia,Senegal,Serbia,Seychelles,Sierra Leone,Singapore,Solomon Islands,Somalia,South Africa,South Korea,South Sudan,Spain,Sri Lanka,Sudan,Suriname,Syria,Taiwan,Tajikistan,Tanzania,Thailand,Timor Leste,Togo,Tonga,Trinidad and Tobago,Tunisia,Turkey,Turkmenistan,Tuvalu,Uganda,Ukraine,United Arab Emirates,United Kingdom,United States,Uruguay,Uzbekistan,Vanuatu,Vatican,Venezuela,Vietnam,Yemen,Zambia,Zimbabwe
+</td>
+<td style="text-align:left;">
+One or more countries, but not all countries
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Foreign Travelers
+</td>
+<td style="text-align:left;">
+Inbound
+</td>
+<td style="text-align:left;">
+Flights,Land Border,Trains,Buses
+</td>
+<td style="text-align:left;">
+Mandatory with Legal Penalties (Jail Time),Mandatory with Exceptions (Please list exceptions in the text entry)
+</td>
+<td style="text-align:left;">
+National Government,Military,Police
+</td>
+<td style="text-align:right;">
+56.86146
+</td>
+<td style="text-align:right;">
+54.6516
+</td>
+<td style="text-align:right;">
+52.23865
+</td>
+<td style="text-align:right;">
+184
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+2020-11-03
+</td>
+<td style="text-align:left;">
+2020-11-03 08:28:06
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="change-in-timing-and-geographical-target" class="section level3">
+<h3>Change in timing and geographical target</h3>
+<p>The following is an example of case where the timing of the policy is extended (R_1jk2VhbYA04rcqhEo) and the policy later ends because of a change in the geographic target (R_3KVoRG5ppap93UtEo).</p>
+<table class="table table-striped table-hover" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+Quarantine in Thuringa: The policy is geographically targeted toward foreign travelers. The policy has been extended once (R_1jk2VhbYA04rcqhEo) and ends when the geographical target changes (R_3KVoRG5ppap93UtEo).
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+record_id
+</th>
+<th style="text-align:right;">
+policy_id
+</th>
+<th style="text-align:left;">
+entry_type
+</th>
+<th style="text-align:left;">
+correct_type
+</th>
+<th style="text-align:left;">
+update_type
+</th>
+<th style="text-align:left;">
+update_level
+</th>
+<th style="text-align:left;">
+description
+</th>
+<th style="text-align:left;">
+date_announced
+</th>
+<th style="text-align:left;">
+date_start
+</th>
+<th style="text-align:left;">
+date_end
+</th>
+<th style="text-align:left;">
+country
+</th>
+<th style="text-align:left;">
+ISO_A3
+</th>
+<th style="text-align:left;">
+ISO_A2
+</th>
+<th style="text-align:left;">
+init_country_level
+</th>
+<th style="text-align:right;">
+domestic_policy
+</th>
+<th style="text-align:left;">
+province
+</th>
+<th style="text-align:left;">
+ISO_L2
+</th>
+<th style="text-align:left;">
+city
+</th>
+<th style="text-align:left;">
+type
+</th>
+<th style="text-align:left;">
+type_sub_cat
+</th>
+<th style="text-align:left;">
+type_text
+</th>
+<th style="text-align:left;">
+institution_status
+</th>
+<th style="text-align:left;">
+target_country
+</th>
+<th style="text-align:left;">
+target_geog_level
+</th>
+<th style="text-align:left;">
+target_region
+</th>
+<th style="text-align:left;">
+target_province
+</th>
+<th style="text-align:left;">
+target_city
+</th>
+<th style="text-align:left;">
+target_other
+</th>
+<th style="text-align:left;">
+target_who_what
+</th>
+<th style="text-align:left;">
+target_direction
+</th>
+<th style="text-align:left;">
+travel_mechanism
+</th>
+<th style="text-align:left;">
+compliance
+</th>
+<th style="text-align:left;">
+enforcer
+</th>
+<th style="text-align:right;">
+index_high_est
+</th>
+<th style="text-align:right;">
+index_med_est
+</th>
+<th style="text-align:right;">
+index_low_est
+</th>
+<th style="text-align:right;">
+index_country_rank
+</th>
+<th style="text-align:left;">
+link
+</th>
+<th style="text-align:left;">
+date_updated
+</th>
+<th style="text-align:left;">
+recorded_date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+R_1jYOJV4iLlcJq9oEo
+</td>
+<td style="text-align:right;">
+2008599
+</td>
+<td style="text-align:left;">
+new_entry
+</td>
+<td style="text-align:left;">
+correction
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;min-width: 3in; ">
+As of April 9, 2020, Thuringia enacts quarantine rules for incoming and returning travelers. People who enter Thuringia by land, sea or air from a country outside the Federal Republic of Germany are obliged to go directly to their own home or other suitable accommodation immediately after entering the country to remain isolated there for a period of 14 days after entering the country.
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+2020-04-09
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+2020-04-10
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+2020-06-15
+</td>
+<td style="text-align:left;">
+Germany
+</td>
+<td style="text-align:left;">
+DEU
+</td>
+<td style="text-align:left;">
+DE
+</td>
+<td style="text-align:left;">
+Provincial
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Thuringia
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Quarantine
+</td>
+<td style="text-align:left;">
+Self-Quarantine (i.e. quarantine at home)
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+Germany
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Mandatory with Fines
+</td>
+<td style="text-align:left;">
+Provincial/State Government
+</td>
+<td style="text-align:right;">
+55.09736
+</td>
+<td style="text-align:right;">
+53.29421
+</td>
+<td style="text-align:right;">
+51.71277
+</td>
+<td style="text-align:right;">
+115
+</td>
+<td style="text-align:left;">
+<a href="https://corona.thueringen.de/behoerden/ausgewaehlte-verordnungen/" class="uri">https://corona.thueringen.de/behoerden/ausgewaehlte-verordnungen/</a>
+</td>
+<td style="text-align:left;">
+2021-01-18
+</td>
+<td style="text-align:left;">
+2021-01-18 09:37:23
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+R_1jk2VhbYA04rcqhEo
+</td>
+<td style="text-align:right;">
+2008599
+</td>
+<td style="text-align:left;">
+update
+</td>
+<td style="text-align:left;">
+correction
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Strengthening
+</td>
+<td style="text-align:left;min-width: 3in; ">
+As of April 9, 2020, Thuringia enacts quarantine rules for incoming and returning travelers. People who enter Thuringia by land, sea or air from a country outside the Federal Republic of Germany are obliged to go directly to their own home or other suitable accommodation immediately after entering the country to remain isolated there for a period of 14 days after entering the country. The original quarantine was set to last until May 6, 2020, it has been extended to May 25, 2020. UPDATE: The original quarantine was set to last until May 6, 2020 it has been extended to May 25, 2020
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+2020-05-25
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+2020-05-26
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+2020-06-15
+</td>
+<td style="text-align:left;">
+Germany
+</td>
+<td style="text-align:left;">
+DEU
+</td>
+<td style="text-align:left;">
+DE
+</td>
+<td style="text-align:left;">
+Provincial
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Thuringia
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Quarantine
+</td>
+<td style="text-align:left;">
+Self-Quarantine (i.e. quarantine at home)
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+Germany
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Mandatory with Fines
+</td>
+<td style="text-align:left;">
+Provincial/State Government
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+<a href="https://corona.thueringen.de/behoerden/ausgewaehlte-verordnungen/" class="uri">https://corona.thueringen.de/behoerden/ausgewaehlte-verordnungen/</a>
+</td>
+<td style="text-align:left;">
+2021-01-18
+</td>
+<td style="text-align:left;">
+2021-01-18 09:43:01
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+R_3KVoRG5ppap93UtEo
+</td>
+<td style="text-align:right;">
+2008599
+</td>
+<td style="text-align:left;">
+update
+</td>
+<td style="text-align:left;">
+correction
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Strengthening
+</td>
+<td style="text-align:left;min-width: 3in; ">
+As of April 9, 2020 Thuringia enacts quarantine rules for incoming and returning travelers. People who enter Thuringia by land, sea or air from a country outside the Federal Republic of Germany are obliged to go directly to their own home or other suitable accommodation immediately after entering the country to remain isolated there for a period of 14 days after entering the country. The original quarantine was set to last until May 6, 2020, it has been extended to May 25, 2020. The geographical target of the policy has changed as of 26 May 2020. UPDATE: The geographical target of the policy has changed as of 26 May 2020.
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+2020-05-25
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+2020-05-26
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+2020-06-15
+</td>
+<td style="text-align:left;">
+Germany
+</td>
+<td style="text-align:left;">
+DEU
+</td>
+<td style="text-align:left;">
+DE
+</td>
+<td style="text-align:left;">
+Provincial
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Thuringia
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Quarantine
+</td>
+<td style="text-align:left;">
+Self-Quarantine (i.e. quarantine at home)
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(33, 144, 141, 1) !important;">
+Germany
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Mandatory with Fines
+</td>
+<td style="text-align:left;">
+Provincial/State Government
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+<a href="https://corona.thueringen.de/behoerden/ausgewaehlte-verordnungen/" class="uri">https://corona.thueringen.de/behoerden/ausgewaehlte-verordnungen/</a>
+</td>
+<td style="text-align:left;">
+2021-01-18
+</td>
+<td style="text-align:left;">
+2021-01-18 09:44:39
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="change-in-timing-and-volume-of-a-policy" class="section level3">
+<h3>Change in timing and ‘volume’ of a policy</h3>
+<p>The following proivde an example of case where the timing of the policy is extended and the volume of the policy changes.</p>
+<p>The [policy_id] 4990416 records a restriction of mass gatherings policy in Thuringa Germany. The updates are as follows:</p>
+<ul>
+<li>The restriction of mass gathering originaly applied to 75 people and now it applies to 100 people (R_32PfNHw9adt7waKNA)</li>
+<li>The timing of the policy has been extended to October 31 (R_3h4Gwl2gBvEKVZlNA)</li>
+</ul>
+<table class="table table-striped table-hover" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+Restrictions of Mass Gatherings in Thuringa, Germany: The restriction of mass gathering originally applied to 75 people and now it applies to 100 people. In addition the timing of the policy has been extended
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+record_id
+</th>
+<th style="text-align:right;">
+policy_id
+</th>
+<th style="text-align:left;">
+entry_type
+</th>
+<th style="text-align:left;">
+correct_type
+</th>
+<th style="text-align:left;">
+update_type
+</th>
+<th style="text-align:left;">
+update_level
+</th>
+<th style="text-align:left;">
+description
+</th>
+<th style="text-align:left;">
+date_announced
+</th>
+<th style="text-align:left;">
+date_start
+</th>
+<th style="text-align:left;">
+date_end
+</th>
+<th style="text-align:left;">
+country
+</th>
+<th style="text-align:left;">
+ISO_A3
+</th>
+<th style="text-align:left;">
+ISO_A2
+</th>
+<th style="text-align:left;">
+init_country_level
+</th>
+<th style="text-align:right;">
+domestic_policy
+</th>
+<th style="text-align:left;">
+province
+</th>
+<th style="text-align:left;">
+ISO_L2
+</th>
+<th style="text-align:left;">
+city
+</th>
+<th style="text-align:left;">
+type
+</th>
+<th style="text-align:left;">
+type_sub_cat
+</th>
+<th style="text-align:left;">
+type_text
+</th>
+<th style="text-align:left;">
+institution_status
+</th>
+<th style="text-align:left;">
+target_country
+</th>
+<th style="text-align:left;">
+target_geog_level
+</th>
+<th style="text-align:left;">
+target_region
+</th>
+<th style="text-align:left;">
+target_province
+</th>
+<th style="text-align:left;">
+target_city
+</th>
+<th style="text-align:left;">
+target_other
+</th>
+<th style="text-align:left;">
+target_who_what
+</th>
+<th style="text-align:left;">
+target_direction
+</th>
+<th style="text-align:left;">
+travel_mechanism
+</th>
+<th style="text-align:left;">
+compliance
+</th>
+<th style="text-align:left;">
+enforcer
+</th>
+<th style="text-align:right;">
+index_high_est
+</th>
+<th style="text-align:right;">
+index_med_est
+</th>
+<th style="text-align:right;">
+index_low_est
+</th>
+<th style="text-align:right;">
+index_country_rank
+</th>
+<th style="text-align:left;">
+link
+</th>
+<th style="text-align:left;">
+date_updated
+</th>
+<th style="text-align:left;">
+recorded_date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+R_1okbXD7VdLtwbl7NA
+</td>
+<td style="text-align:right;">
+4990416
+</td>
+<td style="text-align:left;">
+new_entry
+</td>
+<td style="text-align:left;">
+original
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;min-width: 3in; ">
+As of July 7, Thuringia Government imposing restrictions of mass gatherings. If there are more than 75 people in the open air, the event must be reported to the responsible district or city. This must be done 48 hours in advance. Measures to ensure the traceability of the participating people to determine chains of infection are also taken.
+</td>
+<td style="text-align:left;">
+2020-07-07
+</td>
+<td style="text-align:left;">
+2020-07-16
+</td>
+<td style="text-align:left;">
+2020-10-31
+</td>
+<td style="text-align:left;">
+Germany
+</td>
+<td style="text-align:left;">
+DEU
+</td>
+<td style="text-align:left;">
+DE
+</td>
+<td style="text-align:left;">
+Provincial
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Thuringia
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Restrictions of Mass Gatherings
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Germany
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Mandatory with Fines
+</td>
+<td style="text-align:left;">
+Provincial/State Government
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+<a href="https://www.tmasgff.de/fileadmin/user_upload/Gesundheit/Dateien/COVID-19/Verordnung/20200707_ThuerVO_Verbesserung_Eindaemmung_SARS-CoV-2.pdf" class="uri">https://www.tmasgff.de/fileadmin/user_upload/Gesundheit/Dateien/COVID-19/Verordnung/20200707_ThuerVO_Verbesserung_Eindaemmung_SARS-CoV-2.pdf</a>
+</td>
+<td style="text-align:left;">
+2020-09-26
+</td>
+<td style="text-align:left;">
+2020-09-26 22:10:27
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+R_32PfNHw9adt7waKNA
+</td>
+<td style="text-align:right;">
+4990416
+</td>
+<td style="text-align:left;">
+update
+</td>
+<td style="text-align:left;">
+original
+</td>
+<td style="text-align:left;">
+Change of Policy
+</td>
+<td style="text-align:left;">
+Relaxing
+</td>
+<td style="text-align:left;min-width: 3in; ">
+As of July 7, Thuringia Government imposing restrictions of mass gatherings. If there are more than 75 people in the open air, the event must be reported to the responsible district or city. This must be done 48 hours in advance. Measures to ensure the traceability of the participating people to determine chains of infection are also taken. The originally more than 75 people in the open air must be reported to the authorities, now the number has increased to 100. UPDATE: The originally more than 75 people in the open air must be reported to the authorities, now the number has increased to 100.
+</td>
+<td style="text-align:left;">
+2020-08-20
+</td>
+<td style="text-align:left;">
+2020-08-30
+</td>
+<td style="text-align:left;">
+2020-10-31
+</td>
+<td style="text-align:left;">
+Germany
+</td>
+<td style="text-align:left;">
+DEU
+</td>
+<td style="text-align:left;">
+DE
+</td>
+<td style="text-align:left;">
+Provincial
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Thuringia
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Restrictions of Mass Gatherings
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Germany
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Mandatory with Fines
+</td>
+<td style="text-align:left;">
+Provincial/State Government
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+2020-10-03
+</td>
+<td style="text-align:left;">
+2020-10-03 20:50:31
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+R_3h4Gwl2gBvEKVZlNA
+</td>
+<td style="text-align:right;">
+4990416
+</td>
+<td style="text-align:left;">
+update
+</td>
+<td style="text-align:left;">
+original
+</td>
+<td style="text-align:left;">
+Change of Policy
+</td>
+<td style="text-align:left;">
+Strengthening
+</td>
+<td style="text-align:left;min-width: 3in; ">
+As of July 7, Thuringia Government imposing restrictions of mass gatherings. If there are more than 75 people in the open air, the event must be reported to the responsible district or city. This must be done 48 hours in advance. Measures to ensure the traceability of the participating people to determine chains of infection are also taken.The previous restriction of mass gathering policy was set to last until September 30, it has been extended to October 31. UPDATE: The previous restriction of mass gathering policy was set to last until September 30, it has been extended to October 31.
+</td>
+<td style="text-align:left;">
+2020-09-21
+</td>
+<td style="text-align:left;">
+2020-09-30
+</td>
+<td style="text-align:left;">
+2020-10-31
+</td>
+<td style="text-align:left;">
+Germany
+</td>
+<td style="text-align:left;">
+DEU
+</td>
+<td style="text-align:left;">
+DE
+</td>
+<td style="text-align:left;">
+Provincial
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Thuringia
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Restrictions of Mass Gatherings
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Germany
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Mandatory with Fines
+</td>
+<td style="text-align:left;">
+Provincial/State Government
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+2020-11-09
+</td>
+<td style="text-align:left;">
+2020-11-09 01:17:44
+</td>
+</tr>
+</tbody>
+</table>
+<!-- The [policy_id] 8160794 documents a  restriction of mass gatherings policy in France for both indoors and outdoors ( R_1IGWgK1PZ2GFikKNA). The updates for this policy are as follows: -->
+<!-- * The number of people restricted has been changes from 1000 people to 100 people (R_1Oxa6yabhegBXt6NA) (note the information on the restricted number of people is saved in a separate variable that has not yet been processed) -->
+<!-- * The timing of the policy is extended until May 11, 2020 (R_2uKG2b7KOUhplxSNA).  -->
+<!-- * The number of people restricted has been changes from 100 people to 10 people (R_2PcxYzL7lJOx1gaNA) (note the information on the restricted number of people is saved in a separate variable that has not yet been processed) -->
+<!-- * The timing of the policy is extended until June 2, 2020  (R_25WpDcvI98nnJC4NA). -->
+<!-- * The government lifts the ban for private settings, as such the policy ends (R_2ALoRBCLIHcP4rzNA) and a new policy (not shown) begins. -->
+<!-- ```{r, mass gathering, echo  = FALSE} -->
+<!-- clean_data %>% filter(policy_id %in%  8160794)  %>% -->
+<!--    kbl(caption = "Restrictions of Mass Gatherings in France: The policy restricts mass gatherings in France for both indoors and outdoors ( R_1IGWgK1PZ2GFikKNA). The number of people restricted has been changed twice (R_1Oxa6yabhegBXt6NA and R_2PcxYzL7lJOx1gaNA) and the timing of the policy has been extended twice (R_2uKG2b7KOUhplxSNA and  R_25WpDcvI98nnJC4NA). When the government lifted the ban for private settings, the policy ends (R_2ALoRBCLIHcP4rzNA) and a new policy (not shown) begins.") %>%   -->
+<!--   kable_styling(c("striped", "hover"), full_width = F, font_size = 11) %>%  -->
+<!--   column_spec(which(names(clean_data) == 'description'), width_min = '3in') %>% -->
+<!--   column_spec(grep('date_announced|date_start|date_end', names(clean_data)), color = 'white', background= spec_color(1)) -->
+<!-- ``` -->
+</div>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

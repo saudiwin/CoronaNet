@@ -1,0 +1,1183 @@
+---
+title: "JHU HIT-COVID - CoronaNet Taxonomy Map"
+author: "CoronaNet Research Project"
+date: '`r format(Sys.Date())`'
+output:
+   rmdformats::robobook
+---
+
+```{css, echo= FALSE}
+.tabset {
+    background: transparent;
+ }
+```
+
+```{r, include=FALSE, eval=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+
+```
+
+
+
+# 0 Introduction
+
+This document maps the taxonomy used by the Johns Hopkins Health Intervention Tracking for COVID-19 (HIT-COVID) dataset to document government policies made in response to COVID-19 into the CoronaNet Research Project taxonomy. Each section  maps the general area for which the taxonomy is mapped and each sub-section provides further detail as necessary. Following each explanation for how the mapping is conceptualized, there is R code for operationalizing this mapping. Please refer to the HIT-COVID Data Dictionary and Codebook [accessible through their github](https://github.com/HopkinsIDD/hit-covid/tree/master/documentation) and the [CoronaNet Codebook](https://www.coronanet-project.org/assets/CoronaNet_Codebook.pdf) for more information on their respective taxonomies. 
+
+You can access (i) the original version of the HIT-COVID dataset, "hit-covid-longdata.csv", as well as (ii) the version which transforms this version of the HIT-COVID  dataset into the CoronaNet taxonomy, "hit_coronanet_map_2b.csv" (the rest of this document details how this transformation was implemented) from the [CoronaNet pubic git repo](https://github.com/CoronaNetDataScience/corona_tscs/tree/master/data/collaboration/jhu). 
+
+
+<hr>
+</br>
+
+# 1 Setup 
+
+To create replicate this taxonomy mapping exercise, users will need to load the following R packages and to read in the original HIT-COVID data.  
+
+```{r, eval=FALSE, message= FALSE}
+
+library(readr)
+library(dplyr)
+library(magrittr)
+library(tidyr)
+library(here)
+
+'%!in%' <- function(x, y)
+  ! ('%in%'(x, y))
+
+hit = read_csv(here("data", "collaboration", "jhu", "hit-covid-longdata.csv"))
+ 
+ 
+
+```
+<hr>
+# 2 Data Preparation
+
+* To save some time later on in the mapping process a new column `cat` is added to the HIT-COVID Data set. This column is just a cleaned version of the unique_id column and represents the policy type of an observation. It will be used throughout the mapping to filter for each type of policy.
+* The idea behind the column is to save some time later on because it contains the intervention_group as well as the intervention_name, which are essentially the subcategories of the dataset, e.g. the unique id '3_screening_air' contains the information that the intervention_group is 'symp_screening' and the intervention name is 'Symptom screening when entering by air'. 
+* A `record_id` is also extracted to group certain policies together later on.
+* The HIT-COVID dataset captures information about compliance with the policies in the variable `required`, this is changed to match the CoronaNet taxonomy with 'required' becoming 'Mandatory (Unspecified/Implied)' and 'recommended' becoming 'Voluntary/Recommended but No Penalties' and added to the map.
+
+```{r data_prep, eval=FALSE}
+hit$cat = gsub('[0-9]','', hit$unique_id)
+hit$cat = gsub('^.','', hit$cat)
+hit$cat = gsub('_',' ', hit$cat)
+
+hit$record_id = gsub('\\_.*','', hit$unique_id)
+
+```
+
+<hr>
+</br>
+
+# 3 Map Creation 
+
+The following code creates a map to translate the HIT-COVID data to the CoronaNet taxonomy. Where there is a straightforward one-to-one relationship between the two taxonomies, these are directly mapped in the below:
+
+* The HIT-COVID <code>unique_id</code> variable allows each unique observation to be identifiable. This is conceptually the same as CoronaNet's <code>record_id</code> variable. 
+
+* The HIT-COVID `details` variable is a close approximation to CoronaNet's `description` variable. The main difference is that (at least in theory), CoronaNet's description variable must always contain certain information (the policy initiator, the type of policy, the date the policy started, and if applicable: the geographic target of the policy, the demographic target of the policy and the end date of the policy) while there does not appear to be the same amount of information consistently captured in the JHU-HIT's `details` variable. As such, it will likely be necessary to back code for this information for observations in the HIT-COVID dataset that are not in the CoronaNet dataset.
+
+* The HIT-COVID  `date_of_update` variable is a good match for the `date_start` variable in the CoronaNet taxonomy, the latter of which captures when a policy was implemented.
+
+* The HIT-COVID `country_name` variable and `country` variable, which document the ISO code and name of the initiating country or a policy respectively, are direct matches for the `country` variable and `ISO_A3` variable in the CoronaNet taxonomy.
+
+* The HIT-COVID `admin1_name` documenting information on the province that a policy initiates from, which is a direct match for the `province` variable in the CoronaNet taxonomy.
+
+* The HIT-COVID `url` variable, which captures information on the URL link for the raw source of information on which the policy is based, is a direct match for the `link` variable in the CoronaNet taxonomy.
+
+* The HIT-COVID `source_document_ur` variable, which captures information on the PDF link for the raw source of information on which the policy is based, is a direct match for the `pdf_link` variable in the CoronaNet taxonomy.
+
+* The HIT-COVID `entry_time` variable, which captures information on when a policy was recorded, is a direct match for the `recorded_date` variable in the CoronaNet taxonomy.
+
+<!-- * A few exceptions have to be made for Puerto Rico and Taiwan since they do don't match the CoronaNet taxonomy. `Province`, `country`, and `ISO_A3` are changed to match CoronaNet's taxonomy and the entries are updated.  -->
+
+<!-- * The HIT-COVID `national_entry` contains the information necessary to fill CoronaNet's `init_country_level`, this is done by filtering whether it is a national entry or not (with the exception of US policies). -->
+
+<!-- * The HIT-COVID `update` is changed slightly to match CoronaNet's way of capturing new entries and updates. The information is stored in `entry_type`. -->
+
+
+```{r , eval=FALSE}
+
+hit_coronanet_map = data.frame(unique_id = hit$unique_id,
+                                 entry_type = NA,
+                                 correct_type= NA,
+                                 update_type= NA,
+                                 update_level= NA,
+                                 description= hit$details,
+                                 date_announced= NA,
+                                 date_start= hit$date_of_update,
+                                 date_end= NA,
+                                 country = hit$country_name,
+                                 ISO_A3 = hit$country,
+                                 ISO_A2 = NA,
+                                 init_country_level= NA,
+                                 domestic_policy= NA,
+                                 province = NA,
+                                 city= NA,
+                                 type= NA,
+                                 type_sub_cat= NA,
+                                 type_2 = NA,
+                                 type_text= NA,
+                                 institution_status= NA,
+                                 target_country= NA,
+                                 target_geog_level= NA,
+                                 target_region= NA,
+                                 target_province= NA,
+                                 target_city= NA,
+                                 target_other= NA,
+                                 target_who_what= NA,
+                                 target_who_gen = NA,
+                                 target_direction= NA,
+                                 travel_mechanism= NA,
+                                 type_mass_gathering= NA,
+                                 institution_cat= NA,
+                                 compliance= NA,
+                                 enforcer= NA,
+                                 index_high_est= NA,
+                                 index_med_est= NA,
+                                 index_low_est= NA,
+                                 index_country_rank= NA,
+                                 pdf_link = hit$source_document_url,
+                                 link = hit$url,
+                                 date_updated = NA,
+                                 recorded_date = hit$entry_time)
+
+```
+
+
+## 3.1 Countries
+
+The following code adjust for the different ways each tracker documents policies originating from certain regions of the world. In particular:
+
+* HIT-COVID considers Puerto Rico as a country while CoronaNet considers it to be a province of the United States. The following code adjusts this data accordingly.
+
+```{r, eval = FALSE}
+country = hit %>%
+  mutate(
+    ISO_A3 = 
+      case_when(
+          country_name == 'Puerto Rico' ~ 'USA', 
+          TRUE~ country
+      ),
+      country = 
+      case_when(
+        country_name == 'Puerto Rico' ~ 'United States of America', 
+        TRUE ~ country_name
+      )
+  ) %>%
+  select(country, ISO_A3, unique_id)
+
+hit_coronanet_map = rows_update(hit_coronanet_map, country, by = 'unique_id')
+
+```
+</br>
+
+## 3.1 Provinces
+
+The following code adjust for the different ways each tracker documents policies originating from certain regions of the world. In particular
+
+* HIT-COVID considers Puerto Rico as a country while CoronaNet considers it to be a province of the United States. The following code adjusts this data accordingly.
+
+* HIT-COVID considers Taiwan as a province while CoronaNet considers it to be a country. The following code adjusts this data accordingly.
+
+```{r, eval = FALSE}
+prov = hit %>%
+  mutate(
+    province = 
+      case_when(
+        admin1_name == 'Taiwan' ~ as.character(NA),
+        country_name == 'Puerto Rico' ~ 'Puerto Rico', 
+        TRUE ~ admin1_name
+      )
+  ) %>%
+  select(province, unique_id)
+hit_coronanet_map = rows_update(hit_coronanet_map, prov, by = 'unique_id')
+```
+</br>
+
+
+## 2.5 National Entry
+
+The <code>init_country_level</code> variable in the CoronaNet taxonomy captures information as to which level of government a COVID-19 policy originates from, which the HIT-COVID taxonomy does not directly document. However, the HIT-COVID variable `national_entry` does record whether a policy was initiated at the national level or not. In the following code:
+
+* If the `national_entry` variable in the HIT-COVID taxonomy takes a value of **Yes**, we map the `init_country_level` in the CoronaNet taxonomy to be take the value of **National**.
+
+* If the `national_entry` variable in the HIT-COVID taxonomy takes a value of **No** and the policy is documented as applying to a province, as noted by having a value for the `admin1_name` variable, we map the `init_country_level` in the CoronaNet taxonomy to be take the value of **Provincial**.
+
+* If the `national_entry` variable in the HIT-COVID taxonomy takes a value of **No**, the policy is not documented as applying to a province, as noted by having not a value for the `admin1_name` variable and is documented as applying to a US conty, as noted by having a value for the `usa_country_code` variable, we map the `init_country_level` in the CoronaNet taxonomy to be take the value of **Other (e.g., county)**.
+
+* Ifan observation in the HIT-COVID data takes on no value for the `national_entry`, `admin1_name` and `usa_county_code` variables, we map the `init_country_level` in the CoronaNet taxonomy to be take the value of **National**.
+
+```{r, eval = FALSE}
+
+init_gov = hit %>%
+  mutate(
+    init_country_level = case_when(
+      national_entry == 'Yes' ~ 'National',
+      national_entry == 'No' & !is.na(admin1_name) ~ 'Provincial',
+      national_entry == 'No' & is.na(admin1_name) & !is.na(usa_county_code) ~ "Other (e.g., county)",
+      is.na(national_entry) & is.na(admin1_name) & is.na(usa_county_code) ~ 'National',
+      TRUE ~ as.character(NA)
+    )
+  ) %>% select(init_country_level, unique_id)
+hit_coronanet_map = rows_patch(hit_coronanet_map, init_gov, by = 'unique_id')
+```
+
+## 2.6 Date of Update
+
+HIT-COVID's `date of update` variable documents whether there has been an update to a policy for a policies grouped together by its `record_id` variable. This information allows us to map whether a policy should be considered a **New Entry** or an **Update** for a given group of policies in the CoronaNet taxonomy, which is documented in the `entry_type` variable in the CoronaNet taxonomy. 
+
+```{r, eval = FALSE}
+hit_entry = hit %>%
+  arrange(date_of_update) %>% 
+  dplyr:::group_by(record_id, intervention_group) %>%
+  dplyr:::mutate(
+    entry_type  = case_when(
+      update == 'Update' & !is.na(date_of_update) & row_number()==1 ~ 'New Entry',
+      update == 'Update'& !is.na(date_of_update) & row_number()!=1 ~ 'Update',
+      update == 'No Update'~ 'New Entry',
+      TRUE ~ as.character(NA)
+    )) %>% ungroup %>%
+  select(entry_type, unique_id)
+
+hit_coronanet_map = rows_patch(hit_coronanet_map, hit_entry, by = 'unique_id')
+
+```
+
+
+## 2.7 Required/Compliance
+
+The HIT-COVID taxonomy documents whether a policy is mandatory or recommended in its `required` variable. In the following code:
+
+* If the `required` variable in the HIT-COVID taxonomy takes a value of **reqired**, we map the `compliance` in the CoronaNet taxonomy to be take the value of **Mandatory (Unspecified/Implied)**. There may be some mis-mappings here that will need to be adjusted downstream in the manual harmonization process. 
+
+* If the `required` variable in the HIT-COVID taxonomy takes a value of **recommended**, we map the `compliance` in the CoronaNet taxonomy to be take the value of **Voluntary/Recommended but No Penalties**.  
+
+
+```{r , eval=FALSE}
+hit_compliance = hit %>%
+  mutate(compliance = case_when(
+    required == 'required' ~ 'Mandatory (Unspecified/Implied)',
+    required == 'recommended' ~ 'Voluntary/Recommended but No Penalties',
+  )
+  )%>%
+  select(compliance, unique_id)
+
+hit_coronanet_map = rows_patch(hit_coronanet_map, hit_compliance, by = 'unique_id')
+
+
+```
+
+# 4 Policy Type
+
+The following mapping exercise is implemented by creating a data frame for each of the HIT_COVID categories. These categories have been extracted from the HIT-COVID's `unique_ids` and stored in the `cat` column.  These data frames get populated with as many values as possible. This is done by either reading the HIT-COVID's codebook, knowing that these types of policy would all have a common variable in the CoronaNet taxonomy and adding them manually, or extracting them from existing HIT-COVID variables. After populating each data frame, they are added to the overall map.
+
+</br>
+
+## 4.1 Closed Border
+
+The following code maps HIT-COVID's data on border closure policies to the CoronaNet taxonomy.
+
+* Border policies are a subset from the `hit` object into its own object called `border`.
+
+* Two new variables are created, `travel_mechanism` and `target_direction` to mirror the same variables in the CoronaNet data.
+     + `travel_mechanism` is populated by pulling information from the `unique_id`, e.g. '43_border_in_air' will first become 'air' and later mutated to 'Flights' to match the CoronaNet taxonomy.
+     +  `target_direction` is populated by pulling information from the `intervention_name`, e.g. 'Border closures for entering by air' contains the word 'entering', by filtering for 'entering' and 'leaving' either 'Inbound' or 'Outbound' will be assigned as `target_direction`.
+
+* The data in the `border` object is then transformed such that there is a unique observation for every border restriction implemented by a given country on a given day regardless of the travel mechanism or target direction it applies.
+
+* The data is further processed in the `border_match` object to map as many options as possible to the CoronaNet taxonomy.
+
+* Duplicate entries are removed from the raw `hit` object.
+
+
+```{r border prep, eval=FALSE}
+border = hit %>% 
+  filter(intervention_group == 'closed_border')
+
+
+border = border %>%
+  mutate(
+    travel_mechanism= sub('.*_', '', unique_id),
+    target_direction = 
+           case_when(
+             grepl("leaving", intervention_name) ~ "Outbound",
+             grepl("entering", intervention_name) ~ "Inbound",
+             TRUE ~ as.character(NA)
+           )
+           ) %>%
+  arrange(intervention_name) %>%
+  group_by(record_id, required) %>%
+  mutate(
+    unique_id = paste(unique(unique_id), collapse = ','),
+    intervention_name = paste(unique(intervention_name), collapse = ','),
+    cat = paste(unique(cat), collapse = ','),
+    travel_mechanism = paste(unique(gsub('\\d','', travel_mechanism)), collapse = ','),
+    target_direction = paste(unique(target_direction), collapse = ','),
+    url = paste(unique(url), collapse = ','), 
+    source_document_url = paste(unique(source_document_url), collapse = ',')
+  ) %>%
+  ungroup() %>%
+  distinct %>%
+  group_by(
+    unique_id
+  ) %>%
+  mutate(
+    count = 1:n(),
+    count = ifelse(count == 1, '', count),
+    unique_id = ifelse(count != '', paste0(unique_id,count), unique_id)
+  ) %>%
+  ungroup
+
+ 
+border_match = border %>%
+  select(unique_id, travel_mechanism, target_direction, status) %>%
+  mutate(type = 'External Border Restrictions',
+         type_2 = 'Quarantine',
+         travel_mechanism = case_when(
+           travel_mechanism == 'air' ~ 'Flights',
+           travel_mechanism == 'land' ~ 'Land Border,Trains,Buses',
+           travel_mechanism == 'sea' ~ 'Seaports,Cruises,Ferries',
+           travel_mechanism %in% c('air,land', 'land,air') ~ 'Flights,Land Border,Trains,Buses',
+           travel_mechanism %in% c('air,sea', 'sea,air') ~ 'Flights,Seaports,Cruises,Ferries',
+           travel_mechanism %in% c('air,land,sea', 'land,sea,air') ~ 'All kinds of transport',
+           TRUE ~ as.character(NA)
+         ),
+         target_who_what = case_when(
+           target_direction == "Inbound/Outbound" ~ "All (Travelers + Residents)",
+           target_direction == 'Inbound' ~ 'All Travelers (Citizen Travelers + Foreign Travelers)',
+           target_direction == 'Outbound' ~ 'All Residents (Citizen Residents + Foreign Residents)'
+         ),
+         type_sub_cat = ifelse(status == 'closed', "Total border crossing ban", NA)
+         ) %>% 
+  select(-status)
+
+
+
+
+
+hit  = rbind(hit  %>%  filter(intervention_group != 'closed_border'),  border %>% select(-travel_mechanism, -target_direction, -count))
+
+```
+
+</br>
+
+## 4.2 Screenings
+
+The following code maps how HIT-COVID captures screening policies to the CoronaNet taxonomy. The HIT-COVID screening policies concerning the screening of people within the border of a country are too diverse to properly map to the CoronaNet taxonomy. The following code approximates this mapping with the understanding that downstream manual data harmonization will be able to provide more argeted mappings.
+
+* The HIT-COVID taxonomy aims to capture such policies by coding the `intervention_group` as 'symp_screening closed' `cat` as _not_ 'screening within'.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the `type` as **External Border Restrictions**, the `type_sub_cat` as **Health Screenings (e.g. temperature checks)**, the `target_who_what` as **All Travelers (Citizen Travelers + Foreign Travelers)** and the `target_who_gen` as **No special population targeted**.
+
+ </br>
+
+```{r screening_border, eval=FALSE}
+screening_border <- hit %>%
+  filter(intervention_group  == 'symp_screening' &
+           cat != 'screening within') %>%
+  mutate(  travel_mechanism = case_when(
+           cat == "screening air" ~ "Flights",
+           cat == "screening land" ~'Land Border,Trains,Buses',
+           cat == "screening sea" ~ 'Seaports,Cruises,Ferries')) %>%
+   group_by(record_id, required) %>%
+  mutate(
+    unique_id = paste(unique(unique_id), collapse = ','),
+    intervention_name = paste(unique(intervention_name), collapse = ','),
+    cat = paste(unique(cat), collapse = ','),
+    travel_mechanism = paste(unique(travel_mechanism), collapse = ','),
+        url = paste(unique(url), collapse = ','), 
+    details =  paste(unique(details), collapse = ','),
+   source_document_url = paste(unique(source_document_url), collapse = ',')
+  ) %>%
+  ungroup() %>%
+  distinct %>%
+  group_by(
+    unique_id
+  ) %>%
+  mutate(
+    count = 1:n(),
+    count = ifelse(count == 1, '', count),
+    unique_id = ifelse(count != '', paste0(unique_id,count), unique_id)
+  ) %>%
+    ungroup 
+  
+  
+screening_match = screening_border %>%
+ mutate(type = 'External Border Restrictions',
+         type_2 = 'Quarantine',
+         type_sub_cat = 'Health Screenings (e.g. temperature checks)',
+         target_who_what = 'All Travelers (Citizen Travelers + Foreign Travelers )') %>% 
+  select(unique_id, type, type_2, type_sub_cat, target_who_what,  travel_mechanism)
+
+
+
+hit  = rbind(hit  %>%  filter(!c(intervention_group  == 'symp_screening' &
+           cat != 'screening within')), 
+           screening_border %>% select(-travel_mechanism, -count))
+
+
+```
+
+</br>
+
+## 4.3 Contact Tracing
+
+The following code maps how HIT-COVID captures a contact tracing that applies to the entire population to the CoronaNet taxonomy.
+
+* The HIT-COVID taxonomy aims to capture such policies by coding the `cat` as **contact tracing**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the `type` as **Health monitoring**, ``type_sub_cat`` is **Who a person has come into contact with over time**, the `target_who_what` as **All Residents (Citizen Residents + Foreign Residents)** and the `target_who_gen` as **No special population targeted**.
+ 
+ 
+
+```{r contact, eval=FALSE}
+contact <- hit %>%
+  filter(cat  == 'contact tracing') %>%
+  select(unique_id) %>%
+  mutate(type = 'Health Monitoring',
+         type_2 = 'Quarantine', 
+         type_sub_cat = 'Who a person has come into contact with over time',
+         target_who_what = 'All Residents (Citizen Residents + Foreign Residents)')
+
+```
+
+</br>
+
+## 4.4 Emergency
+
+The following code maps how HIT-COVID captures emergencies that apply to the entire population to the CoronaNet taxonomy.
+
+* The HIT-COVID taxonomy aims to capture such policies by coding the `cat` as **emergency**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the `type` as **Declaration of Emergency**, the `target_who_what` as **All Residents (Citizen Residents + Foreign Residents)** and the `target_who_gen` as **No special population targeted**.
+
+ 
+
+```{r emergency, eval=FALSE}
+emergency <- hit %>%
+  filter(cat  == 'emergency') %>%
+  select(unique_id) %>%
+  mutate(type = 'Declaration of Emergency',
+         type_2 = 'External Border Restrictions',
+         target_who_what = 'All Residents (Citizen Residents + Foreign Residents)',
+         target_who_gen = 'No special population targeted')
+
+ 
+```
+
+</br>
+
+## 4.5 Enforcement
+
+Unfortunately, it is not possible to map these policies to CoronaNet's taxonomy as there is no close match to any of CoronaNet's policy types. This bullet point is merely for completeness' sake. Downstream manual harmonization will be necessary to properly harmonize these policies. 
+
+</br>
+
+## 4.6 Entertainment
+
+The following code maps how HIT-COVID captures closures of the entertainment industry which applies to the entire population to the CoronaNet taxonomy.
+
+* The HIT-COVID taxonomy aims to capture such policies by coding the `cat` as **entertainment**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the `type` as **Restriction and Regulation of Businesses**. We assume that the entertainment industry is not classified as essential in any country and as such we map the `institution_cat`as **Non-Essential Businesses**. We further map the `target_who_what` as **All Residents (Citizen Residents + Foreign Residents)** and the `target_who_gen` as **No special population targeted**.
+
+ 
+```{r entertainment, eval=FALSE}
+entertainment <- hit %>%
+  filter(cat  == 'entertainment') %>%
+  select(unique_id) %>%
+  mutate(type = 'Restriction and Regulation of Businesses',
+         type_2 = "Restrictions of Mass Gatherings",
+         institution_cat = 'Non-Essential Businesses',
+         target_who_what = 'All Residents (Citizen Residents + Foreign Residents)',
+         target_who_gen = 'No special population targeted')
+ 
+```
+
+</br>
+
+## 4.7 Isolation
+
+The following code maps how HIT-COVID captures isolation and quarantine policies to the CoronaNet taxonomy.
+
+* The HIT-COVID taxonomy aims to capture such policies by coding the `intervention_group` as 'quar_iso'.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the `type` as **Quarantine**. To map the different target populations the HIT-COVID variable `cat` is used to distinguish between **'All Travelers (Citizen Travelers + Foreign Travelers)** and **All Residents (Citizen Residents + Foreign Residents)**.  
+
+ 
+```{r isolation, eval=FALSE}
+
+isolation = subset(hit, hit$intervention_group == 'quar_iso')
+names(isolation)[names(isolation) == 'cat'] <- 'target_who_what'
+
+
+isolation <- isolation %>%
+  select(unique_id, target_who_what) %>%
+  mutate(type = 'Quarantine',
+         type_2 = 'External Border Resrictions',
+         target_who_what = case_when(
+           target_who_what == 'quar travel' ~ 'All Travelers (Citizen Travelers + Foreign Travelers)',
+           target_who_what != 'quar travel' ~ 'All Residents (Citizen Residents + Foreign Residents)',
+           TRUE ~ as.character(NA)
+         ))
+
+```
+
+</br>
+
+## 4.8 Limited Movement
+
+The following code maps how HIT-COVID captures closures of internal borders which apply to the entire population to the CoronaNet taxonomy.
+
+* The HIT-COVID taxonomy aims to capture such policies by coding the `cat` as **limit mvt**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the `type` as **Internal Border Restrictions**, the `target_who_what` as **All Residents (Citizen Residents + Foreign Residents)** and the `target_who_gen` as **No special population targeted**.
+
+ 
+```{r limit_mvt, eval=FALSE}
+limit_mvt <- hit %>%
+  filter(cat  == 'limit mvt') %>%
+  select(unique_id) %>%
+  mutate(type = 'Internal Border Restrictions',
+         type_2 = 'Lockdown',
+         target_who_what = 'All Residents (Citizen Residents + Foreign Residents)',
+         target_who_gen = 'No special population targeted')
+
+```
+</br>
+   
+   
+
+
+
+## 4.9 Masks
+
+The following code maps how HIT-COVID captures mask-wearing policies that apply to the entire population to the CoronaNet taxonomy.
+
+* The HIT-COVID taxonomy aims to capture such policies by coding the `cat` as **mask**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the `type` as 'Social Distancing', the `target_who_what` as **All Residents (Citizen Residents + Foreign Residents)** and the `target_who_gen` as **No special population targeted**.
+
+ 
+```{r mask, eval=FALSE}
+mask <- hit %>%
+  filter(cat  == 'mask') %>%
+  select(unique_id) %>%
+  mutate(type = 'Social Distancing',
+         type_2 = "Restriction and Regulation of Businesses" ,
+         target_who_what = 'All Residents (Citizen Residents + Foreign Residents)',
+         target_who_gen = 'No special population targeted')
+
+```
+
+</br>
+
+## 4.10 School
+
+The following code maps how HIT-COVID captures school closure policies to the CoronaNet taxonomy.
+
+* The HIT-COVID taxonomy aims to capture such policies by coding the `cat` as **school_closed**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the `type` is **Closure and Regulation of Schools**
+
+* Depending on what type of school is closed, the policies need to be mapped to a different `type_sub_cat` (the subcategory) in the CoronaNet taxonomy. These can be either preschool, primary school, secondary schools or higher education instutitons. 
+
+* Depending on the status of the schools (closed/ partially closed/ open), the policies are mapped to the variable which captures such information in the CoronaNet taxonomy: `institution_status`.
+
+* The `target_who_what** variable in the CoronaNet taxonomy was defined to take the value of **All Residents (Citizen Residents + Foreign Residents)** as we assume that school policies affects all residents. 
+
+* The `school` data frame needs to be cleaned up before joining it with the `hit_coronanet_map`. Additional code was added to conduct this cleaning in the below.   
+ 
+
+```{r school, eval=FALSE}
+school = hit %>% filter(intervention_group == 'school_closed')
+
+
+
+school = school %>%
+   mutate(type = 'Closure and Regulation of Schools',
+         type_2 = NA,
+         type_sub_cat = case_when(
+           intervention_name == 'Nursery school closures' ~ 'Preschool or childcare facilities (generally for children ages 5 and below)',
+           intervention_name == 'Primary school closures' ~ 'Primary Schools (generally for children ages 10 and below)',
+           intervention_name == 'Secondary school closures' ~ 'Secondary Schools (generally for children ages 10 to 18)',
+           intervention_name == 'Post-secondary school closures' ~ 'Higher education institutions (i.e. degree granting institutions)'
+         ),
+         institution_status = case_when(
+           intervention_name == 'Nursery school closures' & status == 'open' ~ 'Preschool or childcare facilities allowed to open with no conditions',
+           intervention_name == 'Nursery school closures' & status == 'partially closed' ~ 'Preschool or childcare facilities allowed to open with conditions',
+           intervention_name == 'Nursery school closures' & status == 'closed' ~ 'Preschool or childcare facilities closed/locked down',
+
+           intervention_name == 'Primary school closures' & status == 'open' ~ 'Primary Schools allowed to open with no conditions',
+           intervention_name == 'Primary school closures' & status == 'partially closed' ~ 'Primary Schools allowed to open with conditions',
+           intervention_name == 'Primary school closures' & status == 'closed' ~ 'Primary Schools closed/locked down',
+
+           intervention_name == 'Secondary school closures' & status == 'open' ~ 'Secondary Schools allowed to open with no conditions',
+           intervention_name == 'Secondary school closures' & status == 'partially closed' ~ 'Secondary Schools allowed to open with conditions',
+           intervention_name == 'Secondary school closures' & status == 'closed' ~ 'Secondary Schools closed/locked down',
+
+           intervention_name == 'Post-secondary school closures' & status == 'open' ~ 'Higher education institutions allowed to open with no conditions',
+           intervention_name == 'Post-secondary school closures' & status == 'partially closed' ~ 'Higher education institutions allowed to open with conditions',
+           intervention_name == 'Post-secondary school closures' & status == 'closed' ~ 'Higher education institutions closed/locked down',
+         ),
+         target_who_what = 'All Residents (Citizen Residents + Foreign Residents)' ) %>%
+  group_by(record_id, required) %>%
+  mutate(
+    unique_id = paste(unique(unique_id), collapse = ','),
+    intervention_name = paste(unique(intervention_name), collapse = ','),
+    cat = paste(unique(cat), collapse = ','),
+    type_sub_cat = paste(unique(type_sub_cat), collapse = ','),
+    institution_status = paste(unique(institution_status), collapse = ','),
+   url = paste(unique(url), collapse = ','), 
+    source_document_url = paste(unique(source_document_url), collapse = ','),
+    details = paste(unique(na.omit(details)), collapse = ','),
+   status =  paste(unique(status), collapse = ','),
+    status_simp = paste(unique(status_simp), collapse = ','),
+   subpopulation =  paste(unique(  subpopulation), collapse = ',')
+  ) %>%
+  ungroup() %>%
+   # select(unique_id, type, type_2, type_sub_cat, institution_status, target_who_what, pdf_link, link) %>%
+  distinct %>%
+  group_by(
+    unique_id
+  ) %>%
+  mutate(
+    count = 1:n(),
+    count = ifelse(count == 1, '', count),
+    unique_id = ifelse(count != '', paste0(unique_id,count), unique_id)
+  ) %>%
+  ungroup
+
+
+school_match = school %>%
+  select(unique_id, type, type_2, type_sub_cat, institution_status, target_who_what)
+
+hit  = rbind(hit  %>%  filter(intervention_group != 'school_closed'), 
+             school %>%  select(-type, -type_2, -type_sub_cat, -institution_status, -target_who_what, -count))
+
+```
+
+</br>
+
+## 4.11 Nursing Homes 
+
+The following code maps how HIT-COVID captures policies regarding restrictions of nursing homes to the CoronaNet taxonomy.
+
+* The HIT-COVID taxonomy aims to capture such policies by coding the `cat` is **nursing home**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the `type` is **Social Distancing**, the `type_sub_cat` is **Restrictions on visiting nursing homes/long term care facilities**, the `target_who_what` is **All Residents (Citizen Residents + Foreign Residents)** and the `target_who_gen` is **No special population targeted**.
+
+ 
+
+```{r nursing_homes, eval=FALSE}
+
+nursing_homes <- hit %>%
+  filter(cat  == 'nursing home') %>%
+  select(unique_id) %>%
+  mutate(type = 'Social Distancing',
+         type_2 = 'Health Resources',
+         type_sub_cat = 'Restrictions on visiting nursing homes/long term care facilities',
+         target_who_what = 'All Residents (Citizen Residents + Foreign Residents)',
+         )
+
+```
+
+</br>
+
+## 4.12 Offices
+
+The following code maps how HIT-COVID captures office closure policies to the CoronaNet taxonomy.
+
+* The HIT-COVID taxonomy aims to capture such policies by coding the `cat` is **office**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the `type` is **Restriction and Regulation of Businesses**, the `target_who_what` is **All Residents (Citizen Residents + Foreign Residents)** and the `target_who_gen` is **No special population targeted**.
+
+ 
+
+```{r office, eval=FALSE}
+office <- hit %>%
+  filter(cat  == 'office') %>%
+  select(unique_id) %>%
+  mutate(type = 'Restriction and Regulation of Businesses',
+         type_2 = 'Restriction and Regulation of Government Services',
+         target_who_what = 'All Residents (Citizen Residents + Foreign Residents)',
+         target_who_gen = 'No special population targeted')
+ 
+```
+
+</br>
+
+## 4.13 Public Space
+
+The following code maps how HIT-COVID captures public space closure policies to the CoronaNet taxonomy.
+
+* The HIT-COVID taxonomy aims to capture such policies by coding the `cat` is **public space**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the `type` is **Restriction and Regulation of Government Services**, the `target_who_what` is **All Residents (Citizen Residents + Foreign Residents)** and the `target_who_gen` is **No special population targeted**.
+
+ 
+
+```{r public_space, eval=FALSE}
+public_space <- hit %>%
+  filter(cat  == 'public space') %>%
+  select(unique_id) %>%
+  mutate(type = 'Restriction and Regulation of Government Services',
+         type_2 = 'Restrictions of Mass Gatherings',
+         target_who_what = 'All Residents (Citizen Residents + Foreign Residents)',
+         target_who_gen = 'No special population targeted')
+
+```
+
+</br>
+
+## 4.14 Public Transport
+
+The following code maps how HIT-COVID captures restrictions of public transport to the CoronaNet taxonomy.
+
+* The HIT-COVID taxonomy aims to capture such policies by coding the `cat` is **public space**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the `type` is **Restriction and Regulation of Government Services**, the `target_who_what` is **All Residents (Citizen Residents + Foreign Residents)** and the `target_who_gen` is **No special population targeted**.
+
+ 
+
+```{r public_transport, eval=FALSE}
+public_transport <- hit %>%
+  filter(cat  == 'public transport') %>%
+  select(unique_id) %>%
+  mutate(type = 'Social Distancing',
+         type_2 = NA, 
+        type_sub_cat = 'Restrictions ridership of other forms of public transportation (please include details in the text entry)',
+         target_who_what = 'All Residents (Citizen Residents + Foreign Residents)',
+         target_who_gen = 'No special population targeted')
+
+ 
+```
+
+</br>
+
+## 4.15 Religion 
+
+The following code maps how HIT-COVID captures restrictions of religious gatherings to the CoronaNet taxonomy.
+
+* The HIT-COVID taxonomy aims to capture such policies by coding the `cat` is **religion**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the `type` is **Restrictions of Mass Gatherings**, `type_sub_cat` is **Attendance at religious services restricted (e.g. mosque/church closings)**, the `target_who_what` is **All Residents (Citizen Residents + Foreign Residents)** and the `target_who_gen` as **No special population targeted**.
+
+* This category was combined with Leisure and Entertainment in the HIT-COVID dataset until 06/02/2020, older entries may therefore be missing in this mapping.
+
+```{r religion, eval=FALSE}
+religion <- hit %>%
+  filter(cat  == 'religion') %>%
+  select(unique_id) %>%
+  mutate(type = 'Restrictions of Mass Gatherings',
+         type_2 = NA,
+         type_sub_cat = 'Attendance at religious services prohibited (e.g. mosque/church closings)',
+         target_who_what = 'All Residents (Citizen Residents + Foreign Residents)',
+         target_who_gen = 'No special population targeted')
+
+```
+
+</br>
+
+## 4.16 Social Limits
+
+The following code maps how HIT-COVID captures restrictions on the number of people allowed to gather to the CoronaNet taxonomy.
+
+* The HIT-COVID taxonomy aims to capture such policies by coding the `cat` is **social limits**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the `type` is **Restrictions of Mass Gatherings**, the `target_who_what` as **All Residents (Citizen Residents + Foreign Residents)** and the `target_who_gen` as **No special population targeted**.
+
+ 
+
+```{r social_limits, eval=FALSE}
+social_limits <- hit %>%
+  filter(cat == 'social limits') %>%
+  select(unique_id, size) %>%
+  mutate(type = 'Restrictions of Mass Gatherings',
+         type_2 = 'Social Distancing', 
+         type_mass_gathering = size, 
+         target_who_what = 'All Residents (Citizen Residents + Foreign Residents)',
+         target_who_gen = 'No special population targeted')
+
+social_limits$size = NULL
+
+
+```
+</br>
+
+## 4.17 Store
+
+The following code maps how HIT-COVID captures restrictions and regulations of stores to the CoronaNet taxonomy.
+
+* The HIT-COVID taxonomy aims to capture such policies by coding the `cat` is **store**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the `type` is **Restriction and Regulation of Businesses**, the `target_who_what` as **All Residents (Citizen Residents + Foreign Residents)** and the `target_who_gen` as **No special population targeted**.
+
+* To specify whether a store is essential or non-essential two filters are being implemented. The first one filters for the word 'essential' and the second one for all variants of writing 'non-essential'. This information is then saved in the `institution_cat` variable, which the CoronaNet taxonomy uses to make these distinctions. 
+ 
+
+ 
+
+```{r store, eval=FALSE}
+store_closures = subset(hit, hit$cat == 'store')
+store_closures$details <- tolower(store_closures$details)
+
+store_closures = store_closures %>% 
+  mutate( essential_yes = grepl( c("essential"), store_closures$details) ,
+          non_essential_yes = grepl(c("non essential|non-essential| not essential"), store_closures$details)
+          )
+
+store_closures <- store_closures %>%
+  select(unique_id, essential_yes, non_essential_yes) %>%
+  mutate(type = 'Restriction and Regulation of Businesses',
+         type_2 = NA, 
+         institution_cat = case_when(
+           essential_yes == T & non_essential_yes== F ~ "Essential Businesses",
+           TRUE ~ "Non-Essential Businesses"
+           
+         ),
+         target_who_what = 'All Residents (Citizen Residents + Foreign Residents)',
+         target_who_gen = 'No special population targeted')
+
+store_closures$essential_yes = NULL
+store_closures$non_essential_yes = NULL
+
+
+```
+
+</br>
+
+## 4.18 Testing
+
+The following code maps how HIT-COVID captures testing policies to the CoronaNet taxonomy.
+
+* The HIT-COVID taxonomy aims to capture such policies by coding the `cat` is either **testing asymp** or **testing symp**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the `type` is **Health Testing**, the `target_who_what` as **All Residents (Citizen Residents + Foreign Residents)** and the `target_who_gen` as **Asymptomatic people** or **Symptomatic people** depending on whetehr `cat` takes on the values of **testing asymp** or **testing symp** respectively .
+
+
+
+```{r testing, eval=FALSE}
+testing <- hit %>%
+  filter(cat == 'testing asymp' |
+           cat == 'testing symp') %>%
+  mutate(type = 'Health Testing',
+         type_2 = 'Health Monitoring', 
+         target_who_what = 'All Residents (Citizen Residents + Foreign Residents)',
+         target_who_gen = ifelse(cat == 'testing asymp', 'Asymptomatic people', ifelse( cat == 'testing symp', 'Symptomatic people', NA ))) %>%
+  group_by(record_id, required) %>%
+  mutate(
+    unique_id = paste(unique(unique_id), collapse = ','),
+    intervention_name = paste(unique(intervention_name), collapse = ','),
+    intervention_group = paste(unique(intervention_group), collapse = ','),
+    cat = paste(unique(cat), collapse = ','),
+    url= paste(unique(url), collapse = ','), 
+    source_document_url = paste(unique(source_document_url), collapse = ','),
+    testing_population = paste(unique(testing_population ), collapse = ','),
+    target_who_gen = paste(unique(target_who_gen ), collapse = ','),
+    status = paste(unique(status ), collapse = ','),
+    status_simp = paste(unique( status_simp), collapse = ','),
+    subpopulation = paste(unique(subpopulation), collapse = ','),
+    entry_time = max(entry_time)
+  ) %>%
+  
+  ungroup() %>%
+  distinct %>%
+  group_by(
+    unique_id
+  ) %>%
+  mutate(
+    count = 1:n(),
+    count = ifelse(count == 1, '', count),
+    unique_id = ifelse(count != '', paste0(unique_id,count), unique_id)
+  ) %>%
+  ungroup
+
+
+testing_match = testing %>%
+  select(type, type_2, target_who_what, target_who_gen,   unique_id)
+
+
+
+hit  = rbind(hit  %>%  filter(!c(cat == 'testing asymp' |
+           cat == 'testing symp')), testing %>% select(-type, -type_2, -target_who_what, -target_who_gen,  -count))
+
+ 
+```
+
+</br>
+
+## 4.19 Restaurant
+
+The following code maps how HIT-COVID captures restrictions and regulations of restaurants to the CoronaNet taxonomy.
+
+* In the HIT-COVID taxonomy, the `restaurant_closed` category can include restaurants, cafes, coffee shops, bars, and food vendors. They need to be coded separately in the Coronanet taxonomy. Since filtering out all of the different options is not possible to do systematically, the code focuses on making distinctions between the two most commonly targeted policies: restaurants and bars.
+
+* To separate the between restaurnts and bars, first a subset of the data is saved in the data frame `rest_closures`  
+    + The `details` of this data frame get cleaned to only include lowercase letters to make the filtering process smoother.
+    + Four filters are being implemented: one to detect restaurants, one to detect bars, and two to detect whether the `details` say anything about closing or opening said establishments. (The latter two are not used in this code but might be useful in the future)
+
+* A data frame `restaurants` is created by using the restaurant filter (`type_sub_cat` is 'Restaurants')
+* A data frame `bars` is created by using the bars filter. (`type_sub_cat` is 'Bars')
+* The two dataframes get combined into one data frame `restaurants` 
+
+* A data frame `other_businesses` is created by filtering out all the `unique_ids` that have not been used in the `restaurants` data frame. There is no `type_sub_cat` added to avoid false mappings. 
+    + The data frame gets added to the map.
+
+* The big issue with filtering for bars and restaurants is that the `unique_ids` have been duplicated in some cases since some of the policies are targeted at both and both filters are therefore 'TRUE'. Adding the `restaurants` data frame to the map requires a `unique_id` however.
+    + To solve this issue the data frame gets split into two. `restaurant_closures_non_dup` containing all the non-duplicated entries and `restaurant_closures_dup` containing all the duplicated entries.
+    + The `restaurant_closures_non_dup` data frame gets added to the map.
+    + Since the last dataframe left to implement only contains duplicates (except for the `type_sub_cat`which is 'bars' and not 'restaurants'), the `unique_ids` of the `restaurant_closures_dup` are used to extract the policies matching policies from the `hit_coronanet_map` and stored in the `dup_fill` dataframe.
+    + The `dup_fill` rows are updates with the `restaurant_closures_dup` rows (only changing the `type_sub_cat` to 'bars')
+    + The `dup_fill` created data frame gets added to the map.
+
+```{r Restaurants, eval=FALSE}
+rest_closures = subset(hit, hit$cat %in% c('restaurant closed', 'restaurant reduced'))
+rest_closures$details <- tolower(rest_closures$details)
+rest_closures$details = gsub("[^A-Za-z0-9 ]","", rest_closures$details)
+
+rest_closures = rest_closures %>% 
+  mutate( restaurants_yes = grepl( c("restaurant"), rest_closures$details) ,
+          bars_yes = grepl(c("bar|pub |pubs"), rest_closures$details),
+          open_yes = grepl(c("open"), rest_closures$details),
+          close_yes = grepl(c("close|suspend"), rest_closures$details)) 
+
+
+restaurants <- rest_closures %>%
+  filter(restaurants_yes==T) %>%
+  select(unique_id, cat) %>%
+  mutate(type = 'Restriction and Regulation of Businesses',
+         type_2 = NA,
+         type_sub_cat = 'Restaurants',
+         institution_cat = 'Non-Essential Businesses',
+         institution_status = ifelse(cat == 'restaurant closed', 'This type of business ("Restaurants") is closed/locked down',
+                                                                  'This type of business ("Restaurants") is allowed to open with conditions'),
+         target_who_what = 'All Residents (Citizen Residents + Foreign Residents)',
+         target_who_gen = 'No special population targeted')
+
+bars = rest_closures %>%
+  filter(bars_yes==T) %>%
+  select(unique_id, cat) %>%
+  mutate(type = 'Restriction and Regulation of Businesses',
+         type_sub_cat = 'Bars',
+         type_2 = NA, 
+         institution_cat = 'Non-Essential Businesses',
+             institution_status = ifelse(cat == 'restaurant closed', 'This type of business ("Bars") is closed/locked down',
+                                                                  'This type of business ("Bars") is allowed to open with conditions'),
+
+         target_who_what = 'All Residents (Citizen Residents + Foreign Residents)',
+         target_who_gen = 'No special population targeted')
+
+restaurant_closures = rbind(bars, restaurants) %>% select(-cat)
+
+
+other_business_closures = anti_join(rest_closures, restaurant_closures, "unique_id")
+
+other_business_closures = other_business_closures %>%
+  select(unique_id) %>%
+  mutate(type = 'Restriction and Regulation of Businesses',
+         institution_cat = 'Non-Essential Businesses',
+         target_who_what = 'All Residents (Citizen Residents + Foreign Residents)',
+         target_who_gen = 'No special population targeted')
+
+
+```
+
+</br>
+
+## 4.20 Confinement
+
+The following code maps how HIT-COVID captures a lockdown that applies to the entire population to the CoronaNet taxonomy.
+
+* The HIT-COVID taxonomy aims to capture such policies by coding the `cat` is **confinement**.
+
+* Since a **partially restricted** `status` could mean a curfew or a special population/ geographic area targeted, only the policies that **fully restrict** the **entire population** are mapped as lockdown policies 
+
+* The CoronaNet taxonomy aims to capture such policies by coding the `type` is **Lockdown**, the `target_who_what` as **All Residents (Citizen Residents + Foreign Residents)** and the `target_who_gen` as **No special population targeted**.
+ 
+
+```{r confinement_all, eval=FALSE}
+
+
+confinement_all <- hit %>%
+  mutate(details = tolower(details))%>%
+  filter(cat  == 'confinement' & 
+           status == 'fully restricted' &
+           subpopulation == 'entire population'|
+           grepl("ockdown|tay at home|tay-at-home", details)) %>%
+   filter( intervention_group != 'school_closed') %>% 
+  select(unique_id) %>%
+  mutate(type = 'Lockdown',
+         type_2 = 'Social Distancing',
+         target_who_what = 'All Residents (Citizen Residents + Foreign Residents)',
+         target_who_gen = 'No special population targeted')
+
+
+ 
+```
+
+</br>
+
+## 4.21 Curfew
+
+The following code maps how HIT-COVID captures a curfew to the CoronaNet taxonomy.
+
+* The HIT-COVID taxonomy aims to capture such policies when the `cat` variable takes on the value of **confinement** and `details` field references a curfew.
+
+ 
+* The CoronaNet taxonomy aims to capture such policies by coding the `type` is **Curfew**, the `target_who_what` as **All Residents (Citizen Residents + Foreign Residents)** and the `target_who_gen` as **No special population targeted**.
+ 
+
+```{r confinement_curfew, eval=FALSE}
+
+confinement_curfew <- hit %>%
+  filter(cat  == 'confinement' & 
+           grepl('urfew', details)) %>%
+    filter( intervention_group != 'school_closed') %>% 
+  select(unique_id) %>%
+  mutate(type = 'Curfew',
+         type_2 = NA,
+         target_who_what = 'All Residents (Citizen Residents + Foreign Residents)')
+
+ 
+```
+
+</br>
+
+## 4.22 Other Confinement
+
+The following code maps how HIT-COVID captures policies that are likely curfew, quarantine, or lockdown policies to the CoronaNet taxonomy.
+
+* The HIT-COVID taxonomy aims to capture such policies by coding the `cat` is **confinement** and is not already mapped in the above
+ 
+*  Because there was no systematic way to map such policies in a one to one manner, we mapped such policies as **Lockdown or Curfew or Quarantine** in the CoronaNet <code>type</code> variable to provide guidance to researchers manually harmonizing this data later downstream. 
+
+```{r confinement_other, eval=FALSE}
+
+remaining_confinment = hit %>% 
+  filter(unique_id %!in% c(confinement_all, confinement_curfew)) %>% select(unique_id) %>% pull
+
+
+ 
+confinement_other <- hit %>%
+  filter(cat  == 'confinement' & 
+           unique_id %in% remaining_confinment) %>%
+  select(unique_id) %>%
+  mutate(type = 'Lockdown or Curfew or Quarantine',
+         type_2 = 'Closure and Regulation of Schools',
+         target_who_what = 'All Residents (Citizen Residents + Foreign Residents)')
+
+```
+
+</br>
+
+## 4.23 Screening within  
+
+When the `cat` is **screening within**  there is no clear one-to-one matching with the CoronaNet taxonomy, in these cases, the best guesses are given:
+
+Because there was no systematic way to map such policies in a one to one manner, we mapped such policies as **External Border Restriction or Internal Border Restriction or Health Monitoring** in the CoronaNet <code>type</code> variable to provide guidance to researchers manually harmonizing this data later downstream. 
+
+``` {r, eval=FALSE}
+
+screening_within = hit %>% 
+  filter(cat == 'screening within') %>%
+  mutate(
+    type = 'External Border Restriction or Internal Border Restriction or Health Monitoring'
+  ) %>%
+  select(unique_id, type)
+
+
+```
+ </br>
+
+
+
+## 4.24 Enforcment
+
+The CoronaNet taxonomy does not systematically capture policies about enforcement . As such, these policies have been mapped such that the<code>type</code> variable takes the value of **Other Policy Not Listed Above** 
+
+ 
+``` {r, eval=FALSE}
+enforcement = hit %>% 
+  filter(cat == 'enforcement') %>%
+  mutate(
+    type = 'Other Policy Not Listed Above'
+  ) %>%
+  select(unique_id, type)
+
+```
+
+<hr>
+</br>
+
+# 5 Final Mapping
+
+All the previously created data frames are merged into the map while taking care to not overwrite existing data (thus the use of rows_patch). After a few extra steps to implement the more detailed mappings of restaurant closures, the map is complete. The results are then  exported in an .rds and .csv format, to be consolidated together with the other external databases to be harmonized. The final consolidated dataset is then processed for manual harmonisation into the CoronaNet Research Project dataset.
+
+```{r, eval = FALSE}
+
+
+
+hit_coronanet_map = rows_patch(hit_coronanet_map, border_match, by = 'unique_id')
+hit_coronanet_map = rows_patch(hit_coronanet_map, confinement_all, by = 'unique_id')
+hit_coronanet_map = rows_patch(hit_coronanet_map, confinement_curfew, by = 'unique_id')
+hit_coronanet_map = rows_patch(hit_coronanet_map, confinement_other, by = 'unique_id')
+hit_coronanet_map = rows_patch(hit_coronanet_map, contact, by = 'unique_id')
+hit_coronanet_map = rows_patch(hit_coronanet_map, emergency, by = 'unique_id')
+hit_coronanet_map = rows_patch(hit_coronanet_map, entertainment, by = 'unique_id')
+hit_coronanet_map = rows_patch(hit_coronanet_map, isolation, by = 'unique_id')
+hit_coronanet_map = rows_patch(hit_coronanet_map, limit_mvt, by = 'unique_id')
+hit_coronanet_map = rows_patch(hit_coronanet_map, mask, by = 'unique_id')
+hit_coronanet_map = rows_patch(hit_coronanet_map, nursing_homes, by = 'unique_id')
+hit_coronanet_map = rows_patch(hit_coronanet_map, office, by = 'unique_id')
+hit_coronanet_map = rows_patch(hit_coronanet_map, public_space, by = 'unique_id')
+hit_coronanet_map = rows_patch(hit_coronanet_map, public_transport, by = 'unique_id')
+hit_coronanet_map = rows_patch(hit_coronanet_map, religion, by = 'unique_id')
+hit_coronanet_map = rows_patch(hit_coronanet_map, screening_match, by = 'unique_id')
+hit_coronanet_map = rows_patch(hit_coronanet_map, social_limits, by = 'unique_id')
+hit_coronanet_map = rows_patch(hit_coronanet_map, store_closures, by = 'unique_id')
+hit_coronanet_map = rows_patch(hit_coronanet_map, testing_match, by = 'unique_id')
+hit_coronanet_map = rows_patch(hit_coronanet_map, school_match, by = 'unique_id')
+hit_coronanet_map = rows_patch(hit_coronanet_map, other_business_closures, by = 'unique_id')
+hit_coronanet_map = rows_patch(hit_coronanet_map, screening_within, by = 'unique_id')
+hit_coronanet_map = rows_patch(hit_coronanet_map, enforcement, by = 'unique_id')
+
+
+
+
+restaurant_closures_non_dup = restaurant_closures[!duplicated(restaurant_closures$unique_id),]
+restaurant_closures_dup = restaurant_closures[duplicated(restaurant_closures$unique_id),]
+hit_coronanet_map = rows_patch(hit_coronanet_map, restaurant_closures_non_dup, by = 'unique_id')
+dup_fill = subset(hit_coronanet_map, hit_coronanet_map$unique_id %in% restaurant_closures_dup$unique_id)
+dup_fill = rows_update(dup_fill, restaurant_closures_dup, by = 'unique_id')
+hit_coronanet_map = rbind(hit_coronanet_map, dup_fill)
+
+hit_coronanet_map  = hit_coronanet_map  %>% 
+  group_by(unique_id) %>% 
+    mutate(
+    unique_id = paste(unique(unique_id), collapse = ','),
+    type_sub_cat = paste(unique(type_sub_cat), collapse = ',') ,
+    institution_status = paste(unique( institution_status), collapse = ',')
+  ) %>%
+  ungroup() %>%
+  distinct %>%
+  group_by(
+    unique_id
+  ) %>%
+  mutate(
+    count = 1:n(),
+    count = ifelse(count == 1, '', count),
+    unique_id = ifelse(count != '', paste0(unique_id,count), unique_id)
+  ) %>%
+  select(-count) %>% 
+  ungroup
+
+
+saveRDS(hit_coronanet_map, "/Users/cindycheng/Documents/CoronaNet/corona_private/data/collaboration/jhu/hit_coronanet_map_2b.rds")
+ 
+write.csv(hit_coronanet_map, "/Users/cindycheng/Documents/CoronaNet/corona_private/data/collaboration/jhu/hit_coronanet_map_2b.csv")
+
+```
+

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+    <link rel="stylesheet" type="text/css" href="style2.css">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="L-jK2R0bz2lbCyDSQ7Ulk6MW9il2PZzbXZ9DX6AkuuE" />
+    <meta name="description" content="The CoronaNet Research Project is a worldwide effort that tracks government COVID-19 policies.">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <title>Validations and Reliability Checks</title>
+    <script src="js/fontawesome.js" crossorigin="anonymous" async></script>
+    <script src="js/particles.js"></script>
+    <script src="app.js" async></script>
+    <div id="particles-js" style="position: relative;">
+        <img src="images/logo_transparent_slim.png" style="position: absolute; margin: auto; left: 0; right: 0; text-align: center; height: 80%; z-index: 2; cursor: pointer;" class="logoCoronanet" onclick="window.location='https://www.coronanet-project.org/index.html';"/>
+        <div><a id="menuButton" onclick="openNav()"><i class="fas fa-bars" style="cursor: pointer; font-size: 24px; text-shadow: 0 0 1px #000; z-index: 3;"></i></a></div>
+        <div class="containerMenu">
+            <label id="theme-switch" class="theme-switch" for="checkbox_theme">
+            <input type="checkbox" value='0' id="checkbox_theme" style="display: none;">
+            <i id="darkModeSwitch" class="fas fa-moon" style="background-color: transparent; cursor: pointer; font-size: 24px; text-shadow: 0 0 1px #000;"></i>
+            </label>
+            <a id="emailButton" href="mailto:admin@coronanet-project.org"><i class="fas fa-envelope" style="background-color: transparent; cursor: pointer; font-size: 24px; text-shadow: 0 0 1px #000;"></i></a>
+        </div>
+    </div>
+    <div id="navbarOverlay" style="z-index: 3;"></div>
+    <h1> Validations and Reliability Checks</h1>
+    <div id="mySidenav" class="sidenav" style="display: none; z-index: 3;">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <div class="sidebarOption"><img src="images/favicon_bw.png" style="width: 15px; display: inline;"><a target="_blank" href="index.html">Home</a></div>
+        <div class="sidebarOption"><img src="images/11_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="methods.html">Methodology</a>
+        <div class="sidebarSuboption">
+        <a target="_blank" href="methods.html">Data Collection Methods</a><br>
+        <a target="_blank" href="codebook.html">Codebook</a><br>
+        <a target="_blank" href="validationcheck.html">Validation and Reliability Checks</a>
+        </div></div>
+        <div class="sidebarOption"><img src="images/16_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="visualisations.html">Visualizations</a></div>
+        <div class="sidebarOption"><img src="images/14_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="reports.html">Reports</a></div>
+        <div class="sidebarOption"><img src="images/13_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="publications.html">Publications</a></div>
+        <div class="sidebarOption"><img src="images/10_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="inthemedia.html">In The Media</a></div>
+        <div class="sidebarOption"><img src="images/9_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="about.html">About CoronaNet</a></div>
+        <div class="sidebarOption"><img src="images/12_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="team.html">Our People</a>
+        <div class="sidebarSuboption">
+        <a target="_blank" href="team.html">Team</a><br>
+        <a target="_blank" href="interviews.html">Interviews</a><br>
+        </div></div>
+        <div class="sidebarOption"><img src="images/15_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="join.html">Join CoronaNet</a></div>
+    </div>
+    <script>
+        function openNav() {
+          document.getElementById("mySidenav").style.display = "block";
+          document.getElementById("navbarOverlay").style.display = "block";
+        }
+
+        function closeNav() {
+          document.getElementById("mySidenav").style.display = "none";
+          document.getElementById("navbarOverlay").style.display = "none";
+        }
+    </script>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DSF9RY2DVF"></script>
+    <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-DSF9RY2DVF');
+    </script>    
+</head>
+    
+    <body>
+        <div class="container">
+            <p class="block"> 
+            The CoronaNet data undergoes an ongoing process of cleaning, multiple-coding validation, and evaluation and reconciliation.  Click through the questions  below to learn more about this process!<br><br>
+            
+            <b>Frequently Asked Questions:</b> 
+            </p>
+        <br>
+        
+        <button class="accordion">What are the main steps of CoronaNet’s data validation?</button>
+        <div class="panel"><br>
+            CoronaNet’s data undergoes cleaning, multiple-coding validation, and evaluation and reconciliation. <br><br>
+        </div>
+        <button class="accordion">How is CoronaNet’s data cleaned?</button>
+        <div class="panel"><br>
+            Our team checks our raw data for logical inconsistencies and typographical errors. All data as of 4 June 2020 has been cleaned, and data coded past that date is continuously cleaned. Please contact <a class=link href="mailto:admin@coronanet-project.org">admin@coronanet-project.org</a> to inquire about our latest rounds of data cleaning.<br><br>
+        </div>
+        <button class="accordion">What do you mean by ‘multiple-coding for validation’?</button>
+        <div class="panel"><br>
+          We randomly sample 10% of the dataset using the source of the data (e.g. newspaper article, government press release) as our unit of randomisation. We use the source as our unit of randomisation because one source may detail many different policy types. We then provide this source to a fully independent RA and ask them to code for the government policy contained in the sampled source through a separate, but identical, survey instrument. If the source is in a language the RA cannot read, then a new source is drawn. The RA then codes all policies in the given source. This practice is repeated a third time by a third independent coder. Given the fact that each source in the sample is coded three times, we can assess the reliability of our measures and report the reliability score of each coder.<br><br>
+
+          We are currently in the process of completing our second coding of the validation sample. 429 policies have been double coded—400 double-coded policies after excluding the category ‘Other policies’ from the analysis—out of the original 1,200 randomly-selected policies included in our validation set. This is equivalent to about 10% of the first new entries (11,796 policies) in the dataset. We will be gradually expanding the validation set until we cover 10% of all observations.<br><br>
+        </div>
+        
+        <button class="accordion">How do we evaluate and reconcile data?</button>
+        <div class="panel"><br>
+          We check for discrepancies between the originally coded data and the second and third coding of the data through two primary methods. First, we use majority-voting to establish a consensus for policy labels. In addition, we will provide RA identification codes that will allow users to evaluate coder accuracy.<br><br>
+
+          If the majority achieves consensus, then we consider the entry valid. If a discrepancy exists, a fourth RA or PI makes an assessment of the three entries to determine whether one, some, a combination of all three is most accurate. Reconciled policies are then entered into the dataset as a correction for full transparency. If an RA was found to have made a coding mistake, then we sample six of their previous entries: 3 entries which correspond to the type of mistake made (e.g. if the RA incorrectly codes an ‘External Border Restriction’ as a ‘Quarantine’, we sample 3 entries where the RA has coded a policy as being about a ‘Quarantine’) and randomly sample 3 more entries to ascertain whether the mistake was systematic or not. If systematic errors are found, entries coded by that individual will be entirely re-coded by a new RA.
+              
+          The following table reports the inter-coder reliability measures of validation as of [x date]:<br><br>
+
+          We expect our inter-coder reliability scores to improve as a consequence of three processes:<br><br>
+          
+            
+          <ol>
+            <li class="numbered">Our coders are becoming more experienced with the codebook and the coding tasks; </li>
+            <li class="numbered">We are cleaning the dataset of obvious errors and logical inconsistencies; and </li>
+            <li class="numbered">We are working on clarifying and improving the codebook and the coding system </li>
+          </ol><br>
+            
+            However, we do acknowledge that some ambiguities will inevitably remain, as evident in our utility of the ‘majority voting’ validation strategy. <br><br>
+          
+        </div>
+            
+        <br>
+        <br>    
+         
+        <p class="block">
+          The following figure reports the evolution of the number of unique policies validated since the beginning of the process of coding:
+          <br>
+          <br> 
+       </p>
+       <img src="images/evolution_policies.PNG" class="image" alt="Table of inter-coder reliability measures for on-going validation">
+
+       <br>
+       <br>               
+
+        <p class="block">
+           The following table reports the inter-coder reliability at the current stage of validation: 
+           <br>
+           <br> 
+           <img src="images/reliability_table_updated.PNG" class="image" alt="Table of inter-coder reliability measures for on-going validation">
+        </p>
+
+        <script>
+        var acc = document.getElementsByClassName("accordion");
+        var i;
+
+        for (i = 0; i < acc.length; i++) {
+          acc[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var panel = this.nextElementSibling;
+            if (panel.style.maxHeight) {
+              panel.style.maxHeight = null;
+            } else {
+              panel.style.maxHeight = panel.scrollHeight + "px";
+            } 
+          });
+        }
+        </script>
+        </div>
+    </body>
+    
+    <footer>
+      <h2>Partner Universities and Institutions</h2>
+      <br>
+      <a target="_blank" href="https://www.hfp.tum.de/en/home/"><img class="logo" src="images/hochschule%20.png" alt="Hochschule für Politik München logo"></a>
+      
+      <a target="_blank" href="https://www.tum.de/"><img class="logo" src="images/TUM.png" alt="Technical University of Munich logo"></a>
+  
+      <a target="_blank" href="https://nyuad.nyu.edu/en/"><img class="logo" src="images/NYU.png" alt="New York University Abu Dhabi logo"></a>
+  
+      <a target="_blank" href="https://www.wi.tum.de/"><img class="logo" src="images/SOM.png" alt="TUM School of Management at Technical University of Munich logo"></a>
+      
+      <br>
+      <br>
+      
+      <a target="_blank" href="https://nu.edu.kz/"><img class="logo" src="images/NU.png" alt="Nazarbayev University logo"></a>
+      
+      <a target="_blank" href="https://www.jataware.com/"><img class="logo" src="images/jataware_logo.png" alt="Jataware company logo"></a>
+  
+      <a target="_blank" href="https://www.leibniz-krisen.de/en.html"><img class="logo" src="images/LFV_logo.png" alt="Leibniz Research Alliance
+  Crises in a Globalised World logo"></a>
+  
+      <a target="_blank" href="https://www.overton.io/"><img class="logo" src="images/overton_logo.png" alt="Overton company logo"></a>
+      
+      <br>
+      <br>
+      <hr><br>
+      <h2 class="periscope">CoronaNet is part of the PERISCOPE consortium, a project funded by the European Commission under the Horizon 2020 Research and Innovation programme (agreement no. 101016233)</h2>
+      <br>
+      <a target="_blank" href="https://periscopeproject.eu/"><img class="logo funding" src="images/periscope.png" alt="Logo of the PERISCOPE consortium"></a>
+      <a target="_blank" href="https://ec.europa.eu/info/index_en"><img class="logo_eu" src="images/logo-ce-horizontal-en-quadri-lr.png" alt="Logo of the European Commission"></a>
+      <br><br>
+      <a target="_blank" href="https://github.com/saudiwin/corona_tscs"><img src="images/github.png" width="25px" alt="GitHub data repository for CoronaNet"></a>
+      <a target="_blank" href="https://www.linkedin.com/company/coronanet-research-group/mycompany/"><img src="images/linkedin.png" width="25px" alt="CoronaNet Research Group on LinkedIn"></a>
+      <a target="_blank" href="https://twitter.com/CoronaNet_org"><img src="images/twitter.png" width="25px" alt="CoronaNet Research Project on Twitter"></a>
+      <a target="_blank" href="https://www.instagram.com/coronanet_org/"><img src="images/instagram.png" width="25px" alt="CoronaNet Research Project on Instagram"></a>
+      <br>
+      <script src="js/darkMode.js"></script>
+  </footer></html>

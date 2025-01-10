@@ -1,0 +1,1597 @@
+---
+title: "CoronaNet Data Skeleton"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+
+library(readr)
+library(magrittr)
+library(dplyr)
+library(knitr)
+library(kableExtra)
+library(here)
+
+# load data
+coronanet = readRDS(here("data", "skeleton_data", "coronanet_internal.RDS"))
+
+```
+
+# Introduction
+
+In this document, we first provide a skeleton which describes the different possible combinations of different fields in the CoronaNet data before then providing examples of how cleaned data for different types of policies and policy updates should look like.
+
+
+Note the syntax of the document is such that when a word is written within a brackets: [], it refers to a field within the released version of the CoronaNet data (e.g. [type]).
+
+# CoronaNet Skeleton
+
+In this section, we specify the different possible combinations of different fields in the CoronaNet data. We also evaluate the extent to which the data comply with these specifications. We start by first describing the unit of analysis of a unique record, how records are tracked over time using the [policy_id], before detailing how dates are captured in the dataset. We then outline different combinations possible for policy types ([type]) and subtypes ([type_sub_cat]), before detailing how policy initiators are defined.
+
+
+
+## Unit of analysis
+
+Each record receives a unique [record_id] which documents different dimensions of a policy. At a minimum, the record_id should include the following information:
+
+* A textual description of the policy
+  + [description]
+* Policy Initiator
+  + [country], always recorded
+  + [province], recorded if applicable
+  + [city], recorded if applicable
+* Policy Type
+  + [type]
+  + [type_sub_cat], recorded if applicable
+* Policy Geographic Target
+  + [target_country], always recorded
+  + [target_province], recorded if applicable
+  + [target_city], recorded if applicable
+  + [target_other], recorded if applicable
+* Policy Demographic Target
+  + [target_who_what], recorded if applicable
+  + [target_who_gen] (note, this variable is not yet released and still needs to be backcoded), always recorded
+* De Jure compliance
+  + [compliance]
+* Organizational entity in charge of enforcing a policy
+  + [enforcer]
+* Timing of a policy
+  + [date_announced]
+  + [date_start]
+  + [date_end]
+
+
+Where applicable, the following information may also be documented:
+
+* Whether an institution is closed, open with conditions or closed
+  + [institution_status], only applicable for "Closure and Regulations of Schools", "Restrictions and Regulations of Government Services", "Restrictions and Regulations of Businesses"
+* The target direction of a policy
+  + [target_direction]
+* The mode of travel a policy affects
+  + [travel_mechanism]
+
+Additional meta data that is captured include:
+
+* Whether the policy is a new_entry or an update
+  + [entry_type]
+* Whether any mistakes in the original coding of a policy have been corrected or not, 'original', or 'corrected'
+  + [correct_type]
+* The type of update, 'Change of Policy', 'End of Policy'
+  * update_type
+* When the policy was recorded
+  * [recorded_date]
+* The last time a research assistant reported that they had searched for an update for a given policy type for a given government
+  * [date_updated]
+* Link to the source URL
+  + [link]
+
+Data on the CoronaNet Policy Activity Index is recorded in the following variables:
+
+* [index_high_est]
+* [index_med_est]
+* [index_low_est]
+* [index_country_rank]
+
+
+### Policy Updates
+
+The [policy_id] allows for the tracking of a policy history over time; one can use a policy_id to track whether there have been updates to a policy.
+
+It is possible to update the following dimensions of a policy including:
+
+* 'volume' of a policy
+* the directionality of a policy (inbound/outbound) [travel_direction]
+* the travel mechanism of a policy (e.g. flights) [travel_mechanism]
+* the compliance of a policy
+* the enforcer of a policy
+* the timing of a policy
+
+
+Updates to a policy should have the following fields be identical:
+
+* Policy Initiator
+  + [country]
+  + [province]
+  + [city]
+* Policy Type
+  + [type]
+  + type_sub_cat
+* Policy Geographic Target
+  + [target_country]
+  + [target_province]
+  + [target_city]
+  + [target_other]
+* Policy Demographic Target
+  + [target_who_what]
+  + [target_who_gen] (note, this variable is not yet released)
+
+In other words, it is not possible to update the policy initiator, policy type, policy geographic target or policy demographic target --- when these dimensions of a policy change, then the orignal policy should be ended and a new policy must be coded.
+
+The following code evaluates the extent to which these coding rules have been followed. Note that changes to the survey have been made to try and minimize the ability to make such errors:
+``` {r}
+
+check_updates = coronanet %>%
+  mutate(check_id = paste(country,
+                          province,
+                          city,
+                          type,
+                          type_sub_cat,
+                          target_country,
+                          target_province,
+                          target_city,
+                          target_other,
+                          target_who_what) )%>%
+  group_by(policy_id, type_sub_cat) %>%
+  summarise(unique_rows = n_distinct(check_id)) %>%
+  ungroup()
+
+
+
+if (table(check_updates$unique_rows)[1] == dim(check_updates)[1]){
+  print('All Good!')
+} else{
+  print(paste0('Errors in coding updates found for  ', sum(table(check_updates$unique_rows)[-1]), ' records'))
+}
+
+```
+
+
+### Dates
+
+Updates to a policy should have different announced, start and end dates from the original new_entry. In other words, an original new_entry of a policy and an update to that new_entry should not have identical announced, start and end dates.
+
+The following code evaluates the extent to which these coding rules have been followed. Note that changes to the survey have been made to try and minimize the ability to make such errors:
+```{r}
+
+check_dates = coronanet %>%
+  mutate(check_date = paste(date_announced, date_start, date_end ))%>%
+  group_by(policy_id, type_sub_cat) %>%
+  summarise(unique_rows = n_distinct(check_date),
+            date_error_dum = ifelse(unique_rows != n(), 1,0)
+            
+            ) %>%
+  ungroup()
+
+if (all(check_dates$date_error_dum == 0)){
+  print('All Good!')
+} else{
+  print(paste0('Errors in coding dates found for  ', table(check_dates$date_error_dum)[2], ' records'))
+}
+
+
+```
+
+
+## [type]-[type_sub_cat] combinations
+
+Policies are divided into 20 broad types  (variable 'type') and 100+ (variable 'type_sub_cat'). The broad policy types available in the data are as follows:
+
+* Anti-Disinformation Measures
+* Closure and Regulation of Schools
+* COVID-19 Vaccines
+* Curfew
+* Declaration of Emergency
+* External Border Restrictions
+* Health Monitoring
+* Health Resources
+* Health Testing
+* Hygiene
+* Internal Border Restrictions
+* Lockdown
+* New Task Force, Bureau or Administrative Configuration
+* Public Awareness Measures
+* Quarantine
+* Restriction and Regulation of Businesses
+* Restriction and Regulation of Government Services
+* Restrictions of Mass Gatherings
+* Social Distancing
+* Other Policy Not Listed Above
+
+Policy sub-types (variable 'type') are linked to specific types (variable 'type_sub_cat'). Because of changes over time to the CoronaNet taxonomy, some sub types may be deprecated and will need to be cleaned in order to be consistent with the current taxonomy. For more information about when changes were made to the CoronaNet taxonomy for a given variable, please see the [CoronaNet Data Availability Sheet](https://docs.google.com/spreadsheets/d/1FJqssZZqjQcA-jZhRnC_Av9rlii3abG8r7utBeuzTEQ/edit?usp=sharing)
+
+
+### [type]s that do not have any associated [type_sub_cat]
+
+The following variables do not have sub_types associated with them:
+
+```{r }
+
+# 
+
+type_nosubtype = coronanet %>%
+                  filter(type %in% c( 'Declaration of Emergency',
+                        'Lockdown',
+                        'Other Policy Not Listed Above')) %>%
+              select(type_sub_cat) %>%
+              pull %>%
+              unique
+
+
+suppressWarnings(if (is.na(type_nosubtype)) {
+  print('All Good')
+} else{
+  print("Error: Policy types that shouldn't have sub_types have sub_types associated with them")
+})
+
+```
+
+
+Aside from the policy types above, the following shows the unique 'type-type_sub_cat' combinations that should in theory be possible. When this is not the case, the number of policies associated with a given deprecated sub type is shown. 
+
+
+### Closure and Regulation of Schools [type]-[type_sub_cat] combinations
+
+The 'Closure and Regulation of Schools' policy type can only take on one of the following sub types:
+
+* Preschool or childcare facilities (generally for children ages 5 and below)
+* Primary Schools (generally for children ages 10 and below)
+* Secondary Schools (generally for children ages 10 to 18)
+* Higher education institutions (i.e. degree granting institutions)
+
+```{r}
+
+type_schools = coronanet %>%
+      filter(type == 'Closure and Regulation of Schools')%>%
+      select(type_sub_cat) %>%
+      pull %>%
+      table
+
+type_schools_true <- c(
+  "Preschool or childcare facilities (generally for children ages 5 and below)" ,
+  "Primary Schools (generally for children ages 10 and below)"  ,
+  "Secondary Schools (generally for children ages 10 to 18)"  ,
+  "Higher education institutions (i.e. degree granting institutions)",
+   "Higher education (i.e. degree granting institutions)" 
+)
+
+if (all(names(type_schools) %in% type_schools_true))
+ {
+  print('All Good')
+} else{
+  print("Error: 'Closure and Regulation of Schools' policy type has an incorrect policy sub-type associated with it")
+  
+     
+type_schools[which( names(type_schools) %in% setdiff(names(type_schools), type_schools_true))]
+
+  
+}
+
+
+
+```
+
+
+### COVID-19 Vaccines [type]-[type_sub_cat] combinations
+
+The 'COVID-19 Vaccines' policy type can only take on one of the following sub types:
+
+
+* Resources for research and development of a COVID-19 vaccine
+* Regulatory approval process for administering the COVID-19 vaccine
+* Production of COVID-19 vaccines
+* Purchase of COVID-19 vaccines
+<!-- * Distribution (shipping; storage; administration) of COVID-19 vaccines -->
+* Storage of the vaccine"  
+* Shipping of the vaccine",
+* "Administering of the vaccine (i.e. giving people the vaccine shot)
+* Donations of the vaccine (i.e. from one government to another)
+* Recognition of full vaccination status
+
+
+```{r}
+
+type_vaccines = coronanet %>%
+  filter(type == 'COVID-19 Vaccines')%>%
+  select(type_sub_cat) %>%
+  pull %>%
+ table
+
+
+type_vaccines_true <- c(
+  "Resources for research and development of a COVID-19 vaccine"  ,
+  "Regulatory approval process for administering the COVID-19 vaccine"  ,
+  "Production of COVID-19 vaccines",
+  "Purchase of COVID-19 vaccines",
+  "Shipping of the vaccine",
+  "Storage of the vaccine" ,
+  "Administering of the vaccine (i.e. giving people the vaccine shot)",
+  "Donations of the vaccine (i.e. from one government to another)",
+  "Recognition of full vaccination status"
+)
+
+if (all(names(type_vaccines) %in% type_vaccines_true )
+) {
+  print('All Good')
+} else{
+  print("Error: 'COVID-19 Vaccines' policy type has an incorrect policy sub-type associated with it: ")
+  
+   
+type_vaccines[which( names(type_vaccines) %in% setdiff(names(type_vaccines), type_vaccines_true ))]
+
+
+
+}
+
+```
+
+
+### External Border Restrictions [type]-[type_sub_cat] combinations
+
+The 'External Border Restrictions' policy type can only take on one of the following sub types:
+
+* Health Screenings (e.g. temperature checks)
+* Health Certificates
+* Travel History Form (e.g. documents where traveler has recently been)
+* Visa restrictions (e.g. suspend issuance of visa)
+* Visa extensions (e.g. visa validity extended)
+* Other External Border Restriction
+* Total border crossing ban
+
+
+```{r}
+
+type_ext_border= coronanet %>%
+  filter(type == 'External Border Restrictions')%>%
+  select(type_sub_cat) %>%
+  pull %>%
+ table
+
+type_ext_border_true <- c(  
+    "Health Screenings (e.g. temperature checks)" ,
+    "Health Certificates",
+    "Travel History Form (e.g. documents where traveler has recently been)",
+    "Negative COVID-19 Test"  ,
+    "Proof of COVID-19 vaccination",
+    "3G: Must be either (i) vaccinated (ii) have a valid COVID-19 negative test within a certain time frame or (iii) recovered from COVID-19",
+    "2G: Must be (i) either vaccinated or (ii) recovered from COVID-19" ,
+    "Institution can decide whether to enforce 2G or 3G (see above for definitions for 2G and 3G)" ,
+    "Visa restrictions (e.g. suspend issuance of visa)",
+    "Visa extensions (e.g. visa validity extended)",
+    "Other External Border Restriction",
+    "Total border crossing ban")
+
+if (all(names(type_ext_border) %in% type_ext_border_true)) {
+  print('All Good')
+} else{
+  print("Error: 'External Border Restrictions' policy type has an incorrect policy sub-type associated with it")
+  
+type_ext_border[which( names(type_ext_border) %in% setdiff(names(type_ext_border),type_ext_border_true
+))]
+}
+
+
+```
+
+
+###  Health Monitoring [type]-[type_sub_cat] combinations
+The Health Monitoring policy type can only take on one of the following sub types:
+
+* A snapshot of a person’s health at a given point in time
+* A person’s absolute (e.g. GPS) location over time
+* Who a person has come into contact with over time
+* A community’s epidemiological status
+
+
+```{r}
+
+type_health_mon= coronanet %>%
+  filter(type == 'Health Monitoring')%>%
+  select(type_sub_cat) %>%
+  pull %>%
+ table
+
+type_health_mon_true <- c(
+    "A snapshot of a person’s health at a given point in time"  ,
+    "A person’s absolute (e.g. GPS) location over time"  ,
+    "Who a person has come into contact with over time",
+    "A community’s epidemiological status"
+)
+
+if (all(names(type_health_mon) %in% type_health_mon_true)
+) {
+  print('All Good')
+} else{
+  print("Error: 'Health Monitoring' policy type has an incorrect policy sub-type associated with it")
+  
+type_health_mon[which( names(type_health_mon) %in% setdiff(names(type_health_mon),type_health_mon_true
+))]
+}
+
+
+```
+
+
+
+###  Health Resources [type]-[type_sub_cat] combinations
+
+The Health Resources policy type can only take on one of the following sub types:
+
+* Masks
+* Ventilators
+* Personal Protective Equipment
+* Hand Sanitizer
+* Test Kits
+* Medicine/Drugs
+* Non COVID-19 Vaccines
+* Dry ice for COVID-19 vaccine storage
+* Cold storage capacity for COVID-19 vaccines
+* Thermal cyclers (PCR machines/DNA amplifiers)
+* Syringes
+* Unspecified Health Materials
+* Other Health Materials
+* Hospitals
+* Temporary Quarantine Centers
+* Temporary Medical Centers
+* Public Testing Facilities (e.g. drive-in testing for COVID-19)
+* Health Research Facilities
+* Unspecified Health Infrastructure
+* Other Health Infrastructure
+* Doctors
+* Nurses
+* Army (medical) corps
+* Health Volunteers
+* Unspecified Health Staff
+* Other Heath Staff
+* Health Insurance
+
+```{r}
+
+type_health_resource= coronanet %>%
+  filter(type == 'Health Resources')%>%
+  select(type_sub_cat) %>%
+  pull %>%
+table
+
+type_health_resource_true <-c(
+         "Masks",
+        "Ventilators",
+        "Personal Protective Equipment",
+        "Hand Sanitizer" ,
+        "Test Kits" ,
+        "Medicine/Drugs",
+        "Non COVID-19 Vaccines",
+        'Dry ice for COVID-19 vaccine storage',
+        'Cold storage capacity for COVID-19 vaccines',
+        'Thermal cyclers (PCR machines/DNA amplifiers)',
+        'Syringes',
+        "Unspecified Health Materials",
+        "Other Health Materials",
+        "Hospitals",
+        "Temporary Quarantine Centers",
+        "Temporary Medical Centers",
+        "Public Testing Facilities (e.g. drive-in testing for COVID-19)" ,
+        "Health Research Facilities",
+        "Unspecified Health Infrastructure",
+        "Other Health Infrastructure",
+        "Doctors" ,
+        "Nurses" ,
+        "Non-COVID-19 Vaccines",
+        'Army (medical) corps',
+        "Health Volunteers" ,
+        "Unspecified Health Staff" ,
+        "Other Heath Staff",
+        "Health Insurance"
+)
+
+if (all(names(type_health_resource) %in% type_health_resource_true)) {
+  print('All Good')
+} else{
+  print("Error: 'Health Resources' policy type has an incorrect policy sub-type associated with it:")
+  
+   
+type_health_resource[which( names(type_health_resource) %in% setdiff(names(type_health_resource), type_health_resource_true
+))]  
+  
+}
+
+
+```
+
+
+###  Health Testing [type]-[type_sub_cat] combinations
+The Health Testing policy type can only take on one of the following sub types:
+
+
+* Self-testing
+* Drive-in Testing Centers
+* Mobile Health Testing Stations (excluding drive-ins)
+* Fixed Health Testing stations (excluding drive-ins)
+* Door-to-door Testing
+* Health testing of entire population under the government's jurisdiction
+* Other Health Testing
+
+```{r}
+
+type_health_testing= coronanet %>%
+  filter(type == 'Health Testing')%>%
+  select(type_sub_cat) %>%
+  pull %>%
+table
+
+type_health_testing_true <- c(
+         "Self-testing (e.g. at home)"  ,
+        "Drive-in Testing Centers"  ,
+        "Mobile Health Testing Stations (excluding drive-ins)",
+        "Fixed Health Testing stations (excluding drive-ins)",
+        "Door-to-door Testing",
+        "Health testing of entire population under the government's jurisdiction",
+        "Other Health Testing"
+)
+
+if (all(names(type_health_testing) %in% type_health_testing_true ))
+ {
+  print('All Good')
+} else{
+ print("Error: 'Health Testing' policy type has an incorrect policy sub-type associated with it")
+  
+type_health_testing[which( names(type_health_testing) %in% setdiff(names(type_health_testing), type_health_testing_true
+))]  
+}
+
+
+```
+
+
+###  Hygiene [type]-[type_sub_cat] combinations
+The 'Hygiene' policy type can only take on one of the following sub types:
+
+
+* Hygiene measures for commercial areas
+* Hygiene measures for public areas
+* Hygiene measures for public transport
+* Burial procedures
+* Other Areas Hygiene Measures Applied
+
+```{r}
+
+type_hygiene= coronanet %>%
+  filter(type == 'Hygiene')%>%
+  select(type_sub_cat) %>%
+  pull %>%
+table
+
+type_hygiene_true <- c(
+        "Hygiene measures for commercial areas"  ,
+        "Hygiene measures for public areas"   ,
+        "Hygiene measures for public transport"  ,
+        "Burial procedures",
+        "Other Areas Hygiene Measures Applied"
+)
+
+if (all(names(type_hygiene) %in% type_hygiene_true)
+) {
+  print('All Good')
+} else{
+  print("Error: 'Hygiene' policy type has an incorrect policy sub-type associated with it")
+  
+  type_hygiene[which( names(type_hygiene) %in% setdiff(names(type_hygiene), type_hygiene_true
+))]  
+}
+
+
+```
+
+
+
+### New Task Force, Bureau or Administrative Configuration [type]-[type_sub_cat] combinations
+The 'New Task Force, Bureau or Administrative Configuration' policy type can only take on one of the following sub types:
+
+
+* New Task Force or Bureau (i.e. establishment of a temporary body)
+* Existing government entity given new powers
+* Cooperation among different jurisdictional entities (e.g. treaties or agreements among countries or provinces)
+* Other Administrative Configurations
+
+
+```{r}
+
+type_new_task= coronanet %>%
+  filter(type == 'New Task Force, Bureau or Administrative Configuration')%>%
+  select(type_sub_cat) %>%
+  pull %>%
+table
+
+type_new_task_true <-c(
+    "New Task Force or Bureau (i.e. establishment of a temporary body)"  ,
+        "Existing government entity given new powers"  ,
+        "Cooperation among different jurisdictional entities (e.g. treaties or agreements among countries or provinces)",
+        "Other Administrative Configurations"
+
+)
+
+if (all(names(type_new_task) %in% type_new_task_true)
+) {
+  print('All Good')
+} else{
+  print("Error: 'New Task Force, Bureau or Administrative Configuration' policy type has an incorrect policy sub-type associated with it")
+  
+ type_new_task[which( names(type_new_task) %in% setdiff(names(type_new_task), type_new_task_true
+))]  
+  
+}
+
+
+```
+
+
+###  Public Awareness Measures [type]-[type_sub_cat] combinations
+The 'Public Awareness Measures' policy type can only take on one of the following sub types:
+
+* Disseminating information related to COVID-19 to the public that is reliable and factually accurate
+* Gathering information related to COVID-19 from the public
+* Both Disseminating and Gathering information related to COVID-19
+
+```{r}
+
+type_pub_awareness= coronanet %>%
+  filter(type == 'Public Awareness Measures')%>%
+  select(type_sub_cat) %>%
+  pull %>%
+table
+
+type_pub_awareness_true <-c(
+   "Disseminating information related to COVID-19 to the public that is reliable and factually accurate"  ,
+        "Gathering information related to COVID-19 from the public"  ,
+        "Both Disseminating and Gathering information related to COVID-19"
+
+
+)
+
+if (all(names(type_pub_awareness) %in% type_pub_awareness_true)
+) {
+  print('All Good')
+} else{
+  print("Error: 'Public Awareness Measures' policy type has an incorrect policy sub-type associated with it")
+  
+ type_pub_awareness[which( names(type_pub_awareness) %in% setdiff(names(type_pub_awareness), type_pub_awareness_true
+))]  
+}
+
+
+```
+
+
+### Quarantine [type]-[type_sub_cat] combinations
+
+The 'Quarantine' policy type can only take on one of the following sub types:
+
+* Self-Quarantine (i.e. quarantine at home)
+* Government Quarantine (i.e. quarantine at a government hotel or facility)
+* Quarantine outside the home or government facility (i.e. quarantine in a hotel)
+* Other Quarantine
+
+```{r }
+type_quarantine = coronanet %>%
+  filter(type %in% c( "Quarantine")) %>%
+  select(type_sub_cat) %>%
+  pull %>%
+table
+
+type_quarantine_true <- c(
+  "Self-Quarantine (i.e. quarantine at home)",
+  "Government Quarantine (i.e. quarantine at a government hotel or facility)",
+  "Quarantine outside the home or government facility (i.e. quarantine in a hotel)",
+  "Other Quarantine"
+)
+
+if (all(names(type_quarantine) %in% type_quarantine_true)
+) {
+  print('All Good')
+} else{
+  print("Error: Quarantine policy type has an incorrect policy sub-type associated with it")
+  
+  
+ type_quarantine[which( names(type_quarantine) %in% setdiff(names(type_quarantines), type_quarantine_true
+))]  
+}
+
+```
+
+
+###  Restriction and Regulation of Businesses [type]-[type_sub_cat] combinations
+The 'Restriction and Regulation of Businesses' policy type can only take on one of the following sub types:
+
+* Retail Businesses
+* Restaurants
+* Bars
+* Shopping Centers
+* Commercial Businesses
+* Personal Grooming Businesses (e.g. hair salons)
+* Other Businesses
+* Supermarkets/grocery stores
+* Private health offices (e.g. doctors offices, dentists, etc)
+* Private health offices
+* Paid lodgings (e.g. hotels; motels)
+* Pharmacies
+* Agriculture, forestry and fishing
+* Agriculture; forestry and fishing
+* Mining and quarrying
+* Electricity; gas, ;steam ;and air conditioning supply
+* Water supply; sewerage; waste management and remediation activities
+* Construction
+* Telecommunications
+* Information service activities
+* Publishing activities
+* Financial service activities except insurance and pension funding
+* Insurance; reinsurance; and pension funding except compulsory social security
+* Transportation (land; water and air)
+* Warehousing and support activities for transportation
+* Other Businesses
+* All or unspecified businesses
+
+
+
+```{r }
+type_biz = coronanet %>%
+  filter(type %in% c( "Restriction and Regulation of Businesses")) %>%
+  select(type_sub_cat) %>%
+  pull %>%
+  table
+
+type_biz_true <- c(
+   "Retail Businesses",
+        "Restaurants",
+        "Bars",
+        "Shopping Centers" ,
+        "Non-Essential Commercial Businesses" ,
+        "Commercial Businesses" ,
+        "Personal Grooming Businesses (e.g. hair salons)",
+        "Other Businesses",
+        "Supermarkets/grocery stores",
+        "Private health offices (e.g. doctors offices, dentists, etc)",
+        "Private health offices",
+        "Paid lodgings (e.g. hotels; motels)",
+        "Pharmacies",
+        "Agriculture, forestry and fishing",
+        "Agriculture; forestry and fishing",
+        "Mining and quarrying",
+        "Electricity; gas; steam ;and air conditioning supply ",
+        "Water supply; sewerage; waste management and remediation activities",
+        "Construction",
+        "Telecommunications",
+        "Information service activities",
+        "Publishing activities",
+        "Financial service activities except insurance and pension funding",
+        "Insurance; reinsurance; and pension funding except compulsory social security",
+        "Transportation (land; water and air)",
+        "Warehousing and support activities for transportation",
+        "Other Businesses",
+        "All or unspecified businesses"
+)
+
+if (all(names(type_biz) %in% type_biz_true)
+) {
+  print('All Good')
+} else{
+  print("Error: 'Restriction and Regulation of Businesses' policy type has an incorrect policy sub-type associated with it")
+  
+  
+type_biz[which( names(type_biz) %in% setdiff(names(type_biz),  type_biz_true
+))]    
+  
+}
+
+```
+
+###  Restriction and Regulation of Government Services [type]-[type_sub_cat] combinations
+The "Restriction and Regulation of Government Services" policy type can only take on one of the following sub types:
+
+
+* Issuing of permits/certificates and/or processing of government documents
+* Election procedures (e.g. mail-in voting)
+* Regulations on publicly provided waste management services
+* Beaches
+* Campsites
+* Parks
+* Tourist Sites
+* Unspecified outdoor spaces
+* Other public outdoor spaces
+* Public libraries
+* Public museums/galleries
+* Public courts
+* Unspecified public facilities
+* Other public facilities
+* Regulated hours government services available (e.g. government services office open for certain hours only)
+* Regulated government working hours (e.g. work from home policies for government workers)
+* Regulations on government meetings (including e.g. suspension of parliament)
+* All government services restricted
+
+
+```{r }
+type_gov = coronanet %>%
+  filter(type %in% c( "Restriction and Regulation of Government Services")) %>%
+  select(type_sub_cat) %>%
+  pull %>%
+table
+
+type_gov_true <-  c(
+         "Issuing of permits/certificates and/or processing of government documents",
+        "Elections",
+        "Regulations on publicly provided waste management services",
+         "Issuing of documents (paper or digital) for validating COVID-19 health status",
+        "Beaches"  ,
+        "Campsites",
+        "Parks",
+        "Tourist Sites",
+        "Unspecified outdoor spaces",
+        "Other public outdoor spaces",
+        'Public libraries',
+        'Public museums/galleries',
+        "Public courts",
+        'Unspecified public facilities',
+        'Other public facilities',
+        "Regulated hours government services available (e.g. government services office open for certain hours only)",
+        "Regulated government working hours (e.g. work from home policies for government workers)",
+        "Regulations on government meetings (including e.g. suspension of parliament)",
+         "Other government service not specified above" ,
+      "All government services regulated"  
+)
+
+if (all(names(type_gov) %in% type_gov_true)
+) {
+  print('All Good')
+} else{
+  print("Error: 'Restriction and Regulation of Government Services' policy type has an incorrect policy sub-type associated with it")
+  
+  type_gov[which( names(type_gov) %in% setdiff(names(type_gov),  type_gov_true
+))]   
+}
+
+```
+
+
+###  Restrictions of Mass Gatherings [type]-[type_sub_cat] combinations
+
+The 'Restrictions of Mass Gatherings' policy type can only take on one of the following sub types:
+
+* Annually recurring event allowed to occur with certain conditions
+* Cancellation of an annually recurring event
+* Postponement of an annually recurring event
+* Cancellation of a recreational or commercial event
+* Postponement of a recreational or commercial event
+* Attendance at religious services restricted (e.g. mosque/church closings)
+* Prison population reduced (e.g. early release of prisoners)
+* Events at private residencies restricted
+* Events at private residencies restricted (e.g. parties held at home)
+* Event(s) allowed to occur but no audience is allowed
+* Other mass gatherings not specified above restricted
+
+
+```{r }
+type_mass = coronanet %>%
+  filter(type %in% c( "Restrictions of Mass Gatherings")) %>%
+  select(type_sub_cat) %>%
+  pull %>%
+table
+
+type_mass_true <-
+  c(
+      "All/Unspecified mass gatherings restricted",
+      "All Recreational or commercial events allowed to occur with conditions", 
+      "Annually recurring event allowed to occur with certain conditions", 
+      "Cancellation of a recreational or commercial event", 
+      "Cancellation of an annually recurring event", 
+      "Postponement of a recreational or commercial event", 
+      "Postponement of an annually recurring event", 
+      "Attendance at religious services restricted (e.g. mosque/church closings)", 
+      "Prison population reduced (e.g. early release of prisoners)", 
+      "Funeral and mourning rituals", 
+      "Weddings and marriage rituals", 
+      "Events at private residencies restricted",
+      "Single Recreational or commercial event allowed to occur with conditions",
+      "Other mass gatherings not specified above restricted"
+)
+
+if (all(names(type_mass) %in% type_mass_true)
+) {
+  print('All Good')
+} else{
+  print("Error: 'Restrictions of Mass Gatherings' policy type has an incorrect policy sub-type associated with it")
+  
+    type_mass[which( names(type_mass) %in% setdiff(names(type_mass),  type_mass_true
+))]   
+}
+
+```
+
+
+
+### Social Distancing [type]-[type_sub_cat] combinations
+
+The 'Social Distancing' policy type can only take on one of the following sub types:
+
+* Keeping a distance of at least 6 feet or 1.5 meters apart 
+* Keep a distance of some other distance not listed above. Please note the distance in meters in the text entry. 
+* Keeping a distance of at least 6 feet or 1.5 meters apart at All government services regulated 
+* Keeping a distance of at least 6 feet or 1.5 meters apart at All or unspecified businesses 
+* Keeping a distance of at least 6 feet or 1.5 meters apart at Bars * Keeping a distance of at least 6 feet or 1.5 meters apart at Beaches 
+* Keeping a distance of at least 6 feet or 1.5 meters apart at Campsites 
+* Keeping a distance of at least 6 feet or 1.5 meters apart at Commercial Businesses 
+* Keeping a distance of at least 6 feet or 1.5 meters apart at Construction 
+* Keeping a distance of at least 6 feet or 1.5 meters apart at Electricity; gas; steam ;and air conditioning supply 
+* Keeping a distance of at least 6 feet or 1.5 meters apart at Financial service activities except insurance and pension funding * Keeping a distance of at least 6 feet or 1.5 meters apart at Higher education institutions (i.e. degree granting institutions) 
+* Keeping a distance of at least 6 feet or 1.5 meters apart at Information service activities 
+* Keeping a distance of at least 6 feet or 1.5 meters apart at Insurance; reinsurance; and pension funding except compulsory social security * Keeping a distance of at least 6 feet or 1.5 meters apart at Issuing of documents (paper or digital) for validating COVID-19 health status 
+* Keeping a distance of at least 6 feet or 1.5 meters apart at Issuing of permits/certificates and/or processing of government documents 
+* Keeping a distance of at least 6 feet or 1.5 meters apart at Mining and quarrying 
+* Keeping a distance of at least 6 feet or 1.5 meters apart at Other Businesses 
+* Keeping a distance of at least 6 feet or 1.5 meters apart at Other government service not specified above 
+* Keeping a distance of at least 6 feet or 1.5 meters apart at Other public facilities 
+* Keeping a distance of at least 6 feet or 1.5 meters apart at Other public outdoor spaces 
+* Keeping a distance of at least 6 feet or 1.5 meters apart at Paid lodgings (e.g. hotels; motels)
+* Keeping a distance of at least 6 feet or 1.5 meters apart at Parks
+* Keeping a distance of at least 6 feet or 1.5 meters apart at Personal Grooming Businesses (e.g. hair salons) 
+* Keeping a distance of at least 6 feet or 1.5 meters apart at Pharmacies 
+* Keeping a distance of at least 6 feet or 1.5 meters apart at Preschool or childcare facilities (generally for children ages 5 and below) 
+* Keeping a distance of at least 6 feet or 1.5 meters apart at Primary Schools (generally for children ages 10 and below) 
+* Keeping a distance of at least 6 feet or 1.5 meters apart at Private health offices 
+* Keeping a distance of at least 6 feet or 1.5 meters apart at Public courts * Keeping a distance of at least 6 feet or 1.5 meters apart at Public libraries 
+* Keeping a distance of at least 6 feet or 1.5 meters apart at Public museums/galleries 
+* Keeping a distance of at least 6 feet or 1.5 meters apart at Publishing activities 
+* Keeping a distance of at least 6 feet or 1.5 meters apart at Regulated government working hours (e.g. work from home policies for government workers) 
+* Keeping a distance of at least 6 feet or 1.5 meters apart at Regulated hours government services available (e.g. government services office open for certain hours only) 
+* Keeping a distance of at least 6 feet or 1.5 meters apart at Regulations on government meetings (including e.g. suspension of parliament) 
+* Keeping a distance of at least 6 feet or 1.5 meters apart at Regulations on publicly provided waste management services 
+* Keeping a distance of at least 6 feet or 1.5 meters apart at Restaurants 
+* Keeping a distance of at least 6 feet or 1.5 meters apart at Retail Businesses 
+* Keeping a distance of at least 6 feet or 1.5 meters apart at Secondary Schools (generally for children ages 10 to 18) 
+* Keeping a distance of at least 6 feet or 1.5 meters apart at Shopping Centers 
+* Keeping a distance of at least 6 feet or 1.5 meters apart at Supermarkets/grocery stores 
+* Keeping a distance of at least 6 feet or 1.5 meters apart at Telecommunications 
+* Keeping a distance of at least 6 feet or 1.5 meters apart at Tourist Sites 
+* Keeping a distance of at least 6 feet or 1.5 meters apart at Transportation (land; water and air) 
+* Keeping a distance of at least 6 feet or 1.5 meters apart at Unspecified outdoor spaces 
+* Keeping a distance of at least 6 feet or 1.5 meters apart at Unspecified public facilities 
+* Keeping a distance of at least 6 feet or 1.5 meters apart at Warehousing and support activities for transportation 
+* Restrictions on  private vehicles in public circulation
+* Restrictions on patients leaving nursing home/long term care facility 
+* Restrictions on ridership of buses 
+* Restrictions on ridership of subways and trams 
+* Restrictions on ridership of trains 
+* Restrictions on visiting cemeteries 
+* Restrictions on visiting hospitals 
+* Restrictions on visiting nursing homes/long term care facilities 
+* Restrictions on visiting other group residential facilities (e.g. orphanages; group homes) 
+* Restrictions on visiting other locations 
+* Restrictions on visiting prisons 
+* Restrictions ridership of other forms of public transportation (please include details in the text entry)
+* Closing/suspending operations of nursing homes/long term care facilities 
+* Wearing Masks in all indoor spaces 
+* Wearing Masks in all public spaces/everywhere 
+* Wearing Masks inside All government services regulated 
+* Wearing Masks inside All or unspecified businesses 
+* Wearing Masks inside Bars 
+* Wearing Masks inside Beaches 
+* Wearing Masks inside Campsites 
+* Wearing Masks inside Commercial Businesses 
+* Wearing Masks inside Construction 
+* Wearing Masks inside Electricity; gas; steam ;and air conditioning supply 
+* Wearing Masks inside Financial service activities except insurance and pension funding 
+* Wearing Masks inside Higher education institutions (i.e. degree granting institutions) 
+* Wearing Masks inside Information service activities 
+* Wearing Masks inside Insurance; reinsurance; and pension funding except compulsory social security 
+* Wearing Masks inside Issuing of documents (paper or digital) for validating COVID-19 health status 
+* Wearing Masks inside Issuing of permits/certificates and/or processing of government documents 
+* Wearing Masks inside Mining and quarrying 
+* Wearing Masks inside Other Businesses 
+* Wearing Masks inside Other government service not specified above 
+* Wearing Masks inside Other public facilities 
+* Wearing Masks inside Other public outdoor spaces 
+* Wearing Masks inside Paid lodgings (e.g. hotels; motels) 
+* Wearing Masks inside Parks 
+* Wearing Masks inside Personal Grooming Businesses (e.g. hair salons) 
+* Wearing Masks inside Pharmacies 
+* Wearing Masks inside Preschool or childcare facilities (generally for children ages 5 and below) 
+* Wearing Masks inside Preschools or childcare facilities (generally for children age 5 and below) 
+* Wearing Masks inside Primary Schools (generally for children ages 10 and below) 
+* Wearing Masks inside Private health offices 
+* Wearing Masks inside Public courts
+* Wearing Masks inside Public libraries 
+* Wearing Masks inside Public museums/galleries 
+* Wearing Masks inside Public transportation 
+* Wearing Masks inside Publishing activities 
+* Wearing Masks inside Regulated government working hours (e.g. work from home policies for government workers) 
+* Wearing Masks inside Regulated hours government services available (e.g. government services office open for certain hours only) 
+* Wearing Masks inside Regulations on government meetings (including e.g. suspension of parliament) 
+* Wearing Masks inside Regulations on publicly provided waste management services 
+* Wearing Masks inside Restaurants 
+* Wearing Masks inside Retail Businesses 
+* Wearing Masks inside Secondary Schools (generally for children ages 10 to 18) 
+* Wearing Masks inside Shopping Centers 
+* Wearing Masks inside Supermarkets/grocery stores 
+* Wearing Masks inside Telecommunications 
+* Wearing Masks inside Tourist Sites 
+* Wearing Masks inside Transportation (land; water and air) 
+* Wearing Masks inside Unspecified outdoor spaces 
+* Wearing Masks inside Unspecified public facilities 
+* Wearing Masks inside Warehousing and support activities for transportation 
+* Unspecified Mask Wearing Policy 
+* Other Mask Wearing Policy
+
+
+```{r }
+type_soc = coronanet %>%
+  filter(type %in% c( "Social Distancing")) %>%
+  select(type_sub_cat) %>%
+  pull %>%
+table
+
+type_soc_true <-c("Closing/suspending operations of nursing homes/long term care facilities", 
+"Keep a distance of some other distance not listed above. Please note the distance in meters in the text entry.", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at All government services regulated", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at All or unspecified businesses", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Bars", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Beaches", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Campsites", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Commercial Businesses", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Construction", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Electricity; gas; steam ;and air conditioning supply", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Financial service activities except insurance and pension funding", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Higher education institutions (i.e. degree granting institutions)", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Information service activities", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Insurance; reinsurance; and pension funding except compulsory social security", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Issuing of documents (paper or digital) for validating COVID-19 health status", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Issuing of permits/certificates and/or processing of government documents", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Mining and quarrying", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Other Businesses", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Other government service not specified above", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Other public facilities", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Other public outdoor spaces", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Paid lodgings (e.g. hotels; motels)", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Parks", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Personal Grooming Businesses (e.g. hair salons)", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Pharmacies", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Preschool or childcare facilities (generally for children ages 5 and below)", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Primary Schools (generally for children ages 10 and below)", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Private health offices", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Public courts", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Public libraries", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Public museums/galleries", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Publishing activities", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Regulated government working hours (e.g. work from home policies for government workers)", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Regulated hours government services available (e.g. government services office open for certain hours only)", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Regulations on government meetings (including e.g. suspension of parliament)", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Regulations on publicly provided waste management services", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Restaurants", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Retail Businesses", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Secondary Schools (generally for children ages 10 to 18)", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Shopping Centers", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Supermarkets/grocery stores", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Telecommunications", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Tourist Sites", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Transportation (land; water and air)", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Unspecified outdoor spaces", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Unspecified public facilities", 
+"Keeping a distance of at least 6 feet or 1.5 meters apart at Warehousing and support activities for transportation", 
+"Restrictions on  private vehicles in public circulation",
+"Restrictions on patients leaving nursing home/long term care facility", 
+"Restrictions on ridership of buses", 
+"Restrictions on ridership of subways and trams", 
+"Restrictions on ridership of trains",
+"Restrictions on visiting cemeteries", 
+"Restrictions on visiting hospitals", 
+"Restrictions on visiting nursing homes/long term care facilities", 
+"Restrictions on visiting other group residential facilities (e.g. orphanages; group homes)", 
+"Restrictions on visiting other locations", 
+"Restrictions on visiting prisons", 
+"Restrictions ridership of other forms of public transportation (please include details in the text entry)", 
+"Wearing Masks in all indoor spaces", 
+"Wearing Masks in all public spaces/everywhere",
+"Wearing Masks inside All government services regulated", 
+"Wearing Masks inside All or unspecified businesses", 
+"Wearing Masks inside Bars", 
+"Wearing Masks inside Beaches",
+"Wearing Masks inside Campsites", 
+"Wearing Masks inside Commercial Businesses",
+"Wearing Masks inside Construction", 
+"Wearing Masks inside Electricity; gas; steam ;and air conditioning supply", 
+"Wearing Masks inside Financial service activities except insurance and pension funding", 
+"Wearing Masks inside Higher education institutions (i.e. degree granting institutions)", 
+"Wearing Masks inside Information service activities", 
+"Wearing Masks inside Insurance; reinsurance; and pension funding except compulsory social security", 
+"Wearing Masks inside Issuing of documents (paper or digital) for validating COVID-19 health status", 
+"Wearing Masks inside Issuing of permits/certificates and/or processing of government documents", 
+"Wearing Masks inside Mining and quarrying",
+"Wearing Masks inside Other Businesses", 
+"Wearing Masks inside Other government service not specified above", 
+"Wearing Masks inside Other public facilities",
+"Wearing Masks inside Other public outdoor spaces", 
+"Wearing Masks inside Paid lodgings (e.g. hotels; motels)",
+"Wearing Masks inside Parks", 
+"Wearing Masks inside Personal Grooming Businesses (e.g. hair salons)", 
+"Wearing Masks inside Pharmacies",
+"Wearing Masks inside Preschool or childcare facilities (generally for children ages 5 and below)", 
+"Wearing Masks inside Preschools or childcare facilities (generally for children age 5 and below)", 
+"Wearing Masks inside Primary Schools (generally for children ages 10 and below)", 
+"Wearing Masks inside Private health offices", 
+"Wearing Masks inside Public courts",
+"Wearing Masks inside Public libraries", 
+"Wearing Masks inside Public museums/galleries",
+'Wearing Masks inside Private Transportation (e.g. taxis)',
+"Wearing Masks inside Public transportation",
+"Wearing Masks inside Publishing activities", 
+"Wearing Masks inside Regulated government working hours (e.g. work from home policies for government workers)", 
+"Wearing Masks inside Regulated hours government services available (e.g. government services office open for certain hours only)", 
+"Wearing Masks inside Regulations on government meetings (including e.g. suspension of parliament)", 
+"Wearing Masks inside Regulations on publicly provided waste management services", 
+"Wearing Masks inside Restaurants", 
+"Wearing Masks inside Retail Businesses", 
+"Wearing Masks inside Secondary Schools (generally for children ages 10 to 18)", 
+"Wearing Masks inside Shopping Centers", 
+"Wearing Masks inside Supermarkets/grocery stores", 
+"Wearing Masks inside Telecommunications", 
+"Wearing Masks inside Tourist Sites", 
+"Wearing Masks inside Transportation (land; water and air)", 
+"Wearing Masks inside Unspecified outdoor spaces", 
+"Wearing Masks inside Unspecified public facilities", 
+"Wearing Masks inside Warehousing and support activities for transportation",
+"Unspecified Mask Wearing Policy",
+"Other Mask Wearing Policy"
+)
+
+
+
+if (all(names(type_soc) %in% c(type_soc_true
+
+))
+) {
+  print('All Good')
+} else{
+  print("Error: 'Social Distancing' policy type has an incorrect policy sub-type associated with it")
+  
+      type_soc[which( names(type_soc) %in% setdiff(names(type_soc),  type_soc_true
+))]   
+}
+
+```
+
+
+
+## Policy Initiator
+
+A policy should only have one policy initiator.
+
+Exceptions:
+
+* The only exception is the policy type is "'New Task Force, Bureau or Administrative Configuration'" and the policy sub type "Cooperation among different jurisdictional entities (e.g. treaties or agreements among countries or provinces)" where there may be multiple initiators
+
+
+Reasons why it may be technically possible for a policy to have more than one initiator:
+
+* If a policy is initiated by an ISO level 2 government, it is recorded in the 'province' field. For a time, this field was a text entry such that it was technically possible to write in more than one policy initiator; this is no longer possible.
+* If a policy is initiated by a municipal government, it is recorded in the 'city' field. This field is a text entry such that it was technically possible to write in more than one policy initiator.
+* Note, it is not technically possible for there to be more than one country initiator because of checks in the survey design
+
+
+The following code evaluates the extent to which these coding rules have been followed:
+``` {r}
+province_problem = coronanet %>%
+  filter(grepl('\\,|;', province) &
+         province != 'Washington, D.C.'
+           ) %>% select(
+    province
+  ) %>%
+  pull
+
+
+if (length(province_problem) ==0){
+  print('All Good!')
+} else{
+
+  print(paste0('Multiple provincial initiators found for: ', length(province_problem), ' records'))
+}
+
+
+city_problem = coronanet %>%
+  filter(grepl('\\,|;', city)
+  ) %>% select(
+    city,
+  ) %>%
+  pull
+
+
+if (length(city_problem) ==0){
+  print('All Good!')
+} else{
+
+
+  print(paste0('Multiple city initiators found for: ', length(city_problem), ' records'))
+}
+
+
+```
+
+
+
+
+# Examples of Clean Data
+
+The following section provides examples of clean data for various scenarios under which a policy may be initiated. 
+
+```{r, include = FALSE}
+
+# load data
+clean_data = read_csv(here("data", "skeleton_data",  "coronanet_sub_clean.csv"))
+
+```
+
+
+## Policies Without updates
+
+In this section, you can find examples of policies without updates:
+
+### Same policy initiator and policy geographic target
+
+In this section, you can find examples of policies that were initiated by one level of government and which applies to the same level of government
+
+``` {r, echo = FALSE}
+
+
+
+# Lockdown, Italy
+clean_data %>% 
+  filter(policy_id == 1546385) %>% 
+  kbl(caption = "Lockdown in Italy: Initiated by the Italian national government and applied to the entire country") %>%
+   column_spec(which(names(clean_data) == 'description'), width_min = '3in') %>%
+  kable_styling(c("striped", "hover"), full_width = F, font_size = 11)
+
+
+## Policy that was initiated by a provincial (ISO-2 level) government and which is applied to that province
+
+# Lockdown, province: Brandenburg, country:  Germany
+clean_data %>% 
+  filter(policy_id == 3880162)  %>% 
+   kbl(caption = "Lockdown in Brandenburg, Germany : Initiated by the provincial government of Brandenburg and applied to Brandenburg province") %>%
+   column_spec(which(names(clean_data) == 'description'), width_min = '3in') %>%
+  kable_styling(c("striped", "hover"), full_width = F, font_size = 11)
+
+ 
+# Lockdown, province: Saarland, country:   Germany
+clean_data %>% filter(policy_id ==  6594252)  %>% 
+  kbl(caption = "Closure of primary schools in Saarland, Germany: Initiated by the Saarland provincial government and applied to the Saarland province") %>%
+   column_spec(which(names(clean_data) == 'description'), width_min = '3in') %>%
+  kable_styling(c("striped", "hover"), full_width = F, font_size = 11)
+
+
+# # Closure of primary schools, province: Lower Saxony, country:   Germany
+# clean_data %>% 
+#   filter(policy_id ==   5407266) %>% 
+#   kbl %>%
+#   kable_styling(c("striped", "hover"), full_width = F)
+# 
+# 
+# # Closure of primary schools, province: Bremen, country:   Germany
+# clean_data %>% filter(policy_id ==  4323992)%>% 
+#   kbl %>%
+#   kable_styling(c("striped", "hover"), full_width = F)
+# 
+# 
+# # Clsoures of primary schools, province: Brandenburg, country:   Germany
+# clean_data %>% filter(policy_id ==  8743941) %>% 
+#   kbl %>%
+#   kable_styling(c("striped", "hover"), full_width = F)
+# 
+# # closure of primary schools, province: Saxony anhalt, country:  Germany
+# clean_data %>% filter(policy_id ==  5195126) %>% 
+#   kbl %>%
+#   kable_styling(c("striped", "hover"), full_width = F)
+# 
+# 
+# # closure of primary schools, province:  Thurgaru , country:  Germany
+# clean_data %>% filter(policy_id == 5921858) %>% 
+#   kbl %>%
+#   kable_styling(c("striped", "hover"), full_width = F)
+# 
+# # closure of primary schools, province: Appenzell Ausserrhoden, country: Swizterland
+# clean_data %>% filter(policy_id ==9924694) %>% 
+#   kbl %>%
+#   kable_styling(c("striped", "hover"), full_width = F)
+# 
+#  
+# # closure of primary schools, province: Obwalden country: Swizterland
+# clean_data %>% filter(policy_id == 1179383) %>% 
+#   kbl %>%
+#   kable_styling(c("striped", "hover"), full_width = F)
+
+```
+
+
+
+### Policy initiator that is different from the policy geographic target
+
+Here you can find examples of policies that were initiated by one level of government but applies to a domestically lower level of government. 
+
+```{r, echo = FALSE}
+
+# provincial region of Calbria institutes lockdown on residents in the Palmi municipality
+
+clean_data %>% filter(policy_id == 1445515) %>%
+  kbl(caption = "Lockdown in Italy: Initiated by the provincial government of Calabria and applied to municipal residents of Palmi") %>%
+   column_spec(which(names(clean_data) == 'description'), width_min = '3in') %>%
+  kable_styling(c("striped", "hover"), full_width = F, font_size = 11)
+
+```
+
+
+## Policies With Updates
+
+In this section, you can find examples of policies with updates. When possible, the column that is being updated is highlighted in green. 
+
+### Changes in the timing of the policy
+
+``` {r, echo = FALSE}
+# ## change in extension of time
+
+
+# Closure of primary schools, Italy
+clean_data %>% 
+  filter(policy_id == 6769009)  %>% 
+  kable(caption = "Closure of primary schools in Italy: Initiated by the Italian national government and applied to the entire country. The lockdown has been extended once.") %>%   #column_spec(which(names(clean_data)== 'description'), width = "2in") %>%
+   column_spec(which(names(clean_data) == 'description'), width_min = '3in') %>%
+  kable_styling(c("striped", "hover"), full_width = F, font_size = 11)  %>%
+  column_spec(grep('date_announced|date_start|date_end', names(clean_data)), color = 'white', background= spec_color(1))
+ 
+
+
+# extension of timing: berlin, lockdown
+clean_data %>% filter(policy_id == 2877147) %>%
+  kbl(caption = "Lockdown in Berlin, Germany: The lockdown in Berlin has been extended once.") %>%
+  kable_styling(c("striped", "hover"), full_width = F, font_size = 11) %>%
+   column_spec(which(names(clean_data) == 'description'), width_min = '3in') %>%
+  column_spec(grep('date_announced|date_start|date_end', names(clean_data)), color = 'white', background= spec_color(1))
+
+
+# extension of timing: lockdown, saarland
+clean_data %>% filter(policy_id == 5767119)  %>%
+   kbl(caption = "Lockdown in Saarland, Germany: The lockdown in Saarland has been extended once.") %>%
+  kable_styling(c("striped", "hover"), full_width = F, font_size = 11) %>%
+   column_spec(which(names(clean_data) == 'description'), width_min = '3in') %>%
+  column_spec(grep('date_announced|date_start|date_end', names(clean_data)), color = 'white', background= spec_color(1))
+
+
+# extension of timing, exteranl border restrictions, italy
+clean_data %>% filter(policy_id == 1915518)  %>%
+   kbl(caption = "External Border restrictions by Italy: The external border restrictions by Italy against Bangladesh has been extended twice ") %>%
+  kable_styling(c("striped", "hover"), full_width = F, font_size = 11) %>%
+   column_spec(which(names(clean_data) == 'description'), width_min = '3in') %>%
+  column_spec(grep('date_announced|date_start|date_end', names(clean_data)), color = 'white', background= spec_color(1))
+
+
+# # # extension of time of the policy: closure of primary schools, bremen
+# clean_data %>% filter(policy_id == 3972475) %>%
+#   kbl %>%
+#   kable_styling(c("striped", "hover"), full_width = F) %>%
+#   column_spec(grep('date_announced|date_start|date_end', names(clean_data)), color = 'white', background= spec_color(1))
+# 
+#  
+
+# # extension of time of the policy: lockdown, Germany, Bavaria
+# clean_data %>% filter(policy_id == 7776503) %>% # check new entry 'R_2YsaaCJ19XoxW2E'
+#   data.frame
+
+
+# # extension of time of the policy closure of primary schools, saxony, germany
+# clean_data %>% filter(policy_id == 5391708)  %>%
+#   kbl(caption = "Closure of primary schools in Saxony Germany: The closure of primary schools has been extended twice. In addition there is an update ") %>%
+#   kable_styling(c("striped", "hover"), full_width = F, font_size = 11) %>%
+#   column_spec(grep('date_announced|date_start|date_end', names(clean_data)), color = 'white', background= spec_color(1))
+
+# extension of timing: closure of pimary schools, Uri, Switzerland
+# clean_data %>% filter(policy_id == 1034717)  %>%
+#   kbl %>%
+#   kable_styling(c("striped", "hover"), full_width = F, font_size = 11) %>%
+#   column_spec(grep('date_announced|date_start|date_end', names(clean_data)), color = 'white', background= spec_color(1))
+
+
+
+```
+
+
+
+### Changes in compliance
+
+``` {r,echo = FALSE} 
+
+
+clean_data %>% filter(policy_id %in% 465517)  %>%
+   kbl(caption = "Restrictions of Mass Gatherings in Denmark: The restriction of mass gathering was originally voluntary but now it is mandatory") %>%
+
+  kable_styling(c("striped", "hover"), full_width = F, font_size = 11) %>%
+   column_spec(which(names(clean_data) == 'description'), width_min = '3in') %>%
+  column_spec(which(names(clean_data) == 'compliance'), color = 'white', background= spec_color(1))
+
+```
+
+
+### Closing and reopenings
+
+The following two policy_ids (9472025 and 5450669) track the closing and reopening of playgrounds in Baden-Wurrtemberg. Note that  the announcement of the reopening of playgrounds leads to two additional measures: 
+
+* (1): the ending of the policy that stated that playgrounds were closed (record_id: R_3CIvUWy14r0Uc9PDa) and ;
+* (2): the beginning of a new policy that documented when playgrounds were allowed to reopen (record_id: R_3mmBThrGGhbuXrgDa)
+
+``` {r, echo = FALSE}
+
+
+ 
+
+ 
+clean_data %>% filter(policy_id == 9472025) %>%
+  kbl(caption = "Restrictions of and Regulation of Government Services in Baden-Wurrtemberg, Germany: The provincial government of Baden-Wurttemberg closes its playgrounds from March 16 to May 6") %>%
+  kable_styling(c("striped", "hover"), full_width = F, font_size = 11)%>%
+   column_spec(which(names(clean_data) == 'description'), width_min = '3in') %>%
+  column_spec(which(names(clean_data) == 'institution_status'), color = 'white', background= spec_color(1))
+
+
+# reopening of playgrounds
+
+clean_data %>% filter(policy_id == 5450669) %>%
+  kbl(caption = "Restrictions of and Regulation of Government Services in Baden-Wurrtemberg, Germany: The provincial government of Baden-Wurttemberg reopens its playgrounds on May 6") %>%
+  kable_styling(c("striped", "hover"), full_width = F, font_size = 11)%>%
+   column_spec(which(names(clean_data) == 'description'), width_min = '3in') %>%
+  column_spec(which(names(clean_data) == 'institution_status'), color = 'white', background= spec_color(1))
+
+```
+
+### Changes in the 'volume' of a policy
+
+These policies document changes in the 'volume' of a policy.
+
+Note that is only possible to change the 'volume' of a policy for the 5 following policy types:
+
+* Quarantine --- number of days a person must stay in quarantine
+* Restrictions of Mass gatherings --- the number of people who are restricted from gathering
+* Curfew --- the time of day that one is obliged to stay at home during a curfew
+* Health Resources -- the amount of health resources (e.g. masks, doctors) 
+* COVID-19 vaccines --- the amount of vaccines produced, purchased or distributed
+
+Note also that additional information on the 'volume' of the policy is recorded in a separate variable but has not yet been processed in the CoronaNet data pipeline for release. This separate variable, when processed, would be included as a separate column.
+
+
+``` {r,echo = FALSE} 
+
+
+clean_data %>% filter(policy_id %in% 465517)  %>%
+   kbl(caption = "Restrictions of Mass Gatherings in Denmark: The restriction of mass gathering originally applied to 100 people and now it applies to 10 people") %>%
+
+  kable_styling(c("striped", "hover"), full_width = F, font_size = 11) %>%
+   column_spec(which(names(clean_data) == 'description'), width_min = '3in') %>%
+  column_spec(which(names(clean_data) == 'compliance'), color = 'white', background= spec_color(1))
+
+```
+
+
+
+
+
+### Changes in the geographic target 
+
+The following two policy_ids (8340357 and 9214528) track external border restrictions in Switzerland. Note that once the geographic target of a policy changes, then the first policy must end and a second polcy is started such that at two new records are created:   
+
+* (1): the ending of the policy that stated the geographic target were foreign travelers from Italy, France, Austria and Germany (record_id: R_3kqfLMRqISoiZ6HEy) and ;
+* (2): the beginning of a new policy that documents that the geographic target of the external border restrictions are now Italy, France, Austria, Germany Spain and all non-Schengen states (record_id: R_DCbPMHXV7xTHU5zEy) 
+
+Note that the geographic target in 9214528 also changes such that it must be ended (as [record_id]: R_27J5WXCzKeDbSs5Ey does) and a new policy must start. This new policy is documented in [policy_id ]: 2729617 but not shown here. 
+
+``` {r, echo = FALSE} 
+
+clean_data %>% 
+  filter(policy_id %in%  8340357)  %>%
+   kbl(caption = "External Border Restriction in Switzerland: The policy is originally geographically targeted toward  foreign travelers from Italy, France, Austria and Germany on March 17. This ban is expanded to Spain and all non Schengen states on March 18 so the original policy ends on March 18   ") %>%
+  kable_styling(c("striped", "hover"), full_width = FALSE, font_size = 11) %>%
+  column_spec(which(names(clean_data) == 'description'), width_min = '3in') %>%
+  column_spec(which(names(clean_data) == 'target_country'), color = 'white', background= spec_color(1) )
+
+
+clean_data %>% filter(policy_id %in%  9214528)  %>%
+   kbl(caption = "External Border Restriction in Switzerland: The policy is geographically targeted toward foreign travelers from Italy, France, Austria, Germany, Spain and all non-Schengen states on March 18. The geographic target is expanded to all countries except Liechtenstein on March 25 so this policy ends on March 25.") %>%  
+  kable_styling(c("striped", "hover"), full_width = F, font_size = 11) %>% 
+  column_spec(which(names(clean_data) == 'description'), width_min = '3in') %>%
+  column_spec(which(names(clean_data) == 'target_country'), color = 'white', background= spec_color(1) )
+
+# clean_data %>% filter(policy_id %in%  2729617 )  %>%
+#    kbl(caption = "External Border Restriction in Switzerland: the policy is geographically targeted toward all states except Liechtenstein on March 25. The geographic target is relaxed to foregn workers, family reunifications and students from Italy on May 11 so the policy ends May 11.  ") %>%  
+#   kable_styling(c("striped", "hover"), full_width = F, font_size = 11) 
+# 
+# clean_data %>% filter(policy_id %in%   789108)  %>%
+#    kbl(caption = "External Border Restriction in Switzerland: The geographic target or  ") %>%  
+#   kable_styling(c("striped", "hover"), full_width = F, font_size = 11) 
+
+# 
+# clean_data %>% filter(policy_id %in% 9958573)  %>%
+#    kbl(caption = "External Border Restriction in Switzerland: the policy is geographically targeted toward all states exceptLichtenstein and Italy ") %>%
+# kable_styling(c("striped", "hover"), full_width = F, font_size = 11) 
+# 
+# 
+# 
+# clean_data %>% filter(policy_id %in%  5902302)  %>%
+#    kbl(caption = "External Border Restriction in Switzerland: The geographic target originally included states under the Schengen and EFTA agreement but th ") %>%
+# kable_styling(c("striped", "hover"), full_width = F, font_size = 11) 
+# 
+#  
+
+```
+
+### Change in timing and geographical target 
+
+The following is an example of case where the timing of the policy is extended  (R_1jk2VhbYA04rcqhEo) and the policy later ends because of a change in the geographic target (R_3KVoRG5ppap93UtEo). 
+
+```{r, echo = FALSE}
+
+clean_data %>% filter(policy_id %in%  2008599)  %>%
+   kbl(caption = "Quarantine in Thuringa: The policy is geographically targeted toward foreign travelers. The policy has been extended once (R_1jk2VhbYA04rcqhEo) and ends when the geographical target changes (R_3KVoRG5ppap93UtEo).") %>%  
+  kable_styling(c("striped", "hover"), full_width = F, font_size = 11) %>% 
+  column_spec(which(names(clean_data) == 'description'), width_min = '3in') %>%
+  column_spec(which(names(clean_data) == 'target_country'), color = 'white', background= spec_color(1) )%>%
+  column_spec(grep('date_announced|date_start|date_end', names(clean_data)), color = 'white', background= spec_color(1))
+
+
+
+
+```
+
+### Change in timing and 'volume' of a policy
+
+The following proivde an example of case where the timing of the policy is extended and the volume of the policy changes.  
+
+The [policy_id] 4990416 records a restriction of mass gatherings policy in Thuringa Germany. The updates are as follows: 
+
+* The restriction of mass gathering originaly applied to 75 people and now it applies to 100 people (R_32PfNHw9adt7waKNA)
+* The timing of the policy has been extended to October 31 (R_3h4Gwl2gBvEKVZlNA)
+
+``` {r, timing and volume, echo = FALSE}
+## Quantitative update (R_32PfNHw9adt7waKNA) + timing (R_3h4Gwl2gBvEKVZlNA) update 
+  # note that we do record in a separate variable the number of people restricted but we have yet to process this variable in our data pipeline
+
+clean_data %>% filter(policy_id == 4990416)%>%
+  kbl(caption = "Restrictions of Mass Gatherings in Thuringa, Germany: The restriction of mass gathering originally applied to 75  people and now it applies to 100 people. In addition the timing of the policy has been extended") %>%
+   column_spec(which(names(clean_data) == 'description'), width_min = '3in') %>%
+  kable_styling(c("striped", "hover"), full_width = F, font_size = 11)
+
+```
+
+
+<!-- The [policy_id] 8160794 documents a  restriction of mass gatherings policy in France for both indoors and outdoors ( R_1IGWgK1PZ2GFikKNA). The updates for this policy are as follows: -->
+
+<!-- * The number of people restricted has been changes from 1000 people to 100 people (R_1Oxa6yabhegBXt6NA) (note the information on the restricted number of people is saved in a separate variable that has not yet been processed) -->
+<!-- * The timing of the policy is extended until May 11, 2020 (R_2uKG2b7KOUhplxSNA).  -->
+<!-- * The number of people restricted has been changes from 100 people to 10 people (R_2PcxYzL7lJOx1gaNA) (note the information on the restricted number of people is saved in a separate variable that has not yet been processed) -->
+<!-- * The timing of the policy is extended until June 2, 2020  (R_25WpDcvI98nnJC4NA). -->
+<!-- * The government lifts the ban for private settings, as such the policy ends (R_2ALoRBCLIHcP4rzNA) and a new policy (not shown) begins. -->
+
+<!-- ```{r, mass gathering, echo  = FALSE} -->
+
+<!-- clean_data %>% filter(policy_id %in%  8160794)  %>% -->
+<!--    kbl(caption = "Restrictions of Mass Gatherings in France: The policy restricts mass gatherings in France for both indoors and outdoors ( R_1IGWgK1PZ2GFikKNA). The number of people restricted has been changed twice (R_1Oxa6yabhegBXt6NA and R_2PcxYzL7lJOx1gaNA) and the timing of the policy has been extended twice (R_2uKG2b7KOUhplxSNA and  R_25WpDcvI98nnJC4NA). When the government lifted the ban for private settings, the policy ends (R_2ALoRBCLIHcP4rzNA) and a new policy (not shown) begins.") %>%   -->
+<!--   kable_styling(c("striped", "hover"), full_width = F, font_size = 11) %>%  -->
+<!--   column_spec(which(names(clean_data) == 'description'), width_min = '3in') %>% -->
+<!--   column_spec(grep('date_announced|date_start|date_end', names(clean_data)), color = 'white', background= spec_color(1)) -->
+
+<!-- ``` -->
+
+
+

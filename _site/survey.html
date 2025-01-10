@@ -1,0 +1,2757 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>CoronaNet Qualtrics Survey</title>
+
+<script src="site_libs/header-attrs-2.7.2/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-sm-12 col-md-4 col-lg-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-sm-12 col-md-8 col-lg-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">CoronaNet</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">CoronaNet Qualtrics Survey</h1>
+
+</div>
+
+
+<style>
+.tab-content{
+   margin-bottom: 75px;
+}
+
+body{
+  font-size: 12pt;
+}
+
+/* Headers */
+h1{
+  font-size: 22pt;
+}
+
+h2{
+  font-size: 16pt;
+}
+
+h3{
+  font-size: 14pt;
+}
+
+</style>
+<p>The following document provides all the survey questions listed in the CoronaNet Government Response Event Database. The document attempts to mimic the display logic of the survey as much as possible. Users are advised to use the search function (CNTRL+F) and table of contents sidebar to search through the survey.</p>
+<p>To see when certain questions or question options were added to the survey, please consult the <a href="https://docs.google.com/spreadsheets/d/1FJqssZZqjQcA-jZhRnC_Av9rlii3abG8r7utBeuzTEQ/edit?usp=sharing">Coronanet Data Availability Sheet</a></p>
+<p><br><br></p>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>This Qualtrics form is for research assistants for the CoronaNet: COVID-19 Government Response Tracking Project. The principal investigators (PIs) for this research project are:</p>
+<p>Please only use this form to record data once you have completed the relevant training on Zoom. Please see here for an additional video on how to update policies in the survey. The password for this video is: 7C&amp;*60@= (the accompanying slides are pinned to the #ra-chat Slack channel).</p>
+<p>While entering data:</p>
+<ul>
+<li>Please pay attention to the description besides each element of the form.</li>
+<li>For each survey question, we have tried to provide descriptions of how the data should be entered or more detail about what the nature of the answer choices are when necessary.</li>
+<li>You can also refer to the CoronaNet Codebook for more information about the variables.</li>
+<li>If anything is unclear, please use the slack channel to post your question (and so that others who may have the same issue can see it) or email one of the PIs above.</li>
+</ul>
+<p><br></p>
+</div>
+<div id="record-keeping" class="section level1">
+<h1>Record Keeping</h1>
+<div id="ra_name" class="section level2">
+<h2>[ra_name]</h2>
+<p>Please select your name from the drop-down list. If you are not on the list and believe you should be, please contact one of the PIs listed above.</p>
+<p>Note: You can find your name more quickly by clicking on the dropdown menu below and typing your name.</p>
+<ul>
+<li><span style="color:blue"> Joan Barcelo </span></li>
+<li><span style="color:blue"> … </span></li>
+<li><span style="color:blue"> Patson Manda </span></li>
+</ul>
+<p><br></p>
+</div>
+<div id="entry_type" class="section level2">
+<h2>[entry_type]</h2>
+<p>Please let us know if this is a new entry, if you would like to make a correction to an older entry, or an update on a previous restriction/policy.</p>
+<ul>
+<li><span style="color:blue"> New Entry </span></li>
+<li><span style="color:blue"> Correction to Existing Entry for record ID XXX </span></li>
+<li><span style="color:blue"> Update on Existing Entry for record ID XXX </span></li>
+</ul>
+<p><br></p>
+<div id="if-entry_type-is-a-correction-to-existing-entry" class="section level3 tabset">
+<h3 class="tabset">If [entry_type] is a Correction to Existing Entry</h3>
+<div id="entry_link_type" class="section level4">
+<h4>[entry_link_type]</h4>
+<p>Is this a correction to an original ‘new entry’ or a correction to an update?</p>
+<ul>
+<li><span style="color:blue"> Correction to a new entry </span></li>
+<li><span style="color:blue"> Correction to an update </span></li>
+</ul>
+</div>
+<div id="corr_flow" class="section level4">
+<h4>[corr_flow]</h4>
+<p>Please identify which aspect of the policy you would like to correct.</p>
+<ul>
+<li>Please answer No or Yes to all the possible dimensions listed below.</li>
+<li>Note for all corrections except if you just want to correct the date the source was published, you will be asked to also correct the qualtiative event description and the provide a source for your correction.</li>
+<li>If you just want to correct the date the source was published, then please select no to all of the below</li>
+</ul>
+<p>I would like to correct …</p>
+<p><img src="../img/corr_flow.png" /></p>
+</div>
+<div id="corr_entry_type" class="section level4">
+<h4>[corr_entry_type]</h4>
+<p>Please select this option if (1) you had originally coded an entry as being a new entry but now realized that it was an update to an existing policy or (2) you had originally coded an entry as being an update but now relized that for the purposes of this survey, it is a new entry. Please select the entry type you would like this entry to be corrected to:</p>
+<ul>
+<li><span style="color:blue"> New Entry </span></li>
+<li><span style="color:blue"> Update to Existing Entry </span></li>
+</ul>
+</div>
+<div id="corr_date_pub" class="section level4">
+<h4>[corr_date_pub]</h4>
+<p>I just want to correct the date the source was published.</p>
+<ul>
+<li><span style="color:blue"> Yes </span></li>
+</ul>
+</div>
+<div id="notes_correction" class="section level4">
+<h4>[notes_correction]</h4>
+<p>Please enter a brief description of the correction you want to make for this entry. Be specific about what part of the event you would like to correct and what the correction is:</p>
+<p>E.g. If you accidentally chose the wrong target country, please write something like: “The original target country coded as country A was a mistake, I am correcting it to country B”</p>
+<ul>
+<li><span style="color:blue"> Text Entry […] </span></li>
+</ul>
+<p><br><br></p>
+</div>
+</div>
+<div id="if-entry_type-is-an-update-on-existing-entry" class="section level3 tabset">
+<h3 class="tabset">If [entry_type] is an Update on Existing Entry</h3>
+<div id="update_type" class="section level4">
+<h4>[update_type]</h4>
+<p>Please select whether you want to document the end of a policy or document changes to an existing policy.</p>
+<p><strong>End of policy</strong> : A policy has ended if it meets one of three conditions:</p>
+<p>1, The policy is cancelled or annulled</p>
+<ol start="2" style="list-style-type: decimal">
+<li>The qualitative nature of the policy type has changed.</li>
+</ol>
+<ul>
+<li>E.g. The original policy closed all non-essential businesses but in the change of the policy, personal grooming stores are allowed to open while other non-essential businesses must remain closed.</li>
+<li>Note, as before, changes in the quantitative nature (i.e. volume) of a policy type stillcount as a change of policy: E.g. the original policy set the restriction of mass gatherings to 100 people and the updated policy restricts it to 15 people would count as a change of policy rather than an end of policy.</li>
+</ul>
+<ol start="3" style="list-style-type: decimal">
+<li>The geographical target of the policy has changed</li>
+</ol>
+<ul>
+<li>E.g. A policy that previously had to be followed by all subnational regions now only applies to some subnational regions</li>
+</ul>
+<p>Note A: Any time (1), (2), or (3) happen, please code choose the "End of a Policy’ option below. If the policy meets conditions (2) or (3), please then code the new changes as new entries:</p>
+<ul>
+<li>E.g. A policy that previously compelled people to stay in a government facility to quarantine but now changes to allow people to quarantine at home would meet criterion (2). The coder should then (i) document the end of the policy that compels people to stay in a government quarantine as an update to the original policy (ii) document a new policy which allows people to quarantine at home</li>
+</ul>
+<p>Note B: if a policy already has an end date announced with it, you do not additionally have to add an ‘End of policy’ update for the end date. However, if a policy was originally announced without an end date, and then an end is announced, then please do add an ‘End of policy’ update to the policy noting the end date.</p>
+<p><strong>Change of policy</strong>: As before, any changes to any other dimensions of the policy would still count as a ‘Change of a policy’ rather than an ‘End of a policy’.</p>
+<ul>
+<li><p>These other dimenions are: the ‘volume’ of a policy, the ‘direction of the policy’, the ‘travel mechanism’ of the policy, the ‘compliance’ of the policy, the ‘enforcer’ of the policy, and the timing of the policy</p></li>
+<li><p>E.g. A policy that compels people wear masks outside but is changed such that wearing masks is only recommended would be a ‘change of policy’ because the policy type has not changed, only the compliance for the policy has changed.</p></li>
+<li><p><span style="color:blue"> End of Policy </span></p></li>
+<li><p><span style="color:blue"> Change of Policy </span></p></li>
+</ul>
+</div>
+<div id="update_level" class="section level4">
+<h4>[update_level]</h4>
+<div id="if-update_type-is-change-of-policy" class="section level5">
+<h5>If [update_type] is ‘Change of Policy’ :</h5>
+<p>Please identify which aspect of the policy you would like to update.</p>
+<ul>
+<li>Please answer No, Yes (strenthening), or Yes (relaxing) to all the possible dimensions listed below. Note:’</li>
+<li>‘Yes (strenthening)’ refers to either when:
+<ul>
+<li>More detail is given about a previously vague policy (e.g. originally, the policy was an external restriction on fights from countries with confirmed COVID-19 cases and in the update, the government specifies the exact countries they are banning) or;</li>
+<li>A policy strengthens in terms of its conditions, coverage, or compliance, (see Codebook for examples ) or duration (e.g. a quarantine that lengthens from 14 to 28 days)</li>
+</ul></li>
+<li>‘Yes (relaxing)’ refers to when: A policy relaxes in terms of its conditions, coverage or compliance or expected duration. E.g. schools that were previously closed are now open.</li>
+<li>Note, it is possible for a policy to strengthen in some dimensions but relax on other dimensions</li>
+<li>Regardless of how many aspects of the policy you want to update (including none of the ones listed below) you will be directed to update the qualitative description of the policy and the date the updated policy was announced, its start date and its end date. Please also make sure to provide the source for your update.</li>
+<li>If something that you want to update is not an available option below, note that updates only apply to the duration or strength of the original policy, see the CoronaNet Codebook for more guidance/examples. If you feel that another option should be given to account for your particular case, please contact one of the PIs on Slack.</li>
+<li>Note you <em>cannot</em> change the broader policy type (e.g. Declaration of Emergency, External Border Restrictions) as part of an update. For the purposes of this survey, we do not consider it an update if a policy changes from External Border Restriction to Social Distancing for example.
+<ul>
+<li>However if there is a change in the quantitative nature (volume/‘number’) of a particular policy, then please choose the option ‘The volume of a policy type’ (e.g. the original policy set the restriction of mass gatherings to 100 people and the updated policy restricts it to 15 people).</li>
+</ul></li>
+<li>This option applies for: the number of quarantine days, the number of people who are restricted from gathering en mass, and the number of health resources (e.g. masks, ventilators, doctors).</li>
+</ul>
+<p>I would like to update …</p>
+<p><img src="../img/update_level.png" /></p>
+</div>
+</div>
+<div id="notes_update" class="section level4">
+<h4>[notes_update]</h4>
+<p>Please enter a brief description of the update you want to make for this entry. Be specific about what part of the event you would like to update and what the update is:</p>
+<p>E.g. If the update is to extend the duration of a quarantine, please write something like: “The original quarantine was set to last until March 23, it has been extended to April 5”</p>
+<ul>
+<li><span style="color:blue"> Text Entry […] </span></li>
+</ul>
+<p><br><br></p>
+</div>
+</div>
+</div>
+</div>
+<div id="policy-text-description" class="section level1">
+<h1>Policy Text Description</h1>
+<div id="description" class="section level2">
+<h2>[description]</h2>
+<p>Please provide a description of the government policy you are documenting in the text box below in English. This will be very important as (1) this data forms the raw basis for categorizing different parts of the policy and (2) it can help others quickly understand what the nature of the policy is about so please take your time in entering an thorough but succinct description.</p>
+<p>Please include the following information in the description:</p>
+<ul>
+<li>The name of the country from which a policy originates</li>
+<li>The date the policy is supposed to take effect (including the year)</li>
+<li>Information about the ‘type’ of policy (see buttons below)<br />
+</li>
+<li>If applicable, the country or region that a policy is targeted towards<br />
+</li>
+<li>If applicable, the type of people or resources a policy is targeted towards<br />
+</li>
+<li>If applicable, when a policy is slated to end</li>
+</ul>
+<p>Where possible:</p>
+<ul>
+<li>Copy and paste exact language used for each policy type variable; when necessary, make the language more succinct.<br />
+</li>
+<li>However, if a particular policy applies to multiple targets, keep the original language.</li>
+</ul>
+<p>Example: India “is enforcing a two-week quarantine on all passengers, including Indian nationals arriving from or having visited China, Italy, Iran, Republic of Korea, France, Spain and Germany after Feb. 15, 2020.” — Keep this sentence as is and don’t extract different target countries for each entry. Note that there is no information on when the policy is slated to end. For more examples of how you should enter into the description, please click on the buttons in the question below and look at the examples for each policy type.</p>
+<p>This <a href="https://youtu.be/O6qPkVK6wew">short video</a> provides more information on how to write a good description!</p>
+<ul>
+<li><span style="color:blue"> Text Entry […] </span></li>
+</ul>
+<p><br><br></p>
+</div>
+</div>
+<div id="policy-type" class="section level1">
+<h1>Policy Type</h1>
+<div id="type" class="section level2">
+<h2>[type]</h2>
+<p>Please select the appropriate policy category. For a description and example of each policy category, please click on the relevant category below.</p>
+<details>
+<summary>
+<span style="color:blue"> Declaration of Emergency </span>
+</summary>
+<ul>
+<li>Description: The head of government declares a state of national emergency
+<ul>
+<li>Example: On March 15, 2020, in South Africa: “President Ramaphosa announces national state of disaster”<br />
+</li>
+</ul></li>
+</ul>
+</details>
+<details>
+<summary>
+<span style="color:blue"> Quarantine </span>
+</summary>
+<ul>
+<li>Description: Targets of the policy are obliged to isolate themselves for at least 14 days because there is reason to suspect a person is infected with COVID-19.
+<ul>
+<li>Example: On March 17, “Hong Kong residents and tourists alike, who’ve been to Italy in the past fortnight, will be required to spend 14 days in a government quarantine centre.”<br />
+</li>
+</ul></li>
+</ul>
+</details>
+<details>
+<summary>
+<span style="color:blue"> Lockdown </span>
+</summary>
+<ul>
+<li>Description: Targets of the policy are obliged shelter in place and are only allowed to leave their shelter for specific reasons.
+<ul>
+<li>Example: In Palestine, as of March 07, “The city of Bethlehem in the occupied West Bank has been placed in lockdown after the first Palestinian cases of the new coronavirus were discovered there.”<br />
+</li>
+</ul></li>
+</ul>
+</details>
+<details>
+<summary>
+<span style="color:blue">External Border Restrictions </span>
+</summary>
+<ul>
+<li>Government policies which reduce the ability to access ports of entry or exit to or from a country.
+<ul>
+<li>Example: On March 14, 2020, the “Namibian government suspends inbound and Outbound flights for 30 days”<br />
+</li>
+</ul></li>
+</ul>
+</details>
+<details>
+<summary>
+<span style="color:blue">Internal Border Restrictions </span>
+</summary>
+<ul>
+<li>Government policies which reduce the ability to move freely within a country.
+<ul>
+<li>Example: In Peru as of March 15, 2020, “Officials are also restricting the movement of people across provinces.”<br />
+</li>
+</ul></li>
+</ul>
+</details>
+<details>
+<summary>
+<span style="color:blue"> Restrictions of Mass Gatherings </span>
+</summary>
+<ul>
+<li>Government policies that limit the number of people allowed to congregate in a place (including sporting events, concerts, etc.).
+<ul>
+<li>Example: On March 16, 2020 in the United States, “The latest recommendation announced Monday by the federal government to promote social distancing and limit the transmission of the coronavirus: no more than 10 people in one place.”<br />
+</li>
+</ul></li>
+</ul>
+</details>
+<details>
+<summary>
+<span style="color:blue"> Social Distancing </span>
+</summary>
+<ul>
+<li>These include policies which restrict the use of transport options and mask wearing polcies.
+<ul>
+<li>Example: On March 22, the German government implemented new rules that stated that “a 1.5 meter distance should be kept at all times when in public”<br />
+</li>
+</ul></li>
+</ul>
+</details>
+<details>
+<summary>
+<span style="color:blue"> Curfew </span>
+</summary>
+<ul>
+<li>Government policies that limit domestic freedom of movement to certain times of the day.
+<ul>
+<li>Example: In Serbia, “[a]s of March 21, 2020 the following measures are in effect: Curfew for all residents with few exceptions from 8:00pm to 5:00am the next day”<br />
+</li>
+</ul></li>
+</ul>
+</details>
+<details>
+<summary>
+<span style="color:blue"> Closure and Regulation of Schools </span>
+</summary>
+<ul>
+<li>Government policy which regulates educational establishments in a country. This may include: closing an educational institution completely, allowing an educational institution to open with certain conditions; allowing an educational institution to stay open without conditions
+<ul>
+<li>Example: In Slovakia, as of March 12, “All schools and Educational establishments will be shut down”<br />
+</li>
+</ul></li>
+</ul>
+</details>
+<details>
+<summary>
+<span style="color:blue"> Restriction and Regulation of Government Services </span>
+</summary>
+<ul>
+<li>Government policy which restricts and regulates government services, both essential and essential. This can include ceasing government services completely; allowing government services to operate with conditions; or allowing overnment services to operate without conditions.
+<ul>
+<li>Example: In Malaysia from March 18 to March 31, “All government and private services except those involved in essential services such as water, electricity, power, telecommunications, postal, transportation, fuel,finance, banking, health, pharmacy, fire, port, airport, security, retail and food supply will also be closed.”</li>
+</ul></li>
+</ul>
+</details>
+<details>
+<summary>
+<span style="color:blue"> Restriction and Regulation of Businesses </span>
+</summary>
+<ul>
+<li>Government policy regulates private, commercial activity. This can include closing down commercial establishments completely; allowing commercial establishments to open with conditions; or allowing commercial establishments to open without conditions.
+<ul>
+<li>Example: In Serbia, “As of March 21, 2020 the following measures are in effect: Supermarkets, gas stations, restaurants, post offices, banks and other service providers will be reducing their hours to observe the curfew, with some closing at 6:00 PM or earlier.”</li>
+</ul></li>
+</ul>
+</details>
+<details>
+<summary>
+<span style="color:blue"> Health Monitoring </span>
+</summary>
+<ul>
+<li>Government policies that seek to monitor the health of individuals who are afflicted with or who are likely to be afflicted with the coronavirus
+<ul>
+<li>Example: On January 5, 2020, “Taiwan CDC monitors all individuals who had traveled to Wuhan within 14 days and exhibited a or symptoms of upper respiratory tract infections”</li>
+</ul></li>
+</ul>
+</details>
+<details>
+<summary>
+<span style="color:blue"> Health Testing </span>
+</summary>
+<ul>
+<li>Government policies which seeks to sample large populations for coronavirus regardless of suspected likelihood of affliction with coronavirus
+<ul>
+<li>On March 22, “South Korea began testing all passengers arriving from Europe”</li>
+</ul></li>
+</ul>
+</details>
+<details>
+<summary>
+<span style="color:blue"> Health Resources </span>
+</summary>
+<ul>
+<li>Government policies which affect the material (e.g. medical equipment, number of hospitals for public health) or human (e.g. doctors, nurses) health resources of a country.
+<ul>
+<li>On January 24, 2020, “Taiwan bans exports of face masks; ban extended to end of April” ; On March 20, it was announced that “to accommodate the growing demand of laboratory tests for COVID-19, His Majesty the Sultan and Yang Di-Pertuan of Brunei Darussalam has consented to the construction of an additional virology laboratory”</li>
+</ul></li>
+</ul>
+</details>
+<details>
+<summary>
+<span style="color:blue"> Hygiene </span>
+</summary>
+<ul>
+<li>Government efforts to promote hygiene in public spaces (e.g. disinfection of subways, burials)
+<ul>
+<li>Spain (Madrid, region) will disinfect all vehicles involved in the scheduled passenger transport on a daily basis starting from March 11 for at least 15 days.</li>
+</ul></li>
+</ul>
+</details>
+<details>
+<summary>
+<span style="color:blue"> Public Awareness Measures </span>
+</summary>
+<ul>
+<li>Efforts to disseminate or gather reliable information about COVID-19, including ways to prevent or mitigate the health effects of COVID-19.
+<ul>
+<li>Dissemination example: On March 22, it was announced that “the Provincial Youth Council in Namiba carried out an intense public awareness campaign on methods of disease prevention, during which, young associates distributed pamphlets with statements about the pandemic and ways of prevention.”;</li>
+<li>Gathering example: “On March 8, the Moscow Department of Transport began operating a 24-hour hotline allowing people to report on the sanitary condition of car sharing and taxi cars. In case of problems, the Department carries out an inspection and removes the car from circulation as needed.”</li>
+</ul></li>
+</ul>
+</details>
+<details>
+<summary>
+<span style="color:blue"> Anti-Disinformation Measures </span>
+</summary>
+<ul>
+<li>Efforts by the government to limit the spread of false, inaccurate or harmful information with regards to COVID-19.
+<ul>
+<li>The Republic of South Africa enforces measures against any “person who publishes any statement, through any medium, including social media, with the intention to deceive” surrounding COVID-19, one’s infection status and the government measures against COVID-19 on March 18 2020.)</li>
+</ul></li>
+</ul>
+</details>
+<details>
+<summary>
+<span style="color:blue"> New Task Force, Bureau or Administrative Configuration </span>
+</summary>
+<ul>
+<li>Government policy that changes the administrative capacity of a part of government to respond to the crisis.
+<ul>
+<li>On January 20, 2020, “Taiwan activated the Central Epidemic Command Center (CECC) which mobilizes government funds and military personnel to facilitate face mask production”</li>
+</ul></li>
+</ul>
+</details>
+<details>
+<summary>
+<span style="color:blue"> COVID-19 Vaccines </span>
+</summary>
+<ul>
+<li>Government policy made with regards to either the research and development, regulation, production, purchase and/or distribution of a given COVID-19 vaccine</li>
+</ul>
+</details>
+<p><br></p>
+<details>
+<summary>
+<span style="color:blue"> Other Policy Not Listed Above </span>
+</summary>
+<ul>
+<li>Government policy that is not categorizable in the above. Economic policies can be documented here.</li>
+</ul>
+</details>
+<p><br></p>
+<div id="type_sub_cat" class="section level3 tabset tabset-fade tabset-pills">
+<h3 class="tabset tabset-fade tabset-pills">[type_sub_cat]</h3>
+<p>In the publicly released version of the dataset, the various sub types for different policy types are documented in the [type_sub_cat] variable. To see all possible sub types together, please visit <a href="https://docs.google.com/spreadsheets/d/10XiTrBSOJkJvCW0lYt2W6MJo3CCLANjvMjIG4RuOd6Q/edit?usp=sharing">this page</a>. The policy sub-types are separately coded as follows:</p>
+<div id="anti-disinformation-measures" class="section level4">
+<h4>Anti-Disinformation Measures</h4>
+<p>No sub-type currently associated with Declaration of Emergency</p>
+</div>
+<div id="covid-19-vaccine" class="section level4 tabset">
+<h4 class="tabset">COVID-19 Vaccine</h4>
+<div id="type_vac" class="section level5">
+<h5>[type_vac]</h5>
+<p>Please select the intended policy goal with regards to a given COVID-19 vaccine:</p>
+<p><small> * Note for non-Covid-19 vaccines (e.g. flu shots), please code under the ‘Health Resources’ category * For more information about how to code COVID-19 Vaccine policies, please check out <a href="https://www.youtube.com/watch?v=rqTgXIwiPnQ" target="_blank">this video</a>! </small></p>
+<ul>
+<li><span style="color:blue">Resources for research and development of a COVID-19 vaccine </span></li>
+<li><span style="color:blue">Regulatory approval process for administering the COVID-19 vaccine</span></li>
+<li><span style="color:blue">Production of COVID-19 vaccines</span></li>
+<li><span style="color:blue">Purchase of COVID-19 vaccines </span></li>
+<li><span style="color:blue">Distribution of COVID-19 vaccines</span></li>
+</ul>
+</div>
+<div id="type_vac_mix" class="section level5">
+<h5>[type_vac_mix]</h5>
+<p><small> If ‘Distribution of COVID-19 vaccines’ is selected in response to [type_vac] the following question is asked: </small></p>
+<p>Are mixing and matching of different vaccines allowed in the administration of COVID-19 vaccines (i.e. people are allowed to receive vaccines produced by more than one manufacturer) ?</p>
+<ul>
+<li><span style="color:blue"> Yes </span></li>
+<li><span style="color:blue"> No </span></li>
+<li><span style="color:blue"> This distribution policy is not about mixing and matching of different vaccines. </span></li>
+</ul>
+</div>
+<div id="type_vac_cat" class="section level5">
+<h5>[type_vac_cat]</h5>
+<p><small> You may only choose one of the following options unless this policy is about the mixing and matching of different vaccines (see type_vac_mix) in which case you can choose multiple vaccines </small></p>
+<p>Please the particular vaccine for which a policy is being made:</p>
+<p><small> * Note if a policy is made about more than one vaccine, please code each separately. </small></p>
+<ul>
+<li><span style="color:blue">Covaxin (Bharat Biotech and Indian Council of Medical Research vaccine; BBV152) </span> <span style="color:blue">Covishield (Indian-made version of AstraZeneca Serum Institute India) </span></li>
+<li><span style="color:blue">Convidicea (Ad5-nCoV, by CanSino Biologics)</span></li>
+<li><span style="color:blue">CureVac vaccine (CVnCoV, CV07050101)</span></li>
+<li><span style="color:blue">EpiVacCorona (EpiVakKorona; VECTOR center of virology)</span></li>
+<li><span style="color:blue">Johnson &amp; Johnson vaccine (JNJ-78436735 or Ad26.COV2.S; by Johnson &amp; Johnson and Janssen Pharmaceutical)</span></li>
+<li><span style="color:blue">Moderna vaccine (mRNA-1273)</span></li>
+<li><span style="color:blue">Novavax vaccine (NVX-CoV2373)</span></li>
+<li><span style="color:blue">Oxford University and AstraZeneca vaccine (AZD1222; also known as the Jenner Institute/University of Oxford vaccine, ChAdOx1)</span></li>
+<li><span style="color:blue">Pfizer/BioNTech vaccine (BNT162b2 or Tozinameran)</span></li>
+<li><span style="color:blue">Sinovac vaccine (CoronaVac)</span></li>
+<li><span style="color:blue">Sinopharm vaccine (BBIBP-CorV)</span></li>
+<li><span style="color:blue">Sputnik V vaccine (Gam-COVID-Vac; by Gamaleya Research Institute of Epidemiology and Microbiology)</span></li>
+<li><span style="color:blue">Other [text entry]</span></li>
+<li><span style="color:blue">Unspecified Vaccines</span></li>
+<li><span style="color:blue">All Vaccines</span></li>
+</ul>
+</div>
+<div id="type_vac_reg" class="section level5">
+<h5>[type_vac_reg]</h5>
+<p><small> If ‘Regulatory approval process for administering the COVID-19 vaccine’ is selected in response to [type_vac] the following question is asked: </small></p>
+<p>Please select which part of the regulatory approval process the vaccine has undergone:</p>
+<ul>
+<li><span style="color:blue">Emergency regulatory approval or authorization granted</span></li>
+<li><span style="color:blue">Emergency regulatory approval or authorization denied</span></li>
+<li><span style="color:blue">Emergency regulatory approval or authorization delayed pending the fulfillment of further requirements</span></li>
+<li><span style="color:blue">Full regulatory approval or authorization granted</span></li>
+<li><span style="color:blue">Full regulatory approval or authorization denied</span></li>
+<li><span style="color:blue">Full regulatory approval or authorization delayed pending the fulfillment of further requirements</span></li>
+<li><span style="color:blue">Regulatory suspension or pause of vaccine rollot</span></li>
+<li><span style="color:blue">Regulatory resumption of previously suspended or paused vaccine rollout</span></li>
+<li><span style="color:blue">Voluntary recall of vaccine</span></li>
+<li><span style="color:blue">Regulatory recall of vaccine</span></li>
+<li><span style="color:blue">Regulatory approval revoked (originally granted, then later revoked)</span></li>
+</ul>
+</div>
+<div id="type_vac_purchase" class="section level5">
+<h5>[type_vac_purchase]</h5>
+<p><small> If ‘Purchase of COVID-19 vaccines’ is selected in response to [type_vac] the following question is asked: </small></p>
+<p>Under what conditions were the vaccines purchased?</p>
+<ul>
+<li><span style="color:blue">Preorder without option of expanding the order </span></li>
+<li><span style="color:blue">Preorder with the option of expanding the order</span></li>
+<li><span style="color:blue">Regular order of vaccines</span></li>
+</ul>
+</div>
+<div id="type_vac_dist" class="section level5">
+<h5>[type_vac_dist]</h5>
+<p><small> If ‘Distribution of COVID-19 vaccines’ is selected in response to [type_vac] the following question is asked: </small></p>
+<p>Please select all that apply in terms of which part of the distribution process the policy is being made for:</p>
+<ul>
+<li><span style="color:blue">Storage of the vaccine</span></li>
+<li><span style="color:blue">Shipping of the vaccine</span></li>
+<li><span style="color:blue">Administering of the vaccine (i.e. giving people the vaccine shot)</span></li>
+</ul>
+</div>
+<div id="type_vac_who" class="section level5">
+<h5>[type_vac_who]</h5>
+<p><small> If ‘Administering of the vaccine (i.e. giving people the vaccine shot)’ is selected in response to [type_vac_dist] the following question is asked: </small></p>
+<p>Please select one of the following for how the vaccine is being distributed :</p>
+<ul>
+<li><p>Note for the policy ‘Certain populations based on geographic characteristics given preference for vaccinations’, you can choose the geographic characteristics in the target_country, target_province, target_city, target_other questions</p></li>
+<li><p>Note for the policy ‘Certain populations exempt from vaccinations’, you can choose which populations are exempt in the ‘target_who_what’ question.</p></li>
+<li><p>Note for the policy ‘Certain populations excluded access from vaccinations’, you can choose which populations are excluded access in the ‘target_who_what’ questions. An example of a situation in which a population that is excluded access might include: administering the vaccine to pregnant women is not authorized and would be an instance of off-label use and doctors have no liability insurance to cover off label use.</p></li>
+<li><p><span style="color:blue">Certain populations based on demographic characteristics/epidemiological risk given preference for vaccinations</span></p></li>
+<li><p><span style="color:blue">Certain populations based on geographic characteristics given preference for vaccinations</span></p></li>
+<li><p><span style="color:blue">Mass vaccinations (e.g. first-come first serve)</span></p></li>
+<li><p><span style="color:blue">Lottery system</span></p></li>
+<li><p><span style="color:blue">Certain populations exempt from vaccinations</span></p></li>
+<li><p><span style="color:blue">Certain populations excluded access from vaccinations</span></p></li>
+<li><p><span style="color:blue">Other vaccine distribution system</span></p></li>
+</ul>
+</div>
+<div id="type_vac_who_rank" class="section level5">
+<h5>[type_vac_who_rank]</h5>
+<p>How many target groups are given preference for vaccines?</p>
+<ul>
+<li>Note different types of people are defined as being in the same group if they are given the same priority for receiving a vaccine.</li>
+</ul>
+<p><small> E.g. In country A, priority is given as follows:</p>
+<p>Priority Group 1: People over 80, emergency room physicians Priority Group 2: People over 70, teachers, pregnant women</p>
+<p>There are ‘2’ groups in this country and you should choose ‘2’ in the drop-down menu below. In the subsequent follow up question:</p>
+<ul>
+<li><p>For Priority Group 1, select: ‘People of a certain age’ and ‘over 80’ in the text entry as well as ’Essential medical worke</p></li>
+<li><p>For Prioity Group 2, select: ‘People of a certain age’ and ‘over 70’ in the text entry, Teachers and pregnant women </small></p></li>
+<li><p><span style="color:blue">1, 2… 15</span></p></li>
+</ul>
+</div>
+<div id="type_vac_who_gen" class="section level5">
+<h5>[type_vac_who_gen]</h5>
+<p><small> If ‘Certain populations based on demographic characteristics/epidemiological risk given preference for vaccinations’ is selected in response to [type_vac_who] the following question is asked: </small></p>
+<p>You have selected that a total of X groups of people are given preferences for vaccinations for.</p>
+<p>In the following, please list all of the populations that are given the same priority in receiving the vaccine in group Y .</p>
+<p><small> E.g. In country A, prority is given as follows:</p>
+<p>Priority Group 1: People over 80, emergency room physicians Priority Group 2: People over 70, teachers, pregnant women</p>
+<ul>
+<li>For Priority Group 1, select: ‘People of a certain age’ and ‘over 80’ in the text entry as well as ‘Essential medical workers’, filling in ‘Emergency room physicians’ in the text entry.</li>
+<li>For Prioity Group 2, select: ‘People of a certain age’ and ‘over 70’ in the text entry, Teachers Pregnant women</li>
+</ul>
+<p></small></p>
+<ul>
+<li><span style="color:blue">Essential medical workers [text entry]</span></li>
+<li><span style="color:blue">Essential non-medical workers (e.g. individuals working in grocery stores) [text entry]</span></li>
+<li><span style="color:blue">Non-essential workers [text entry] </span></li>
+<li><span style="color:blue">Teachers (for secondary, primary and pre-school)</span></li>
+<li><span style="color:blue">Pre-school students (below the age of 5)</span></li>
+<li><span style="color:blue">Primary school students (between the ages of 5 and 10)</span></li>
+<li><span style="color:blue">Secondary school students (between the ages of 10 and 18)</span></li>
+<li><span style="color:blue">Higher education school students (ages 18 and above)</span></li>
+<li><span style="color:blue">Government officials</span></li>
+<li><span style="color:blue">Pregnant women</span></li>
+<li><span style="color:blue">People in nursing homes or long term care facilities</span></li>
+<li><span style="color:blue">People of a certain age [list age in the text entry]</span></li>
+<li><span style="color:blue">People with certain health conditions [list health conditions in the text entry]</span></li>
+<li><span style="color:blue">Homeless population</span></li>
+<li><span style="color:blue">Asylum/refugee seekers</span></li>
+<li><span style="color:blue">Prisoners</span></li>
+<li><span style="color:blue">Other [text entry]</span></li>
+</ul>
+</div>
+<div id="type_vac_loc" class="section level5">
+<h5>[type_vac_loc]</h5>
+<p><small> If ‘Administering of the vaccine (i.e. giving people the vaccine shot)’ is selected in response to [type_vac_dist] the following question is asked: </small></p>
+<p>Please select all that apply in terms of where where vaccination is taking place:</p>
+<ul>
+<li><span style="color:blue">Special/Temporary COVID-19 vaccination centers [text field]</span></li>
+<li><span style="color:blue">Hospitals</span></li>
+<li><span style="color:blue">Public Clinics</span></li>
+<li><span style="color:blue">Private clinics</span></li>
+<li><span style="color:blue">Pharmacies</span></li>
+<li><span style="color:blue">Physician/General practitioners offices</span></li>
+<li><span style="color:blue">Nursing homes/long term care facilities</span></li>
+<li><span style="color:blue">Prisons</span></li>
+<li><span style="color:blue">Other locations [text field]</span></li>
+<li><span style="color:blue">All medical institutions allowed to administer vaccines</span></li>
+</ul>
+</div>
+<div id="type_vac_costs" class="section level5">
+<h5>[type_vac_costs]</h5>
+<p><small> If ‘Administering of the vaccine (i.e. giving people the vaccine shot)’ is selected in response to [type_vac_dist] the following question is asked: </small></p>
+<p>What are the economic costs to the individual of getting this COVID-19 vaccine?</p>
+<ul>
+<li><span style="color:blue">Vaccine is free for the individual</span></li>
+<li><span style="color:blue">Vaccine is subsidized by the government for all individuals</span></li>
+<li><span style="color:blue">Vaccine is subsidized by the government for a subset of the population (list population subset in the text entry)</span></li>
+<li><span style="color:blue">Partial coverage by health insurance</span></li>
+<li><span style="color:blue">Full coverage by health insurance</span></li>
+<li><span style="color:blue">Individual must pay full cost of the COVID-19 vaccine</span></li>
+<li><span style="color:blue">Other financial arrangement: </span></li>
+<li><span style="color:blue">No information provided on how much vaccine cost to the individual</span></li>
+</ul>
+</div>
+<div id="type_vac_dist_admin" class="section level5">
+<h5>[type_vac_dist_admin]</h5>
+<p><small> If ‘Distribution of COVID-19 vaccines’ is selected in response to [type_vac] the following question is asked: </small></p>
+<p>Please select what kind of entity has been placed in primary charge of the vaccine distribution process , for this particular vaccine:</p>
+<p>Note that if, e.g.,the national government delegates responsibility for vaccine distribution to another entity, e.g. a public/private partnership, then the appropriate field is the entity that is being delegated responsibility, in this case ‘public/private partnership’.</p>
+<p>You may note the specific entities in charge of the distribution process in the below. E.g. In the United States, the national government has partnered with two private companies, Walgreens and CVS, to ensure that the management of the cold-chain supply of vaccines and the administration of vaccines. This would be a ‘public/private partnership’ where you would list: ‘US government; Walgreens; CVS’ in the text entry</p>
+<ul>
+<li><span style="color:blue">National government entity</span></li>
+<li><span style="color:blue">Subnational government entity</span></li>
+<li><span style="color:blue">Private/public partnership</span></li>
+<li><span style="color:blue">Private entity</span></li>
+</ul>
+</div>
+<div id="type_vac_amt" class="section level5">
+<h5>[type_vac_amt]</h5>
+<p><small> If ‘Resources for research and development of a COVID-19 vaccine; Production of COVID-19 vaccines; Purchase of COVID-19 vaccines; Distribution of COVID-19 vaccines’ is selected in response to [type_vac] the following question is asked: </small></p>
+<p>Please note the resources devoted for the intended policy goal of: X, for this particular vaccine: Y.</p>
+<p>Under ‘Amount’ please input a number. Under ‘scale’ please note the numeric scale. Under ‘unit’ please input the unit of vaccines. Under % Government Contribution, please note from 0 to 100, where 0 is no contribution by the government and 100 is full contribution by the government, what percentage of the cost or amount was covered by the government.</p>
+</div>
+</div>
+<div id="closure-and-regulation-of-schools" class="section level4 tabset">
+<h4 class="tabset">Closure and Regulation of Schools</h4>
+<div id="type_schools" class="section level5">
+<h5>[type_schools]</h5>
+<p>Please select all that apply in terms of which educational entities were affected by this government policy:</p>
+<ul>
+<li><span style="color:blue"> Preschool or childcare facilities (generally for children ages 5 and below) </span></li>
+<li><span style="color:blue"> Primary Schools (generally for children ages 10 and below) </span></li>
+<li><span style="color:blue"> Secondary Schools (generally for children ages 10 to 18) </span></li>
+<li><span style="color:blue"> Higher education institutions (i.e. degree granting institutions) </span></li>
+</ul>
+</div>
+<div id="type_school-level" class="section level5">
+<h5>[type_school level]</h5>
+<p><small> For each response selected for [type_schools] the following question is asked: </small></p>
+<p>Please choose one of the following in terms of how [type_school] are allowed to operate according to this policy:</p>
+<ul>
+<li><span style="color:blue"> [type_school] allowed to open with no conditions </span></li>
+<li><span style="color:blue"> [type_school] allowed to open with conditions </span></li>
+<li><span style="color:blue"> [type_school] closed/locked down </span></li>
+</ul>
+</div>
+<div id="type_school_var" class="section level5">
+<h5>[type_school_var]</h5>
+<p><small> For each response selected for [type_schools] the following question is asked: </small></p>
+<p>Select all that apply in terms of the conditions under which [type_school] are allowed to operate.</p>
+<p><small> * For more information about how to code closings and reopenings more generally, check out this <a href="https://www.youtube.com/watch?v=KldyTCekUhY" target="_blank">short video</a>!</p>
+<p></small></p>
+<ul>
+<li><p><span style="color:blue"> Please write in the number of people that are limited from entering the school premises </span></p></li>
+<li><p><span style="color:blue"> Please write more detail about the type of people who are not allowed to be on the school premises </span></p></li>
+<li><p><span style="color:blue"> Please write more detail about the cleaning and sanitary procedures for classrooms </span></p></li>
+<li><p><span style="color:blue"> Please write more detail about which hours of classroom time are produced </span></p></li>
+<li><p><span style="color:blue"> Please write more detail about which hours of classroom time are produced </span></p></li>
+<li><p><span style="color:blue"> Please write more detail about the special provisions or event cancelled/postponed </span></p></li>
+<li><p><span style="color:blue"> Number of people on the school premises are limited (e.g. only 50 people allowed on school premises) [Text Entry] </span></p></li>
+<li><p><span style="color:blue"> Types of people on school premises are limited (e.g. no parents) [Text Entry] </span></p></li>
+<li><p><span style="color:blue"> Regular cleaning and sanitary procedures applied to [Text Entry] </span></p></li>
+<li><p><span style="color:blue"> Physical classroom hours or meeting times reduced (e.g. classes only meet in the morning; classes meet every other day) [Text Entry] </span></p></li>
+<li><p><span style="color:blue"> Keeping distance of 1.5 meters to 6 ft apart </span></p></li>
+<li><p><span style="color:blue"> Mask wearing policy </span></p></li>
+<li><p><span style="color:blue"> Negative COVID-19 Test </span></p></li>
+<li><p><span style="color:blue"> Proof of COVID-19 Vaccination </span></p></li>
+<li><p>2G/3G Rules</p>
+<ul>
+<li><span style="color:blue">2G: Must be (i) either vaccinated or (ii) recovered from COVID-19</span></li>
+<li><span style="color:blue">3G: Must be either (i) vaccinated, (ii) have a valid COVID-19 negative test within a certain time frame, or (iii) recovered from COVID-19</span></li>
+<li><span style="color:blue">Institution can decide whether to enforce 2G or 3G (see above for definitions for 2G and 3G)</span></li>
+</ul></li>
+<li><p>Health Monitoring</p>
+<ul>
+<li><span style="color:blue"> Temperature Checks </span></li>
+<li><span style="color:blue"> Health Certificates </span></li>
+<li><span style="color:blue"> Health Questionnare </span></li>
+<li><span style="color:blue"> Other Health Monitoring </span></li>
+</ul></li>
+<li><p><span style="color:blue"> Negative COVID-19 Test </span></p></li>
+<li><p><span style="color:blue"> Full remote/distance learning (e.g. All teachers must tele-teach)</span></p></li>
+<li><p><span style="color:blue"> Partial remote distance learning (e.g. Teachers with certain health conditions can tele-teach) </span></p></li>
+<li><p><span style="color:blue"> Special provisions exist for how teaching is done which applies to all teachers [Text Entry] </span></p></li>
+<li><p><span style="color:blue"> Special provisions exist for how teaching is done which applies to some teachers [Text Entry] </span></p></li>
+<li><p><span style="color:blue"> Special provisions for all students in a school (e.g. students in primary school do not have to social distance) [Text Entry] </span></p></li>
+<li><p><span style="color:blue"> Special provisions exist for some students in a school (e.g. students living with essential workers can attend school while others must stay home) [Text Entry] </span></p></li>
+<li><p><span style="color:blue"> School event cancelled or postponed [Text Entry] </span></p></li>
+<li><p><span style="color:blue"> Other conditions not listed above (please provide detail in the text entry) [Text Entry] </span></p></li>
+</ul>
+</div>
+<div id="type_school_mask-who" class="section level5">
+<h5>[type_school_mask who]</h5>
+<p><small> For each response of ‘Mask wearing policy’ to [type_schools_var] the following question is asked: </small></p>
+<p>Please select all that apply in terms of who the mask wearing policy is directed toward</p>
+<ul>
+<li><span style="color:blue">Students</span></li>
+<li><span style="color:blue">Teachers</span></li>
+<li><span style="color:blue">Other Population</span></li>
+<li><span style="color:blue">Not specified</span></li>
+</ul>
+</div>
+<div id="type_school_soc_who" class="section level5">
+<h5>[type_school_soc_who]</h5>
+<p><small> For each response of ‘Keeping distance of at least 6ft or 1.5 meters apart’ to [type_schools_var] the following question is asked: </small></p>
+<p>Please select all that apply in terms of who keeping distance of at least 6ft or 15. meters is directed toward</p>
+<ul>
+<li><span style="color:blue">Students</span></li>
+<li><span style="color:blue">Teachers</span></li>
+<li><span style="color:blue">Other Population</span></li>
+<li><span style="color:blue">Not specified</span></li>
+</ul>
+</div>
+<div id="type_school_mon_who" class="section level5">
+<h5>[type_school_mon_who]</h5>
+<p><small> For each response of ‘Health Monitoring’ to [type_schools_var] the following question is asked: </small></p>
+<p>Please select all that apply in terms of who the health monitoring policy is directed toward</p>
+<ul>
+<li><span style="color:blue">Students</span></li>
+<li><span style="color:blue">Teachers</span></li>
+<li><span style="color:blue">Other Population</span></li>
+<li><span style="color:blue">Not specified</span></li>
+</ul>
+</div>
+</div>
+<div id="curfew" class="section level4 tabset">
+<h4 class="tabset">Curfew</h4>
+<div id="type_curfew_freq" class="section level5">
+<h5>[type_curfew_freq]</h5>
+<p>Do the curfew times depend on the day of the week?</p>
+<ul>
+<li><span style="color:blue"> No, the curfew times are always the same regardless of the day of the week/ everywhere</li>
+<li><span style="color:blue"> Yes, the curfew times differ depending on the day of the week </span></li>
+</ul>
+</div>
+<div id="type_curfew_day" class="section level5">
+<h5>[type_curfew_day]</h5>
+<p><small> If the response to [type_curfew_freq] == “Yes, the curfew times differ depending on the day of the week” then the following question is shown:</small></p>
+<p>If the curfew times differ depending on the day of the week, please:</p>
+<ul>
+<li>Choose the times of day in which the curfew starts or ends for a given day. Leave the ‘Full Lockdown’ and “No Lockdown” options unchecked for that day.</li>
+<li>If people are not allowed to leave the house at all for a given day, please leave the ‘start time’ and ‘end time’ blank and click ‘Full lockdown’ for that day</li>
+<li>If people are allowed to leave the house for the entire day, please leave the ‘start time and ’end time’ blank and click ‘No Lockdown’ for that day.</li>
+</ul>
+<p><img src="../img/type_curfew_day.png" /></p>
+</div>
+<div id="type_curfew_start" class="section level5">
+<h5>[type_curfew_start]</h5>
+<p><small> If the response to [type_curfew_freq] == “No, the curfew times are always the same regardless of the day of the week/ everywhere” then the following question is shown:</small></p>
+<p>At what time of the day does the curfew start?</p>
+<ul>
+<li><span style="color:blue"> Time Entry </span></li>
+</ul>
+</div>
+<div id="type_curfew_end_spec" class="section level5">
+<h5>[type_curfew_end_spec]</h5>
+<p><small> If the response to [type_curfew_freq] == “No, the curfew times are always the same regardless of the day of the week/ everywhere” then the following question is shown:</small></p>
+<p>Does the policy note an explicit time of the day in which the curfew ends?</p>
+<ul>
+<li><span style="color:blue">Yes, an explicit time of the day is noted for when the curfew ends</span></li>
+<li><span style="color:blue"> No, an explicit time of the day is not noted for when the curfew ends</span></li>
+</ul>
+</div>
+<div id="type_curfew_end" class="section level5">
+<h5>[type_curfew_end]</h5>
+<p><small> If the response to [type_curfew_freq] == “No, the curfew times are always the same regardless of the day of the week/ everywhere” then the following question is shown:</small></p>
+<p>At what time of the day does the curfew end?</p>
+<ul>
+<li><span style="color:blue"> Time Entry </span></li>
+</ul>
+</div>
+</div>
+<div id="declaration-of-emergency" class="section level4">
+<h4>Declaration of Emergency</h4>
+<p>No sub-type currently associated with Declaration of Emergency</p>
+</div>
+<div id="external-border-restrictions" class="section level4">
+<h4>External Border Restrictions</h4>
+<div id="type_ext_restrict" class="section level5">
+<h5>[type_ext_restrict]</h5>
+<p>Please select all that apply in terms of the strategies that are employed to restrict movement on the external border.</p>
+<p><small> Note:</p>
+<ul>
+<li>The distinction between the ‘Health Testing’ variable in the type question and the ‘Health screening’ option given below is that the ‘Health Testing’ option refers to testing of the general population for the purpose of ascertaining the underlying infection rate while the ‘Health Screening’ option below refers to the testing of a general population for the purpose of restricting movement across borders.<br />
+</li>
+<li>A later question will ask about what <em>kind</em> of travel the external border restrictions restrict (e.g. flights, cruises)</li>
+<li>For more information about the difference between external and internal border restrictions, please watch this short (2 minute) <a href="https://youtu.be/TLNvtEwpvX8" target="_blank">video</a>!</li>
+</ul>
+<p></small></p>
+<ul>
+<li><span style="color:blue"> Health Screenings (e.g. temperature checks) </span></li>
+<li><span style="color:blue"> Health Certificates </span></li>
+<li><span style="color:blue"> Travel History Form (e.g. documents where traveler has recently been) </span></li>
+<li><span style="color:blue"> Visa restrictions (e.g. suspend issuance of visa) </span></li>
+<li><span style="color:blue"> Visa extensions (e.g. visa validity extended) </span></li>
+<li><span style="color:blue"> Proof of COVID-19 Vaccination </span></li>
+<li><span style="color:blue"> Negative COVID-19 Test </span></li>
+<li><span style="color:blue"> Other [Text Entry] </span></li>
+<li><span style="color:blue"> Total border crossing ban </span></li>
+</ul>
+</div>
+</div>
+<div id="health-monitoring" class="section level4 tabset">
+<h4 class="tabset">Health Monitoring</h4>
+<div id="type_health_mon" class="section level5">
+<h5>[type_health_mon]</h5>
+<p>Please choose all that apply in terms of what is being monitored:</p>
+<ul>
+<li><span style="color:blue">A snapshot of a person’s health at a given point in time</span></li>
+<li><span style="color:blue">A person’s absolute (e.g. GPS) location over time</span></li>
+<li><span style="color:blue">Who this person has come into contact with over time</span></li>
+<li><span style="color:blue">A community’s epidemiological status [Text entry]</span></li>
+</ul>
+</div>
+<div id="type_health_mon_snap" class="section level5">
+<h5>[type_health_mon_snap]</h5>
+<p><small>If the RA chooses [A snapshot of a person’s health at a given point in time], they are shown the following questions (type_health_mon_snap; type_health_mon_loc) </small></p>
+<p>Please choose all that apply in terms of what kind of snapshot is taken:</p>
+<ul>
+<li><span style="color:blue">Temperature Check</span></li>
+<li><span style="color:blue">Health Certificate</span></li>
+<li><span style="color:blue">Health Questionnaire</span></li>
+<li><span style="color:blue">Other</span></li>
+</ul>
+</div>
+<div id="type_health_mon_loc" class="section level5">
+<h5>[type_health_mon_loc]</h5>
+<p><small>If the RA chooses [A snapshot of a person’s health at a given point in time], they are shown the following questions (type_health_mon_snap; type_health_mon_loc) </small></p>
+<p>Please choose all that apply in terms of where the health monitoring snapshot is taken.</p>
+<p>Note that if the snapshot is taken within a school setting or a commercial setting (e.g. retail stores) please code these policies under ‘Closure and Regulation of Schools’ or ‘Restrictions and Regulations of businesses’ respectively:</p>
+<ul>
+<li><span style="color:blue">Nursing Homes</span></li>
+<li><span style="color:blue"> Religious Establishments</span></li>
+<li><span style="color:blue">Other</span></li>
+<li>Public Transportation
+<ul>
+<li><span style="color:blue">Trains</span></li>
+<li><span style="color:blue">Buses</span></li>
+<li><span style="color:blue">Subways/Trams</span></li>
+</ul></li>
+</ul>
+</div>
+<div id="type_health_mon_stra" class="section level5">
+<h5>[type_health_mon_stra]</h5>
+<p><small> If in response to [type_health_mon] the RA chooses either or both:</p>
+<ul>
+<li>A person’s absolute (e.g. GPS) location over time</li>
+<li>A person’s relative position (e.g. who this person has come into contact with) over time</li>
+</ul>
+<p>Then they are shown the following questions (type_health_mon_stra, type_health_mon_tech): </small></p>
+<p><br></p>
+<p>Please choose all that apply in terms of the types strategies that the government has employed to monitor people’s health:</p>
+<ul>
+<li><span style="color:blue">Contact tracing through human teams </span></li>
+<li><span style="color:blue">Contact tracing through smart phones (e.g. apps) </span></li>
+<li><span style="color:blue">Wearable technology (e.g. bracelets, anklets, beacons) </span></li>
+<li><span style="color:blue">Other </span></li>
+</ul>
+</div>
+<div id="type_health_mon_tech" class="section level5">
+<h5>[type_health_mon_tech]</h5>
+<p><small> If in response to [type_health_pos] the RA chooses either or both:</p>
+<ul>
+<li>A person’s absolute (e.g. GPS) location over time</li>
+<li>A person’s relative position (e.g. who this person has come into contact with) over time</li>
+</ul>
+<p>Then they are shown the following questions (type_health_mon_stra, type_health_mon_tech): </small></p>
+<p>Please indicate the technology used to support these health monitoring strategies (Note: this question will only be shown for people who select contact tracing apps and wearable technology):</p>
+<ul>
+<li><span style="color:blue"> QR codes </span></li>
+<li><span style="color:blue"> Bluetooth technology </span></li>
+<li><span style="color:blue">GPS technology </span></li>
+<li><span style="color:blue">Other </span></li>
+</ul>
+</div>
+<div id="type_health_tech_hum" class="section level5">
+<h5>[type_health_tech_hum]</h5>
+<p><small> If in response to [type_health_stra} the policy is about ‘Contact tracing through human teams’ then the RA is shown the following question (type_health_tech_hum) </small></p>
+<p>Please indicate the technology used to support these health monitoring strategies :</p>
+<ul>
+<li><span style="color:blue"> Home visits </span></li>
+<li><span style="color:blue"> Telephone calls </span></li>
+<li><span style="color:blue"> Other </span></li>
+</ul>
+</div>
+</div>
+<div id="health-resources" class="section level4 tabset">
+<h4 class="tabset">Health Resources</h4>
+<p>Please choose all that apply in terms of the type of health resources that the government policy affects.</p>
+<p>For each of the following values below:</p>
+<ul>
+<li>If there is additional information about the number of health resources in question, please briefly write it in the provided text box, otherwise leave the text box empty. + For example, if 8 new hospitals are built, in the text entry for ‘Hospitals’, fill in the text entry box with ‘8 new hospitals’.<br />
+</li>
+<li>To the extent possible, please try to find a source that provides more specific information about the type of health resource. When this is not possible, you can choose an option that notes the type of medical resource is ‘Unspecified’.
+<ul>
+<li>For example ‘Unspecified Health Materials’, this means that the event description describes an increase in, for example, medical equipment for a country, but does not provide more detail on what kind of medical equipment.</li>
+</ul></li>
+<li>Health Materials
+<ul>
+<li><span style="color:blue">Masks [Text Entry] </span></li>
+<li><span style="color:blue">Ventilators [Text Entry] </span></li>
+<li><span style="color:blue">Personal Protective Equipment (e.g. gowns, goggles) [Text Entry] </span></li>
+<li><span style="color:blue">Hand Sanitizer [Text Entry] </span></li>
+<li><span style="color:blue">Test Kits [Text Entry] </span></li>
+<li><span style="color:blue">Non COVID-19 Vaccines [Text Entry] </span></li>
+<li><span style="color:blue">Medicine/Drugs [Text Entry] </span></li>
+<li><span style="color:blue">Dry ice for COVID-19 vaccine storage [Text Entry] </span></li>
+<li><span style="color:blue">Cold storage capacity for COVID-19 vaccines [Text Entry] </span></li>
+<li><span style="color:blue">Thermal cyclers (PCR machines/DNA amplifiers) [Text Entry] </span></li>
+<li><span style="color:blue">Syringes [Text Entry] </span></li>
+<li><span style="color:blue">Unspecified Health Materials </span></li>
+<li><span style="color:blue">Other Health Materials [Text Entry] </span></li>
+</ul></li>
+<li>Health Infrastructure
+<ul>
+<li><span style="color:blue">Hospitals [Text Entry] </span></li>
+<li><span style="color:blue">Temporary Quarantine Centers [Text Entry] </span></li>
+<li><span style="color:blue">Temporary Medical Centers [Text Entry] </span></li>
+<li><span style="color:blue">Public Testing Facilities (e.g. drive-in testing for COVID-19)[Text Entry] </span></li>
+<li><span style="color:blue">Health Research Facilities [Text Entry] </span></li>
+<li><span style="color:blue">Unspecified Health Infrastructure </span></li>
+<li><span style="color:blue">Other Health Infrastructure [Text Entry] </span></li>
+</ul></li>
+<li>Health Staff
+<ul>
+<li><span style="color:blue">Doctors [Text Entry] </span></li>
+<li><span style="color:blue">Nurses [Text Entry] </span></li>
+<li><span style="color:blue">Health Volunteers [Text Entry] </span></li>
+<li><span style="color:blue">Army (medical) corps[Text Entry] </span></li>
+<li><span style="color:blue">Unspecified Health Staff </span></li>
+<li><span style="color:blue">Other Heath Staff [Text Entry] </span></li>
+</ul></li>
+<li><span style="color:blue">Health Insurance [Text Entry] </span></li>
+</ul>
+<div id="type_health_material" class="section level5">
+<h5>[type_health_material]</h5>
+<p>Please select all that apply in terms of the intended policy goal for this health material resource: X</p>
+<ul>
+<li><span style="color:blue">Increase new production capacities for this health material</span></li>
+<li><span style="color:blue">Repurpose existing production to increase amount of this health material</span></li>
+<li><span style="color:blue">Increased purchase of this health material</span></li>
+<li><span style="color:blue">Increase distribution of this health material</span></li>
+<li><span style="color:blue">Other health material policy goal</span></li>
+<li><span style="color:blue">Not applicable</span></li>
+</ul>
+</div>
+<div id="type_health_infra" class="section level5">
+<h5>[type_health_infra]</h5>
+<p>Please select all that apply in terms of the intended policy goal for this health infrastructure resource: X</p>
+<ul>
+<li><span style="color:blue">New construction or building to provide this health infrastructure</span></li>
+<li><span style="color:blue">Repurposing of existing infrastructure to provide this given health infrastructure</span></li>
+<li><span style="color:blue">Increase patient capacity</span></li>
+<li><span style="color:blue">Cancellation of non-COVID-19 related/elective health provision</span></li>
+<li><span style="color:blue">Delay of non-COVID-19 related/elective health provision</span></li>
+<li><span style="color:blue">Resumption of non COVID-19 related/elective health provision</span></li>
+<li><span style="color:blue">Increase testing capacity</span></li>
+<li><span style="color:blue">Increase research and development capacities</span></li>
+<li><span style="color:blue">Other health infrastructure policy goal</span></li>
+<li><span style="color:blue">Not applicable</span></li>
+</ul>
+</div>
+<div id="type_health_staff" class="section level5">
+<h5>[type_health_staff]</h5>
+<p>Please select all that apply in terms of the intended policy goal for this health staff resource: X</p>
+<ul>
+<li><span style="color:blue">Increase in hiring of health staff to address health effects of COVID-19</span></li>
+<li><span style="color:blue">Increase in hiring of health staff to administer COVID-19 tests</span></li>
+<li><span style="color:blue">Increase in hiring of health staff to administer of COVID-19 vaccines</span></li>
+<li><span style="color:blue">Tele-medicine/Virtual care services</span></li>
+<li><span style="color:blue">Mental Health Service provision</span></li>
+<li><span style="color:blue">Medical licensing waivers</span></li>
+<li><span style="color:blue">Other health staff policy goal</span></li>
+<li><span style="color:blue">Not applicable</span></li>
+</ul>
+</div>
+</div>
+<div id="health-testing" class="section level4 tabset">
+<h4 class="tabset">Health Testing</h4>
+<div id="type_health_test" class="section level5">
+<h5>[type_health_test]</h5>
+<p>Please choose all that apply in terms of how health testing is conducted:</p>
+<ul>
+<li><span style="color:blue"> Self-testing </span></li>
+<li><span style="color:blue">Drive-in testing centers </span></li>
+<li><span style="color:blue">Mobile Health testing station (excluding drive-ins) </span></li>
+<li><span style="color:blue">Fixed Health testing stations (excluding drive-ins) </span></li>
+<li><span style="color:blue">Door-to-door testing </span></li>
+<li><span style="color:blue">Health testing of entire population under the government’s jurisdiction </span></li>
+<li><span style="color:blue">Other health testing </span></li>
+</ul>
+</div>
+<div id="type_health_test_loc" class="section level5">
+<h5>[type_health_test_loc]</h5>
+<p><small> If in response to [type_health_test], ‘Fixed health testing stations’ is selected, then the following question (type_health_test_loc) is shown: </small></p>
+<p>Please select all that apply in terms of the fixed locations that are being used as health testing sites:</p>
+<ul>
+<li><span style="color:blue">Hospitals </span></li>
+<li><span style="color:blue">Pharmacies</span></li>
+<li><span style="color:blue">Health Clinics</span></li>
+<li><span style="color:blue">Private doctors offices</span></li>
+<li><span style="color:blue">Other medical locations</span></li>
+<li><span style="color:blue">Other non-medical locations</span></li>
+<li><span style="color:blue">Not specified</span></li>
+</ul>
+</div>
+<div id="type_health_test_cat" class="section level5">
+<h5>[type_health_test_cat]</h5>
+<p><small> For each response selected to [type_health_test] the following question is asked: </small></p>
+<p>If the policy announcement takes note of what kind of health test is being conducted, please select all that apply:</p>
+<ul>
+<li><span style="color:blue">PCR test</span></li>
+<li><span style="color:blue">Antibody/serological test</span></li>
+<li><span style="color:blue">Antigen test</span></li>
+<li><span style="color:blue">Other test type</span></li>
+<li><span style="color:blue">Not specified</span></li>
+</ul>
+</div>
+<div id="type_health_test_who" class="section level5">
+<h5>[type_health_test_who]</h5>
+<p><small> For each response selected to [type_health_test] the following question is asked: </small></p>
+<p>Please select all that apply in terms of who is eligible for a test</p>
+<ul>
+<li><span style="color:blue">Asymptomatic people</span></li>
+<li><span style="color:blue">Symptomatic people</span></li>
+<li><span style="color:blue">Everyone (i.e. Asymptomatic and symptomatic people)</span></li>
+<li><span style="color:blue">Confirmed contact to a person infected with COVID-19 </span></li>
+<li><span style="color:blue">Not specified</span></li>
+</ul>
+</div>
+<div id="type_health_test_hrs" class="section level5">
+<h5>[type_health_test_hrs]</h5>
+<p><small> For each response selected to [type_health_test] the following question is asked: </small></p>
+<p>If the government makes an explicit commitment to provide test results within a certain period of time [needs], please note the time frame in terms of the number of hours here:</p>
+<ul>
+<li><span style="color:blue">Number of hours (text entry)</span></li>
+<li><span style="color:blue">Other time frame (text entry)</span></li>
+<li><span style="color:blue">Not specified</span></li>
+</ul>
+</div>
+<div id="type_health_test_res" class="section level5">
+<h5>[type_health_test_res]</h5>
+<p><small> For each response selected to [type_health_test] the following question is asked: </small></p>
+<p>Please choose all that apply in terms of how people find out the results of their COVID-19 tests</p>
+<ul>
+<li><span style="color:blue">Paper results picked up in person</span></li>
+<li><span style="color:blue">Phone call</span></li>
+<li><span style="color:blue">Mobile text</span></li>
+<li><span style="color:blue">Through app or website(e.g. testing app, Existing web health portal) </span></li>
+<li><span style="color:blue">Email</span></li>
+<li><span style="color:blue">Other</span></li>
+<li><span style="color:blue">Unspecified</span></li>
+</ul>
+</div>
+<div id="type_health_test_eco" class="section level5">
+<h5>[type_health_test_eco]</h5>
+<p><small> For each response selected to [type_health_test] the following question is asked: </small></p>
+<p>What are the economic costs to the individual of getting a COVID-19 test?</p>
+<ul>
+<li><span style="color:blue">Testing is free for all individuals</span></li>
+<li><span style="color:blue">Testing is free for a subset of the population</span></li>
+<li><span style="color:blue">Testing is partially subsidized by the government for all individuals</span></li>
+<li><span style="color:blue">Testing is partially subsidized by the government for a subset of the population (list population subset in the text entry)</span></li>
+<li><span style="color:blue">All individuals must pay full cost of the COVID-19 test</span></li>
+<li><span style="color:blue">Other funding scheme</span></li>
+<li><span style="color:blue">No information provided on how much tests cost to the individual</span></li>
+</ul>
+</div>
+</div>
+<div id="hygiene" class="section level4">
+<h4>Hygiene</h4>
+<div id="type_hygiene" class="section level5">
+<h5>[type_hygiene]</h5>
+<p>Please choose all that apply in terms of the areas where hygiene and disinfection measures are being applied.</p>
+<p>If ‘all’ places are being disinfected, please select: Commercial areas, Public Areas and Public Transport.</p>
+<p>If more detail is provided about where a hygiene or disinfection measure is being applied, please document it in the text entry, separating out each individual item with a semicolon: e.g. If the measure is about disinfecting subway and buses, write: subways; buses.</p>
+<ul>
+<li><span style="color:blue">Commercial areas (e.g. shopping malls,markets) [Text Entry] </span></li>
+<li><span style="color:blue">Public areas (e.g. mosques, government buildings, schools) [Text Entry] </span></li>
+<li><span style="color:blue">Public Transport (e.g. subways,trains) [Text Entry] </span></li>
+<li><span style="color:blue">Burial procedures </span></li>
+<li><span style="color:blue"> Other Areas Hygiene Measures Applied [Text Entry] </span></li>
+</ul>
+</div>
+</div>
+<div id="internal-border-restrictions" class="section level4">
+<h4>Internal Border Restrictions</h4>
+<div id="type_int_restrictions" class="section level5">
+<h5>[type_int_restrictions]</h5>
+<p>Please select all that apply in terms of the strategies that are employed to restrict movement on the internal border.</p>
+<p><small> Note:</p>
+<ul>
+<li>The distinction between the ‘Health Testing’ variable in the type question and the ‘Health screening’ option given below is that the ‘Health Testing’ option refers to testing of the general population for the purpose of ascertaining the underlying infection rate while the ‘Health Screening’ option below refers to the testing of a general population for the purpose of restricting movement across borders.<br />
+</li>
+<li>A later question will ask about what <em>kind</em> of travel the external border restrictions restrict (e.g. flights, cruises)</li>
+<li>For more information about the difference between external and internal border restrictions, please watch this short (2 minute) <a href="https://youtu.be/TLNvtEwpvX8" target="_blank">video</a>!</li>
+</ul>
+<p></small></p>
+<ul>
+<li><span style="color:blue"> Health Screenings (e.g. temperature checks) </span></li>
+<li><span style="color:blue"> Health Certificates </span></li>
+<li><span style="color:blue"> Travel History Form (e.g. documents where traveler has recently been) </span></li>
+<li><span style="color:blue"> Visa restrictions (e.g. suspend issuance of visa) </span></li>
+<li><span style="color:blue"> Visa extensions (e.g. visa validity extended) </span></li>
+<li><span style="color:blue"> Proof of COVID-19 Vaccination </span></li>
+<li><span style="color:blue"> Negative COVID-19 Test </span></li>
+<li><span style="color:blue"> Other [Text Entry] </span></li>
+<li><span style="color:blue"> Total border crossing ban </span></li>
+</ul>
+</div>
+</div>
+<div id="lockdown" class="section level4">
+<h4>Lockdown</h4>
+<p>No sub-type currently associated with Lockdown</p>
+</div>
+<div id="new-task-force-bureau-or-administrative-configuration" class="section level4 tabset">
+<h4 class="tabset">New Task Force, Bureau or Administrative Configuration</h4>
+<div id="type_new_admin" class="section level5">
+<h5>[type_new_admin]</h5>
+<p>Please select the new administrative configuration that has been implemented in response to COVID-19.</p>
+<ul>
+<li>When applicable, in the text entry box, please note the name of the administrative body in question.</li>
+<li>More information on the choices below are given here:
+<ul>
+<li>New Task Force or Bureau:
+<ul>
+<li>Government policy that changes the administrative capacity of a part of government to respond to the crisis. Note, the old broad policy type “New Task Force or Bureau’ captured the information in this, now, sub-policy type.<br />
+</li>
+<li>E.g. On January 20, 2020, “Taiwan activated the Central Epidemic Command Center (CECC) which mobilizes government funds and military personnel to facilitate face mask production”</li>
+</ul></li>
+<li>Existing government entity:
+<ul>
+<li>An existing government entity is given new or heightened powers to respond to the COVID-19 pandemic.<br />
+</li>
+<li>E.g. “Spain declares that during the state of emergency decisions are centralised to the national Health Ministry starting from March 15. The autonomous regions are obliged to notify the government on any containment measures they take regarding the Virus. Autonomous communities which have COVID-19 cases in their hospitals as well as affected private hospitals have to pass information on them to the central government.”</li>
+</ul></li>
+<li>Cooperation:
+<ul>
+<li>Governments with powers over different jurisdictions enter into agreements or treaties to cooperate on their response to the COVID-19 pandemic.<br />
+</li>
+<li>E.g. “On Apr 13, Washington Gov. Jay Inslee, California Gov. Gavin Newsom and Oregon Gov. Kate Brown announced an agreement on a shared vision for reopening their economies and controlling COVID-19 into the future”</li>
+</ul></li>
+</ul></li>
+<li><span style="color:blue">New Task Force or Bureau (i.e. establishment of a temporary body) [Text Entry] </span></li>
+<li><span style="color:blue">Existing government entity given new powers [Text Entry] </span></li>
+<li><span style="color:blue">Cooperation among different jurisdictional entities (e.g. treaties or agreements among countries or provinces) [Text Entry] </span></li>
+<li><span style="color:blue">Other Administrative Configurations [Text Entry] </span></li>
+</ul>
+</div>
+<div id="type_new_admin_coop" class="section level5">
+<h5>[type_new_admin_coop]</h5>
+<p>Please select all that apply in terms of how these entities are cooperating:</p>
+<p>When applicable, please provide more information on what these different entities are sharing in the text entry</p>
+<ul>
+<li><span style="color:blue">Sharing information [Text Entry] </span></li>
+<li><span style="color:blue">Sharing material resources (e.g. masks) [Text Entry] </span></li>
+<li><span style="color:blue">Sharing human resources (e.g. doctors) [Text Entry] </span></li>
+<li><span style="color:blue"> Coordinating timing on a policy roll out [Text Entry] </span></li>
+</ul>
+</div>
+</div>
+<div id="public-awareness-measures" class="section level4 tabset">
+<h4 class="tabset">Public Awareness Measures</h4>
+<div id="type_pub_awareness" class="section level5">
+<h5>[type_pub_awareness]</h5>
+<p>Please select the type of public awareness measure which best applies.</p>
+<p>Note:</p>
+<ul>
+<li>Disseminating information
+<ul>
+<li>Refers to efforts to disseminate and convey reliable information about COVID-19, including ways to prevent or mitigate the health effects of COVID-19. Note that the older ‘Public Awareness Campaign’ policy type was designed to document these types of policies<br />
+</li>
+<li>E.g. “On March 22, it was announced that”the Provincial Youth Council in Namibia carried out an intense public awareness campaign on methods of disease prevention, during which, young associates distributed pamphlets with statements about the pandemic and ways of prevention."<br />
+</li>
+</ul></li>
+<li>Gathering information
+<ul>
+<li>Refers to efforts to gather information related to COVID-19, including information that would help mitigate or suppress the health effects of COVID-19.<br />
+</li>
+<li>E.g. “On March 8, the Moscow Department of Transport began operating a 24-hour hotline allowing people to report on the sanitary condition of car sharing and taxi cars. In case of problems, the Department carries out an inspection and removes the car from circulation as needed.”</li>
+</ul></li>
+</ul>
+<p>If you still have questions, feel free to check out this <a href="https://www.youtube.com/watch?v=hkHsSrfJ9kA" target="_blank">short video on how to code public awareness measures</a>!</p>
+<p><br></p>
+<ul>
+<li><span style="color:blue">Disseminating information related to COVID-19 to the public that is reliable and factually accurate </span></li>
+<li><span style="color:blue">Gathering information related to COVID-19 from the public </span></li>
+<li><span style="color:blue">Both Disseminating and Gathering information related to COVID-19 </span></li>
+</ul>
+</div>
+<div id="type_pub_cat" class="section level5">
+<h5>[type_pub_cat]</h5>
+<p>Please select the whether the measure is a sustained policy (e.g. campaign) or a short-term effort/event</p>
+<p><small> If a government official makes a once-off statement in a personal capacity (e.g. Trump’s tweets on hydroxychloroquine) or gives their professional opinion in an interview, we do NOT code these. </small></p>
+<ul>
+<li>A policy or campaign: a decision or strategy to gather and/or disseminate information in a new way and/or for a sustained period of time.</li>
+<li>For example, the introduction of daily reports/monitoring that give citizens up to date information on coronavirus developments.</li>
+<li>For example, the establishment of a call center where citizens can ask questions, report recent travels, learn about government services, and receive up to date information.
+<ul>
+<li>If a call center collects contact tracing, recent travel, or health information STOP. This should be coded as a HEALTH MONITORING policy.</li>
+</ul></li>
+<li>For example, an effort to distribute printed materials (e.g. booklets, signs, etc.) to the public.</li>
+<li>Short-term effort or event (to disseminate or gather reliable information about COVID-19, including ways to prevent or mitigate the health effects of COVID-19) could be information, advice, or recommendations for citizens that is not contained in any other policy category.
+<ul>
+<li>For example, a short-term effort might be an article published by the Ministry of Health giving advice on how to reduce anxiety during a quarantine or lockdown period.
+<ul>
+<li>If the announcement is advertising mental health resources available to the public (i.e. telephone or online counseling services) STOP. This should be coded as a HEALTH RESOURCES policy.</li>
+</ul></li>
+<li>For example, a short-term effort might include the publication of tips on hygiene or disinfecting personal spaces.
+<ul>
+<li>If the announcement is recommending or requiring disinfection of work/public spaces STOP. These should be coded as HYGIENE policies.</li>
+</ul></li>
+<li>For example, a short-term event might be a Q/A session held by the Ministry of Health or other government agency.</li>
+</ul></li>
+</ul>
+<p><br></p>
+<ul>
+<li><span style="color:blue">Sustained policy or campaign</span></li>
+<li><span style="color:blue">Short-term effort or event </span></li>
+</ul>
+</div>
+<div id="type_pub_content" class="section level5">
+<h5>[type_pub_content]</h5>
+<p>Select all that apply to the content of the policy/campaign or message.</p>
+<ul>
+<li>Public awareness campaigns or messages are aimed at</li>
+<li>Getting information into the hands of the general public (e.g. the government directs school districts to distribute booklets informing the public about restrictions in schools)</li>
+<li>Individual/community behaviors (e.g. encouraging people to wash hands and practice good hygiene, suggesting that people practice yoga or stress relief activities to support good mental health during quarantine)
+<ul>
+<li>If a government offers counseling services to the public to support their mental health STOP. This should be coded as HEALTH RESOURCES.</li>
+</ul></li>
+</ul>
+<div id="information-about-the-virus" class="section level6">
+<h6>Information about the virus</h6>
+<ul>
+<li><span style="color:blue">Information about the way COVID-19 statistics will be calculated or reported</span></li>
+<li><span style="color:blue">Instructions/tips on COVID-19 prevention </span></li>
+<li><span style="color:blue">Announcements about approved treatment procedures</span></li>
+<li><span style="color:blue">Information/reminders about how COVID-19 spreads</span></li>
+<li><span style="color:blue">Information about the risks and dangers of COVID-19 for individuals’ health</span></li>
+<li><span style="color:blue">Information about the risks and dangers of COVID-19 for the community</span></li>
+<li><span style="color:blue">Other [Text entry]</span></li>
+</ul>
+</div>
+<div id="information-about-policies" class="section level6">
+<h6>Information about policies</h6>
+<ul>
+<li><span style="color:blue"> Reminders of existing rules </span></li>
+<li><span style="color:blue">Reminders of consequences of violating rules</span></li>
+<li><span style="color:blue">Announcements about effectiveness of government enforcement and outcomes of COVID-19 policies </span></li>
+<li><span style="color:blue"> Other [Text entry]</span></li>
+</ul>
+</div>
+<div id="information-about-the-social-effects-of-policies-or-the-virus" class="section level6">
+<h6>Information about the social effects of policies or the virus</h6>
+<ul>
+<li><span style="color:blue">Tips for effective remote work or distance learning </span></li>
+<li><span style="color:blue">Tips for staying physically fit/healthy during lockdown/quarantine situations</span></li>
+<li><span style="color:blue">Tips on supporting mental health during the pandemic</span></li>
+<li><span style="color:blue">Anti-stigmatization measures for those who are infected with the virus </span></li>
+<li><span style="color:blue">Tips for preventing conflict (e.g. domestic violence) during lockdown/quarantine situations</span></li>
+<li><span style="color:blue">Information about government resources for supporting population and business</span></li>
+<li><span style="color:blue">Other [Text entry]</span></li>
+</ul>
+</div>
+<div id="information-about-covid-19-vaccines" class="section level6">
+<h6>Information about COVID-19 vaccines</h6>
+<ul>
+<li><span style="color:blue">Information on how COVID-19 vaccines work</span></li>
+<li><span style="color:blue">Information on how to receive a COVID-19 vaccine</span></li>
+<li><span style="color:blue">information about the benefits of COVID-19 vaccination</span></li>
+<li><span style="color:blue">Information about the potential risks of COVID-19 vaccination</span></li>
+<li><span style="color:blue"> Other information about COVID-19 vaccinations [Text entry]</span></li>
+</ul>
+</div>
+</div>
+<div id="type_pub_format" class="section level5">
+<h5>[type_pub_format]</h5>
+<p>Select all that apply to the format or output of the policy/campaign or message distribution.</p>
+<ul>
+<li><span style="color:blue">Call center/hotline</span></li>
+<li><span style="color:blue">TV/radio/newspaper (traditional media)</span></li>
+<li><span style="color:blue">Internet-based news outlets</span></li>
+<li><span style="color:blue">Government portals, websites, apps </span></li>
+<li><span style="color:blue">Social media pages of local government agencies or state officials</span></li>
+<li><span style="color:blue">Booklets, leaflets, other individual printed materials</span></li>
+<li><span style="color:blue">Billboards, signs, publicly displayed visuals</span></li>
+<li><span style="color:blue">Press-conferences, briefings</span></li>
+<li><span style="color:blue">Information to be conveyed by other agencies (schools, NGOs, medical organizations)</span></li>
+<li><span style="color:blue">Other (text box)</span></li>
+</ul>
+</div>
+<div id="type_pub_source" class="section level5">
+<h5>[type_pub_source]</h5>
+<p>Select all that apply to the origin of information of the policy/campaign or message.</p>
+<p><small> In all cases, you should be capturing policies/campaigns or messages that are coming from the government. However, sometimes governments will reproduce/reprint/translate information from other sources in order to inform the public.</p>
+<p>Examples:</p>
+<ul>
+<li>The Ministry of Health posts WHO guidelines for protecting oneself from infection on their website, translated into the local language.</li>
+<li>The results of a recent scientific study on the effects of mask wearing on coronavirus spread are posted on the government COVID-19 Telegram channel.</li>
+<li>The official Twitter account for the Department of Health and Human Services has posted an announcement about a clinical trial for a drug therapy to treat coronavirus patients. </small></li>
+</ul>
+<p><br></p>
+<ul>
+<li><span style="color:blue">Government</span></li>
+<li><span style="color:blue">Non-governmental organizations</span></li>
+<li><span style="color:blue">International organizations </span></li>
+<li><span style="color:blue">Pharmaceutical companies and other medical industry</span></li>
+<li><span style="color:blue">Media</span></li>
+<li><span style="color:blue">Scientific/academic </span></li>
+<li><span style="color:blue">Other (text box)</span></li>
+<li><span style="color:blue">Not specified</span></li>
+</ul>
+</div>
+</div>
+<div id="quarantine" class="section level4 tabset">
+<h4 class="tabset">Quarantine</h4>
+<div id="type_quarantine" class="section level5">
+<h5>[type_quarantine]</h5>
+<p>Please choose all that apply in terms of the conditions of the quarantine:</p>
+<ul>
+<li><span style="color:blue"> Self-Quarantine (i.e. quarantine at home) </span></li>
+<li><span style="color:blue"> Government Quarantine (i.e. quarantine at a government hotel or facility) </span></li>
+<li><span style="color:blue"> Quarantine outside the home or government facility (i.e. quarantine in a hotel) </span></li>
+<li><span style="color:blue"> Quarantine only applies to people of certain ages. Please note the age restrictions in the text box. [Text Entry] </span></li>
+<li><span style="color:blue"> Other [Text Entry] </span></li>
+</ul>
+</div>
+<div id="type_quar_spec" class="section level5">
+<h5>[type_quar_spec]</h5>
+<p>Does the policy explicitly state the time length of the quarantine (e.g. 14 days, 5 days, etc?)</p>
+<ul>
+<li><span style="color:blue"> Yes, the length of the quarantine is explicitly specified</span></li>
+<li><span style="color:blue"> No, the length of the quarantine is not explicitly specified</span></li>
+</ul>
+</div>
+<div id="type_quarantine_days" class="section level5">
+<h5>[type_quarantine_days]</h5>
+<p>If the number of days that the quarantine is in place is different from 14 days, please enter the number in the text entry below.</p>
+<p>Note, if this is an update to a previous entry and the quarantine has been extended, in the update, note the total number of days that the quarantine is in place.</p>
+<ul>
+<li><span style="color:blue"> Text Entry […] </span></li>
+</ul>
+</div>
+</div>
+<div id="restriction-and-regulation-of-businesses" class="section level4 tabset">
+<h4 class="tabset">Restriction and Regulation of Businesses</h4>
+<div id="type_business_cat" class="section level5">
+<h5>[type_business_cat]</h5>
+<p>Please follow the definition used by the government implementing the policy for determining whether this policy deals with a “non-essential” business or an “essential business”.<br />
+* For example, you may personally think that retail shops are an essential business, but if the government policy classifies this as a non-essential business, than please code this as a policy related to a non-essential business</p>
+<ul>
+<li><span style="color:blue"> Non-Essential Businesses </span></li>
+<li><span style="color:blue"> Essential Businesses </span></li>
+<li><span style="color:blue"> No information in the policy about whether the business is considered essential or non-essential </span></li>
+</ul>
+</div>
+<div id="type_business" class="section level5">
+<h5>[type_business]</h5>
+<p>Please choose all that apply in terms of the types of business activity that was restricted.</p>
+<ul>
+<li><p>If the type of business activity is relevant for all or unspecified non-essential businesses, please only choose ‘all or unspecified non-essential businesses’ below.</p></li>
+<li><p>If the type of business activity is relevant for all or unspecified essential businesses, please only choose ‘all or unspecified essential businesses’ below.</p></li>
+<li><p>Please note that this policy should be coded as related to businesses if they have to do with private efforts to provide the services listed below. If this is about a public service, than this policy should be coded as a restriction of non-essential government services.</p></li>
+<li><p><span style="color:blue">Retail Businesses </span></p></li>
+<li><p><span style="color:blue">Restaurants </span></p></li>
+<li><p><span style="color:blue">Bars </span></p></li>
+<li><p><span style="color:blue">Shopping Centers </span></p></li>
+<li><p><span style="color:blue">Non-Essential Commercial Businesses[Text Entry] </span></p></li>
+<li><p><span style="color:blue">Personal Grooming Businesses (e.g. hair salons) </span></p></li>
+<li><p><span style="color:blue">Supermarkets/grocery stores </span></p></li>
+<li><p><span style="color:blue">Private health offices (e.g. doctors offices, dentists, etc) </span></p></li>
+<li><p><span style="color:blue">Pharmacies </span></p></li>
+<li><p><span style="color:blue">Paid lodgings (e.g. hotels) </span></p></li>
+<li><p><span style="color:blue">Agriculture, forestry and fishing </span></p></li>
+<li><p><span style="color:blue">Mining and quarrying </span></p></li>
+<li><p><span style="color:blue">Electricity, gas, steam and air conditioning supply </span></p></li>
+<li><p><span style="color:blue">Water supply; sewerage, waste management and remediation activities </span></p></li>
+<li><p><span style="color:blue">Construction </span></p></li>
+<li><p><span style="color:blue">Telecommunications </span></p></li>
+<li><p><span style="color:blue">Information service activities </span></p></li>
+<li><p><span style="color:blue">Publishing activities </span></p></li>
+<li><p><span style="color:blue">Financial service activities, except insurance and pension funding </span></p></li>
+<li><p><span style="color:blue">Insurance, reinsurance and pension funding, except compulsory social security </span></p></li>
+<li><p><span style="color:blue">Transportation (land, water and air) </span></p></li>
+<li><p><span style="color:blue">Warehousing and support activities for transportation </span></p></li>
+<li><p><span style="color:blue">Other Non-Essential Businesses [Text Entry] </span></p></li>
+<li><p><span style="color:blue">Other Essential Businesses [Text Entry] </span></p></li>
+<li><p><span style="color:blue">All or unspecified non-essential businesses </span></p></li>
+<li><p><span style="color:blue">All or unspecified essential businesses </span></p></li>
+</ul>
+</div>
+<div id="type_business_level" class="section level5">
+<h5>[type_business_level]</h5>
+<p><small> For each response selected to [type_business] the following question is asked: </small></p>
+<p>Please choose one of the following in terms of how activity related to [type_business] is regulated by this policy:</p>
+<ul>
+<li><span style="color:blue"> This type of business ([type_business]) is allowed to open with no conditions attached </span></li>
+<li><span style="color:blue"> This type of business ([type_business] is allowed to open with conditions </span></li>
+<li><span style="color:blue"> This type of business ([type_business]) is closed/locked down </span></li>
+</ul>
+</div>
+<div id="type_business_var" class="section level5">
+<h5>[type_business_var]</h5>
+<p><small> For each response selected to [type_business] the following question is asked: </small></p>
+<p>Select all that apply in terms of the conditions under which [type_business] are allowed to operate:</p>
+<p>Please include true numbers in the text entry when applicable.</p>
+<p><small> * For more information about how to code closings and reopenings more generally, check out this <a href="https://www.youtube.com/watch?v=KldyTCekUhY" target="_blank">short video</a>! </small></p>
+<ul>
+<li><span style="color:blue">Hygiene and sanitation measures required </span></li>
+<li><span style="color:blue">Restriction of number of customers [Text Entry] </span></li>
+<li><span style="color:blue">Restriction of business hours (if applicable note the hours of business in text entry) [Text Entry] </span></li>
+<li><span style="color:blue">Restriction of working hours for employees (e.g. work at home policies) [Text Entry] </span></li>
+<li><span style="color:blue">Maximum size of business meetings [Text Entry] </span></li>
+<li><span style="color:blue"> Maximum number of employees [Text Entry] </span></li>
+<li><span style="color:blue">Size of store limited (e.g. stores smaller than 800 sq meters) [Text Entry] </span></li>
+<li><span style="color:blue"> Mask wearing policy </span></li>
+<li><span style="color:blue"> Keeping a distance of 6ft or 1.5 meters apart </span></li>
+<li><span style="color:blue"> Contact tracing measures </span></li>
+<li><span style="color:blue"> Negative COVID-19 Test </span></li>
+<li><span style="color:blue"> Proof of COVID-19 Vaccination </span></li>
+<li>2G/3G Rules
+<ul>
+<li><span style="color:blue">2G: Must be (i) either vaccinated or (ii) recovered from COVID-19</span></li>
+<li><span style="color:blue">3G: Must be either (i) vaccinated, (ii) have a valid COVID-19 negative test within a certain time frame, or (iii) recovered from COVID-19</span></li>
+<li><span style="color:blue">Institution can decide whether to enforce 2G or 3G (see above for definitions for 2G and 3G)</span></li>
+</ul></li>
+<li>Health Monitoring
+<ul>
+<li><span style="color:blue"> Temperature Checks </span></li>
+<li><span style="color:blue"> Health Certificates </span></li>
+<li><span style="color:blue"> Health Questionnare </span></li>
+<li><span style="color:blue"> Other Health Monitoring </span></li>
+</ul></li>
+<li><span style="color:blue"> Negative COVID-19 Test </span></li>
+<li><span style="color:blue">Other condition not specified above (please provide detail in the text entry) </span></li>
+</ul>
+<p>Note if the [type_business] is ‘Retail Stores’, ‘Restaurants’, ‘Bars’, ‘Supermarket/grocery stores’, ‘Pharmacies’, or ‘Personal Grooming’ then you will be given the additional option to select:</p>
+<p>Shops</p>
+<ul>
+<li><span style="color:blue"> Delivery Only </span></li>
+<li><span style="color:blue"> Takeaway Only </span></li>
+<li><span style="color:blue"> Delivery and Takeaway Only</span></li>
+</ul>
+</div>
+</div>
+<div id="restriction-and-regulation-of-government-services" class="section level4 tabset">
+<h4 class="tabset">Restriction and Regulation of Government Services</h4>
+<div id="type_gov_cat" class="section level5">
+<h5>[type_gov_cat]</h5>
+<p>Does this policy deal with the regulation of “non-essential government services” or “essential government services”?</p>
+<ul>
+<li><p>Please follow the definition used by the government implementing the policy for determining whether this policy deals with a “non-essential” government services or an “essential” government services.<br />
+</p></li>
+<li><p>For example, you may personally think that keeping libraries open counts as an essential government service, but if the government policy classifies this as a non-essential government service, than please code this as a policy related to a non-essential government services.</p></li>
+<li><p><span style="color:blue"> Non-Essential Government Services </span></p></li>
+<li><p><span style="color:blue"> Essential Government Services </span></p></li>
+<li><p><span style="color:blue"> No information in the policy about whether the government service is considered essential or non-essential </span></p></li>
+</ul>
+</div>
+<div id="type_gov_serv" class="section level5">
+<h5>[type_gov_serv]</h5>
+<p>Please select all that apply in terms of the types of non-essential government services that have been regulated</p>
+<ul>
+<li><p>Where applicable, please provide more detail about the service that has been regulated in the text entry. If there are multiple details, please separate each with a semicolon (e.g. marriage licenses; driving licenses)</p></li>
+<li><p>To the extent possible, please try to find a source that provides more specific information about the type of government service. When this is not possible, you can choose an option that notes the type of government service is ‘Unspecified’.</p></li>
+<li><p>If the policy states that all non-essential government services are restricted then please only choose the option ‘all non-essential government services regulated’ below * If the policy states that all essential government services are restricted then please only choose the option ‘all essential government services regulated’ below<br />
+</p></li>
+<li><p>Note when the policy is about changing the timing of an election, please select ‘restriction of mass gatherings’ – ‘postponement of an annually recurring event’; but if the policy is about changing the quality/procedure for an election, please select ‘election procedures’ below (e.g. mail-in voting)</p></li>
+<li><p>Regulated use of government services</p>
+<ul>
+<li><span style="color:blue"> Issuing of permits/certificates and/or processing of government documents [Text Entry] </span></li>
+<li><span style="color:blue"> Election procedures (e.g. mail-in voting) [Text Entry] </span></li>
+<li><span style="color:blue"> Regulations on publicly provided waste management services [Text Entry] </span></li>
+</ul></li>
+<li><p>Regulated use of public outdoor spaces</p>
+<ul>
+<li><span style="color:blue"> Beaches </span></li>
+<li><span style="color:blue"> Campsites </span></li>
+<li><span style="color:blue"> Parks </span></li>
+<li><span style="color:blue"> Tourist Sites </span></li>
+<li><span style="color:blue"> Unspecified outdoor spaces </span></li>
+<li><span style="color:blue"> Other public outdoor spaces</span> [Text Entry] </span></li>
+</ul></li>
+<li><p>Regulated use of public facilities </span></p>
+<ul>
+<li><span style="color:blue"> Public libraries </span></li>
+<li><span style="color:blue"> Public museums/galleries </span></li>
+<li><span style="color:blue"> Public courts [Text Entry] </span></li>
+<li><span style="color:blue"> Unspecified public facilities </span></li>
+<li><span style="color:blue"> Other public facilities[Text Entry] </span></li>
+</ul></li>
+<li><p><span style="color:blue"> Regulated hours government services available (e.g. government services office open for certain hours only)[Text Entry] </span></p></li>
+<li><p><span style="color:blue"> Regulated government working hours (e.g. work from home policies for government workers) [Text Entry] </span></p></li>
+<li><p><span style="color:blue"> Regulations on government meetings (including e.g. suspension of parliament)[Text Entry] </span></p></li>
+<li><p><span style="color:blue"> Other government service not specified above [Text Entry] </span></p></li>
+<li><p><span style="color:blue"> All government services regulated </span></p></li>
+</ul>
+</div>
+<div id="type_gov_level" class="section level5">
+<h5>[type_gov_level]</h5>
+<p><small> For each response selected to [type_gov_serv] the following question is asked: </small></p>
+<p>Please choose one of the following in terms of how activity related to [type_gov_serv] is regulated by this policy:</p>
+<ul>
+<li><span style="color:blue">This service provided by the government is provided with no conditions attached </span></li>
+<li><span style="color:blue">This service provided by the government is provided with conditions atttached </span></li>
+<li><span style="color:blue">This service is no longer provided by the government </span></li>
+</ul>
+</div>
+<div id="type_gov_var" class="section level5">
+<h5>[type_gov_var]</h5>
+<p><small> For each response selected to [type_gov_serv] the following question is asked: </small></p>
+<p>Select all that apply in terms of the conditions under which the following services are allowed to be provided: [type_gov_serv]</p>
+<p>Please include true numbers in the text entry when applicable.</p>
+<p><small> * For more information about how to code closings and reopenings more generally, check out this <a href="https://www.youtube.com/watch?v=KldyTCekUhY" target="_blank">short video</a>! </small></p>
+<ul>
+<li><span style="color:blue">Hygiene and sanitation measures required </span></li>
+<li><span style="color:blue">Restriction of number of people allowed to access as service [Text Entry] </span></li>
+<li><span style="color:blue">Restriction of hours of service provided [Text Entry] </span></li>
+<li><span style="color:blue"> Mask wearing policy </span></li>
+<li><span style="color:blue"> Keeping a distance of 6ft or 1.5 meters apart </span></li>
+<li><span style="color:blue"> Negative COVID-19 Test </span></li>
+<li><span style="color:blue"> Proof of COVID-19 Vaccination </span></li>
+<li>2G/3G Rules
+<ul>
+<li><span style="color:blue">2G: Must be (i) either vaccinated or (ii) recovered from COVID-19</span></li>
+<li><span style="color:blue">3G: Must be either (i) vaccinated, (ii) have a valid COVID-19 negative test within a certain time frame, or (iii) recovered from COVID-19</span></li>
+<li><span style="color:blue">Institution can decide whether to enforce 2G or 3G (see above for definitions for 2G and 3G)</span></li>
+</ul></li>
+<li>Health Monitoring
+<ul>
+<li><span style="color:blue"> Temperature Checks </span></li>
+<li><span style="color:blue"> Health Certificates </span></li>
+<li><span style="color:blue"> Health Questionnare </span></li>
+<li><span style="color:blue"> Other Health Monitoring </span></li>
+</ul></li>
+<li><span style="color:blue"> Other conditions not specified above [Text Entry] </span></li>
+</ul>
+<p>Note if the [type_gov_serv] is ‘Elections’ then you will be given the additional option to select:</p>
+<p>Elections</p>
+<ul>
+<li><span style="color:blue"> Mail in voting only </span></li>
+<li><span style="color:blue"> Mail in voting expanded, in person voting still allowed. </span></li>
+<li><span style="color:blue"> Mail-in voting ballot request period extended</span></li>
+<li><span style="color:blue"> Election delayed or postponed to a later date</span></li>
+<li><span style="color:blue"> Other election policy [Text Entry] </span></li>
+</ul>
+</div>
+</div>
+<div id="restrictions-on-mass-gatherings" class="section level4 tabset">
+<h4 class="tabset">Restrictions on Mass Gatherings</h4>
+<div id="type_mass_gathering" class="section level5">
+<h5>[type_mass_gathering]</h5>
+<p>If the number of people who are restricted from gathering en masse is specified, please enter the number in the text entry below:</p>
+<ul>
+<li><span style="color:blue"> Text Entry […] </span></li>
+</ul>
+</div>
+<div id="type_mass_category" class="section level5">
+<h5>[type_mass_category]</h5>
+<p>Please select the most appropriate choice in terms of what kind of mass gathering that has been restricted, when applicable. When applicable, please include the name of the event in the text entry.</p>
+<ul>
+<li><p><span style="color:blue"> Cancellation of an annually recurring event (e.g. national festival) [Text Entry] </span></p></li>
+<li><p><span style="color:blue"> Postponement of an annually recurring event (e.g. election) [Text Entry] </span></p></li>
+<li><p><span style="color:blue"> Cancellation of a recreational or commercial event (e.g. sports game, music concert) [Text Entry] </span><br />
+</p></li>
+<li><p><span style="color:blue"> Postponement of a recreational or commercial event (e.g. sports game, music concert) [Text Entry] </span></p></li>
+<li><p><span style="color:blue"> Annually recurring event allowed to occur with certain conditions (national festival) [Text Entry] </span></p></li>
+<li><p><span style="color:blue"> Single Recreational or commercial event allowed to occur with conditions [Text Entry] </span></p></li>
+<li><p><span style="color:blue"> All Recreational or commercial events allowed to occur with conditions [Text Entry] </span></p></li>
+<li><p><span style="color:blue"> Attendance at religious services restricted (e.g. mosque/church closings) </span></p></li>
+<li><p><span style="color:blue"> Prison population reduced (e.g. early release of prisoners) </span></p></li>
+<li><p><span style="color:blue"> Events at private residencies restricted (e.g. parties held at home) </span></p></li>
+<li><p><span style="color:blue"> Funerals and mourning rituals </span></p></li>
+<li><p><span style="color:blue"> Weddings and marriage rituals </span></p></li>
+<li><p><span style="color:blue"> Other mass gatherings not specified above restricted [Text Entry] </span></p></li>
+<li><p><span style="color:blue"> All/Unspecified mass gatherings </span></p></li>
+</ul>
+</div>
+<div id="type_mass_loc" class="section level5">
+<h5>[type_mass_loc]</h5>
+<p>For a restriction of mass gathering which applies to all or unspecified gatherings, please further specify whether it restricts gatherings in the following settings:</p>
+<ul>
+<li><span style="color:blue"> Indoor settings </span></li>
+<li><span style="color:blue"> Outdoor settings </span></li>
+<li><span style="color:blue">Indoor and outdoor settings </span></li>
+<li><span style="color:blue"> Not specified </span></li>
+</ul>
+</div>
+<div id="type_mass_var" class="section level5">
+<h5>[type_mass_var]</h5>
+<p><small> Whenever the following type_mass_category options are selected, this option is shown</p>
+<ul>
+<li>Annually recurring event allowed to occur with certain conditions (e.g. national festival)</li>
+<li>Single Recreational or commercial event allowed to occur with conditions</li>
+<li>All Recreational or commercial events allowed to occur with conditions</li>
+<li>Attendance at religious services restricted (e.g. mosque/church closings)’</li>
+<li>Weddings’</li>
+<li>Funerals’</li>
+<li>Other mass gatherings not specified above restricted’</li>
+<li>All/Unspecified mass gatherings’ </small></li>
+</ul>
+<p>Please select all that apply with regards to the conditions of this mass gathering restriction</p>
+<ul>
+<li><p><span style="color:blue"> This mass gathering is completely restricted </span></p></li>
+<li><p><span style="color:blue"> Mass gathering held online </span></p></li>
+<li><p>Mass gathering can occur in person if the following conditions are observed:</p>
+<ul>
+<li><span style="color:blue"> Event(s) allowed to occur but no audience is allowed </span></li>
+<li><span style="color:blue"> Physical space between participants (e.g. keeping 6ft or 1 meter apart, every other seat occupied) </span></li>
+<li><span style="color:blue"> Contact tracing </span></li>
+<li><span style="color:blue"> Health Questionnaire</span></li>
+<li><span style="color:blue"> Mask wearing</span></li>
+<li><span style="color:blue"> Negative COVID-19 test</span></li>
+<li><span style="color:blue"> Proof of COVID-19 Vaccination</span></li>
+<li><span style="color:blue"> Other mass gathering condition [Text entry]</span></li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="social-distancing" class="section level4 tabset">
+<h4 class="tabset">Social Distancing</h4>
+<div id="type_soc_distance" class="section level5">
+<h5>[type_soc_distance]</h5>
+<p>Please select all that apply in terms of the types of social distancing rules that are applied:</p>
+<ul>
+<li><p><span style="color:blue"> Keeping a distance of at least 6 feet or 1.5 meters apart </span></p></li>
+<li><p><span style="color:blue"> Keep a distance of some other distance not listed above. Please note the distance in meters in the text entry. [Text Entry] </span></p></li>
+<li><p><span style="color:blue"> Closing/suspending operations of nursing homes/long term care facilities </span></p></li>
+<li><p><span style="color:blue"> Restrictions on patients leaving nursing home/long term care facility [Text Entry] </span></p></li>
+</ul>
+<p>Restrictions on visitation</p>
+<ul>
+<li><span style="color:blue"> Restrictions on visiting nursing homes/long term care facilities </span></li>
+<li><span style="color:blue"> Restrictions on visiting hospitals</span></li>
+<li><span style="color:blue"> Restrictions on visiting prisons</span></li>
+<li><span style="color:blue"> Restrictions on visiting cemeteries </span></li>
+<li><span style="color:blue"> Restrictions on visiting other group residential facilities (e.g. orphanages, group homes) [Text entry] </span></li>
+<li><span style="color:blue"> Restrictions on visiting other locations [Text entry] </span></li>
+</ul>
+<p>Restrictions on transportation</p>
+<ul>
+<li><span style="color:blue"> Regulating private vehicles in public circulation</span></li>
+<li><span style="color:blue"> Restrictions on ridership of subways and trams </span></li>
+<li><span style="color:blue"> Restrictions on ridership of trains </span></li>
+<li><span style="color:blue"> Restrictions on ridership of buses </span></li>
+<li><span style="color:blue"> Restrictions ridership of other forms of public transportation (please include details in the text entry) [Text Entry] </span></li>
+</ul>
+<p>Wearing masks in…</p>
+<ul>
+<li><span style="color:blue"> All public spaces / everywhere </span></li>
+<li><span style="color:blue"> Public transportation [Text Entry] </span></li>
+<li><span style="color:blue"> Private transportation (e.g. taxis) </span></li>
+<li><span style="color:blue"> All indoor spaces </span></li>
+<li><span style="color:blue"> Unspecified </span></li>
+<li><span style="color:blue"> Other [Text Entry] </span></li>
+</ul>
+<p><small>(note: mask wearing policies for schools, businesses and government services are found in ‘Closure and Regulation of Schools’, ‘Restriction and Regulations of Businesses’ and ‘Restriction and Regulations of Government Services’ repsectively)</small></p>
+</div>
+<div id="type_soc_visit" class="section level5">
+<h5>[type_soc_visit]</h5>
+<p><small> If the response to [type_soc_distance] includes any of the options under ’Restrictions on visitation], the following question is asked: </small></p>
+<p>Please select all that apply in terms of the conditions under which visits are restricted for: [Restriction on visitation selected in type_soc_distance]</p>
+<ul>
+<li><span style="color:blue"> No visitors allowed at all </span></li>
+<li><span style="color:blue"> No visitors allowed except for exceptional situations, e.g. end of life </span></li>
+<li><span style="color:blue"> Number of visitors are limited </span></li>
+<li><span style="color:blue"> Visitors are allowed if they follow hygiene and/or social distancing rules </span></li>
+<li><span style="color:blue"> Visitors are allowed if they wear masks </span></li>
+<li><span style="color:blue"> Visitors are allowed if they test negative for COVID-19 </span></li>
+<li><span style="color:blue"> Visitors are allowed if they are COVID-19 vaccinated </span></li>
+<li><span style="color:blue"> Other condition for allowing visitors [Text entry] </span></li>
+</ul>
+</div>
+</div>
+<div id="other" class="section level4">
+<h4>Other</h4>
+<div id="type_other" class="section level5">
+<h5>[type_other]</h5>
+<p>You selected ‘Other Policy Not Listed Above’ as the policy type. This means that you were unable to match the government policy to any of the categories listed on the previous page. After verifying this is the case, please provide a brief description of the policy here:</p>
+<ul>
+<li><span style="color:blue"> Text Entry […] </span></li>
+</ul>
+<p><br> <br></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="policy-initiator" class="section level1">
+<h1>Policy Initiator</h1>
+<div id="country" class="section level2">
+<h2>[country]</h2>
+<p>From what country does this policy originate from?</p>
+<ul>
+<li><span style="color:blue">European Union </span></li>
+<li><span style="color:blue">…</span></li>
+<li><span style="color:blue">Zimbabwe</span></li>
+</ul>
+<p><br></p>
+</div>
+<div id="init_country_level" class="section level2 tabset">
+<h2 class="tabset">[init_country_level]</h2>
+<p>Was the policy made from a level of government other than the national level?</p>
+<ul>
+<li><span style="color:blue">No, it is at the national level </span></li>
+<li><span style="color:blue">Yes, it is at the province/state level </span></li>
+<li><span style="color:blue">Yes, it is at the city/municipal level </span></li>
+<li><span style="color:blue">Yes, it is at another governmental level (e.g. county) </span></li>
+</ul>
+<div id="province" class="section level3">
+<h3>[province]</h3>
+<p>Please select the appropriate province/state for [country]</p>
+<p>If this policy was initiated from the city/municipal or other government level and it is difficult to identify the relevant province, leave blank.</p>
+<ul>
+<li><span style="color:blue"> [province] </span></li>
+</ul>
+</div>
+<div id="city" class="section level3">
+<h3>[city]</h3>
+<p>If this policy was announced by a particular city, please specify the city here:</p>
+<ul>
+<li><span style="color:blue"> Text Entry […] </span></li>
+</ul>
+</div>
+<div id="init_other_level" class="section level3">
+<h3>[init_other_level]</h3>
+<p>You selected that this policy was made from a government level other than national, provincial or municipal. Please further specify one of the following</p>
+<ul>
+<li><span style="color:blue">This policy is administered by a government body a level other than national, provincial or municipal </span></li>
+<li><span style="color:blue"> This policy is administered by a university in the absence of coordinated government action </span></li>
+</ul>
+<div id="init_other" class="section level4">
+<h4>[init_other]</h4>
+<p>If the policy was announced by a government administrative body other than the national government, provincial/state government or city/municipal government, please specify here:</p>
+<ul>
+<li><span style="color:blue"> Text Entry […] </span></li>
+</ul>
+</div>
+<div id="other_uni" class="section level4">
+<h4>[other_uni]</h4>
+<p>With regards to university policy, normally the initiating policy actor would be the government body (e.g. national level or provincial level) with the power to administer universities. However in countries that have not coordinated government action, e.g. the United States, universities can independently make decisions about how to react to COVID-19. If this policy is about a policy initiated at a university setting in the absence of coordinated national action, please take the following two actions:</p>
+<ol style="list-style-type: decimal">
+<li>Where universities make policy decisions in the absence of coordinated government action, for the type of government policy, when necessary, please use the backtrack button and verify that you selected:</li>
+</ol>
+<ul>
+<li>‘External Border Restrictions’ if the university restricts travel of its academic staff to conferences.<br />
+</li>
+<li>‘Internal Border Restrictions’ if the university restricts movement on campus (e.g. the university switches to online classes).</li>
+<li>‘Restriction of Mass Gatherings’ if the university limits the number of people allowed to congregate on campus (e.g. cancels campus events, club activities).<br />
+</li>
+<li>‘Social Distancing’ if the university institutes a social distancing policy on campus.</li>
+<li>‘Curfew’ if the university institutes a curfew on campus.</li>
+<li>‘Closure of Schools’ if the university shuts down all operations.<br />
+</li>
+<li>‘Restriction of Non-Essential Govt. Services’ if the universtiy restricts non-essential academic services (e.g. tutoring, career counseling) .<br />
+</li>
+<li>‘Restriction of Non-Essential businesses’ if the university restricts recreational services (e.g. the student union, the university gym)<br />
+</li>
+<li>‘Health Monitoring’ if the university monitors the health of individuals who are afflicted with or who are likely afflicted with the coronavirus</li>
+<li>‘Health Testing’ if the university seeks to sample the university population for corona regardless of suspected likelihood of affliction with the coronavirus<br />
+</li>
+<li>‘Health Resources’ if the university sets up policies that seek to collect or distribute health resources to the university community (e.g. sets up a donation fund for personal protective gear, distributes one mask per student)</li>
+<li>‘Public Awareness Campaign’ if the university disseminates and conveys reliable information about COVID-19, including ways to prevent or mitigate the health effects of COVID-19<br />
+</li>
+<li>‘New Task Force or Bureau’ if the university sets up a new university body to respond to the coronavirus</li>
+</ul>
+<ol start="2" style="list-style-type: decimal">
+<li>Please write the university name in the text entry shown below.</li>
+</ol>
+<ul>
+<li><span style="color:blue"> Text Entry […] </span></li>
+</ul>
+<p><br></p>
+</div>
+</div>
+</div>
+<div id="if-type_new_admin-is-cooperation-among-different-jurisdictional-entities" class="section level2 tabset">
+<h2 class="tabset">if [type_new_admin] is ‘Cooperation among different jurisdictional entities’</h2>
+<div id="init_coop" class="section level3">
+<h3>[init_coop]</h3>
+<p>Please select all of the countries from which this cooperation agreement was initiated from.</p>
+<ul>
+<li><span style="color:blue">European Union </span></li>
+<li><span style="color:blue">…</span></li>
+<li><span style="color:blue">Zimbabwe</span></li>
+</ul>
+</div>
+<div id="init_coop_level" class="section level3">
+<h3>[init_coop_level]</h3>
+<p>Was this cooperative agreement made at the national level or provincial level?</p>
+<ul>
+<li><span style="color:blue">At the national level </span></li>
+<li><span style="color:blue">At the provincial/state level </span></li>
+</ul>
+</div>
+<div id="province_coop" class="section level3">
+<h3>[province_coop]</h3>
+<p>Please select the appropriate province/state for [init_coop]</p>
+<p>Note that you may select multiple provinces if needed.</p>
+<ul>
+<li><span style="color:blue">Province for [init_coop] </span></li>
+</ul>
+<p><br><br></p>
+</div>
+</div>
+</div>
+<div id="geographical-target" class="section level1">
+<h1>Geographical Target</h1>
+<div id="target_init_same" class="section level2">
+<h2>[target_init_same]</h2>
+<p>Does the geographic target of the policy match the initiator of the policy?</p>
+<ul>
+<li><span style="color:blue">Yes </span></li>
+<li><span style="color:blue">No </span></li>
+</ul>
+</div>
+<div id="target_geog_level" class="section level2 tabset">
+<h2 class="tabset">[target_geog_level]</h2>
+<p>Please specify which geographical or administrative entity is the target of the policy:</p>
+<ul>
+<li><span style="color:blue">All countries </span></li>
+<li><span style="color:blue">One or more regional groupings </span></li>
+<li><span style="color:blue">One or more countries, but not all countries </span></li>
+<li><span style="color:blue">One or more countries and one or more regional groupings </span></li>
+<li><span style="color:blue">One or more geographical or administrative units within one or more countries </span></li>
+<li><span style="color:blue">An international organization (e.g. World Health Organization)</span></li>
+</ul>
+<div id="target_country" class="section level3">
+<h3>[target_country]</h3>
+<p>Please select as many countries that are targets of this policy as applicable.</p>
+<p>Note, if the target countries is all countries except for one, for example, you can use the ‘select all’ button to select all of the countries, and then click on the country that is the exception to ‘de-select’ it. Note if the policy applies to all countries with no exceptions, then please choose the ‘All countries’ option in response to the previous request to ‘Please specify which geographical or administrative entity is the target of the policy.’</p>
+<ul>
+<li><span style="color:blue">European Union </span></li>
+<li><span style="color:blue">…</span></li>
+<li><span style="color:blue">Zimbabwe</span></li>
+</ul>
+</div>
+<div id="target_region" class="section level3">
+<h3>[target_region]</h3>
+<p>Please choose as many applicable regions as possible.</p>
+<p>If the targets are regions with the exception of a single country (e.g. all Schengen Countries except Switzerland) then please choose ‘Other Regions’ and enter this into the text field.</p>
+<ul>
+<li><span style="color:blue">European </span></li>
+<li><span style="color:blue">…</span></li>
+<li><span style="color:blue">Other Regions (please specify below) [Text Entry] </span></li>
+</ul>
+</div>
+<div id="target_country_sub" class="section level3">
+<h3>[target_country_sub]</h3>
+<p>Please specify the country for which the targeted subnational geographical or administrative unit is located:</p>
+<ul>
+<li><span style="color:blue">Afghanistan </span></li>
+<li><span style="color:blue">…</span></li>
+<li><span style="color:blue">Other (please specify below) [Text Entry] </span></li>
+</ul>
+</div>
+</div>
+<div id="if-target_geog_level-is-a-geographical-or-administrative-unit-within-a-country" class="section level2 tabset">
+<h2 class="tabset">if [target_geog_level] is ‘A geographical or administrative unit within a country’</h2>
+<p><br></p>
+<div id="target_geog_sublevel" class="section level3 tabset">
+<h3 class="tabset">[target_geog_sublevel]</h3>
+<p>What subnational geographical or administrative unit is this policy targeted towards?</p>
+<ul>
+<li><span style="color:blue">One or more provinces within a country </span></li>
+<li><span style="color:blue">One or more cities within a country </span></li>
+<li><span style="color:blue">One or more other geographical or administrative unit within a country (e.g. county) </span></li>
+</ul>
+<div id="target_province" class="section level4">
+<h4>target_province</h4>
+<p>Please select the appropriate province/state for [target_country_sub]</p>
+<p>To select multiple provinces, please press CMD or CTRL and then click If this policy was initiated from the city/municipal or other government level and it is difficult to identify the relevant province, leave blank.</p>
+<ul>
+<li><span style="color:blue"> <a href="#target_province">target_province</a> </span></li>
+</ul>
+</div>
+<div id="target_city" class="section level4">
+<h4>target_city</h4>
+<p>Please write in what cities/municipalities this policy is targeted towards:</p>
+<p>If there are multiple cities/municipalities, please separate with a semicolon and include the corresponding province name in parentheses (e.g. Beijing (Beijing); Los Angeles (California); Munich (Bavaria)).</p>
+<ul>
+<li><span style="color:blue"> Text Entry […] </span></li>
+</ul>
+</div>
+<div id="target_other" class="section level4">
+<h4>target_other</h4>
+<p>Please write in what other geographic or administrative unit this policy is targeted towards:</p>
+<p>If there are multiple geographic or administrative units, please separate with a semicolon and include the corresponding province name in parentheses (e.g. Santa Clara County (California); Sonoma County (California)).</p>
+<ul>
+<li><span style="color:blue"> Text Entry […] </span></li>
+</ul>
+</div>
+<div id="target_intl_org" class="section level4">
+<h4>target_intl_org</h4>
+<p>Please write in what international organization this policy is targeted towards.</p>
+<p>Please spell out the full name of the international organization. If there are multiple international organizations, please separate with a semicolon (e.g. World Health Organization; United Nations)</p>
+<ul>
+<li><span style="color:blue"> Text Entry […] </span></li>
+</ul>
+<p><br><br></p>
+</div>
+</div>
+</div>
+</div>
+<div id="demographic-target" class="section level1">
+<h1>Demographic Target</h1>
+<div id="target_who_what" class="section level2">
+<h2>[target_who_what]</h2>
+<p>Please select from the list below what or whom the policy is targeted at (could be another country, residents inside the country, etc.). For a description and example of each category, please click on the relevant button below. For a visualization of how these variables relate to each other, please refer to the table below:</p>
+<p><img src="../img/target_who_what_table.png" /></p>
+<details>
+<summary>
+<span style="color:blue"> All (Travelers + Residents) </span>
+</summary>
+<ul>
+<li>A government policy that applies to all humans regardless of residency or travel status.
+<ul>
+<li>Example: “Starting March 16, Germany will close its borders with Austria, Denmark, France, Luxembourg and Switzerland, the country’s interior minister said on March 15.”<br />
+</li>
+</ul></li>
+</ul>
+</details>
+<details>
+<summary>
+<span style="color:blue"> All Travelers (Citizen Travelers + Foreign Travelers) </span>
+</summary>
+<ul>
+<li>A government policy that applies to all those travelling outside the country initiating the policy, both foreign and domestic.
+<ul>
+<li>Example: In South Africa, on March 15 “all travelers who have entered South Africa from high risk countries since mid February will be required to present themselves for testing”<br />
+</li>
+</ul></li>
+</ul>
+</details>
+<details>
+<summary>
+<span style="color:blue"> Citizen Travelers </span>
+</summary>
+<ul>
+<li>A government policy that applies only to domestic nationals travelling outside the country initiating the policy.
+<ul>
+<li>Example: As of March 15, according to the Ghanaian government, “Ghanaian citizens must self-quarantine for 14 days upon re-entry.”</li>
+</ul></li>
+</ul>
+</details>
+<details>
+<summary>
+<span style="color:blue"> All Travelers (Citizen Travelers + Foreign Travelers) </span>
+</summary>
+<ul>
+<li>A government policy that applies to all those travelling outside the country initiating the policy, both foreign and domestic.
+<ul>
+<li>Example: In South Africa, on March 15 “all travelers who have entered South Africa from high risk countries since mid February will be required to present themselves for testing”<br />
+</li>
+</ul></li>
+</ul>
+</details>
+<details>
+<summary>
+<span style="color:blue"> Foreign Travelers </span>
+</summary>
+<ul>
+<li>A government policy that applies to only to foreign nationals travelling outside the country initiating the policy.
+<ul>
+<li>Example: “As of March 16, all travelers without permanent or temporary residency for more than 90 days cannot enter the country, according to the U.S. Embassy in the Czech Republic.”<br />
+</li>
+</ul></li>
+</ul>
+</details>
+<details>
+<summary>
+<span style="color:blue"> All Residents (Citizen Residents + Foreign Residents) </span>
+</summary>
+<ul>
+<li>Government policy targeted toward residents, both foreign nationals and domestic nationals, in the country initiating the policy.
+<ul>
+<li>Example: In the Dominican Republic, starting March 20, there is a “Nationwide nighttime curfew over the next two weeks.”<br />
+</li>
+</ul></li>
+</ul>
+</details>
+<details>
+<summary>
+<span style="color:blue"> Citizen Residents </span>
+</summary>
+<ul>
+<li>Government policies that apply only to citizens who are residing in the country initiating the policy.
+<ul>
+<li>Example: On March 21, “the Hungarian government has asked its citizens to avoid any travel to infected areas, according to the U.S. Embassy in Hungary.”<br />
+</li>
+</ul></li>
+</ul>
+</details>
+<details>
+<summary>
+<span style="color:blue"> Foreign Residents (Foreign Nationals Residing in the Country) </span>
+</summary>
+<ul>
+<li>Government policies that that apply only to foreign nationals who are residing in the country in initiating the policy
+<ul>
+<li>Example: “The United Arab Emirates is barring entry to holders of valid resident visas for a renewable period of two weeks, effective Thursday March 19.”<br />
+</li>
+</ul></li>
+</ul>
+</details>
+<details>
+<summary>
+<span style="color:blue"> All Citizens (Citizen Residents + Citizen Travelers) </span>
+</summary>
+<ul>
+<li>Individuals with citizenship or permanent residency in the country initiating the policy<br />
+</li>
+</ul>
+</details>
+<details>
+<summary>
+<span style="color:blue"> All Foreign Nationals (Foreign Residents + Foreign Travelers) </span>
+</summary>
+<ul>
+<li>Individuals without citizenship or permanent residency in the country initiating the policy.<br />
+</li>
+</ul>
+</details>
+<details>
+<summary>
+<span style="color:blue"> Health Staff </span>
+</summary>
+<ul>
+<li>Government policy targeted toward human health resources.
+<ul>
+<li>On February 23, “Taiwan bans healthcare workers from travelling abroad.”<br />
+</li>
+</ul></li>
+</ul>
+</details>
+<details>
+<summary>
+<span style="color:blue"> Health-Related Supplies </span>
+</summary>
+<ul>
+<li>Government policy targeted toward non-human health resources.
+<ul>
+<li>On March 4, “Taiwan bans export of digital thermometers.”<br />
+</li>
+</ul></li>
+</ul>
+</details>
+<ul>
+<li><span style="color:blue">Other [Text Entry] </span></li>
+</ul>
+<p><br></p>
+</div>
+<div id="target_who_gen" class="section level2">
+<h2>[target_who_gen]</h2>
+<p>If a policy targeted toward a particular part of a population (under a criteria other than ‘citizenship’ status or ‘residency’ status, which is captured by the ‘target_who_what’ question), please select all that apply in the choices given below.</p>
+<ul>
+<li><p>If the policy is targeted toward the general population or the policy does not specify a particular target, then please choose ‘No special population targeted’</p></li>
+<li><p>Note that with regards to the distinction below provided between ‘essential’ and ‘non-essential’ workers, please follow whatever guidance the policy actually gives instead of making your own inference. For instance, it is conceivable that a government might deem a ‘doctor’ a ‘non-essential’ worker or that a government refers to ‘doctors’ without noting that they are essential workers.</p></li>
+<li><p><span style="color:blue">Asylum/refugee seekers </span></p></li>
+<li><p><span style="color:blue">Homeless population </span></p></li>
+<li><p><span style="color:blue">Domestically abused people </span></p></li>
+<li><p><span style="color:blue">Domestic abusers </span></p></li>
+<li><p><span style="color:blue">Prisoners </span></p></li>
+<li><p><span style="color:blue">People in nursing homes/long term care facilities </span></p></li>
+<li><p><span style="color:blue">People of a certain age (please note age range in the text entry) [Text Entry] </span></p></li>
+<li><p><span style="color:blue">People with certain health conditions (please note which health conditions in the text entry) [Text Entry] </span></p></li>
+<li><p><span style="color:blue">People who have recovered and/or survived COVID-19</span></p></li>
+<li><p><span style="color:blue">People who are fully vaccinated against COVID-19 </span></p></li>
+<li><p><span style="color:blue">People who are partially vaccinated against COVID-19 </span></p></li>
+<li><p><span style="color:blue">People who are not vaccinated against COVID-19 </span></p></li>
+<li><p><span style="color:blue">Women </span></p></li>
+<li><p><span style="color:blue">Essential workers (please note their occuption in the text entry where applicable) [Text Entry] </span></p></li>
+<li><p><span style="color:blue">Non-essential workers (please note their occupation in the text entry where applicable) [Text Entry] </span></p></li>
+<li><p><span style="color:blue">Migrant workers (please note their occupation in the text entry where applicable) [Text Entry] </span></p></li>
+<li><p><span style="color:blue">Other workers where the distinction between essential or non-essential is not explictely made (please note the occupation in the text entry) [Text Entry] </span></p></li>
+<li><p><span style="color:blue">Other population not specifed above [Text Entry] </span></p></li>
+<li><p><span style="color:blue">Indigenous peoples/ethnic minorities [Text Entry] </span></p></li>
+<li><p><span style="color:blue">No special population targeted </span></p></li>
+</ul>
+<p><br><br></p>
+</div>
+</div>
+<div id="target-direction" class="section level1">
+<h1>Target Direction</h1>
+<div id="target_direction" class="section level2">
+<h2>[target_direction]</h2>
+<p>Please select whether this policy is inbound, outbound or both inbound/outbound. For a description and example of each category, please click on the below.</p>
+<details>
+<summary>
+<span style="color:blue"> Inbound </span>
+</summary>
+<ul>
+<li>Government policy that seeks to control movement of people or goods entering the country initiating the policy
+<ul>
+<li>Example: In Malaysia, on January 30, “The state of Sabah has canceled all flights from China and South Korea.”</li>
+</ul></li>
+</ul>
+</details>
+<details>
+<summary>
+<span style="color:blue"> Outbound </span>
+</summary>
+<ul>
+<li>Government policy that seeks to control movement of people or goods exiting the country initiating the policy.
+<ul>
+<li>Example: On March 18, “The government of Belgium declared all nonessential travel outside of Belgium is forbidden until April 5, according to the United States Embassy in Belgium.”<br />
+</li>
+</ul></li>
+</ul>
+</details>
+<details>
+<summary>
+<span style="color:blue"> Inbound/Outbound </span>
+</summary>
+<ul>
+<li>Government policy that seeks to control the movement of people or goods entering or exiting the country
+<ul>
+<li>Example: In Jordan, “As of March 17, all flights, excluding commercial airfreight traffic, will be suspended, according to officials.”</li>
+</ul></li>
+</ul>
+</details>
+<ul>
+<li><span style="color:blue"> Not Applicable </span></li>
+</ul>
+<p><br></p>
+</div>
+<div id="target_dir_health_imp" class="section level2">
+<h2>[target_dir_health_imp]</h2>
+<p>You have selected the ‘Health Resources’ policy type and that the target direction of the policy is inbound. If applicable, please further specify whether the policy deals with:</p>
+<ul>
+<li><span style="color:blue"> Increasing Imports [Text Entry] </span></li>
+<li><span style="color:blue"> Restricting Imports [Text Entry] </span></li>
+<li><span style="color:blue"> Not Applicable </span></li>
+</ul>
+<p><br></p>
+</div>
+<div id="target_dir_health_exp" class="section level2">
+<h2>[target_dir_health_exp]</h2>
+<p>You have selected the ‘Health Resources’ policy type and the target direction of the policy is ‘outbound’. If applicable please further specify whether the policy deals with:</p>
+<ul>
+<li><span style="color:blue"> o Increasing exports (e.g. donating masks to another country) </span></li>
+<li><span style="color:blue"> o Restricting exports (e.g. preventing the export of hand sanitizer) </span></li>
+<li><span style="color:blue"> Not Applicable </span></li>
+</ul>
+<p><br><br></p>
+</div>
+</div>
+<div id="travel-mechanism" class="section level1">
+<h1>Travel Mechanism</h1>
+<div id="travel_mechanism" class="section level2">
+<h2>[travel_mechanism]</h2>
+<ul>
+<li><span style="color:blue"> All kinds of transport </span></li>
+<li><span style="color:blue"> Flights </span></li>
+<li><span style="color:blue"> Land Border </span></li>
+<li><span style="color:blue"> Trains </span></li>
+<li><span style="color:blue"> Buses </span></li>
+<li><span style="color:blue"> Seaports </span></li>
+<li><span style="color:blue"> Cruises </span></li>
+<li><span style="color:blue"> Ferries </span></li>
+<li><span style="color:blue"> Other (please specify) [Text Entry] </span></li>
+<li><span style="color:blue"> Not Applicable </span></li>
+</ul>
+<p><br></p>
+</div>
+</div>
+<div id="compliance" class="section level1">
+<h1>Compliance</h1>
+<div id="compliance-1" class="section level2">
+<h2>[compliance}</h2>
+<details>
+<summary>
+<span style="color:blue"> Mandatory With Legal Penalties (Jail Time) </span>
+</summary>
+<ul>
+<li>The prescribed government policy is mandatory/ must be followed. If the description of a policy does not state otherwise, assume that it is mandatory. If the policy is not followed, people may face legal penalties like jail time.
+<ul>
+<li>Example: “On March 15, Uruguay announced it would halt all flights from Europe starting March 20.<br />
+</li>
+</ul></li>
+</ul>
+</details>
+<details>
+<summary>
+<span style="color:blue"> Mandatory With Fines </span>
+</summary>
+<ul>
+<li>The prescribed government policy is mandatory/ must be followed. If the description of a policy does not state otherwise, assume that it is mandatory. If the policy is not followed, people may face legal penalties like jail time.
+<ul>
+<li>Example: In Switzerland as announced on March 22, “Gatherings in public spaces of more than 5 people are prohibited. This includes public spaces such as public squares, park, playgrounds, walking paths, etc. If five or fewer people meet, they must maintain a distance of 2 meters from one another. Anyone not complying with this rule will be fined.”<br />
+</li>
+</ul></li>
+</ul>
+</details>
+<details>
+<summary>
+<span style="color:blue"> Mandatory (Unspecified/Implied) </span>
+</summary>
+<ul>
+<li>The prescribed government policy is mandatory/must be followed but the penalty for failing to comply is not made explicit or is implied. For instance, in the example given below, the implication of the policy (even though it is not explicitly stated) is that travelers without a health certificate will not be allowed to enter the country.
+<ul>
+<li>Example: In the Dominican Republic, as of March 19, “all travelers arriving in the country must complete a travel history form”<br />
+</li>
+</ul></li>
+</ul>
+</details>
+<details>
+<summary>
+<span style="color:blue"> Mandatory with Exceptions </span>
+</summary>
+<ul>
+<li>There are some exceptions to the policy but it is mandatory for those for whom it applies.
+<ul>
+<li>Example: E.g. As of March 13, the Indian government suspended most travel and tourism visas, with the exception of “diplomatic, official, U.N. or International Organizations, employment and project visas” until April 15.<br />
+</li>
+</ul></li>
+</ul>
+</details>
+<p><span style="color:blue"> Mandatory (Other; please list other enforcement mechanisms in the text entry) </span></p>
+<details>
+<summary>
+<span style="color:blue"> Recommended/Voluntary but no penalties </span>
+</summary>
+<ul>
+<li>The prescribed policy is recommended by the initiating body but compliance is voluntary .
+<ul>
+<li>Example: As of March 14, Brazil had not imposed travel restrictions. Its health ministry recommended that all passengers who arrive on international flights remain at home for at least seven days and seek medical help if they develop coronavirus symptoms.<br />
+</li>
+</ul></li>
+</ul>
+</details>
+<p><br></p>
+</div>
+</div>
+<div id="enforcer" class="section level1">
+<h1>Enforcer</h1>
+<div id="enforcer-1" class="section level2">
+<h2>{enforcer}</h2>
+<p>Please select all that apply in terms of organizations enforcing compliance or issuing recommendations for the policy you are documenting.</p>
+<p>Note that the response ‘police’ can refer to police at any level of government (e.g. national, provincial, etc.) Please select as many dimensions as possible. That is, if the source says a policy is enforced by the provincial police, please select both ‘provincial/state government’ and ‘police’. If the report only refers to police enforcement without stating the level of government, then select ’police only.</p>
+<ul>
+<li><span style="color:blue"> National Government </span></li>
+<li><span style="color:blue"> Ministry/Department of Health </span></li>
+<li><span style="color:blue"> Ministry/Department of Foreign Affairs </span></li>
+<li><span style="color:blue"> Ministry/Department of Justice </span></li>
+<li><span style="color:blue"> Ministry/Department of Education </span></li>
+<li><span style="color:blue"> Military </span></li>
+<li><span style="color:blue"> Provincial/State Government </span></li>
+<li><span style="color:blue"> Municipal Government </span></li>
+<li><span style="color:blue"> Police </span></li>
+<li><span style="color:blue"> New (COVID-19 specific) Task Force</li>
+<li><span style="color:blue"> Other (Please specify in the text box) [Text Entry] </span></li>
+</ul>
+<p><br></p>
+</div>
+</div>
+<div id="dates" class="section level1">
+<h1>Dates</h1>
+<div id="date_announced" class="section level2">
+<h2>[date_announced]</h2>
+<p>When was this policy announced?</p>
+<ul>
+<li><span style="color:blue"> Date Entry </span></li>
+</ul>
+<p><br></p>
+</div>
+<div id="date_start" class="section level2">
+<h2>[date_start]</h2>
+<p>When does the policy take effect? If there is no available information about this, just use the day it was announced.</p>
+<p>Note if you are coding an update, please use the start date announced by the updated policy if applicable.</p>
+<ul>
+<li><span style="color:blue"> Date Entry </span></li>
+</ul>
+<p><br></p>
+</div>
+<div id="date_end_spec" class="section level2">
+<h2>[date_end_spec]</h2>
+<p>Please select the choice which best describes the end date for this policy:</p>
+<ul>
+<li><span style="color:blue"> The policy has a clear end date </span></li>
+<li><span style="color:blue"> The policy is a one-time measure (e.g. publication of guidelines) </span></li>
+<li><span style="color:blue"> The policy has an imprecise natural end date (e.g. masks will be distributed until they run out) </span></li>
+<li><span style="color:blue"> The policy has an unlimited time span (e.g. recommendation to wash one’s hands; passing of a legal bill) </span></li>
+<li><span style="color:blue"> The policy’s end date is unknown or unreported </span></li>
+</ul>
+</div>
+<div id="date_end" class="section level2">
+<h2>[date_end]</h2>
+<p><small> If [date_end_spec] == ‘The policy has a clear end date’, then the following question is shown: </small></p>
+<p>When does the policy end? If there is no available information about this, just leave blank.</p>
+<p>Note if you are coding an update, please use the end date announced by the updated policy if applicable.</p>
+<ul>
+<li><span style="color:blue"> Date Entry </span></li>
+</ul>
+<p><br></p>
+</div>
+</div>
+<div id="sources" class="section level1">
+<h1>Sources</h1>
+<div id="link" class="section level2">
+<h2>[link]</h2>
+<p>Please record the sources of information that you used to collect this data in the below.</p>
+<p>Please remember to save a .pdf of the source that you collected. Save the .pdf with the following filename format "[Date Source Collected]_[Title of the Source].pdf“: [Date Source Collected] refers to the day on which the RA collects the data, not when the source was published Note the [Date Source Collected] should be in the following format: MM-DD-YYYY (e.g. 03-22-2020). E.g.”03-21-2020_CDC implements extra inspection measures for Wuhan flights.pdf" If using a frequently updated version of a website as your source (e.g. the US Embassy website for you country) please be sure to save a new .pdf each day that you access it</p>
+<p>NOTE: In the text entry for ‘Date Published’ Please enter the date that the source was published, NOT the date the source was collected. In short, please enter the date the source was published in the text entry box, but to save the date the source was collected in the .pdf.</p>
+<p><br></p>
+</div>
+</div>
+<div id="notes" class="section level1">
+<h1>Notes</h1>
+<div id="notes-1" class="section level2">
+<h2>[notes}</h2>
+<p>If you have any other thoughts/concerns/things we should know about this event, please input them here and we will review them.</p>
+<ul>
+<li><span style="color:blue"> Text Entry […] </span></li>
+</ul>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

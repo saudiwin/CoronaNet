@@ -1,0 +1,170 @@
+---
+title: "Psychological Responses during COVID-19: Understanding Mental Health, Adaptive and Maladaptive Behaviors"
+description: Return to [CoronaNet](https://coronanet-project.org/)
+author:
+  - name: Elif Çalışkan
+    url: https://www.linkedin.com/in/pskelifcaliskan/
+    affiliation: Dokuz Eylül University
+date: "`r Sys.Date()`"
+output: distill::distill_article
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+<style>
+body {
+text-align: justify}
+</style>
+
+
+On March 11, 2020, the World Health Organization (WHO) announced that COVID-19 had officially become a pandemic (Kelly, 2020). In response to COVID-19, governments around the world have been introducing a significant number of policies including hygiene measures, quarantines, lockdowns, curfews as well as social distancing measures to restrain the pandemic’s spread and impact (Cheng, Barceló, Hartnett, Kubinec, & Messerschmidt, 2020). The outbreak has created a “new normal” across the world for all social and economic settings (Brammer, & Clark, 2020). Even though COVID-19 is typically associated with physical rather than mental health impacts, the fear of infection, lack of certain treatment, orders to stay at home, lack of social activities, as well as inadequate information have affected people’s behavioral responses and psychological well-being to varying degrees. Particularly, vulnerable individuals have been heavily impacted. These include individuals who are 70 years old or older, possess conditions such as heart disease, high blood pressure, diabetes, asthma, or chronic kidney disease, as well as those who are health workers (Fiorillo, & Gorwood, 2020; Pérez-Fuentes, Molero-Jurado, Martos-Martínez, & Gázquez-Linares, 2020; Ripp, Peccoralo, & Charney, 2020).
+
+Adaptive health-related behaviors against a threat generally have been suggested that: (1) understanding how to avoid contagion or get well and (2) estimating the likelihood that a particular health response may prevent the contagion (Strecher, & Rosenstock, 1997). On the other hand, maladaptive behavior is where one’s behavioral patterns are detrimental or interfere with taking action and producing effective coping strategies for threatening or stressful events (APA, 2020). Due to the outbreak, many people have become unemployed, while many are also being encouraged to work remotely and spend more time at home (Galea, & Abdalla, 2020; Nicola et al., 2020; Raišienė, Rapuano, Varkulevičiūtė, & Stachová, 2020). On the other hand, some people have experienced trauma due to the risk of infection as well as a sense of loss related to being disconnected from family members, friends, and communities. All of these factors may lead to a reduction or loss of daily routine and activities. So, both the pandemic itself and measures implemented by governments can create situations that affect individuals’ behavioral responses (WHO, 2020).
+
+Researchers show several negative psychological factors generally associated with quarantine, curfew, lockdown, and isolation. These include stress, anxiety of potential contagion, depression, post-traumatic stress disorder (PTSD), boredom, as well as frustration. The main stressors in those situations are the duration of the isolation, perception that the contagion is threatening, financial problems, as well as inadequate information (Gabor et al., 2020). A study in Germany demonstrated that there was a significant increase in demand for psychological counseling after the week that the country introduced lockdown. Due to heightened feelings of loneliness and other mental health issues, demand increased by around 20% compared to the preceding time. This demonstrates that mental health services and the development of coping strategies are essential parts of all government and organizational responses to COVID-19 (Armbruster, & Klotzbücher, 2020).
+
+Therefore, many governments and organizations have legislated, or they are modifying legislation about mental health as a response to COVID-19. For example, in Ireland, the Emergency Measures in the Public Interest (COVID-19) Act 2020 was introduced as an amendment to the Mental Health Act 2001. The purpose of the amendment was to permit the Mental Health Commission to request an independent psychiatric report on an involuntary patient from any consultant psychiatrist who is caring for that patient due to the public health emergency (Kelly, 2020). In China, online psychological counseling services as well as psychological help intervention systems, including online cognitive behavioral therapy for anxiety, depression, and insomnia have also been widely introduced by mental health professionals in medical institutions, universities, and academic societies during the outbreak. These include WeChat-based resources (Liu et al., 2020). As part of the public health responses to COVID-19, the WHO has also been working to improve materials about mental health and psychosocial support (WHO, 2020).
+
+However, how people react to the pandemic may be related to their personalities, experiences, and beliefs about the virus, so human responses to the threat are very different than each other (Nowak et al., 2020). From the perspective of health psychology, the Health Belief Model consists of five dimensions of adaptive health behavior towards a threat. These dimensions are perceived susceptibility, perceived severity, perceived benefits, perceived barriers, and self-efficacy (Janz, & Becker, 1984). Perceived susceptibility generally refers to unrealistic optimism or the likelihood of developing a health risk. Perceived severity is seen in terms of the mortality associated with a threat or its impact on an individual’s life. Perceived benefit refers to adopting the recommended behavior. These may contain objective facts or subjective beliefs about the effectiveness of the recommended health behaviors. Perceived barriers are those factors that reduce the adoption of behavior. They generally include pain, cost, time, loss of pleasure, inconvenience as well as shame (Clarke, Lovegrove, Williams, & Machperson, 2000). On the other hand, self-efficacy refers to increasing recognition as a predictor of health behavior. It affects people’s emotional responses, such as anxiety, distress, and thought patterns about the health threat. Studies show a positive relationship between self-efficacy and protective health behavior to change and maintain (Strecher, McEvoy DeVellis, Becker, & Rosenstock, 1986).
+
+Iran is the most COVID-19 affected country in the Middle East and North Africa region, where the outbreak spread very quickly and early. A study in Iran showed that there was a positive and significant correlation between intention, perceived susceptibility, severity, response efficacy, self-efficacy, and response cost among health workers. The results have shown that protective behaviors (such as wearing a face mask, using gloves, washing hands, and avoiding gathering with others during shifts) against COVID-19 are evaluated at a relatively favorable level among health workers. However, different studies have also shown an unfavorable level (over or low) of protective behaviors (Barati et al., 2020).
+
+The Protection Motivation Theory (PMT) provides an important social-cognitive process of protective behavior. The original theory has suggested that a threat triggers some cognitive appraisal processes: (1) perceiving the seriousness or severity of the threatening event, (2) perceiving the possibility of the occurrence of the event, and (3) perceiving the effectiveness of the proposed coping response. A study was conducted in Luzon, Philippines which investigated the effectiveness of COVID-19 prevention measures among Filipinos during Enhanced Community Quarantine (ECQ). It showed that those who perceived themselves as vulnerable and agreed to the severity of the pandemic believed their protective behaviors would have effective outcomes responded with preventive measures. These measures included proper hygiene, social distancing, face mask use, healthy lifestyle, and lockdown (Prasetyo, Castillo, Salonga, Sia, & Seneta, 2020).
+
+A survey was conducted in China during the initial outbreak of COVID-19. According to this study, 53.8% of people reported the psychological impact of the pandemic as moderate or severe, 28.8% reported moderate to severe anxiety symptoms, 16.5% reported moderate to severe depressive symptoms, and 8.1% reported moderate to severe stress levels (Ho, Chee, & Ho, 2020). Sleep is another important aspect of people’s lives and well-being which has been affected by the pandemic. Initial research showed that the sleep quality of isolated people during the outbreak in China was low (Dominski, & Brandt, 2020). Since any gender and socio-demographic status can be infected, it is hard to understand the dissemination of fear resulting in different behavioral patterns toward the outbreak (Ho, Chee, & Ho, 2020). However, particularly, vulnerable people which have pre-existing mental and physical health conditions, first responders, healthcare workers, as well as addicted individuals, are more likely to show decreased psychological well-being due to a lack of social support (Király et al., 2020).
+
+Since distress interferes with logical decision-making about self-protective behaviors, threatening information may sometimes fail to promote adaptive health-related behaviors for high-vulnerable individuals. People who feel vulnerable to disease may tend to have the disruption of decision-making and symptom-induced anxiety (Cameron, & Leventhal, 1995). Another research has shown that people mainly attributed their COVID-19 risk perception to dispositional factors (87.5%), rather than situational factors (31.25%). People who have a weak immune system or biologically vulnerable have reported a greater belief in a higher proportion of risk. Those who are not vulnerable tended to underestimate their risk of being infected, showing “optimism bias” about COVID-19. It could be an example of perceived control over the outcome (Dunning, & Pownall, 2020). The optimism bias occurs when individuals perceive outcomes about themselves as being more positive than other people who are in similar circumstances (Clarke, Lovegrove, Williams, & Machperson, 2000).
+
+How much control that individuals have over their behaviors or how strong an attempt the individuals make to engage in the behaviors is defined as “perceived behavioral control.” Especially in a threatening situation, it is hard to keep the outcome under control, but people can follow some measures. However, when people lose their feeling of control, they may more feel depressed and anxious. To gain control back, they may start showing maladaptive behaviors (Soroudi, & Safren, 2009). People generally tend to overreact to the threat or show maladaptive behaviors, particularly in a crisis. For example, the stockpiling of basic goods was one of the most common problems for many countries in the early stages of the pandemic (Kim, 2020). A study has suggested that people who felt more threatened by COVID-19 stockpiled more toilet paper than others (Garbe, Rau, & Toppe, 2020).
+
+Health locus of control refers to the concept of an individual’s perceived control over health outcomes (Cross, March, Lapsley, Byrne, & Brooks, 2006). The Theory of Planned Behavior (TPB) specifies that attributes, attitudes, and perceived behavioral control are the important factors of behavioral intent and protective health behavior (Kim, 2020). When people believe they are personally responsible for their health, they have an “internal locus of control.” However, if people believe others, such as health professionals, are responsible for their health and believe that their health depends on situational factors, there is an “external locus of control” such as fate, chance, or luck. People with a high internal locus of control are more likely to take control of their health, as well as seek more health information to protect their psychological and physical well-being (Cross, March, Lapsley, Byrne, & Brooks, 2006).
+
+The Self-Regulation Theory (SRT) evaluates people as active members who engage in a dynamic process of first assessing health threats, and then use problem-solving and coping strategies to address them. This is based on past experiences and newly-acquired information that guides their health behaviors (Mimiaga, Reisner, Reilly, Soroudi, & Safren, 2009). In response to this, physical activity and exercise are considered as reinforcing behaviors to preserve mental and physical health. This is particularly the case for most chronic diseases such as cardiovascular diseases, obesity, dyslipidemia, and metabolic syndrome. Although outdoor activities are generally more acceptable and have more alternative forms of physical exercise, there are still many options to exercise at home, even in the quarantine (Jiménez-Pavón, Carbonell-Baeza, & Lavie, 2020).
+
+The WHO recommends that when people visit a park or open public space to walk, run, or exercise, there is a need to constantly practice physical distancing. Due to exposure to a larger fraction of droplets, social distancing among runners and traveling speed are particularly important (Dominski, & Brandt, 2020). Since the outbreak of COVID-19 in Italy, the Italian Government has been imposed various measures to restrain the spread of the virus (Cheng, Barceló, Hartnett, Kubinec, & Messerschmidt, 2020). Research in Italy also shows that maintaining regular exercise is a key strategy for physical and psychological well-being even in the social distancing and self-isolation measures during the current COVID-19 emergency (Maugeri et al., 2020).
+
+However, when people are in a crisis, they may more tend to abuse substances and use different reinforcing behaviors to reduce their stress, anxiety, depressed mood, and/or be satisfied. These behaviors include smoking, drinking, eating, impulsive buying, gambling, playing video games, watching TV series, pornography, excessive social media, and/or internet usage (Király et al., 2020). Long-term isolation, without face-to-face contact and internet-based activities, can lead to the consolidation of negative habits. For example, stressful conditions that produce an uncontrollable desire to consume tobacco cause a greater risk of relapse (Caponnetto, Inguscio, Saitta, Maglia, Benfatto, & Polosa, 2020). Similarly, an online survey conducted in Italy during COVID-19 lockdown showed that almost half of the respondents declared feelings of anxiety due to their eating habits (Di Renzo et al., 2020). The availability of choice between various options for action may directly influence the perception of the stressful event. However, sometimes people lose control of their actions, particularly in a crisis (Shiloh, Berkenstadt, Meiran, Bat‐Miriam‐Katznelson, & Goldman, 1997). On the other hand, a study showed that wearing a face mask reinforces people’s sense of personal control, the level of perceived self-protection, and social solidarity during the outbreak (Szczesniak et al., 2020).
+
+From the beginning of human history, social contact and a sense of belonging have been some of the most important predictors of psychological well-being (Mellor, Stokes, Firth, Hayashi, & Cummins, 2008). During the pandemic, when social distancing has become a norm, people have been able to meet the need for social interaction with family members, friends, relatives via social media. Professionals have generally organized online workshops, courses, and webinars via some platforms such as Microsoft Teams and Zoom (Brammer, & Clark, 2020; Sundarasen et al., 2020). People have started checking social media more to keep up-to-date with COVID-19. According to a Global Web Index survey, approximately a quarter of Facebook and Twitter users in Britain and the United States have increased their use of these social media platforms in the pandemic (Wiederhold, 2020). While social media plays a significant role during the pandemic in spreading awareness and knowledge about public health, it is also misused to spread fake news and hate speech, as well as create racism or fabricated videos (Neetika, 2020).
+
+Researchers have also shown that excessive social media usage leads to negative effects, both in performance and psychological well-being (Brooks, 2015). If individuals exhibit excessive usage of social media, are overly concerned about the posts, information, and experience an uncontrollable urge to log on and use it, it becomes an “addiction” (Hou, Xiong, Jiang, Song, & Wang, 2019). Social media may also increase the threat and anxiety that people perceive, and decrease the feeling of control over the threat. Intense exposure to the media can affect people’s behavioral responses to the pandemic since there is so much speculation about the mode and limit of the COVID-19 transmission. Regardless of this exposure, people may also experience fear and anxiety, helplessness in their minds, or consider other people who are ill as a threat. What social media can do is to bolster these feelings more (Brooks et al., 2020; Ho, Chee, & Ho, 2020). Likewise, misinformation about COVID-19 may encourage people to move away from expert recommendations for protective behaviors such as social distancing. This may increase the spread of the virus (Krause, Freiling, Beets, & Brossard, 2020).
+
+Traditional media and social media users generally see individuals with authoritative sources of information as reliable (Limaye et al., 2020). A survey of 2,250 residents in the United Kingdom conducted during COVID-19 showed that those who trust the government to control the pandemic were more likely to follow the government regulations during the lockdown (Han et al., 2020). Therefore, governments and policy-makers should raise public awareness measures and provide accurate information about the virus while building trust (Brooks et al., 2020). For example, the WHO has set up a website which aims to facilitate COVID-19 “myth-busting”. The Centers for Disease Control and Prevention has posted a webpage titled “Stop the Spread of Rumors”, which helps people to know the facts about COVID-19 (Krause, Freiling, Beets, & Brossard, 2020).
+
+Since this health crisis has affected the public on a psychological level, motivational messages from governments have been used to support compliance with government measures and recommended protective behaviors to the pandemic. Similarly, the usage of Instagram by the German Government during the health crisis can be classified as a mechanism to direct people to reliable information on social media (Makus, 2020). Despite most people use social media for non-political purposes, such as connecting with friends, researchers have shown that social media might be an effective way to achieve political persuasion and public relief during a crisis. This is because constant exposure to specific information causes a powerful attitude change (Diehl, Weeks, & Gil de Zuniga, 2016). Thus, receiving coping information and previous exposure to the threat before being infected are significant factors to deal with threatening health information. A study has shown that participants who received coping health information reported lower on maladaptive behaviors such as avoidance, hopelessness, and religiosity (Fry, & Prentice-Dunn, 2005).
+
+In conclusion, citizens around the world are being required to comply with numerous government measures in response to COVID-19 (Cheng, Barceló, Hartnett, Kubinec, & Messerschmidt, 2020). Some governments and organizations have introduced specific measures to ensure people’s mental health and the recommended behaviors (Kelly, 2020; WHO, 2020). However, governments and humanitarian organizations also need to value global responses for the most vulnerable people (Nott, 2020). This is because some people are directly or indirectly in more contact with COVID-19. For example, healthcare workers or those who are already vulnerable to biological or psychosocial stressors, including people affected by mental health problems. Hence, they are more likely to show overreaction and experience anxiety, stress, or depression (Fiorillo, & Gorwood, 2020; Király et al., 2020). On the other hand, some people still underestimate the outbreak compared to the rest of the population. The misperceptions about the severity of the COVID-19 may be due to the optimism bias (Dunning, & Pownall, 2020). However, the variety of reactions to the pandemic may be related to people’s personalities, experiences, and beliefs about the virus (Nowak et al., 2020).
+
+As a result of these factors, people are motivated to have control over the outcome of their actions. Those who feel as if they have lower control of outcomes are more likely to exhibit mental health problems and maladaptive behaviors (Goldstein, 2010). Researchers show people who believe they have more control over the outcome also more protect personal well-being, eliminate maladaptive behaviors, seek more health information and try to reinforce physical activity and exercise, rather than maladaptive habits (Cross, March, Lapsley, Byrne, & Brooks, 2006; Jiménez-Pavón, Carbonell-Baeza, & Lavie, 2020). That is why governments and policymakers should provide accurate information, effective and rapid communication during COVID-19, and impose strict measures with a time limit to decrease its psychological impacts. Furthermore, they should emphasize the altruistic choice of self-isolation, understand the different behavioral responses that people capable of, and perceive the importance of mental health policies as well as action plans during the outbreak (Armbruster, & Klotzbücher, 2020; Brooks et al., 2020).
+
+
+**REFERENCES**  
+
+American Psychological Association. (n.d.). Maladaptation. In *APA dictionary of psychology*. Retrieved September 16, 2020, from https://dictionary.apa.org/maladaptation  
+
+Armbruster, S., & Klotzbücher, V. (2020). Lost in lockdown? COVID-19, social distancing, and mental health in Germany (No. 2020-04). *Diskussionsbeiträge*. 
+
+Barati, M., Bashirian, S., Jenabi, E., Khazaei, S., Karimi-Shahanjarini, A., Zareian, S., … & Moeini, B. (2020). Factors associated with preventive behaviours of COVID-19 among hospital staff in Iran in 2020: An application of the protection motivation theory. *Journal of Hospital Infection*, *105*(3), 430-433.  
+
+Brammer, S., & Clark, T. (2020). COVID‐19 and management education: Reflections on challenges, opportunities, and potential futures. *British Journal of Management*, *31*(3), 453.  
+
+Brooks, S. (2015). Does personal social media usage affect efficiency and well-being?. *Computers in Human Behavior*, *46*, 26-37. 
+
+Brooks, S. K., Webster, R. K., Smith, L. E., Woodland, L., Wessely, S., Greenberg, N., & Rubin, G. J. (2020). The psychological impact of quarantine and how to reduce it: Rapid review of the evidence. *The Lancet*, *395*, 912–20.
+
+Cameron, L. D., & Leventhal, H. (1995). Vulnerability beliefs, symptom experiences, and the processing of health threat information: A self‐regulatory perspective. *Journal of Applied Social Psychology*, *25*(21), 1859-1883.  
+
+Caponnetto, P., Inguscio, L., Saitta, C., Maglia, M., Benfatto, F., & Polosa, R. (2020). Smoking behavior and psychological dynamics during COVID-19 social distancing and stay-at-home policies: A survey. *Health Psychology Research*, *8*(1). 
+
+Cheng, C., Barceló, J., Hartnett, A. S., Kubinec, R., & Messerschmidt, L. (2020). COVID-19 government response event dataset (CoronaNet v. 1.0). *Nature Human Behavior*, *4*(7), 756-768.  
+
+Clarke, V. A., Lovegrove, H., Williams, A., & Machperson, M. (2000). Unrealistic optimism and the health belief model. *Journal of Behavioral Medicine*, *23*(4), 367-376.  
+
+Cross, M. J., March, L. M., Lapsley, H. M., Byrne, E., & Brooks, P. M. (2006). Patient self-efficacy and health locus of control: Relationships with health status and arthritis-related expenditure. *Rheumatology*, *45*(1), 92-96.
+
+Diehl, T., Weeks, B. E., & Gil de Zuniga, H. (2016). Political persuasion on social media: Tracing direct and indirect effects of news use and social interaction. *New Media & Society*, *18*(9), 1875-1895. 
+
+Di Renzo, L., Gualtieri, P., Cinelli, G., Bigioni, G., Soldati, L., Attinà, A., … & Ferraro, S. (2020). Psychological aspects and eating habits during COVID-19 home confinement: Results of EHLC-COVID-19 Italian online survey. *Nutrients*, *12*(7), 2152.  
+
+Dominski, F. H., & Brandt, R. (2020). Do the benefits of exercise in indoor and outdoor environments during the COVID-19 pandemic outweigh the risks of infection?. *Sport Sciences for Health*, 1-6.  
+
+Dunning, A., & Pownall, M. (2020). Dispositional and situational attribution of COVID-19 risk: A content analysis of response typology.  
+
+Fiorillo, A., & Gorwood, P. (2020). The consequences of the COVID-19 pandemic on mental health and implications for clinical practice. *European Psychiatry*, *63*(1). 
+
+Fry, R. B., & Prentice-Dunn, S. (2005). Effects of coping information and value affirmation on responses to a perceived health threat. *Health Communication*, *17*(2), 133-147.  
+
+Gabor, C., Törő, K. D., Mokos, J., Sándor, R., Éva, H., Andrea, K., & Rita, F. (2020). Examining perceptions of stress, wellbeing and fear among Hungarian adolescents and their parents under lockdown during the COVID-19 pandemic.  
+
+Galea, S., & Abdalla, S. M. (2020). COVID-19 pandemic, unemployment, and civil unrest: Underlying deep racial and socioeconomic divides. *JAMA*, *324*(3), 227-228.  
+
+Garbe, L., Rau, R., & Toppe, T. (2020). Influence of perceived threat of Covid-19 and HEXACO personality traits on toilet paper stockpiling. *Plos One*, *15*(6), e0234232.  
+
+Goldstein, E. B. (2010). Cognitive psychology: Connecting mind, research and everyday experience. *Nelson Education*.  
+
+Han, Q., Zheng, B., Cristea, M., Agostini, M., Belanger, J., Gutzkow, B., … & Leander, P. (2020). Trust in government and its associations with health behaviour and prosocial behaviour during the COVID-19 pandemic.  
+
+Ho, C. S., Chee, C. Y., & Ho, R. C. (2020). Mental health strategies to combat the psychological impact of COVID-19 beyond paranoia and panic. *Ann Acad Med Singapore*, *49*(1), 1-3.  
+
+Hou, Y., Xiong, D., Jiang, T., Song, L., & Wang, Q. (2019). Social media addiction: Its impact, mediation, and intervention. *Cyberpsychology: Journal of Psychosocial Research on Cyberspace*, *13*(1).  
+
+Janz, N. K., & Becker, M. H. (1984). The health belief model: A decade later. *Health Education Quarterly*, *11*(1), 1-47.  
+
+Jiménez-Pavón, D., Carbonell-Baeza, A., & Lavie, C. J. (2020). Physical exercise as therapy to fight against the mental and physical consequences of COVID-19 quarantine: Special focus in older people. *Elsevier Public Health Emergency Collection*, *63*(3), 386–388.  
+
+Kelly, B. D. (2020). Emergency mental health legislation in response to the Covid-19 (Coronavirus) pandemic in Ireland: Urgency, necessity and proportionality. *International Journal of Law and Psychiatry*, 101564.  
+
+Kim, J. (2020). Impact of the perceived threat of COVID-19 on variety-seeking. *Australasian Marketing Journal (AMJ)*, *28*(3), 108-116.
+
+Király, O., Potenza, M. N., Stein, D. J., King, D. L., Hodgins, D. C., Saunders, J. B., … & Abbott, M. W. (2020). Preventing problematic internet use during the COVID-19 pandemic: Consensus guidance. *Comprehensive Psychiatry*, 152180.
+
+Krause, N. M., Freiling, I., Beets, B., & Brossard, D. (2020). Fact-checking as risk communication: the multi-layered risk of misinformation in times of COVID-19. *Journal of Risk Research*, 1-8.  
+
+Limaye, R. J., Sauer, M., Ali, J., Bernstein, J., Wahl, B., Barnhill, A., & Labrique, A. (2020). Building trust while influencing online COVID-19 content in the social media world. *The Lancet Digital Health*, *2*(6), e277-e278.  
+
+Liu, S., Yang, L., Zhang, C., Xiang, Y. T., Liu, Z., Hu, S., & Zhang, B. (2020). Online mental health services in China during the COVID-19 outbreak. *The Lancet Psychiatry*, *7*(4), e17-e18.  
+
+Maddux, J. E., & Rogers, R. W. (1983). Protection motivation and self-efficacy: A revised theory of fear appeals and attitude change. *Journal of Experimental Social Psychology*, *19*(5), 469-479.  
+
+Makus, C. (2020). ‘The newer, the better!..?’: Health crisis communication of the German Government on Instagram during COVID-19 (Unpublished bachelor’s thesis, University of Twente).  
+
+Maugeri, G., Castrogiovanni, P., Battaglia, G., Pippi, R., D’Agata, V., Palma, A., … & Musumeci, G. (2020). The impact of physical activity on psychological health during Covid-19 pandemic in Italy. *Heliyon*, *6*(6), e04315.  
+
+Mellor, D., Stokes, M., Firth, L., Hayashi, Y., & Cummins, R. (2008). Need for belonging, relationship satisfaction, loneliness, and life satisfaction. *Personality and Individual Differences*, *45*(3), 213-218.  
+
+Milne, S., Sheeran, P., & Orbell, S. (2000). Prediction and intervention in health‐related behavior: A meta‐analytic review of protection motivation theory. *Journal of Applied Social Psychology*, *30*(1), 106-143.  
+
+Mimiaga, M. J., Reisner, S. L., Reilly, L., Soroudi, N., & Safren, S. A. (2009). Individual interventions. *In HIV Prevention* (pp. 203-239). Elsevier Inc. 
+
+Neetika, S. (2020). Psychological impact of social media during COVID-19 pandemic lockdown, *International Journal of Multidisciplinary Educational Research*, *5*(8), 9.  
+
+Nicola, M., Alsafi, Z., Sohrabi, C., Kerwan, A., Al-Jabir, A., Iosifidis, C., … & Agha, R. (2020). The socio-economic implications of the coronavirus pandemic (COVID-19): A review. *International Journal of Surgery (London, England)*, *78*, 185.  
+
+Nott, D. (2020). The COVID-19 response for vulnerable people in places affected by conflict and humanitarian crises. *The Lancet*, *395*(10236), 1532-1533.  
+
+Nowak, B., Brzóska, P., Piotrowski, J., Sedikides, C., Żemojtel-Piotrowska, M., & Jonason, P. K. (2020). Adaptive and maladaptive behavior during the COVID-19 pandemic: The roles of dark triad traits, collective narcissism, and health beliefs. *Personality and Individual Differences*, *167*, 110232.  
+
+Pérez-Fuentes, M. D. C., Molero-Jurado, M. D. M., Martos-Martínez, Á., & Gázquez-Linares, J. J. (2020). Threat of COVID-19 and emotional state during quarantine: Positive and negative affect as mediators in a cross-sectional study of the Spanish population. *Plos One*, *15*(6), e0235305.  
+
+Prasetyo, Y. T., Castillo, A. M., Salonga, L. J., Sia, J. A., & Seneta, J. A. (2020). Factors affecting perceived effectiveness of COVID-19 prevention measures among Filipino during enhanced community quarantine in Luzon, Philippines: Integrating protection motivation theory and extended theory of planned behavior. *International Journal of Infectious Diseases*, *99*, 312-323.  
+
+Raišienė, A. G., Rapuano, V., Varkulevičiūtė, K., & Stachová, K. (2020). Working from home—Who is happy? A survey of Lithuania’s employees during the Covid-19 quarantine period. *Sustainability*, *12*(13), 5332.  
+
+Ripp, J., Peccoralo, L., & Charney, D. (2020). Attending to the emotional well-being of the health care workforce in a New York City health system during the COVID-19 pandemic. *Academic Medicine*, *95*(8), 1136-1139.  
+
+Shiloh, S., Berkenstadt, M., Meiran, N., Bat‐Miriam‐Katznelson, M., & Goldman, B. (1997). Mediating effects of perceived personal control in coping with a health threat: The case of genetic counseling 1. *Journal of Applied Social Psychology*, *27*(13), 1146-1174.  
+
+Strecher, V. J., McEvoy DeVellis, B., Becker, M. H., & Rosenstock, I. M. (1986). The role of self-efficacy in achieving health behavior change. *Health Education Quarterly*, *13*(1), 73-92.  
+
+Strecher, V. J., & Rosenstock, I. M. (1997). The health belief model. *Cambridge Handbook of Psychology, Health and Medicine*, *113*, 117.  
+
+Sundarasen, S., Chinna, K., Kamaludin, K., Nurunnabi, M., Baloch, G. M., Khoshaim, H. B., … & Sukayt, A. (2020). Psychological impact of COVID-19 and lockdown among university students in Malaysia: Implications and policy recommendations. *International Journal of Environmental Research and Public Health*, *17*(17), 6206.
+
+
+Szczesniak, D., Ciulkowicz, M., Maciaszek, J., Misiak, B., Luc, D., Wieczorek, T., ... & Rymaszewska, J. (2020). Psychopathological responses and face mask restrictions during the COVID-19 outbreak: Results from a nationwide survey. *Brain, Behavior, and Immunity*, *87*, 161–162.  
+
+Wiederhold, B. K. (2020). Social media use during social distancing. *Cyberpsychology, Behavior, and Social Networking*, *23*(5), 275-276.  
+
+World Health Organization. (2020). Addressing the mental health needs of vulnerable populations in the COVID-19 response in the WHO European Region. Retrieved September 16, 2020, from https://www.euro.who.int/__data/assets/pdf_file/0003/446340/Factsheet-May-2020-Vulnerable-populations-during-COVID-19-response-eng.pdf
+

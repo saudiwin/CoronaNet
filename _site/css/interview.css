@@ -1,0 +1,114 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: none;
+    font-family: "Computer Modern", sans-serif;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none; 
+}
+
+
+body,
+html {
+    height: 100%;
+    overflow: hidden;
+}
+
+#particles-js canvas {
+    display: block;
+    vertical-align: bottom;
+    -webkit-transform: scale(1);
+    -ms-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+    -webkit-transition: opacity .8s ease, -webkit-transform 1.4s ease;
+    transition: opacity .8s ease, transform 1.4s ease
+}
+
+#particles-js {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: -10;
+    top: 0;
+    left: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    background-color: rgba(190, 190, 190, 0.7);
+    vertical-align: center;
+    align-content: center;
+    border-radius: 20px 20px;
+    
+    position: absolute;
+	top: 5%;
+	bottom: 5%;
+	left: 5%;
+	right: 5%;
+  	
+	margin: auto;
+    color: rgb(50, 50, 50);
+    
+    overflow-y: auto;
+}
+
+a {
+    display: inline-block;
+    padding: 14px 10px;
+}
+
+.photo img {
+    height: 200px;
+    width: auto;
+    border-radius: 50%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.questions {
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-bottom: 5%;
+    padding: 14px 16px;
+}
+
+.raName {
+    text-align: center;
+    margin-top: 16px;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 8px 16px;
+}
+
+.socialMedia {
+    /* increase for more icons */
+    width: 50px;
+    margin: auto;
+}
+
+.role {
+    text-align: center;
+}
+
+h3 {
+    padding: 14px 0px;
+}
+
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
+
+/* hide interviews from other pages */
+.page {
+    display: none;
+}
+
+/* show current interview page */
+.currentPage {
+    display: block;
+}

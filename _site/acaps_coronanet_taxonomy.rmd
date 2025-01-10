@@ -1,0 +1,1392 @@
+---
+title: "ACAPS - CoronaNet Taxonomy Map"
+author: "CoronaNet Research Project"
+date: '`r format(Sys.Date())`'
+output:
+  rmdformats::robobook
+---
+  
+```{css, echo= FALSE}
+.tabset {
+  background: transparent;
+}
+```
+
+
+
+```{r, include=FALSE, message=FALSE, eval=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE)
+# acaps = read_excel("acaps_covid19_government_measures_dataset_0.xlsx", sheet = "Dataset")
+# coronanet = readRDS("coronanet_internal.rds")
+```
+
+
+# 0 Introduction
+
+This document maps the taxonomy used by the ACAPS COVID-19 Government Measures dataset to document government policies made in response to COVID-19 into the CoronaNet Research Project taxonomy. Each section  maps the general area for which the taxonomy is mapped and each sub-section provides further detail as necessary. Following each explanation for how the mapping is conceptualized, there is R code for operationalizing this mapping. Please refer to the [ACAPS ReadMe](https://www.acaps.org/sites/acaps/files/key-documents/files/acaps_-_covid-19_government_measures_dataset_readme.pdf) and the [CoronaNet Codebook](https://www.coronanet-project.org/assets/CoronaNet_Codebook.pdf) for more information on their respective taxonomies. 
+
+You can access (i) the original version of the ACAPS dataset, "acaps_covid19_government_measures_dataset_0.xlsx", as well as (ii) the version which transforms this version of the CIHI dataset into the CoronaNet taxonomy, "acaps_coronanet_map.csv" (the rest of this document details how this transformation was implemented) from the [CoronaNet pubic git repo](https://github.com/CoronaNetDataScience/corona_tscs/tree/master/data/collaboration/acaps). 
+
+<hr>
+<br>
+
+# 1 Setup
+
+To create replicate this taxonomy mapping exercise, users will need to load the following R packages and to read in the original ACAPS data as follows:
+
+```{r setup,   message=FALSE, eval=FALSE}
+
+library(readr)
+library(dplyr)
+library(magrittr)
+library(tidyr)
+library(readxl)
+library(here)
+acaps = read_excel(here("data", "collaboration", "acaps", "acaps_covid19_government_measures_dataset_0.xlsx"), sheet = "Dataset")
+```
+
+# 2 Map Creation 
+
+The following code creates a map to translate the ACAPS data to the CoronaNet taxonomy. Where there is a straightforward one-to-one relationship between the two taxonomies, these are directly mapped in the below:
+
+* The ACAPS <code>id</code> variable allows each unique observation to be identifiable. This is conceptually the same as CoronaNet's <code>record_id</code> variable. However, to make it clear when a policy originates from ACAPS and when it originates from CoronaNet, we encode this information into a new variable we name <code>unique_id</code>.
+
+* The ACAPS <code>Comments</code> variable is a close approximation to CoronaNet's <code>description</code> variable. The main difference is that (at least in theory), CoronaNet's description variable must always contain certain information (the policy initiator, the type of policy, the date the policy started, and if applicable: the geographic target of the policy, the demographic target of the policy and the end date of the policy) while there does not appear to be the same amount of information consistently captured in the ACAPS <code>Comments</code> variable. As such, it will likely be necessary to recode or back code for this information for observations in the ACAPS dataset that are not in the CoronaNet dataset.
+
+* The ACAPS <code>DATE_IMPLEMENTED</code> variable, which captures when a policy was implemented, is a direct match for CoronaNet's <code>date_start</code> variable.
+
+* The ACAPS <code>COUNTRY</code> variable and <code>ISO</code> variable, which captures information on the initiating country, are direct matches for Coronanet's <code>country</code> variable and <code>ISO_A3</code> variable.
+
+* The ACAPS <code>ADMIN_LEVEL_NAME</code> variable, which captures information on whether a policy is applied toward a particular subnational government, is a close matche for Coronanet's <code>province</code> variable. The difference between the two is that <code>ADMIN_LEVEL_NAME</code> includes information on both provinces/states as well as cities whereas the CoronaNet taxonomy captures this information separately in its <code>province</code> and <code>city</code> variables. Since these distinctions are not systematically separable in the ACAPS taxonomy, in this automated mapping, we map <code>ADMIN_LEVEL_NAME</code> to <code>province</code> while noting that downstream manual harmonization will need to make these distinctions. 
+
+* The ACAPS <code>LINK</code> variable, which captures information on the URL link for the raw source of information on which the policy is based, is a direct match for CoronaNet's <code>link</code> variable.
+
+* The ACAPS <code>ENTRY_DATE</code> variable, which captures information on when a policy was recorded, is a direct match for CoronaNet's <code>recorded_date</code> variable.
+
+```{r, eval=FALSE}
+
+acaps_coronanet_map <- data.frame(unique_id = acaps$ID, 
+                                 entry_type = NA,
+                                 correct_type= NA,
+                                 update_type= NA,
+                                 update_level= NA,
+                                 description= acaps$COMMENTS,
+                                 date_announced= NA,
+                                 date_start= acaps$DATE_IMPLEMENTED,
+                                 date_end= NA,
+                                 country = acaps$COUNTRY,
+                                 ISO_A3 = acaps$ISO,
+                                 ISO_A2 = NA,
+                                 init_country_level= NA,
+                                 domestic_policy= NA,
+                                 province = acaps$ADMIN_LEVEL_NAME,
+                                 city= NA,
+                                 type= NA,
+                                 type_sub_cat= NA,
+                                 type_text= NA,
+                                 instituion_status= NA,
+                                 target_country= NA,
+                                 target_geog_level= NA,
+                                 target_region= NA,
+                                 target_province= NA,
+                                 target_city= NA,
+                                 target_other= NA,
+                                 target_who_what= NA,
+                                 target_who_gen = NA,
+                                 target_direction= NA,
+                                 travel_mechanism= NA,
+                                 compliance= NA,
+                                 enforcer= NA,
+                                 index_high_est= NA,
+                                 index_med_est= NA,
+                                 index_low_est= NA,
+                                 index_country_rank= NA,
+                                 link = acaps$LINK,
+                                 date_updated = NA,
+                                 recorded_date = acaps$ENTRY_DATE)
+```
+
+## 2.1 Init Country Level
+
+The <code>init_country_level</code> variable documents what level of government a policy originated from (e.g. national, provincial, municipal). Because the ACAPS taxonomy does not have a comparable variable, in our mapping of the ACAPS taxonomy:
+
+* We assume that if a policy takes an NA value in the <code>province</code> variable, which records what province a policy is applied to, that the policy originates from the national level. 
+* Conversely, if the <code>province</code> variable is not empty, we assume that the policy originates from the provincial level. 
+
+* Note that there may be some errors in coding here insofar as the ACAPS taxonomy captures both provinces and cities in the same variable in its taxonomy (see previous section for how we mapped ACAPS <code>ADMIN_LEVEL_NAME</code> for more information). As such, the <code>init_country_level</code> variable will likely need to be cleaned to take the value of **Municipal** or **Other Governmental Level** in manual harmonization downstream. 
+
+```{r, eval=FALSE}
+acaps_coronanet_map <- 
+  acaps_coronanet_map %>%
+  mutate(
+    init_country_level = 
+      case_when(
+        !is.na(province) ~ 'Provincial',
+        is.na(province) ~ 'National',
+        TRUE ~ as.character(NA)
+      )
+  )
+```
+
+
+# 3 Policy Type
+
+## 3.1. Category: Lockdown
+
+### 3.1.1 Lockdown of the entire population.
+
+The following code maps how ACAPS captures lockdown measures which apply to all people in a region to the CoronaNet taxonomy.
+
+* The ACAPS taxonomy aims to capture such policies by coding the <code>CATEGORY</code> variable as **Lockdown** and the <code>MEASURE</code> as **Full lockdown**.
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> variable as  **Lockdown** and the <code>target_who_gen</code> as **No special population targeted**.
+
+```{r, eval=FALSE}
+full_lockdown <- acaps %>%
+          filter(CATEGORY == 'Lockdown' & MEASURE == 'Full lockdown') %>%
+          mutate(type = 'Lockdown',
+                 target_who_gen ='No special population targeted') %>%
+          select(unique_id = ID, type, target_who_gen)
+```
+
+Following this, the object which incorporates the mapping of the relevant subset of the data, full_lockdown, is incorporated into the main object which records this mapping, acaps_coronanet_map, using the <code>unique_id</code> variable to match the corresponding records.
+
+```{r, eval=FALSE}
+acaps_coronanet_map <- rows_update(acaps_coronanet_map, full_lockdown, by = 'unique_id')
+```
+</br>
+
+### 3.1.2 Lockdown of the partial population
+
+The following code maps how ACAPS captures lockdown measures which apply to all people in a region to the CoronaNet taxonomy. Note that in the ACAPS taxonomy, the main difference between a full lockdown and a partial lockdown is whether stores related to alimentation continue to be open. In the CoronaNet taxonomy, these distinctions can be captured in its **Restrictions and Regulations of Businesses** policy type. 
+
+* The ACAPS taxonomy aims to capture such policies by coding the <code>CATEGORY</code> as **Lockdown** and the <code>MEASURE</code> as **Partial lockdown**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> variable as **Lockdown** and the <code>target_who_gen</code> as **No special population targeted**.
+
+However, we have added customized code to recode the <code>type</code> variable to take on values other than **Lockdown** based on keywords in their textual description. This was necessary as some policies are miscoded in the original ACAPS taxonomy and this code helps minimize the chance that these miscodings are mapped into the CoronaNet taxonomy. The keywords were identified based on manual inspection of the ACAPS data.
+
+```{r, eval=FALSE}
+partial_lockdown <- acaps %>%
+          filter(CATEGORY == 'Lockdown' & MEASURE == 'Partial lockdown') %>%
+          mutate(type =
+                   case_when(
+                     grepl("urfew", COMMENTS) ~ 'Curfew',
+                     TRUE ~ 'Lockdown'
+                   ),
+                 target_who_gen ='No special population targeted') %>%
+          select(unique_id = ID, type, target_who_gen)
+```
+
+
+Following this, the object which incorporates the mapping of the relevant subset of the data, partial_lockdown, is incorporated into the main object which records this mapping, acaps_coronanet_map, using the <code>unique_id</code> variable to match the corresponding records.
+
+```{r, eval=FALSE}
+acaps_coronanet_map <- rows_update(acaps_coronanet_map, partial_lockdown, by = 'unique_id')
+```
+</br>
+
+### 3.1.3 Lockdown for a specific population
+
+The following code maps how ACAPS captures lockdown measures which apply to refugees or other minorities to the CoronaNet taxonomy.
+
+* The ACAPS taxonomy aims to capture such policies by coding the  <code>CATEGORY</code> as **Lockdown** and the <code>MEASURE</code> as **Lockdown of refugee/IDP camps or other minorities**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> variable as **Lockdown** and the <code>target_who_gen</code> is **Asylum/refugee seekers**
+
+However, we have added customized code to recode the <code>type</code> variable to take on values other than **Lockdown** based on keywords in their textual description. This was necessary as some policies are miscoded in the original ACAPS taxonomy and this code helps minimize the chance that these miscodings are mapped into the CoronaNet taxonomy. The keywords were identified based on manual inspection of the ACAPS data.
+
+```{r, eval=FALSE}
+refugee_lockdown <- acaps %>%
+          filter(CATEGORY == 'Lockdown' & MEASURE == 'Lockdown of refugee/idp camps or other minorities') %>%
+          mutate(type =
+                   case_when(
+                     grepl("urfew", COMMENTS) ~ 'Curfew',
+                     TRUE ~ 'Lockdown'
+                   ),
+                 target_who_gen ='Asylum/refugee seekers') %>%
+          select(unique_id = ID, type, target_who_gen)
+```
+
+Following this, the object which incorporates the mapping of the relevant subset of the data, refugee_lockdown, is incorporated into the main object which records this mapping, acaps_coronanet_map, using the <code>unique_id</code> variable to match the corresponding records.
+
+```{r, eval=FALSE}
+acaps_coronanet_map <- rows_update(acaps_coronanet_map, refugee_lockdown, by = 'unique_id')
+```
+</br>
+
+
+## 3.2 Governance and Socio-economic measures
+
+### 3.2.1 State of Emergency
+
+The following code maps how ACAPS captures declarations of emergency which applies to all people in a region to the CoronaNet taxonomy.
+
+* The ACAPS taxonomy aims to capture such policies by coding the <code>CATEGORY</code> as **Governance and Socio-economic measures** and the <code>MEASURE</code> as **State of emergency declared**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> variable a **Declaration of Emergency** and the <code>target_who_gen</code> is **No special population targeted**.
+
+However, we have added customized code to recode the <code>type</code> variable to take on values other than **Declaration of Emergency** based on keywords in their textual description. This was necessary as some policies are miscoded in the original ACAPS taxonomy and this code helps minimize the chance that these miscodings are mapped into the CoronaNet taxonomy. The keywords were identified based on manual inspection of the ACAPS data.
+
+```{r, eval=FALSE}
+declar_emergency <- acaps %>%
+          filter(CATEGORY == 'Governance and socio-economic measures' & MEASURE == 'State of emergency declared') %>%
+          mutate(type =
+                   case_when(
+                     grepl("curfew put", COMMENTS) ~ 'Curfew',
+                     grepl("continuing curfew", COMMENTS) ~ 'Curfew',
+                     TRUE ~ 'Declaration of Emergency'
+                   ),
+                 target_who_gen ='No special population targeted') %>%
+          select(unique_id = ID, type, target_who_gen)
+```
+
+Following this, the object which incorporates the mapping of the relevant subset of the data, declar_emergency, is incorporated into the main object which records this mapping, acaps_coronanet_map, using the <code>unique_id</code> variable to match the corresponding records.
+
+```{r, eval=FALSE}
+acaps_coronanet_map <- rows_update(acaps_coronanet_map, declar_emergency, by = 'unique_id')
+```
+</br>
+
+### 3.2.2 Limitation of international commerce
+
+The following code maps how ACAPS captures whether authorities limit the import or export of either food or health items to the CoronaNet taxonomy.
+
+* The ACAPS taxonomy aims to capture such policies by coding the <code>CATEGORY</code> as **Governance and Socio-economic measures** and the <code>MEASURE</code> as **Limit product imports/exports**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> variable as **Other Policy Not Listed Above** and the <code>target_who_gen</code> is **No special population targeted**.
+
+However, we have added customized code to recode the <code>type</code> variable to take on values other than **Other Policy Not Listed Above** based on keywords in their textual description. This was necessary as some policies are miscoded in the original ACAPS taxonomy and this code helps minimize the chance that these miscodings are mapped into the CoronaNet taxonomy. The keywords were identified based on manual inspection of the ACAPS data.
+
+```{r, eval=FALSE}
+limit_commerce <- acaps %>%
+           filter(CATEGORY == 'Governance and socio-economic measures' & MEASURE == 'Limit product imports/exports') %>%
+           mutate(type =
+                    case_when(
+                      grepl("bars|restaurants", COMMENTS) ~ "Restriction and Regulation of Businesses",
+                      grepl("Event|event", COMMENTS) ~ "Restrictions of Mass Gatherings",
+                      grepl("disinfect|medic|mask|drug|Health|health", COMMENTS) ~ "Health Resources",
+                      grepl("uarantine", COMMENTS) ~ "Quarantine",
+                      grepl("education|school|School", COMMENTS) ~ "Closure and Regulation of Schools",
+                      grepl("Port Authorities", COMMENTS) ~ "External Border Restrictions",
+                      TRUE ~ "Other Policy Not Listed Above"
+                    ),
+                  target_who_gen ='No special population targeted') %>%
+       select(unique_id = ID, type, target_who_gen)
+```
+
+Following this, the object which incorporates the mapping of the relevant subset of the data, limit_commerce, is incorporated into the main object which records this mapping, acaps_coronanet_map, using the <code>unique_id</code> variable to match the corresponding records.
+
+```{r, eval=FALSE}
+acaps_coronanet_map <- rows_update(acaps_coronanet_map, limit_commerce, by = 'unique_id')
+```
+</br>
+
+### 3.2.3 Emergency administrative structures activated or established
+
+The following code maps how ACAPS captures whether emergency administrative measures have been put in place to coordinate, decide or monitor COVID-19 measures  to the CoronaNet taxonomy.
+
+* The ACAPS taxonomy aims to capture such policies by coding the <code>CATEGORY</code> as **Governance and Socio-economic measures** and the <code>MEASURE</code> as **Emergency administrative structures activated or established**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> variable as **New Task Force, Bureau or Administrative Configuration** and the <code>target_who_gen</code> as **No special population targeted**.
+
+However, we have added customized code to recode the <code>type</code> variable to take on values other than **New Task Force, Bureau or Administrative Configuration** based on keywords in their textual description. This was necessary as some policies are miscoded in the original ACAPS taxonomy and this code helps minimize the chance that these miscodings are mapped into the CoronaNet taxonomy. The keywords were identified based on manual inspection of the ACAPS data.
+
+```{r, eval=FALSE}
+governance_emergency <- acaps %>%
+           filter(CATEGORY == 'Governance and socio-economic measures' & MEASURE == 'Emergency administrative structures activated or established') %>%
+           mutate(type =
+                    case_when(
+                      grepl("Interinstitutional Unit", COMMENTS) ~ 'New Task Force, Bureau or Administrative Configuration',
+                      grepl("bars|restaurants", COMMENTS) ~ "Restriction and Regulation of Businesses",
+                      grepl("uarantine", COMMENTS) ~ "Quarantine",
+                      grepl("education|school|School", COMMENTS) ~ "Closure and Regulation of Schools",
+                      grepl("urfew", COMMENTS) ~ 'Curfew',
+                      TRUE ~ "New Task Force, Bureau or Administrative Configuration"
+                    ),
+                  target_who_gen ='No special population targeted') %>%
+       select(unique_id = ID, type, target_who_gen)
+```
+
+Following this, the object which incorporates the mapping of the relevant subset of the data, governance_emergency, is incorporated into the main object which records this mapping, acaps_coronanet_map, using the <code>unique_id</code> variable to match the corresponding records.
+
+```{r, eval=FALSE}
+acaps_coronanet_map <- rows_update(acaps_coronanet_map, governance_emergency, by = 'unique_id')
+```
+</br>
+
+### 3.2.4 Military Deployment
+
+The following code maps how ACAPS captures whether the military has been deployed to support medical operations and ensure compliance with the measures of the CoronaNet taxonomy.
+
+* The ACAPS taxonomy aims to capture such policies by coding the  <code>CATEGORY</code> as **Governance and Socio-economic measures** and the <code>MEASURE</code> as **Military deployment**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> variable as **New Task Force, Bureau or Administrative Configuration**, the <code>type_sub_cat</code> variable as **Other Administrative Configuration**  and the <code>target_who_gen</code> as **No special population targeted**.
+
+
+However, we have added customized code to recode policies based on keywords in their textual description. This strategy is applied to recode the <code>type</code> and  <code>target_who_gen</code> variables. This was necessary as some policies are miscoded in the original ACAPS taxonomy and this code helps minimize the chance that these miscodings are mapped into the CoronaNet taxonomy. The keywords were identified based on manual inspection of the ACAPS data.
+
+```{r, eval=FALSE}
+military_deployment <- acaps %>%
+           filter(CATEGORY == 'Governance and socio-economic measures' & MEASURE == 'Military deployment') %>%
+           mutate(type =
+                   case_when(
+                     grepl("urfew", COMMENTS) ~ 'Curfew',
+                     TRUE ~ 'New Task Force, Bureau or Administrative Configuration'
+                   ),
+                 target_who_gen =
+                   case_when(
+                     grepl("homeless", COMMENTS) ~ 'Homeless population',
+                     TRUE ~ 'No special population targeted'
+                   ),
+                 type_sub_cat = 'Other Administrative Configuration') %>%
+           select(unique_id = ID, type, target_who_gen, type_sub_cat)
+```
+
+Following this, the object which incorporates the mapping of the relevant subset of the data, military_deployment, is incorporated into the main object which records this mapping, acaps_coronanet_map, using the <code>unique_id</code> variable to match the corresponding records.
+
+```{r, eval=FALSE}
+acaps_coronanet_map <- rows_update(acaps_coronanet_map, military_deployment, by = 'unique_id')
+```
+</br>
+
+### 3.2.5 Economic Measures
+
+The following code maps how ACAPS captures whether authorities have taken economic measures to mitigate the impact of other restrictions on the economy and to society to the CoronaNet taxonomy.
+
+* The ACAPS taxonomy aims to capture such policies by coding the <code>CATEGORY</code> as **Governance and Socio-economic measures** and the <code>MEASURE</code> as **Economic measures**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> variable as **Other** and the <code>target_who_gen</code> is **No special population targeted**.
+
+However, we have added customized codeto recode the <code>target_who_gen</code> variable to take on values other than **No special population targeted** based on keywords in their textual description. This was necessary as some policies are miscoded in the original ACAPS taxonomy and this code helps minimize the chance that these miscodings are mapped into the CoronaNet taxonomy. The keywords were identified based on manual inspection of the ACAPS data.
+
+```{r, eval=FALSE}
+other <- acaps %>%
+          filter(CATEGORY == 'Governance and socio-economic measures' & MEASURE == 'Economic measures') %>%
+          mutate(type = 'Other Policy Not Listed Above',
+                 target_who_gen =
+                   case_when(
+                     grepl("efugee", COMMENTS) ~ 'Asylum/refugee seekers',
+                     TRUE ~ 'No special population targeted'
+                   )) %>%
+          select(unique_id = ID, type, target_who_gen)
+```
+
+Following this, the object which incorporates the mapping of the relevant subset of the data, other, is incorporated into the main object which records this mapping, acaps_coronanet_map, using the <code>unique_id</code> variable to match the corresponding records.
+
+```{r, eval=FALSE}
+acaps_coronanet_map <- rows_update(acaps_coronanet_map, other, by = 'unique_id')
+```
+</br>
+
+## 3.3 Movement restrictions
+
+### 3.3.1 Curfews
+
+The following code maps how ACAPS captures the curfew measures which apply to all people in a region to the CoronaNet taxonomy.
+
+* The ACAPS taxonomy aims to capture such policies by coding the <code>CATEGORY</code> as **Movement restrictions** and the <code>MEASURE</code> as **Curfew**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> variable as **Curfew** and the <code>target_who_gen</code> as **No special population targeted**.
+
+```{r, eval=FALSE}
+curfew <- acaps %>%
+          filter(CATEGORY == 'Movement restrictions' & MEASURE == 'Curfews') %>%
+          mutate(type = 'Curfew',
+                 target_who_gen ='No special population targeted') %>%
+          select(unique_id = ID, type, target_who_gen)
+```
+
+Following this, the object which incorporates the mapping of the relevant subset of the data, curfew, is incorporated into the main object which records this mapping, acaps_coronanet_map, using the <code>unique_id</code> variable to match the corresponding records.
+
+```{r, eval=FALSE}
+acaps_coronanet_map <- rows_update(acaps_coronanet_map, curfew, by = 'unique_id')
+```
+</br>
+
+### 3.3.2 Border Checks
+
+The following code maps how ACAPS captures border checks measures, such as checking for identification documents, into CoronaNet taxonomy.
+
+* The ACAPS taxonomy aims to capture such policies by coding the  <code>CATEGORY</code> as **Movement restrictions** and the <code>MEASURE</code> as **Border checks**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> variable as **External Border Restrictions**,  the <code>type_sub_cat</code> variable as **Travel History Form**, and the target_who_gen as **No special population targeted**.
+
+```{r, eval=FALSE}
+border_checks <- acaps %>%
+           filter(CATEGORY == 'Movement restrictions' & MEASURE == 'Border checks') %>%
+           mutate(type = 'External Border Restrictions',
+                  target_who_gen ='No special population targeted',
+                  type_sub_cat = 'Travel History Form') %>%
+           select(unique_id = ID, type, target_who_gen, type_sub_cat)
+```
+
+Following this, the object which incorporates the mapping of the relevant subset of the data, border_checks, is incorporated into the main object which records this mapping, acaps_coronanet_map, using the <code>unique_id</code> variable to match the corresponding records.
+
+```{r, eval=FALSE}
+acaps_coronanet_map <- rows_update(acaps_coronanet_map, border_checks, by = 'unique_id')
+```
+</br>
+
+### 3.3.3 Border Closure
+
+The following code maps how ACAPS captures border closure measures policies into CoronaNet taxonomy.
+
+* The ACAPS taxonomy aims to capture such policies by coding the  <code>CATEGORY</code> as **Movement restrictions** and the <code>MEASURE</code> as **Border closure**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> variable as **External Border Restrictions** and the target_who_gen as **No special population targeted**.
+
+* Where possible, we also map the mechanism of travel into CoronaNet's <code>travel_mechanism</code> variable by extracting keywords from the ACAPS <code>COMMENTS</code> variable. 
+
+While in theory, we could have further specified that the <code>target_who_what</code> variable to be set to **All Foreign Nationals**, we found that there were substantial miscodings in the ACAPS data, which warranted a broader mapping. Moreover, we have added customized code to recode the variables based on keywords in their textual description. This strategy is applied to recode <code>type</code>types and <code>target_who_gen</code> variables. This was necessary as some policies are miscoded in the original ACAPS taxonomy and this code helps minimize the chance that these miscodings are mapped into the CoronaNet taxonomy. The keywords were identified based on manual inspection of the ACAPS data.
+
+```{r, eval=FALSE}
+border_closure <- acaps %>%
+           filter(CATEGORY == 'Movement restrictions' & MEASURE == 'Border closure') %>%
+           mutate(type =
+                   case_when(
+                     grepl("urfew", COMMENTS) ~ 'Curfew',
+                     TRUE ~ 'External Border Restrictions'
+                   ),
+                  target_who_gen =
+                    case_when(
+                     grepl("efugee", COMMENTS) ~ 'Asylum/refugee seekers',
+                     grepl("migrant", COMMENTS) ~ 'Other population not specified above',
+                     TRUE ~ 'No special population targeted'),
+                  travel_mechanism =
+                    case_when(
+                      grepl('flight|air', COMMENTS)~ "Flights",
+                      grepl('rain|rains', COMMENTS)~ "Trains",
+                      grepl('sea ports|boat|boats|sea ports|ship|ships|vessels', COMMENTS)~ "Seaports",
+                      grepl('cruis', COMMENTS)~ "Cruises",
+                      TRUE ~ as.character(NA)
+                    )
+                  ) %>%
+    select(unique_id = ID, type, target_who_gen,travel_mechanism)
+```
+
+Following this, the object which incorporates the mapping of the relevant subset of the data, border_closure, is incorporated into the main object which records this mapping, acaps_coronanet_map, using the <code>unique_id</code> variable to match the corresponding records.
+
+```{r, eval=FALSE}
+acaps_coronanet_map <- rows_update(acaps_coronanet_map, border_closure, by = 'unique_id')
+```
+</br>
+
+### 3.3.4 Full Border Closure
+
+The following code maps how ACAPS captures full border closure measures policies into CoronaNet taxonomy.
+
+* The ACAPS taxonomy aims to capture such policies by coding the  <code>CATEGORY</code> as **Movement restrictions** and the <code>MEASURE</code> as **Complete border closure**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> variable as **External Border Restrictions**, the <code>type_sub_cat</code> variable as **Total border crossing ban**, and the target_who_gen as **No special population targeted**.
+
+```{r, eval=FALSE}
+full_closure <- acaps %>%
+           filter(CATEGORY == 'Movement restrictions' & MEASURE == 'Complete border closure') %>%
+           mutate(type = 'External Border Restrictions',
+                  target_who_gen ='No special population targeted',
+                  type_sub_cat = 'Total border crossing ban') %>%
+           select(unique_id = ID, type, target_who_gen, type_sub_cat)
+```
+
+Following this, the object which incorporates the mapping of the relevant subset of the data, full_closure, is incorporated into the main object which records this mapping, acaps_coronanet_map, using the <code>unique_id</code> variable to match the corresponding records.
+
+```{r, eval=FALSE}
+acaps_coronanet_map <- rows_update(acaps_coronanet_map, full_closure, by = 'unique_id')
+```
+</br>
+
+### 3.3.5 International Flights suspension
+
+The following code maps how ACAPS captures suspending the operation of international flight policies into CoronaNet taxonomy.
+
+* The ACAPS taxonomy aims to capture such policies by coding the  <code>CATEGORY</code> as **Movement restrictions** and the <code>MEASURE</code> as **International flights suspension**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> variable as **External Border Restrictions**, the <code>type_sub_cat</code> variable as **Total border crossing ban**, the <code>travel_mechanism</code> variable as **Flights**, and the target_who_gen as **No special population targeted**.
+
+However, we have added customized code to recode this policy into mechanisms of travel other than **Flights** based on keywords in their textual description. This was necessary as some policies are miscoded in the original ACAPS taxonomy and this code helps minimize the chance that these miscodings are mapped into the CoronaNet taxonomy. The keywords were identified based on manual inspection of the ACAPS data.
+
+```{r, eval=FALSE}
+international_closure <- acaps %>%
+           filter(CATEGORY == 'Movement restrictions' & MEASURE == 'International flights suspension') %>%
+           mutate(type = 'External Border Restrictions',
+                  target_who_gen ='No special population targeted',
+                  type_sub_cat = 'Total border crossing ban',
+                  travel_mechanism =
+                    case_when(
+                      grepl('train ', COMMENTS)~ "Trains",
+                      TRUE ~ "Flights"
+                    )
+                  ) %>%
+    select(unique_id = ID, type, target_who_gen, type_sub_cat, travel_mechanism)
+```
+
+Following this, the object which incorporates the mapping of the relevant subset of the data, international_closure, is incorporated into the main object which records this mapping, acaps_coronanet_map, using the <code>unique_id</code> variable to match the corresponding records.
+
+```{r, eval=FALSE}
+acaps_coronanet_map <- rows_update(acaps_coronanet_map, international_closure, by = 'unique_id')
+```
+</br>
+
+### 3.3.6 Visa restrictions
+
+The following code maps how ACAPS captures visa restriction measures policies into CoronaNet taxonomy.
+
+* The ACAPS taxonomy aims to capture such policies by coding the  <code>CATEGORY</code> as **Movement restrictions** and the <code>MEASURE</code> as  **Visa restrictions**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> variable as **External Border Restrictions**, the <code>type_sub_cat</code> variable as **Visa restrictions**, and the <code>target_who_gen</code> is **No special population targeted**.
+
+However, we have added customized code to recode the <code>target_who_gen</code> variable to take on values other than **No special population targeted** based on keywords in their textual description. This was necessary as some policies are miscoded in the original ACAPS taxonomy and this code helps minimize the chance that these miscodings are mapped into the CoronaNet taxonomy. The keywords were identified based on manual inspection of the ACAPS data.
+
+```{r, eval=FALSE}
+visa_restrictions <- acaps %>%
+           filter(CATEGORY == 'Movement restrictions' & MEASURE == 'Visa restrictions') %>%
+           mutate(type = 'External Border Restrictions',
+                  target_who_gen =
+                    case_when(
+                     grepl("migrant", COMMENTS) ~ 'Other population not specified above',
+                     TRUE ~ 'No special population targeted'),
+                  type_sub_cat = 'Visa restrictions') %>%
+      select(unique_id = ID, type, target_who_gen,type_sub_cat)
+```
+
+Following this, the object which incorporates the mapping of the relevant subset of the data, visa_restrictions, is incorporated into the main object which records this mapping, acaps_coronanet_map, using the <code>unique_id</code> variable to match the corresponding records.
+
+```{r, eval=FALSE}
+acaps_coronanet_map <- rows_update(acaps_coronanet_map, visa_restrictions, by = 'unique_id')
+```
+</br>
+
+### 3.3.7 Additional requirements upon arrival
+
+The following code maps how ACAPS captures the movement restrictions measures which apply to all people in a region to the CoronaNet taxonomy.
+
+* The ACAPS taxonomy aims to capture such policies by coding the <code>CATEGORY</code> as **Movement restrictions** and the <code>MEASURE</code> as **Additional health/documents requirements upon arrival**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> variable as **External Border Restrictions**,  the <code>type_sub_cat</code> variable as **Health Certificates**, and the <code>target_who_gen</code> as **No special population targeted**.
+
+```{r, eval=FALSE}
+additional_requirements <- acaps %>%
+           filter(CATEGORY == 'Movement restrictions' & MEASURE == 'Additional health/documents requirements upon arrival') %>%
+           mutate(type = 'External Border Restrictions',
+                  target_who_gen ='No special population targeted',
+                  type_sub_cat = 'Health Certificates') %>%
+           select(unique_id = ID, type, target_who_gen, type_sub_cat)
+```
+
+Following this, the object which incorporates the mapping of the relevant subset of the data, additional_requirements, is incorporated into the main object which records this mapping, acaps_coronanet_map, using the <code>unique_id</code> variable to match the corresponding records.
+
+```{r, eval=FALSE}
+acaps_coronanet_map <- rows_update(acaps_coronanet_map, additional_requirements, by = 'unique_id')
+```
+</br>
+
+### 3.3.8 Surveillance and monitoring
+
+The following code maps how ACAPS captures the health monitoring measures which apply to all people in a region to the CoronaNet taxonomy.
+
+* The ACAPS taxonomy aims to capture such policies by coding the <code>CATEGORY</code> as **Movement restrictions** and the <code>MEASURE</code> as **Surveillance and monitoring**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> variable as **Health Monitoring** and the <code>target_who_gen</code> as **No special population targeted**.
+
+However, we have added customized code to recode the <code>type</code> variable to take on values other than **Health Monitoring** based on keywords in their textual description. This strategy is also applied to recode <code>target_who_gen</code>. This was necessary as some policies are miscoded in the original ACAPS taxonomy and this code helps minimize the chance that these miscodings are mapped into the CoronaNet taxonomy. The keywords were identified based on manual inspection of the ACAPS data.
+
+```{r, eval=FALSE}
+health_monitoring <- acaps %>%
+          filter(CATEGORY == 'Movement restrictions' & MEASURE == 'Surveillance and monitoring') %>%
+          mutate(type =
+                   case_when(
+                     grepl("uarantine", COMMENTS) ~ "Quarantine",
+                     grepl("travel|border|countr|irport", COMMENTS) ~  'External Border Restrictions',
+                     grepl("warehouse|grocery|shop|business|estaurant|bar", COMMENTS) ~ "Restriction and Regulation of Businesses",
+                     grepl("mask", COMMENTS) ~ 'Social Distancing',
+                     grepl("Church|mass gath", COMMENTS) ~'Restrictions of Mass Gatherings',
+                     grepl("team", COMMENTS) ~'New Task Force, Bureau or Administrative Configuration',
+                     grepl("Emergency|emergency", COMMENTS) ~ 'Declaration of Emergency',
+                     grepl("econ", COMMENTS) ~ 'Other Policy Not Listed Above',
+                     grepl("remote medical consultations", COMMENTS) ~ "Health Resources",
+                     grepl("rumour|rumor", COMMENTS) ~ "Anti-Disinformation Measures",
+                     grepl("Regulations Repealed", COMMENTS) ~ "Curfew",
+                     grepl("stricter curfew|curfew overturned", COMMENTS) ~ "Curfew",
+                     TRUE ~ 'Health Monitoring'
+                   ),
+                 target_who_gen =case_when(
+                     grepl("migrant", COMMENTS) ~ 'Other population not specified above',
+                     TRUE ~ 'No special population targeted')) %>%
+     select(unique_id = ID, type, target_who_gen)
+```
+
+Following this, the object which incorporates the mapping of the relevant subset of the data, health_monitoring, is incorporated into the main object which records this mapping, acaps_coronanet_map, using the <code>unique_id</code> variable to match the corresponding records.
+
+```{r, eval=FALSE}
+acaps_coronanet_map <- rows_update(acaps_coronanet_map, health_monitoring, by = 'unique_id')
+```
+</br>
+
+### 3.3.9 Movement restrictions (Checkpoint Deployment)
+
+The following code maps how ACAPS captures policies that deploy checkpoints within a country to the CoronaNet taxonomy.
+
+* The ACAPS taxonomy aims to capture such policies by coding the <code>CATEGORY</code> as **Movement restrictions** and the <code>MEASURE</code> as **Checkpoints within the country**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> variable as**Internal Border Restrictions**, the <code>type_sub_cat</code> variable as **Health Certificates**, and the <code>target_who_gen</code> is **No special population targeted**.
+
+However, we have added customized code to recode the <code>type</code> variable to take on values other than **Internal Border Restrictions** based on keywords in their textual description. The same strategy is applied to recode <code>type_sub_cat</code>. This was necessary as some policies are miscoded in the original ACAPS taxonomy and this code helps minimize the chance that these miscodings are mapped into the CoronaNet taxonomy. The keywords were identified based on manual inspection of the ACAPS data.
+
+```{r, eval=FALSE}
+checkpoints_deployment <- acaps %>%
+           filter(CATEGORY == 'Movement restrictions' & MEASURE == 'Checkpoints within the country') %>%
+           mutate(type =
+                    case_when(
+                      grepl("mall|shop", COMMENTS) ~ "Restriction and Regulation of Businesses",
+                      grepl("irport", COMMENTS) ~  'External Border Restrictions',
+                      grepl("uarantine", COMMENTS) ~ "Quarantine",
+                      TRUE ~ 'Internal Border Restrictions'),
+                  target_who_gen ='No special population targeted',
+                  type_sub_cat =
+                    case_when(
+                      grepl("temp|health screening", COMMENTS)~ "Health Screenings (e.g. temperature checks)",
+                      TRUE ~  'Health Certificates'
+                    )
+                   )%>%
+  select(unique_id = ID, type, target_who_gen, type_sub_cat)
+```
+
+Following this, the object which incorporates the mapping of the relevant subset of the data, checkpoints_deployment, is incorporated into the main object which records this mapping, acaps_coronanet_map, using the <code>unique_id</code> variable to match the corresponding records.
+
+```{r, eval=FALSE}
+acaps_coronanet_map <- rows_update(acaps_coronanet_map, checkpoints_deployment, by = 'unique_id')
+```
+</br>
+
+### 3.3.10 Domestic Travel Restrictions
+
+The following code maps how ACAPS captures policies that limit the movement of people within a country the CoronaNet taxonomy.
+
+* The ACAPS taxonomy aims to capture such policies by coding the <code>CATEGORY</code> as **Movement restrictions** and the <code>MEASURE</code> as **Domestic travel restrictions**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> variable as **Internal Border Restrictions** and the <code>target_who_gen</code> is **No special population targeted**.
+
+* Where possible, we also map the mechanism of travel into CoronaNet's <code>travel_mechanism</code> variable and the <code>type_sub_cat</code> by extracting keywords from the ACAPS <code>COMMENTS</code> variable. 
+
+However, we have added customized code to recode the <code>type</code> variable to take on values other than **Internal Border Restrictions** based on keywords in their textual description. This was necessary as some policies are miscoded in the original ACAPS taxonomy and this code helps minimize the chance that these miscodings are mapped into the CoronaNet taxonomy. The keywords were identified based on manual inspection of the ACAPS data.
+
+```{r, eval=FALSE }
+domestic_restrictions <- acaps %>%
+           filter(CATEGORY == 'Movement restrictions' & MEASURE == 'Domestic travel restrictions') %>%
+           mutate(type = case_when(
+               grepl("car|traffic|taxi|vehicle", COMMENTS) ~ "Social Distancing",
+               grepl("ordone sanit", COMMENTS) ~ "Lockdown",
+               grepl("mall|shop", COMMENTS) ~ "Restriction and Regulation of Businesses",
+               grepl('urfew', COMMENTS) ~ 'Curfew',
+               grepl("uarantine", COMMENTS) ~ "Quarantine",
+               TRUE ~ 'Internal Border Restrictions'),
+            type_sub_cat = case_when(
+               grepl('car', COMMENTS) ~ 'Regulating private vehicles in public circulation',
+               TRUE ~ as.character(NA)
+             ),
+             travel_mechanism = case_when(
+               grepl('flight', COMMENTS)~ "Flights",
+               grepl('train|Train', COMMENTS)~ "Trains",
+               grepl('bus', COMMENTS)~ "Buses",
+               grepl('ship', COMMENTS)~ "Seaports",
+               TRUE ~ as.character(NA)
+             ),
+                  target_who_gen ='No special population targeted' )%>%
+     select(unique_id = ID, type, type_sub_cat, travel_mechanism, target_who_gen)
+```
+
+Following this, the object which incorporates the mapping of the relevant subset of the data, domestic_restrictions, is incorporated into the main object which records this mapping, acaps_coronanet_map, using the <code>unique_id</code> variable to match the corresponding records.
+
+```{r, eval=FALSE}
+acaps_coronanet_map <- rows_update(acaps_coronanet_map, domestic_restrictions, by = 'unique_id')
+```
+</br>
+
+## 3.4 Public Health Measures
+
+### 3.4.1 Health screenings
+
+The following code maps how ACAPS captures health screenings in airports and border crossings to the CoronaNet taxonomy.
+
+* The ACAPS taxonomy aims to capture such policies by coding the <code>CATEGORY</code> as **Public Health Measures** and the <code>MEASURE</code> as **Health screenings in airports and border crossings**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> variable as **External Border Restrictions**, the <code>type_sub_cat</code> variable as **Health Screenings (e.g. temperature checks)**, and the <code>target_who_gen</code> is **No special population targeted**.
+
+* Where possible, we also map the mechanism of travel into CoronaNet's <code>travel_mechanism</code> variable by extracting keywords from the ACAPS <code>COMMENTS</code> variable. 
+
+However, we have added customized code to recode policies to <code>type_sub_cat</code> to values other than **Health Screenings (e.g. temperature checks)** based on keywords in their textual description. The same strategy is applied to recode <code>target_who_gen</code>. This was necessary as some policies are miscoded in the original ACAPS taxonomy and this code helps minimize the chance that these miscodings are mapped into the CoronaNet taxonomy. The keywords were identified based on manual inspection of the ACAPS data.
+
+```{r, eval=FALSE}
+health_screenings <- acaps %>%
+           filter(CATEGORY == 'Public health measures' & MEASURE == 'Health screenings in airports and border crossings') %>%
+           mutate(type = 'External Border Restrictions',
+                  target_who_gen =
+                    case_when(
+                      grepl("migrant", COMMENTS) ~ 'Other population not specified above',
+                     TRUE ~ 'No special population targeted'),
+                  type_sub_cat =
+                    case_when(
+                      grepl("form|question|history", COMMENTS)~ "Travel History Form (e.g. documents where traveler has recently been)",
+                      grepl("test", COMMENTS)~ "Negative COVID-19 Test",
+                      TRUE ~ 'Health Screenings (e.g. temperature checks)'
+                    ),
+                  travel_mechanism = case_when(
+               grepl('flight|irport|Flight', COMMENTS)~ "Flights",
+               grepl('train|Train', COMMENTS)~ "Trains",
+               grepl('bus', COMMENTS)~ "Buses",
+               grepl('ship', COMMENTS)~ "Seaports",
+               TRUE ~ as.character(NA)
+             )
+                   ) %>%
+       select(unique_id = ID, type, type_sub_cat, travel_mechanism, target_who_gen)
+```
+
+Following this, the object which incorporates the mapping of the relevant subset of the data, health_screenings, is incorporated into the main object which records this mapping, acaps_coronanet_map, using the <code>unique_id</code> variable to match the corresponding records.
+
+```{r, eval=FALSE}
+acaps_coronanet_map <- rows_update(acaps_coronanet_map, health_screenings, by = 'unique_id')
+```
+</br>
+
+### 3.4.2 Strengthening the public health system
+
+The following code maps how ACAPS captures policies that seek to strengthen the public health system to the CoronaNet taxonomy.
+
+* The ACAPS taxonomy aims to capture such policies by coding the <code>CATEGORY</code> as **Public Health Measures** and the <code>MEASURE</code> as **Strengthening the public health system**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> variable as **Health Resources** and the <code>target_who_gen</code> as **Essential workers**.
+
+* Where possible, we also map the policy sub type into CoronaNet's <code>type_sub_cat</code> variable by extracting keywords from the ACAPS <code>COMMENTS</code> variable. 
+
+However, we have added customized code to recode the <code>type</code> variable to take on values other than **Health Resources** based on keywords in their textual description. The same strategy is applied to recode  <code>target_who_gen</code>. This was necessary as some policies are miscoded in the original ACAPS taxonomy and this code helps minimize the chance that these miscodings are mapped into the CoronaNet taxonomy. The keywords were identified based on manual inspection of the ACAPS data.
+
+```{r, eval=FALSE}
+public_health_system <- acaps %>%
+           filter(CATEGORY == 'Public health measures' & MEASURE == 'Strengthening the public health system') %>%
+           mutate(type =
+           case_when(
+             grepl("task force", COMMENTS) ~ " New Task Force, Bureau or Administrative Configuration",
+             grepl("COVAX|Astra|COVID-19 vaccine|COVID-19 Vacc|Corona vaccine|Pfizer|coronavirus vaccine|Covid-19 vaccine|NZ Govt vaccine", COMMENTS) ~ "COVID-19 Vaccines",
+             grepl("water|repatriation", COMMENTS) ~ "Other Policy Not Listed Above",
+             grepl("Elderly|ursing home", COMMENTS) ~ "Social Distancing",
+             grepl("Government to release contact tracing", COMMENTS) ~ 'Health Monitoring',
+             grepl("Prohibition of health workers to travel abroad", COMMENTS) ~ "External Border Restrictions",
+             TRUE ~ 'Health Resources',
+           ),
+         target_who_gen =
+           case_when(
+             grepl("efugee", COMMENTS) ~ "Asylum/refugee seekers",
+             grepl("migrant", COMMENTS) ~ 'Other population not specified above',
+             TRUE ~ 'No special population targeted',
+         ),
+         type_sub_cat = case_when(
+          type == 'Health Resources' & grepl("insurance", COMMENTS) ~ "Health Insurance",
+          type == 'Health Resources' & grepl("flu", COMMENTS) ~ "Non COVID-19 Vaccines",
+          type == 'Health Resources' & grepl("sanitizer", COMMENTS) ~ "Hand Sanitizer",
+          type == 'Health Resources' & grepl("ospital|hotel| bed", COMMENTS) ~ "Masks",
+          type == 'Health Resources' & grepl("center", COMMENTS) ~ "Temporary Medical Centers",
+          type == 'Health Resources' &  grepl("ppe|Protective Great|rotective gear|PPE|personal protective equipment", COMMENTS) ~ "Masks",
+          type == 'Health Resources' &  grepl("mask|Mask", COMMENTS) ~ "Hospitals",
+          type == 'Health Resources' &  grepl("drug|medicine pack", COMMENTS) ~ "Medicine/Drugs",
+          type == 'Health Resources' &  grepl("lab|Lab|diagnostic|research", COMMENTS) ~ "Health Research Facilities",
+          type == 'Health Resources' &  grepl("doctor|Doctor", COMMENTS) ~ "Doctors",
+          type == 'Health Resources' &  grepl("Nurse|nurse", COMMENTS) ~ "nurse",
+          type == 'Health Resources' &   grepl("ventilator|espirator", COMMENTS) ~ "Ventilators",
+          type == 'Health Resources' &   grepl("uarantine|isolation", COMMENTS) ~ "Temporary Quarantine Centers",
+          type == 'Health Resources' &   grepl("paramedic|contact tracer", COMMENTS) ~ "Other Heath Staff",
+          type == 'Health Resources' &   grepl("technician|retired professional|retired health|elemedicine|ele-hotline|hotline|medicine student|medical student|medical professional|professional|staff capacity", COMMENTS) ~ "Unspecified Health Staff",
+          type == 'Health Resources' &   grepl("olulnteer", COMMENTS) ~ "Health Volunteers",
+          type == 'Health Resources' &   grepl("medical goods|biosafety materials|edical Supply", COMMENTS) ~ "Unspecified Health Materials",
+          type == 'Health Resources' &   grepl("test|Test|TEST", COMMENTS) ~ "Test Kits",
+           TRUE ~ as.character(NA)
+         )
+  )%>%
+  select(unique_id = ID, type, target_who_gen, type_sub_cat)
+```
+
+Following this, the object which incorporates the mapping of the relevant subset of the data, public_health_system, is incorporated into the main object which records this mapping, acaps_coronanet_map, using the <code>unique_id</code> variable to match the corresponding records.
+
+```{r, eval=FALSE}
+acaps_coronanet_map <- rows_update(acaps_coronanet_map, public_health_system, by = 'unique_id')
+```
+</br>
+
+### 3.4.3 Medical tests
+
+The following code maps how ACAPS captures policies in which governments oblige people to take health checks not related to COVID-19 to the CoronaNet taxonomy.
+
+* The ACAPS taxonomy aims to capture such policies by coding the <code>CATEGORY</code> as **Public Health Measures** and the <code>MEASURE</code> as **Obligatory medical tests not related to COVID-19**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> variable as **Health Testing**, the <code>type_sub_cat</code> variable as **Other health testing**,  and the <code>target_who_gen</code> as **No special population targeted**.
+
+```{r, eval=FALSE}
+medical_test <- acaps %>%
+           filter(CATEGORY == 'Public health measures' & MEASURE == 'Obligatory medical tests not related to COVID-19') %>%
+           mutate(type = 'Health Testing',
+                  target_who_gen ='No special population targeted',
+                  type_sub_cat = 'Other health testing') %>%
+           select(unique_id = ID, target_who_gen, type_sub_cat)
+```
+
+Following this, the object which incorporates the mapping of the relevant subset of the data, medical_test, is incorporated into the main object which records this mapping, acaps_coronanet_map, using the <code>unique_id</code> variable to match the corresponding records.
+
+```{r, eval=FALSE}
+acaps_coronanet_map <- rows_update(acaps_coronanet_map, medical_test, by = 'unique_id')
+```
+</br>
+
+### 3.4.4 Mass population testing
+
+The following code maps how ACAPS captures mass screening of the population of a country or region to the CoronaNet taxonomy.
+
+* The ACAPS taxonomy aims to capture such policies by coding the <code>CATEGORY</code> as **Public Health Measures** and the <code>MEASURE</code> as **Mass population testing**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> variable as **Health Testing**,  the <code>type_sub_cat</code> variable as **Health testing of entire population under the government's jurisdiction**,  and the <code>target_who_gen</code> is **No special population targeted**.
+
+However, we have added customized code to recode the <code>type</code> variable to take on values other than **Health Testing** based on keywords in their textual description. This strategy is applied to recode <code>type_sub_cat</code> and <code>target_who_gen</code> as well. This was necessary as some policies are miscoded in the original ACAPS taxonomy and this code helps minimize the chance that these miscodings are mapped into the CoronaNet taxonomy. The keywords were identified based on manual inspection of the ACAPS data.
+
+```{r, eval=FALSE}
+mass_testing <- acaps %>%
+           filter(CATEGORY == 'Public health measures' & MEASURE == 'Mass population testing') %>%
+           mutate(type =
+           case_when(
+             grepl("teacher|school", COMMENTS) ~ "Closure and Regulation of Schools",
+             TRUE ~   'Health Testing'
+           ),
+          target_who_gen =
+             case_when(
+             grepl("teacher|school", COMMENTS) ~ "NA",
+             grepl("migrant", COMMENTS) ~ 'Migrant workers',
+             TRUE ~   'No special population targeted'
+           ),
+          type_sub_cat =
+             case_when(
+             grepl("teacher|school", COMMENTS) ~ "NA",
+             TRUE ~   "Health testing of entire population under the government's jurisdiction"
+           ))%>%
+  select(unique_id = ID, type, target_who_gen, type_sub_cat)
+```
+
+Following this, the object which incorporates the mapping of the relevant subset of the data, mass_testing, is incorporated into the main object which records this mapping, acaps_coronanet_map, using the <code>unique_id</code> variable to match the corresponding records.
+
+```{r, eval=FALSE}
+acaps_coronanet_map <- rows_update(acaps_coronanet_map, mass_testing, by = 'unique_id')
+```
+</br>
+
+### 3.4.5 Testing policy
+
+The following code maps how ACAPS captures policies in which tests are conducted to identify people infected with COVID-19 in the CoronaNet taxonomy.
+
+* The ACAPS taxonomy aims to capture such policies by coding the <code>CATEGORY</code> as **Public Health Measures** and the <code>MEASURE</code> as **Testing policy**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> variable as **Health Testing** and the <code>target_who_gen</code> as **No special population targeted**.
+
+* Where possible, we also map the policy sub type into CoronaNet's <code>type_sub_cat</code> variable by extracting keywords from the ACAPS <code>COMMENTS</code> variable. 
+
+However, we have added customized code to recode policies based on keywords in their textual description. This strategy is applied to recode the <code>type_sub_cat</code> and <code>target_who_gen</code> variables. This was necessary as some policies are miscoded in the original ACAPS taxonomy and this code helps minimize the chance that these miscodings are mapped into the CoronaNet taxonomy. The keywords were identified based on manual inspection of the ACAPS data.
+
+```{r, eval=FALSE}
+testing_policy <- acaps %>%
+           filter(CATEGORY == 'Public health measures' & MEASURE == 'Testing policy') %>%
+  mutate(type =
+           case_when(
+             grepl("travel|border|country|diplomat|departure|passenger|destination|airport|arriv|Country|ferry", COMMENTS) ~ "External Border Restrictions",
+             grepl("shipment|allocat|test kit|Test kit|Reception of", COMMENTS) ~ "Health Resources",
+             grepl("upermarket|grocery|shop|business| bar|restaurant", COMMENTS) ~ "Restriction and Regulation of Businesses",
+             grepl("disinfect", COMMENTS) ~ "Hygiene",
+             grepl("teacher|school", COMMENTS) ~ " Closure and Regulation of Schools",
+             TRUE ~   'Health Testing'
+           ),
+         type_sub_cat = case_when(
+           type == "External Border Restrictions" ~ "Negative COVID-19 Test",
+           type == 'Health Resources' ~ 'Test Kits',
+           grepl("upermarket|grocery", COMMENTS) ~ "Supermarkets/grocery stores",
+           TRUE ~ as.character(NA)
+         ),
+         target_who_gen =
+           case_when(
+             grepl("efugee", COMMENTS) ~ "Asylum/refugee seekers",
+             grepl("migrant", COMMENTS) ~ 'Migrant workers',
+             TRUE ~ 'No special population targeted')) %>%
+  select(unique_id = ID, type, type_sub_cat, target_who_gen)
+```
+
+Following this, the object which incorporates the mapping of the relevant subset of the data, testing_policy, is incorporated into the main object which records this mapping, acaps_coronanet_map, using the <code>unique_id</code> variable to match the corresponding records.
+
+```{r, eval=FALSE}
+acaps_coronanet_map <- rows_update(acaps_coronanet_map, testing_policy, by = 'unique_id')
+```
+</br>
+
+
+### 3.4.6 General recommendations
+
+The following code maps how ACAPS captures the public health messages to the CoronaNet taxonomy.
+
+* The ACAPS taxonomy aims to capture such policies by coding the <code>CATEGORY</code> as **Public Health Measures** and the <code>MEASURE</code> as **General recommendations**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> variable as **Public Awareness Measures**, the <code> compliance </code> variable as **Recommended/Voluntary but no penalties**, and the <code>target_who_gen</code> as **No special population targeted**.
+
+However, we have added customized code to recode the <code>type</code> variable to take on values other than **Public Awareness Measures** based on keywords in their textual description. This strategy is also applied to recode <code>compliance</code> and <code>target_who_gen</code> variables. This was necessary as some policies are miscoded in the original ACAPS taxonomy and this code helps minimize the chance that these miscodings are mapped into the CoronaNet taxonomy. The keywords were identified based on manual inspection of the ACAPS data.
+
+```{r, eval=FALSE}
+general_recommendations <- acaps %>%
+          filter(CATEGORY == 'Public health measures' & MEASURE == 'General recommendations') %>%
+          mutate(type = case_when(
+            grepl('stay at home|stay home', COMMENTS) ~ 'Lockdown',
+            grepl('travel|Travel|trip|countr|abroad|not to fly', COMMENTS) ~ 'External Border Restrictions',
+            grepl('education|school|day care', COMMENTS) ~ 'Closure and Regulation of Schools',
+            grepl('hygiene|cleaning of various|disinfection', COMMENTS) ~ 'Hygiene',
+            grepl('unauthorized letter|cyber', COMMENTS) ~ ' Anti-Disinformation Measures',
+            grepl('uarantine|self-isolat', COMMENTS) ~ 'Quarantine',
+            grepl('mask|aged care|visits|physical distance| meter|Visit|public transport', COMMENTS) ~ 'Social Distancing',
+            grepl('usiness|employ|entitie|worker|companies|work|Employ|Work|ustomer|market|shopping|grocery', COMMENTS) ~ 'Restriction and Regulation of Businesses',
+            grepl('gatherings|Gathering|mass event|Church|church|political demo', COMMENTS) ~ ' Restrictions of Mass Gatherings',
+            grepl('beach|civil serv|swimming', COMMENTS) ~ 'Restriction and Regulation of Government Services',
+            TRUE ~ 'Public Awareness Measures'
+            ),
+           compliance = case_when(
+             grepl("fine", COMMENTS) ~ 'Mandatory With Fines',
+             TRUE ~    'Recommended/Voluntary but no penalties'
+            ),
+           target_who_gen =
+             case_when(
+             grepl("abuse", COMMENTS) ~ "Domestically abused people",
+             grepl("migrant", COMMENTS) ~ 'Migrant workers',
+             grepl("homeless", COMMENTS) ~ 'Homeless population',
+             TRUE ~ 'No special population targeted'))%>%
+  select(unique_id = ID, type, compliance, target_who_gen)
+```
+
+Following this, the object which incorporates the mapping of the relevant subset of the data, general_recommendations, is incorporated into the main object which records this mapping, acaps_coronanet_map, using the <code>unique_id</code> variable to match the corresponding records.
+
+```{r, eval=FALSE}
+acaps_coronanet_map <- rows_update(acaps_coronanet_map, general_recommendations, by = 'unique_id')
+```
+</br>
+
+
+### 3.4.7 Other public health measures enforced
+
+The following code maps how ACAPS captures miscellaneous public health measures to the CoronaNet taxonomy.
+
+* The ACAPS taxonomy aims to capture such policies by coding the <code>CATEGORY</code> as **Public Health Measures** and the <code>MEASURE</code> as **Other public health measures enforce**.
+
+* This policy can be mapped into multiple different options in the CoronaNet <code>type</code> variable. We can however map information from these policies types in the <code>target_who_gen</code> as **No special population targeted**.
+
+* Where possible, we also map relevant information into the CoronaNet's <code>type</code> and <code>travel_mechansim</code> variable by extracting keywords from the ACAPS <code>COMMENTS</code> variable. 
+
+However, we have added customized code to recode policies in the <code>target_who_gen</code> variable based on keywords in their textual description. This was necessary as some policies are miscoded in the original ACAPS taxonomy and this code helps minimize the chance that these miscodings are mapped into the CoronaNet taxonomy. The keywords were identified based on manual inspection of the ACAPS data.
+
+```{r, eval=FALSE}
+measures_enforce <- acaps %>%
+           filter(CATEGORY == 'Public health measures' & MEASURE == 'Other public health measures enforced') %>%
+           mutate(type = case_when(
+                grepl('stay at home|stay home|between 18:00|Full lockdown|lockdown', COMMENTS) ~ 'Lockdown',
+                grepl('travel|Travel|trip|countr|abroad|border|passenger|international|entry|airport|Airp|flight|cruise|Flight|air|trans|Tankers|ship|ships|Vessels', COMMENTS) ~ 'External Border Restrictions',
+                grepl('education|school|day care|child|student', COMMENTS) ~ 'Closure and Regulation of Schools',
+                grepl('unauthorized letter|cyber', COMMENTS) ~ 'Anti-Disinformation Measures',
+                grepl('uarantine|self-isolat', COMMENTS) ~ 'Quarantine',
+                grepl('mask|aged care|visits|physical disance| meter|-meter|Visit|public transport|visitation|adult strides|Fewer train|spread|distancing|handshake|kiss', COMMENTS) ~ 'Social Distancing',
+                grepl('cigarette|Retail|Store|dining|bank|office|store|usiness|employ|entitie|worker|companies|work|Employ|Work|ustomer|market|shopping|Grocer|grocer|otel|estaurant|Ski|ski|Grocery|shop|alcohol|liquor|Tobac|tobac|catering|Catering|cinema|guest|establishment|bar|bars|tourism|Slaughterhouses|Vehicle occupancy|gyms', COMMENTS) ~ 'Restriction and Regulation of Businesses',
+                grepl('desinfect|Desinfect|Cleaning|Sanit|Steril|hygiene|cleaning of various|disinfec|Sanitiz|Disinf|Hygie|saniti', COMMENTS) ~ 'Hygiene',
+                grepl('gatherings|Gathering|mass event|Church|church|political demo|worship|Worship|relig|event|venue|mosqu|demonstrations|sport', COMMENTS) ~ 'Restrictions of Mass Gatherings',
+                grepl('emergency|extends', COMMENTS) ~ 'Declaration of Emergency',
+                grepl('beach|civil serv|swimming|park|elect|post|library|public building|license|public serv|public therm|constitution|museum|justicial system', COMMENTS) ~ 'Restriction and Regulation of Government Services',
+                grepl("hospital|PPE|pharmac|Pharm|Hospital|surgery|Chloro|hand sanitiz|flu|omeless|pneumo|Flu|public drinking|birth", COMMENTS) ~ "Health Resources",
+                grepl("guid|Guid|list|Toolbox|toolbox", COMMENTS) ~'Public Awareness Measures',
+                grepl('test|sanitation', COMMENTS) ~ 'Health Testing',
+                grepl('counsel|new health technology|budget', COMMENTS) ~ 'Health Resources',
+                grepl('Red|contact trac|surveillance|investigate|control order|Mitigation|mitigation|indicator|monitor|monitoring|tracing', COMMENTS) ~ 'Health Monitoring',
+                grepl('expert group', COMMENTS) ~ 'New Task Force, Bureau or Administrative Configuration',
+                grepl("food|Relief|ban hunting|labour pretec|price-controlled|cigarrettes|army|labour|Hackathon", COMMENTS) ~"Other Policy Not Listed Above",
+                grepl('COVID-19 Vaccine|COVID-19 vaccine|COVID 19 Vaccine|vaccination|vaccine', COMMENTS) ~ 'COVID-19 Vaccines',
+                TRUE ~ as.character(NA),
+              ),
+            target_who_gen =
+             case_when(
+                 grepl("abuse", COMMENTS) ~ "Domestically abused people",
+                 grepl("migrant", COMMENTS) ~ 'Migrant workers',
+                 grepl("homeless", COMMENTS) ~ 'Homeless population',
+                 grepl("refugee", COMMENTS) ~ 'Asylum/refugee seekers',
+                 TRUE ~ 'No special population targeted'),
+            travel_mechanism = case_when(
+               grepl('flight|irport|Flight', COMMENTS)~ "Flights",
+               grepl('train|Train', COMMENTS)~ "Trains",
+               grepl('bus |buses', COMMENTS)~ "Buses",
+               grepl('ship', COMMENTS)~ "Seaports",
+               TRUE ~ as.character(NA)
+             ))%>%
+          select(unique_id = ID, type, target_who_gen, travel_mechanism)
+```
+
+Following this, the object which incorporates the mapping of the relevant subset of the data, measures_enforce, is incorporated into the main object which records this mapping, acaps_coronanet_map, using the <code>unique_id</code> variable to match the corresponding records.
+
+```{r, eval=FALSE}
+acaps_coronanet_map <- rows_update(acaps_coronanet_map, measures_enforce, by = 'unique_id')
+```
+</br>
+
+### 3.4.8 Funeral and Burial Regulations
+
+The following code maps how ACAPS captures policies on funeral and burial regulations to the CoronaNet taxonomy.
+
+* The ACAPS taxonomy aims to capture such policies by coding the <code>CATEGORY</code> as **Public Health Measures** and the <code>MEASURE</code> as **Amendments to funeral and burial regulations**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> variable as **Hygiene** and the <code>target_who_gen</code> is **No special population targeted**.
+
+However, we have added customized code to recode the <code>type</code> variable to take on values other than **Hygiene** based on keywords in their textual description. The same strategy is applied to recode sub-policy type and target_who_gen. This was necessary as some policies are miscoded in the original ACAPS taxonomy and this code helps minimize the chance that these miscodings are mapped into the CoronaNet taxonomy. The keywords were identified based on manual inspection of the ACAPS data.
+
+```{r, eval=FALSE}
+funeral_regulations <- acaps %>%
+           filter(CATEGORY == 'Public health measures' & MEASURE == 'Amendments to funeral and burial regulations') %>%
+           mutate(type =
+           case_when(
+            grepl("funeral|Funeral", COMMENTS) ~ 'Restrictions of Mass Gatherings',
+            TRUE ~ 'Hygiene'
+           ),
+           target_who_gen ='Other workers where the distinction between essential and non-essential is not explicitly made',
+           type_sub_cat =
+           case_when(
+             grepl("funeral|Funeral", COMMENTS) ~ 'Funerals and mourning rituals',
+             TRUE ~ 'Burial Procedure'
+           ),
+           ) %>%
+  select(unique_id = ID, type, target_who_gen, type_sub_cat)
+```
+
+Following this, the object which incorporates the mapping of the relevant subset of the data, funeral_regulations, is incorporated into the main object which records this mapping, acaps_coronanet_map, using the <code>unique_id</code> variable to match the corresponding records.
+
+```{r, eval=FALSE}
+acaps_coronanet_map <- rows_update(acaps_coronanet_map, funeral_regulations, by = 'unique_id')
+```
+</br>
+
+
+### 3.4.9 Awareness campaigns
+
+The following code maps how ACAPS captures public health awareness campaigns to the CoronaNet taxonomy.
+
+* The ACAPS taxonomy aims to capture such policies by coding the <code>CATEGORY</code> as **Public Health Measures** and the <code>MEASURE</code> as **Awareness campaigns**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> variable as**Public Awareness Measures** and the <code>target_who_gen</code> as **No special population targeted**.
+
+However, we have added customized codeto recode the <code>target_who_gen</code> variable to take on values other than **No special population targeted** based on keywords in their textual description. This was necessary as some policies are miscoded in the original ACAPS taxonomy and this code helps minimize the chance that these miscodings are mapped into the CoronaNet taxonomy. The keywords were identified based on manual inspection of the ACAPS data.
+
+```{r, eval=FALSE}
+awareness_campaigns <- acaps %>%
+           filter(CATEGORY == 'Public health measures' & MEASURE == 'Awareness campaigns') %>%
+           mutate(type = 'Public Awareness Measures',
+                  target_who_gen =
+                    case_when(
+                       grepl("efugee", COMMENTS) ~ "Asylum/refugee seekers",
+                       grepl("migrant", COMMENTS) ~ 'Migrant workers',
+                       TRUE ~ 'No special population targeted'))%>%
+    select(unique_id = ID, type, target_who_gen)
+```
+
+Following this, the object which incorporates the mapping of the relevant subset of the data, awareness_campaigns, is incorporated into the main object which records this mapping, acaps_coronanet_map, using the <code>unique_id</code> variable to match the corresponding records.
+
+```{r, eval=FALSE}
+acaps_coronanet_map <- rows_update(acaps_coronanet_map, awareness_campaigns, by = 'unique_id')
+```
+</br>
+
+### 3.4.10 Psychological assistance and medical social work
+
+The following code maps how ACAPS captures polices that provide psychological assistance to those affected by COVID-19 and their families to the CoronaNet taxonomy.
+
+* The ACAPS taxonomy aims to capture such policies by coding the <code>CATEGORY</code> as **Public Health Measures** and the <code>MEASURE</code> as **Psychological assistance and medical social work**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> variable as **Public Awareness Measures** and the <code>target_who_gen</code> as **No special population targeted**.
+
+However, we have added customized codeto recode the <code>target_who_gen</code> variable to take on values other than **No special population targeted** based on keywords in their textual description. This was necessary as some policies are miscoded in the original ACAPS taxonomy and this code helps minimize the chance that these miscodings are mapped into the CoronaNet taxonomy. The keywords were identified based on manual inspection of the ACAPS data.
+
+```{r, eval=FALSE}
+psychological_assistance <- acaps %>%
+           filter(CATEGORY == 'Public health measures' & MEASURE == 'Psychological assistance and medical social work') %>%
+           mutate(type = 'Public Awareness Measures',
+                  target_who_gen =
+                    case_when(
+                       grepl("abuse", COMMENTS) ~ "Domestically abused people",
+                       grepl("prisone", COMMENTS) ~ 'Prisoners',
+                       TRUE ~ 'No special population targeted'),
+                  type_sub_cat = 'Disseminating information related to COVID-19 to the public that is reliable and factually accurate') %>%
+    select(unique_id = ID, type, target_who_gen,type_sub_cat)
+```
+
+Following this, the object which incorporates the mapping of the relevant subset of the data, psychological_assistance, is incorporated into the main object which records this mapping, acaps_coronanet_map, using the <code>unique_id</code> variable to match the corresponding records.
+
+```{r, eval=FALSE}
+acaps_coronanet_map <- rows_update(acaps_coronanet_map, psychological_assistance, by = 'unique_id')
+```
+</br>
+
+### 3.4.11 Introduction of isolation and quarantine policies
+
+The following code maps how ACAPS captures the quarantine measures which apply to all people in a region to the CoronaNet taxonomy.
+
+* The ACAPS taxonomy aims to capture such policies by coding the <code>CATEGORY</code> as **Public Health Measures** and the <code>MEASURE</code> as **Isolation and quarantine policies**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> variable as **Quarantine** and the <code>target_who_gen</code> is **No special population targeted**.
+
+* Where possible, we also map relevant information on the policy sub type into the CoronaNet's <code>type_sub_cat</code> by extracting keywords from the ACAPS <code>COMMENTS</code> variable. 
+
+However, we have added customized code to recode the <code>type</code> variable to take on values other than **Quarantine** based on keywords in their textual description. This strategy is also applied to recode the <code>target_who_gen</code> variable. This was necessary as some policies are miscoded in the original ACAPS taxonomy and this code helps minimize the chance that these miscodings are mapped into the CoronaNet taxonomy. The keywords were identified based on manual inspection of the ACAPS data.
+
+```{r, eval=FALSE}
+quarantine <- acaps %>%
+  filter(CATEGORY == 'Public health measures' & MEASURE == 'Isolation and quarantine policies') %>%
+mutate( type =
+          case_when(
+            grepl("daycare|day care", COMMENTS) ~ "Closure and Regulation of Schools",
+            grepl("retirement|residential homes|Hospital bars kids|Elderly|one visitor|aged 70|elderly|nursing homes|residential care|care institu|care home|care facil|Homecare|care centre|Care insti|old people|visits for various public|Social welfare|visiting ban", COMMENTS) ~ "Social Distancing",
+            grepl("Stay-home|Stay-Home|people are not allowed to move out of their houses|24 hours curfew|24h curfew|stay-at-home|stay at home|leave home between 1100", COMMENTS) ~ "Lockdown",
+            grepl("curfew", COMMENTS) ~ "Curfew",
+            grepl("vaccine development", COMMENTS) ~ "COVID-19 Vaccines",
+            grepl("employ", COMMENTS) ~ "Restriction and Regulation of Businesses",
+            TRUE ~ "Quarantine"
+          ),
+        target_who_gen =
+                    case_when(
+                       grepl("nigrant", COMMENTS) ~ "Migrant workers",
+                       TRUE ~ 'No special population targeted'),
+        type_sub_cat = case_when(
+          type == 'Social Distancing' & grepl("retirement|residential homes|Elderly|one visitor|aged 70|elderly|nursing homes|residential care|care institu|care home|care facil|Homecare|care centre|Care insti|old people|visits for various public|Social welfare|visiting ban", COMMENTS) ~ 'Restrictions on visiting nursing homes/long term care facilities',
+          type == 'Social Distancing' & grepl("Hospital bars kids", COMMENTS) ~ 'Restrictions on visiting hospitals',
+          type == 'Social Distancing' & grepl("care centre|Care insti|old people|visits for various public|Social welfare", COMMENTS) ~ 'Restrictions on visiting other group residential facilities (e.g. orphanages, group homes)',
+          TRUE ~ as.character(NA)
+         )
+        ) %>%
+  select(type, unique_id = ID,target_who_gen, type_sub_cat)
+```
+
+Following this, the object which incorporates the mapping of the relevant subset of the data, quarantine, is incorporated into the main object which records this mapping, acaps_coronanet_map, using the <code>unique_id</code> variable to match the corresponding records.
+
+```{r, eval=FALSE}
+acaps_coronanet_map <- rows_update(acaps_coronanet_map, quarantine, by = 'unique_id')
+```
+</br>
+
+
+### 3.4.12 Requirement to wear protective gear in public
+
+The following code maps how ACAPS captures policies that require people to wear masks or gloves to the CoronaNet taxonomy.
+
+* The ACAPS taxonomy aims to capture such policies by coding the <code>CATEGORY</code> as **Public Health Measures** and the <code>MEASURE</code> as **Requirement to wear protective gear in public**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> variable as **Social Distancing** and the <code>target_who_gen</code> is **No special population targeted**.
+
+* Where possible, we also map relevant information on the policy sub type into the CoronaNet's <code>type_sub_cat</code> by extracting keywords from the ACAPS <code>COMMENTS</code> variable. 
+
+However, we have added customized code to recode the <code>type</code> variable to take on values other than **Social Distancing** based on keywords in their textual description. The same strategy is applied to recode sub-policy type. This was necessary as some policies are miscoded in the original ACAPS taxonomy and this code helps minimize the chance that these miscodings are mapped into the CoronaNet taxonomy. The keywords were identified based on manual inspection of the ACAPS data.
+
+```{r, eval=FALSE}
+masks <- acaps %>%
+  filter(CATEGORY == 'Public health measures' & MEASURE == 'Requirement to wear protective gear in public') %>%
+  mutate( type =
+             case_when(
+               grepl("store|shops|estaurant| bar|ustomer|profession|office|compani", COMMENTS) ~ "Restriction and Regulation of Businesses",
+               grepl("school", COMMENTS) ~ "Closure and Regulation of Schools",
+               grepl("uarantine", COMMENTS) ~ "Quarantine",
+               grepl("roups of up to|indoor events", COMMENTS) ~ "Restrictions of Mass Gatherings",
+               TRUE ~ "Social Distancing"
+             ),
+         target_who_gen ='No special population targeted',
+         type_sub_cat =
+           case_when(
+             grepl("estaurant", COMMENTS) ~ "Restaurant",
+             grepl(" bar", COMMENTS) ~ "Bars",
+             grepl("public transport", COMMENTS) ~ "Other",
+             grepl("public areas|public spaces|everywhere|public place|PUBLIC SPACE", COMMENTS) ~ "All public spaces / everywhere",
+             TRUE ~ as.character(NA)
+           )
+         ) %>%
+  select(type,type_sub_cat, unique_id = ID, target_who_gen)
+```
+
+Following this, the object which incorporates the mapping of the relevant subset of the data, masks, is incorporated into the main object which records this mapping, acaps_coronanet_map, using the <code>unique_id</code> variable to match the corresponding records.
+
+```{r, eval=FALSE}
+acaps_coronanet_map <- rows_update(acaps_coronanet_map, masks, by = 'unique_id')
+```
+</br>
+
+## 3.5 Social Distancing
+
+### 3.5.1 Schools closure
+
+The following code maps how ACAPS captures school closure policies to the CoronaNet taxonomy.
+
+* The ACAPS taxonomy aims to capture such policies by coding the <code>CATEGORY</code> as **Social Distancing** and the <code>MEASURE</code> as **Schools closure**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> variable as **Closure and Regulation of Schools** and the <code>target_who_gen</code> as **No special population targeted**.
+
+```{r, eval=FALSE}
+reg_schools <- acaps %>%
+          filter(CATEGORY == 'Social distancing' & MEASURE == 'Schools closure') %>%
+          mutate(type = 'Closure and Regulation of Schools',
+                 target_who_gen ='No special population targeted') %>%
+          select(unique_id = ID, type, target_who_gen)
+```
+
+Following this, the object which incorporates the mapping of the relevant subset of the data, reg_schools, is incorporated into the main object which records this mapping, acaps_coronanet_map, using the <code>unique_id</code> variable to match the corresponding records.
+
+```{r, eval=FALSE}
+acaps_coronanet_map <- rows_update(acaps_coronanet_map, reg_schools, by = 'unique_id')
+```
+</br>
+
+### 3.5.2 Closures of businesses and public services
+
+The following code maps how ACAPS captures the restriction and regulations of business or government services, which applies to all people in a region to the CoronaNet taxonomy.
+
+* The ACAPS taxonomy aims to capture such policies by coding the <code>CATEGORY</code> as **Social Distancing** and the <code>MEASURE</code> is **Closures of businesses and public services**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> variable as**Restriction and Regulations of Government Services** and the <code>target_who_gen</code> is **No special population targeted**.
+
+However, we have added customized code to recode the <code>type</code> variable to take on values other than **Restriction and Regulation of Businesses** based on keywords in their textual description. This was necessary as some policies are miscoded in the original ACAPS taxonomy and this code helps minimize the chance that these miscodings are mapped into the CoronaNet taxonomy. The keywords were identified based on manual inspection of the ACAPS data.
+
+```{r, eval=FALSE}
+reg_gov_services <- acaps %>%
+          filter(CATEGORY == 'Social distancing' & MEASURE == 'Closure of businesses and public services') %>%
+          mutate(type =
+           case_when(
+             grepl("judic|overnment inst|overnmental service|overnmental insti|State Employ|public facil|Park|park|Eiffel|governance|Court|Cultural|overnment off|public off|jury|Indoor swimming|Public space|librar|assport|ublic square|public service|pool|park|ublic serv|amping|ublic admin|museum|beach|ublic access|court|Museum|Librar|Elect|elect", COMMENTS) ~'Restriction and Regulation of Government Services',
+             grepl("School|educa|SCHOOL|Kinder|school|nurser|Educat|daycare", COMMENTS) ~'Closure and Regulation of Schools',
+             grepl("prayer|relgion|church|Church|event|eligious", COMMENTS) ~'Restrictions of Mass Gatherings',
+             grepl("ublic transport|Hospital|visits to geriatric|isiting restri", COMMENTS) ~'Social Distancing',
+             grepl("urgery|entist|detnal", COMMENTS) ~'Health Resources',
+             grepl("Emergency|emergency", COMMENTS) ~'Declaration of Emergency',
+             grepl("erry serv", COMMENTS) ~'External Border Restrictions',
+               TRUE ~       'Restriction and Regulation of Businesses',
+           ),
+         target_who_gen ='No special population targeted') %>%
+  select(unique_id = ID, type, target_who_gen)
+```
+
+Following this, the object which incorporates the mapping of the relevant subset of the data, reg_gov_services, is incorporated into the main object which records this mapping, acaps_coronanet_map, using the <code>unique_id</code> variable to match the corresponding records.
+
+```{r, eval=FALSE}
+acaps_coronanet_map <- rows_update(acaps_coronanet_map, reg_gov_services, by = 'unique_id')
+```
+</br>
+
+
+### 3.5.3 Restriction of Mass Gatherings of Prisoners
+
+The following code maps how ACAPS captures prison policies undertaken to mitigate the spread of COVID-19 to the CoronaNet taxonomy.
+
+* The ACAPS taxonomy aims to capture such policies by coding the <code>CATEGORY</code> as **Social Distancing** and the <code>MEASURE</code> as **Changes in prison policies**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> variable as**Restriction of Mass Gatherings**, the <code>type_sub_cat</code> as **Prison population reduced**, the <code>target_who_gen</code> as **Prisoners**.
+
+```{r, eval=FALSE}
+mass_gathering <- acaps %>%
+           filter(CATEGORY == 'Social distancing' & MEASURE == 'Changes in prison-related policies') %>%
+           mutate(type = 'Restriction of Mass Gatherings',
+                  target_who_gen ='Prisoners',
+                  type_sub_cat = 'Prison population reduced')%>%
+          select(unique_id = ID, type, target_who_gen, type_sub_cat)
+```
+
+Following this, the object which incorporates the mapping of the relevant subset of the data, mass_gathering, is incorporated into the main object which records this mapping, acaps_coronanet_map, using the <code>unique_id</code> variable to match the corresponding records.
+
+```{r, eval=FALSE}
+acaps_coronanet_map <- rows_update(acaps_coronanet_map, mass_gathering, by = 'unique_id')
+```
+</br>
+
+
+### 3.5.4 Restriction of Mass Gatherings of General Public
+
+The following code maps how ACAPS captures the restrictions of mass gathering measures which apply to all people in a region to the CoronaNet taxonomy.
+
+* The ACAPS taxonomy aims to capture such policies by coding the <code>CATEGORY</code> as **Social Distancing** and the <code>MEASURE</code> as **Limit public gatherings**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> variable as**Restriction of Mass Gatherings**, the <code>type_sub_cat</code> variable as **All/Unspecified mass gatherings**, and the <code>target_who_gen</code> as **No special population targeted**.
+
+However, we have added customized code to recode the <code>type</code> variable to take on values other than **Restrictions of Mass Gatherings** based on keywords in their textual description. This strategy is also applied to recode the <code>type_sub_cat</code> variable. This was necessary as some policies are miscoded in the original ACAPS taxonomy and this code helps minimize the chance that these miscodings are mapped into the CoronaNet taxonomy. The keywords were identified based on manual inspection of the ACAPS data.
+
+```{r, eval=FALSE}
+mass_gathering_general <- acaps %>%
+           filter(CATEGORY == 'Social distancing' & MEASURE == 'Limit public gatherings') %>%
+  mutate(type =
+           case_when(
+             grepl("market|store|vocational|business|workpla|Food Service|Bar|restar|bar", COMMENTS) ~ 'Restriction and Regulation of Businesses',
+             grepl("hildcare|school", COMMENTS) ~ ' Closure and Regulation of Schools',
+             grepl("ublic transpor|old people|elderly|cemet|etirement|ospital", COMMENTS) ~ 'Social Distancing',
+             TRUE ~ 'Restrictions of Mass Gatherings'
+           ),
+         target_who_gen ='No special population targeted',
+         type_sub_cat = case_when(
+          type =='Restrictions of Mass Gatherings'&  grepl("Funeral|funeral|burial", COMMENTS) ~ "Funerals and mourning rituals",
+          type =='Restrictions of Mass Gatherings'&  grepl("Wedding|wedding|marriage", COMMENTS) ~ "Weddings and marriage rituals",
+          type =='Restrictions of Mass Gatherings'&  grepl("Church|Relig|religious|mosque", COMMENTS) ~ "Attendance at religious services restricted (e.g. mosque/church closings)",
+          type =='Restrictions of Mass Gatherings'& TRUE ~ "All/Unspecified mass gatherings"
+         )) %>%
+  select(unique_id = ID, type, target_who_gen, type_sub_cat)
+```
+
+Following this, the object which incorporates the mapping of the relevant subset of the data, mass_gathering_general, is incorporated into the main object which records this mapping, acaps_coronanet_map, using the <code>unique_id</code> variable to match the corresponding records.
+
+```{r, eval=FALSE}
+acaps_coronanet_map <- rows_update(acaps_coronanet_map, mass_gathering_general, by = 'unique_id')
+```
+
+<hr>
+
+## 3.6 Humanitarian Exemptions
+
+The following code maps how ACAPS captures humanitarian exemptions measures to the CoronaNet taxonomy.
+
+* The ACAPS taxonomy aims to capture such policies by coding the <code>CATEGORY</code> as **Humanitarian exemption** and the <code>MEASURE</code> as **Humanitarian exemptions**.
+
+ * The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> variable as **External Border Restrictions** and the <code>target_who_gen</code> as **No special population targeted**.
+ 
+ * Where possible, we also map relevant information on the travel mechanism into the CoronaNet's <code>travel_mechanism</code> by extracting keywords from the ACAPS <code>COMMENTS</code> variable. 
+
+However, we have added customized code to recode the <code>target_who_gen</code> variable to take on values other than **No special population targeted** based on keywords in their textual description.   This was necessary as some policies are miscoded in the original ACAPS taxonomy and this code helps minimize the chance that these miscodings are mapped into the CoronaNet taxonomy. The keywords were identified based on manual inspection of the ACAPS data.
+
+```{r, eval=FALSE}
+humanitarian_exemp <- acaps %>%
+           filter(CATEGORY == 'Humanitarian exemption' & MEASURE == 'Humanitarian exemptions') %>%
+           mutate(type = 'External Border Restrictions',
+                  target_who_gen =
+                    case_when(
+                     grepl("efugee", COMMENTS) ~ 'Asylum/refugee seekers',
+                     grepl("migrant", COMMENTS) ~ 'Migrant workers',
+                     TRUE ~ 'No special population targeted'),
+                  travel_mechanism =
+                    case_when(
+                      grepl('flight|air', COMMENTS)~ "Flights",
+                      grepl('rain|rains', COMMENTS)~ "Trains",
+                      grepl('sea ports|boat|boats|sea ports|ship|ships|vessels', COMMENTS)~ "Seaports",
+                      grepl('cruis', COMMENTS)~ "Cruises",
+                      TRUE ~ as.character(NA))
+                  ) %>%
+    select(unique_id = ID, type, target_who_gen,travel_mechanism)
+```
+
+Following this, the object which incorporates the mapping of the relevant subset of the data, humanitarian_exep, is incorporated into the main object which records this mapping, acaps_coronanet_map, using the <code>unique_id</code> variable to match the corresponding records.
+
+```{r, eval=FALSE}
+acaps_coronanet_map <- rows_update(acaps_coronanet_map, humanitarian_exemp, by = 'unique_id')
+```
+</br>
+
+
+# 4 Final Map Adjustments
+
+Finally, once all the variables that are possible to harmonize from the ACAPS dataset to CoronaNet taxonomy have been identified, the results are exported in an .rds and .csv format, to be consolidated together with the other external databases to be harmonised. The final consolidated dataset is then processed for manual harmonisation into the CoronaNet Research Project dataset.
+
+```{r write, eval=FALSE}
+write.csv(acaps_coronanet_map,    "acaps_coronanet_map.csv")
+saveRDS(acaps_coronanet_map, "acaps_coronanet_map.rds")
+```
+<hr>
+
+
+

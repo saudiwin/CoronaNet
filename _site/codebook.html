@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+    <link rel="stylesheet" type="text/css" href="style2.css">
+
+<head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="L-jK2R0bz2lbCyDSQ7Ulk6MW9il2PZzbXZ9DX6AkuuE" />
+    <meta name="description" content="The CoronaNet Research Project is a worldwide effort that tracks government COVID-19 policies.">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <title>Codebook</title>
+    <script src="js/fontawesome.js" crossorigin="anonymous" async></script>
+    <script src="js/particles.js"></script>
+    <script src="app.js" async></script>
+    <div id="particles-js" style="position: relative;">
+        <img src="images/logo_transparent_slim.png" style="position: absolute; margin: auto; left: 0; right: 0; text-align: center; height: 80%; z-index: 2; cursor: pointer;" class="logoCoronanet" onclick="window.location='https://www.coronanet-project.org/index.html';"/>
+        <div><a id="menuButton" onclick="openNav()"><i class="fas fa-bars" style="cursor: pointer; font-size: 24px; text-shadow: 0 0 1px #000; z-index: 3;"></i></a></div>
+        <div class="containerMenu">
+            <label id="theme-switch" class="theme-switch" for="checkbox_theme">
+            <input type="checkbox" value='0' id="checkbox_theme" style="display: none;">
+            <i id="darkModeSwitch" class="fas fa-moon" style="background-color: transparent; cursor: pointer; font-size: 24px; text-shadow: 0 0 1px #000;"></i>
+            </label>
+            <a id="emailButton" href="mailto:admin@coronanet-project.org"><i class="fas fa-envelope" style="background-color: transparent; cursor: pointer; font-size: 24px; text-shadow: 0 0 1px #000;"></i></a>
+        </div>
+    </div>
+    <div id="navbarOverlay" style="z-index: 3;"></div>
+    <h1>Codebook</h1>
+    <div id="mySidenav" class="sidenav" style="display: none; z-index: 3;">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <div class="sidebarOption"><img src="images/favicon_bw.png" style="width: 15px; display: inline;"><a target="_blank" href="index.html">Home</a></div>
+        <div class="sidebarOption"><img src="images/11_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="methods.html">Methodology</a>
+        <div class="sidebarSuboption">
+        <a target="_blank" href="methods.html">Data Collection Methods</a><br>
+        <a target="_blank" href="codebook.html">Codebook</a><br>
+        <a target="_blank" href="validationcheck.html">Validation and Reliability Checks</a>
+        </div></div>
+        <div class="sidebarOption"><img src="images/16_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="visualisations.html">Visualizations</a></div>
+        <div class="sidebarOption"><img src="images/14_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="reports.html">Reports</a></div>
+        <div class="sidebarOption"><img src="images/13_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="publications.html">Publications</a></div>
+        <div class="sidebarOption"><img src="images/10_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="inthemedia.html">In The Media</a></div>
+        <div class="sidebarOption"><img src="images/9_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="about.html">About CoronaNet</a></div>
+        <div class="sidebarOption"><img src="images/12_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="team.html">Our People</a>
+        <div class="sidebarSuboption">
+        <a target="_blank" href="team.html">Team</a><br>
+        <a target="_blank" href="interviews.html">Interviews</a><br>
+        </div></div>
+        <div class="sidebarOption"><img src="images/15_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="join.html">Join CoronaNet</a></div>
+    </div>
+    <script>
+        function openNav() {
+          document.getElementById("mySidenav").style.display = "block";
+          document.getElementById("navbarOverlay").style.display = "block";
+        }
+
+        function closeNav() {
+          document.getElementById("mySidenav").style.display = "none";
+          document.getElementById("navbarOverlay").style.display = "none";
+        }
+    </script>
+            <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DSF9RY2DVF"></script>
+    <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-DSF9RY2DVF');
+    </script>
+</head>
+
+<body>
+
+    <div class="container">
+        <p class="block">
+            The CoronaNet dataset collects data on government policies made in response to the COVID-19 pandemic for 190+ countries around the world. Data collection began on March 28, 2020 and tracks relevant government policies made since December 31, 2019. In the below, we provide a brief overview of the data available from the CoronaNet database. You can download the complete codebook <a class="link" href="https://www.coronanet-project.org/assets/CoronaNet_Codebook.pdf">here.</a> <br><br>
+
+            Each policy entry documents the following information:<br><br>
+        </p>
+
+
+        <button class="accordion">Policy textual description</button>
+        <div class="panel"><br>
+            [description]: Provides raw text which describes at a minimum, what government initiated a policy, what the policy type is and when the policy type was applied for. Where applicable, it also includes information about the geographical and demographic targets of a policy.<br>
+            <br>
+        </div>
+
+        <button class="accordion">Policy type</button>
+        <div class="panel"><br>
+            [type]: Categorizes policies into x broad types and y sub-types. Please see chart below for more information.<br><br>
+            <div class="row">
+                <figure style="text-align: center;float:left">
+                <img src="images/quarantine.png" alt="Quarantine">
+                <figcaption>Quarantine</figcaption>
+                </figure>
+                <figure style="text-align: center;float:left">
+                <img src="images/emergency.png" alt="Declaration of Emergency">
+                <figcaption>Declaration of Emergency</figcaption>
+                </figure>
+                <figure style="text-align: center;float:left">
+                <img src="images/lockdown.png" alt="Lockdown">
+                <figcaption>Lockdown</figcaption>
+                </figure>
+                <figure style="text-align: center;float:left">
+                <img src="images/external.png" alt="External Border Restrictions">
+                <figcaption>External Border Restrictions</figcaption>
+                </figure>
+                <figure style="text-align: center;float:left">
+                <img src="images/internal.png" alt="Internal Border Restrictions">
+                <figcaption>Internal Border Restrictions</figcaption>
+                </figure>
+                <figure style="text-align: center;float:left">
+                <img src="images/gathering.png" alt="Restriction of Mass Gatherings">
+                <figcaption>Restriction of Mass Gatherings</figcaption>
+                </figure>
+                <figure style="text-align: center;float:left">
+                <img src="images/distancing.png" alt="Social Distancing">
+                <figcaption>Social Distancing</figcaption>
+                </figure>
+                <figure style="text-align: center;float:left">
+                <img src="images/curfew.png" alt="Curfew">
+                <figcaption>Curfew</figcaption>
+                </figure>
+                <figure style="text-align: center">
+                <img src="images/monitoring.png" alt="Health Monitoring">
+                <figcaption>Health Monitoring</figcaption>
+                </figure>
+                <figure style="text-align: center;float:left">
+                <img src="images/testing.png" alt="Health Testing">
+                <figcaption>Health Testing</figcaption>
+                </figure>
+                <figure style="text-align: center;float:left">
+                <img src="images/resources.png" alt="Health Resources">
+                <figcaption>Health Resources</figcaption>
+                </figure>
+                <figure style="text-align: center;float:left">
+                <img src="images/school.png" alt="Closure and Regulation of Schools">
+                <figcaption>Closure and Regulation of Schools</figcaption>
+                </figure>
+                <figure style="text-align: center;float:left">
+                <img src="images/gov.png" alt="Restriction and Regulation of Government Services">
+                <figcaption>Restriction and Regulation of Government Services</figcaption>
+                </figure>
+                <figure style="text-align: center;float:left">
+                <img src="images/business.png" alt="Restriction and Regulation of Businesses">
+                <figcaption>Restriction and Regulation of Businesses</figcaption>
+                </figure>
+                <figure style="text-align: center;float:left">
+                <img src="images/vaccines.png" alt="Restriction and Regulation of Businesses">
+                <figcaption>COVID-19 Vaccines</figcaption>
+                </figure>
+                <br>
+            </div>
+        </div>
+
+        <button class="accordion">Policy announcement date</button>
+        <div class="panel"><br>
+            [date_announced]: Documents the date in which a policy was announced<br><br>
+        </div>
+
+        <button class="accordion">Policy start date</button>
+        <div class="panel"><br>
+            [date_start]: Documents the date in which a policy starts<br><br>
+        </div>
+
+        <button class="accordion">Policy end date</button>
+        <div class="panel"><br>
+            [date_end]: Documents the date in which a policy ends if applicable. If no end date was announced, then this field is left blank.<br><br>
+        </div>
+
+        <button class="accordion">Country</button>
+        <div class="panel"><br>
+            [country]: Documents the country from which a policy originates from<br><br>
+        </div>
+
+        <button class="accordion">Government level initiating the policy</button>
+        <div class="panel"><br>
+            [init_country_level]: Documents what level of government a policy was initiated from. If the policy was initiated a province or municipality, the name of the sub-national government is noted in the [province] and [city] variables respectively<br><br>
+        </div>
+
+        <button class="accordion">Geographical target of the policy</button>
+        <div class="panel"><br>
+            [target_geog_level]: Documents what geographical jurisdiction a policy was targeted toward. <br>
+            The country of the geographical jurisdiction is noted in the [target_country] variable. <br>
+            If applicable, the target province, city or other sub-national target are documented in [target_province], [target_city] and [target_other].
+            <br><br>
+        </div>
+
+        <button class="accordion">Demographic target of the policy</button>
+        <div class="panel"><br>
+            [target_who_what]: Documents whether a policy targets a particular demographic based on their citizenship, residency, or relevance to the health sector<br><br>
+        </div>
+
+        <button class="accordion">Compliance level</button>
+        <div class="panel"><br>
+            [compliance]: Documents whether the de jure compliance for a policy is voluntary or mandatory and if mandatory, what the compliance mechanism is<br><br>
+        </div>
+
+        <button class="accordion">Enforcer of the policy</button>
+        <div class="panel"><br>
+            [enforcer]: Documents what government body is tasked with enforcing a particular policy, e.g. police, national level government, etc. <br><br>
+        </div>
+
+        <br><br>
+
+        <p class="block">
+            There is a unique [record_id] for each policy sub-type, start date, government level initiating a policy combination. Policies are tracked over time with a unique [policy_id]:
+        </p><br>
+
+        <ol class="circle">
+            <li class="numbered">Documentation as to whether a policy a new entry or an update is documented in the [entry_type] variable.</li>
+            <li class="numbered">If the policy is an update, whether it documents the end of a policy or a change of a policy (e.g. a time extension of a policy) is documented in the [update_type] policy. </li>
+            <li class="numbered">If a policy documents a change of a policy, whether a policy is strengthening (e.g. the policy ends later than previously announced) or weakening (e.g. the policy ends earlier than previously announced) is noted in the [update_level] variable.</li>
+        </ol><br>
+
+        <h3>Meta Data</h3><br>
+        <p class="block" style="font-size:18px;">Each unique policy also includes meta data which documents the:</p><br><br>
+
+        <button class="accordion">Date of entry collection</button>
+        <div class="panel"><br>
+            [recorded_date]: Documents the date and time in which a policy was recorded in the CoronaNet database
+            <br><br>
+        </div>
+
+        <button class="accordion">URL link of the primary source</button>
+        <div class="panel"><br>
+            [link]: Records the URL link of the primary source from which a policy was documented
+            <br><br>
+        </div>
+
+        <button class="accordion">Date of policy last checked for updates</button>
+        <div class="panel"><br>
+            [date_updated]: Documents the date at which a researcher last checked to see if a policy existed for a particular level of government and policy type. This data is useful to distinguish between whether a) a government did not institute a particular policy (e.g. school closures) or b) such a policy does empirically exist but our researchers have yet to document it in the CoronaNet database
+            <br>
+        </div><br>
+
+        <script>
+            var acc = document.getElementsByClassName("accordion");
+            var i;
+
+            for (i = 0; i < acc.length; i++) {
+                acc[i].addEventListener("click", function() {
+                    this.classList.toggle("active");
+                    var panel = this.nextElementSibling;
+                    if (panel.style.maxHeight) {
+                        panel.style.maxHeight = null;
+                    } else {
+                        panel.style.maxHeight = panel.scrollHeight + "px";
+                    }
+                });
+            }
+        </script>
+
+        <h3>Terms and Conditions</h3><br>
+        <p class="block">
+            By using this site or downloading data from CoronaNet, users agree to the following:
+        </p><br>
+
+        <ol class="circle">
+            <li class="numbered">To use and/or download the data only for private or personal, non-commercial purposes</li>
+            <li class="numbered">To cite the source of the data</li>
+            <li class="numbered">To accept disclaimers and restrictions of rights and liability converning the data</li>
+        </ol><br>
+
+        <h3>Citing CoronaNet</h3><br>
+
+        <p class="block">
+            For non-academic purposes, please cite the information in CoronaNet as:<br><br>
+
+            <b>Source:</b> CoronaNet Research Project<br><br>
+
+            For academic purposes, please cite the information in CoronaNet and/or user’s guide using the following citation:<br><br>
+
+            Cheng, Cindy, Joan Barceló, Allison Hartnett, Robert Kubinec, and Luca Messerschmidt. 2020. COVID-19 Government Response Event Dataset (CoronaNet v1.0). Nature Human Behaviour (2020). <a class="link" href="https://doi.org/10.1038/s41562-020-0909-7">https://doi.org/10.1038/s41562-020-0909-7</a>
+        </p><br><br>
+    </div>
+
+
+</body>
+
+<footer>
+    <h2>Partner Universities and Institutions</h2>
+    <br>
+    <a target="_blank" href="https://www.hfp.tum.de/en/home/"><img class="logo" src="images/hochschule%20.png" alt="Hochschule für Politik München logo"></a>
+    
+    <a target="_blank" href="https://www.tum.de/"><img class="logo" src="images/TUM.png" alt="Technical University of Munich logo"></a>
+
+    <a target="_blank" href="https://nyuad.nyu.edu/en/"><img class="logo" src="images/NYU.png" alt="New York University Abu Dhabi logo"></a>
+
+    <a target="_blank" href="https://www.wi.tum.de/"><img class="logo" src="images/SOM.png" alt="TUM School of Management at Technical University of Munich logo"></a>
+    
+    <br>
+    <br>
+    
+    <a target="_blank" href="https://nu.edu.kz/"><img class="logo" src="images/NU.png" alt="Nazarbayev University logo"></a>
+    
+    <a target="_blank" href="https://www.jataware.com/"><img class="logo" src="images/jataware_logo.png" alt="Jataware company logo"></a>
+
+    <a target="_blank" href="https://www.leibniz-krisen.de/en.html"><img class="logo" src="images/LFV_logo.png" alt="Leibniz Research Alliance
+Crises in a Globalised World logo"></a>
+
+    <a target="_blank" href="https://www.overton.io/"><img class="logo" src="images/overton_logo.png" alt="Overton company logo"></a>
+    
+    <br>
+    <br>
+    <hr><br>
+    <h2 class="periscope">CoronaNet is part of the PERISCOPE consortium, a project funded by the European Commission under the Horizon 2020 Research and Innovation programme (agreement no. 101016233)</h2>
+    <br>
+    <a target="_blank" href="https://periscopeproject.eu/"><img class="logo funding" src="images/periscope.png" alt="Logo of the PERISCOPE consortium"></a>
+    <a target="_blank" href="https://ec.europa.eu/info/index_en"><img class="logo_eu" src="images/logo-ce-horizontal-en-quadri-lr.png" alt="Logo of the European Commission"></a>
+    <br><br>
+    <a target="_blank" href="https://github.com/saudiwin/corona_tscs"><img src="images/github.png" width="25px" alt="GitHub data repository for CoronaNet"></a>
+    <a target="_blank" href="https://www.linkedin.com/company/coronanet-research-group/mycompany/"><img src="images/linkedin.png" width="25px" alt="CoronaNet Research Group on LinkedIn"></a>
+    <a target="_blank" href="https://twitter.com/CoronaNet_org"><img src="images/twitter.png" width="25px" alt="CoronaNet Research Project on Twitter"></a>
+    <a target="_blank" href="https://www.instagram.com/coronanet_org/"><img src="images/instagram.png" width="25px" alt="CoronaNet Research Project on Instagram"></a>
+    <br>
+    <script src="js/darkMode.js"></script>
+</footer></html>

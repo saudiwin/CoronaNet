@@ -1,0 +1,1041 @@
+---
+title: "CIHI - CoronaNet Taxonomy Map"
+author: "CoronaNet Research Project"
+date: '`r format(Sys.Date())`'
+output:
+  rmdformats::robobook
+---
+  
+```{css, echo= FALSE}
+.tabset {
+  background: transparent;
+}
+```
+
+```{r setup, include=FALSE, eval=FALSE}
+# knitr::opts_knit$set(root.dir = "../")
+knitr::opts_chunk$set(echo = TRUE)
+
+# set working directory
+# cihi = read_excel(here("data", "collaboration", "cihi", "covid-19-intervention-scan-data-tables-en.xlsx"), 
+#     sheet = "Intervention scan", skip = 2)
+```
+
+ 
+
+# 0 Introduction
+
+This document maps the taxonomy used by the Canadian Data Set of COVID-19 Interventions from the Candian Institute for Health Information (CIHI) to document government policies made in response to COVID-19 into the CoronaNet Research Project taxonomy. Each section maps the general area for which the taxonomy is mapped and each sub-section provides further detail as necessary. Following each explanation for how the mapping is conceptualized, there is R code for operationalizing this mapping.  Please refer to the CIHI Data Dictionary, which they release as a separate sheet in their dataset [accessible through their website](https://www.cihi.ca/en/canadian-data-set-of-covid-19-interventions) and the [CoronaNet Codebook](https://www.coronanet-project.org/assets/CoronaNet_Codebook.pdf) for more information on their respective taxonomies. 
+
+Note that the code below is customized to adjust for errors and idiosyncrasies in the version of the CIHI dataset available asof August 12, 2021.  You can access (i) this original version of the CIHI dataset, "covid-19-intervention-scan-data-tables-en.xlsx", as well as (ii) the version which transforms this version of the CIHI dataset into the CoronaNet taxonomy, "cihi_coronanet_map.csv" (the rest of this document details how this transformation was implemented) from the [CoronaNet pubic git repo](https://github.com/CoronaNetDataScience/corona_tscs/tree/master/data/collaboration/cihi). 
+
+<hr>
+<br>
+
+# 1 Setup
+
+To create replicate this taxonomy mapping exercise, users will need to load the following R packages and to read in the original CIHI data as follows:
+
+```{r,   message=FALSE, eval=FALSE}
+library(readr)
+library(dplyr)
+library(magrittr)
+library(tidyr)
+library(readxl)
+library(lubridate)
+library(openxlsx)
+library(tidyverse)
+library(here)
+
+cihi = read_excel("./data/collaboration/cihi/covid-19-intervention-scan-data-tables-en.xlsx", sheet = "Intervention scan", skip = 2)
+cihi$`Date announced` <- convertToDate(cihi$`Date announced`)
+cihi$`Date implemented` <- convertToDate(cihi$`Date implemented`)
+cihi<- subset(cihi, cihi$`Entry ID` != "End of worksheet")
+```
+
+# 2 Map Creation 
+
+The following code creates a map to translate the CIHI data to the CoronaNet taxonomy. Where there is a straightforward one-to-one relationship between the two taxonomies, these are directly mapped in the below:
+
+* The CIHI <code>Entry ID</code> variable allows each unique observation to be identifiable. This is conceptually the same as CoronaNet's <code>record_id</code> variable. However, to make it clear when a policy originates from CIHI and when it originates from CoronaNet, we encode this information into a new variable we name <code>unique_id</code>.
+
+* CIHI <code>Date announced</code> variable, which captures when a policy was implemented, is a direct match for CoronaNet's <code>date_announced</code> variable.
+
+* CIHI <code>Date implemented</code> variable, which captures when a policy was implemented, is a direct match for CoronaNet's <code>date_start</code> variable.
+
+* CIHI <code>Intervention summary</code> variable is a close approximation to CoronaNet's <code>description</code> variable. The main difference is that (at least in theory), CoronaNet's description variable must always contain certain information (the policy initiator, the type of policy, the date the policy started and if applicable: the geographic target of the policy, the demographic target of the policy and the end date of the policy) while there does not appear to be same amount of information consistently captured in the CIHI <code>Comments</code> variable. As such, it will likely be necessary to backcode for this information for observations in the CIHI dataset that are not in the CoronaNet dataset.
+
+
+
+```{r, eval=FALSE}
+cihi_coronanet_map <- data.frame(unique_id = cihi$`Entry ID`,
+                                `date_announced` = cihi$`Date announced`,
+                                `date_start` = cihi$`Date implemented`,
+                                `date_end` = NA,
+                                `type` = NA,
+                                `type_sub_cat` = NA,
+                                `description` = cihi$`Intervention summary`,
+                                `country` = "Canada", 
+                                `enforcer` = NA,
+                                `target_geog_level` = NA,
+                                `init_country_level` = NA,
+                                `cihi_category` = cihi$`Intervention category`,
+                                `cihi_type` = cihi$`Intervention type`)
+```
+</br>
+
+## 2.1 Link source
+
+The <code>Primary source (news release or specific resource)</code> and <code>Secondary source</code> variables in the CIHI dataset captures the original source of information from which a policy is documented. While this is conceptually a direct mapping for CoronaNet's <code>link</code> variable, the latter includes all sources into one field. As such, additional processing must be done to reformat how the sources are saved in the CIHI dataset, which the following code does. 
+
+```{r, eval=FALSE}
+# Clean colnames related to the sources.
+if(grepl("Secondary", names(cihi)[9])){names(cihi)[9] = "Secondary source"}
+if(grepl("Primary", names(cihi)[8])){names(cihi)[8] = "Primary source (news release or specific resource)"}
+# Concatenate sources columns into the new column "link" by CIHI id.
+link <- cihi[c("Entry ID", "Primary source (news release or specific resource)", "Secondary source")]
+link$`Primary source (news release or specific resource)`<- str_remove(link$`Primary source (news release or specific resource)` ,"Not applicable")
+link$link <- ifelse(link$`Secondary source`  == "Not applicable", 
+                    link$`Primary source (news release or specific resource)`, 
+                    paste(link$`Primary source (news release or specific resource)`, link$`Secondary source`, sep = ", "))
+link <- link[ -c(2:3) ]
+```
+
+
+Following this, the object which incorporates the mapping of the relevant subset of the data, link, is incorporated into the main object which records this mapping, cihi_coronanet_map, using the <code>unique_id</code> variable to match the corresponding records.
+
+
+```{r, eval=FALSE}
+# Join link data into CIHI mapping.
+cihi_coronanet_map = left_join(cihi_coronanet_map, link, by = c('unique_id' = 'Entry ID'))
+```
+</br>
+
+## 2.2 Province Level
+
+The <code>Jurisdiction</code> variable in the CIHI dataset captures which subnational province a policy is applied to, if applicable. While this is conceptually a direct mapping for CoronaNet's <code>province</code> variable, additional processing must be done to harmonize the province names, which the following code does. 
+
+```{r, eval=FALSE}
+province_name <- cihi %>%
+      mutate(province = 
+               recode(Jurisdiction,
+                           'Alta.'= "Alberta",
+                           'B.C.' = "British Columbia",
+                           'Man.' = "Manitoba",
+                           'N.B.' = "New Brunswick" ,
+                           'N.L.' = "Newfoundland and Labrador",
+                           'N.W.T.' = "Northwest Territories",
+                           'N.S.' = "Nova Scotia",
+                           'Nun.' = "Nunavut",
+                           'Ont.' = "Ontario",
+                           'P.E.I.' = "Prince Edward Island",
+                           'Que.' =  "Quebec",
+                           'Sask.' = "Saskatchewan" ,
+                           "Y.T." = "Yukon")) %>%
+      mutate(province = ifelse(Jurisdiction == 'Can.', NA, province)) %>%
+      select(`Entry ID`, province)
+```
+
+Following this, the object which incorporates the mapping of the relevant subset of the data, province_name, is incorporated into the main object which records this mapping, cihi_coronanet_map, using the <code>unique_id</code> variable to match the corresponding records.
+
+```{r, eval=FALSE}
+cihi_coronanet_map = left_join(cihi_coronanet_map, province_name, by = c('unique_id' = 'Entry ID'))
+```
+
+## 2.3 Initiating Geographic Level 
+
+The <code>init_country_level</code> variable in the CoronaNet taxonomy captures information as to which level of government a COVID-19 policy originates from, which the CIHI taxonomy does not directly document. In the following code, we assume that if a policy applies to a province, it is a **Provincial** level policy and if it applies to the entire country, it is a **National** level policy. Note however, it is possible that the central government applies a policy not to the entire country, but only to a limited number of provinces. In this case, this mapping will be incorrect and downstream manual harmonization will need to correct for this error. 
+
+```{r, eval=FALSE}
+# set init_country_level
+cihi_coronanet_map = cihi_coronanet_map %>%
+  mutate(init_country_level = 
+           case_when(
+              !is.na(province) ~ 'Provincial',
+              TRUE ~ "National"
+          )
+        )
+```
+
+## 2.4 Target Geographic Level 
+
+The <code>target_geog_level</code> variable in the CoronaNet taxonomy captures information as to which level of government a COVID-19 policy applies to, which the CIHI taxonomy also captures in its <code>Level</code> variable. Additional processing must be done to harmonize the names of these levels, which the following code does. 
+
+
+```{r, eval=FALSE}
+# adjust 'level' to 'target_geog_level'
+target_geog_level = cihi  %>%
+  mutate(target_geog_level = 
+           case_when(
+              Level  == 'Federal' ~ 'National',
+              Level  == 'Provincial/territorial' ~ 'Provincial',
+              Level  == 'Regional' ~ 'Other (e.g., county)',
+              TRUE ~ as.character(NA)
+              )
+         )
+
+```
+
+Following this, the object which incorporates the mapping of the relevant subset of the data, target_geog_level, is incorporated into the main object which records this mapping, cihi_coronanet_map, using the <code>unique_id</code> variable to match the corresponding records.
+
+```{r, eval=FALSE}
+cihi_coronanet_map = left_join(cihi_coronanet_map, target_geog_level, by = c('unique_id' = 'Entry ID'))
+```
+
+
+</br>
+
+## 2.5 End dates
+
+The following code maps how CIHI captures end dates in its taxonomy into the CoronaNet taxonomy. 
+
+* In the CIHI taxonomy, end dates are not captured in a separate variable field but is rather documented in its text field <code>Intervention summary</code>. Because CIHI systematized how it documented this information in its text field, it was possible to extract this information, which the following code does. Some additional code was added to account for situations in which end dates were not recorded for a given policy.    
+
+```{r, eval=FALSE}
+end_date = cihi %>% 
+  mutate(
+    date_end = sub(".*Effective until|.*Effective Until||.*Effectiveuntil|Effective date:", '',  `Intervention summary`),
+  date_end = gsub("^:|\\(at minimum\\)|\\(southern Ontario\\)", '', `date_end`) %>% 
+    str_trim,
+  date_end = 
+    case_when(
+      !grepl("\\d", `Intervention summary`) & grepl("What: BC daycares remain open as an essential service" , `Intervention summary`) ~ as.character(NA),
+      !grepl("\\d", `Intervention summary`) & grepl("What: Assessment centres have been established at lower jurisdictional levels. Not all areas have clearly designated centres" , `Intervention summary`) ~as.character(NA),
+      !grepl("\\d", `Intervention summary`) & grepl("veryone crossing the bridge will be stopped to determine reason of travel into PEI" , `Intervention summary`) ~as.character(NA),
+       grepl("campaign through social media and traditional media including newspapers and radio ads to raise " , `Intervention summary`) ~ as.character(NA),
+      !grepl("\\d", `Intervention summary`) & grepl("Medical Society of Prince Edward Island\r\nWhat: Released virtual care billing codes for physicians " , `Intervention summary`) ~ as.character(NA),
+      date_end == '' ~ as.character(NA),
+      TRUE ~ date_end
+    )
+  ) %>%
+  select(unique_id = `Entry ID`, date_end)
+```
+
+Following this, the object which incorporates the mapping of the relevant subset of the data, end_date, is incorporated into the main object which records this mapping, cihi_coronanet_map, using the <code>unique_id</code> variable to match the corresponding records.
+
+``` {r, eval=FALSE}
+cihi_coronanet_map = rows_update(cihi_coronanet_map, end_date, by = "unique_id")
+```
+</br>
+
+## 2.6 Enforcers
+
+The following code maps how CIHI captures information about the organizational body in charge of enforcing compliance with a particular policy or issuing recommendations for a particular policy.
+
+* In the CIHI taxonomy, information about enforcement is not captured in a separate variable field but is rather documented in its text field <code>Intervention summary</code>. Because CIHI systematized how it documented this information in its text field, it was possible to extract this information, which the following code does.   
+
+```{r enforcer, eval=FALSE}
+enforcer <- cihi %>%   
+  mutate(
+    enforcer = sub(".*Who:", '',  `Intervention summary`),
+    enforcer = sub("What:.*$", '',  enforcer),
+    enforcer = gsub("\\r|\\n", '',  enforcer) %>% 
+  str_trim,) %>% 
+  select(unique_id = `Entry ID`, enforcer)
+```
+
+Following this, the object which incorporates the mapping of the relevant subset of the data, enforcer, is incorporated into the main object which records this mapping, cihi_coronanet_map, using the <code>unique_id</code> variable to match the corresponding records.
+
+```{r, eval=FALSE}
+cihi_coronanet_map = rows_update(cihi_coronanet_map, enforcer, by = "unique_id")
+```
+</br>
+<hr>
+
+# 3 Policy Type
+
+## 3.1  Case management: 
+
+
+### 3.1.1  Health Resources
+
+The following code maps how CIHI captures health resources policies into CoronaNet taxonomy.
+
+* The CIHI taxonomy aims to capture such policies by coding the <code>cihi_category</code> as **Case management** and the <code>cihi_type</code> as **Case management — assessment centres**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> as **Health Resources** and the <code>type_sub_cat</code> as **Other Health Infrastructure**.
+
+```{r, eval=FALSE}
+cihi_coronanet_map$type <- ifelse(cihi_coronanet_map$cihi_category == "Case management" & cihi_coronanet_map$cihi_type == 'Case management — assessment centres',
+                                  "Health Resources", cihi_coronanet_map$type)
+cihi_coronanet_map$type_sub_cat <- ifelse(cihi_coronanet_map$cihi_category == "Case management" & cihi_coronanet_map$cihi_type == 'Case management — assessment centres',
+                                          "Other Health Infrastructure", cihi_coronanet_map$type_sub_cat)
+```
+</br>
+
+### 3.1.2 Health Testing
+
+The following code maps how CIHI captures health testing policies into CoronaNet taxonomy.
+
+* The CIHI taxonomy aims to capture such policies by coding the <code>cihi_category</code> as **Case management** and the <code>cihi_type</code> as **Case management — online assessment** or **Case management — test criteria** .
+* The CoronaNet taxonomy aims to capture such policies by coding the<code>type</code> as **Health Testing** and the <code>type_sub_cat</code> as **Other Health Testing**.
+
+```{r, eval=FALSE}
+cihi_coronanet_map$type <- ifelse(
+  cihi_coronanet_map$cihi_category == "Case management" &
+  cihi_coronanet_map$cihi_type %in% 
+      c('Case management — online assessment',                                                          'Case management — test criteria'), 
+      "Health Testing", 
+      cihi_coronanet_map$type)
+
+cihi_coronanet_map$type_sub_cat <- ifelse(
+    cihi_coronanet_map$cihi_category == "Case management" & 
+    cihi_coronanet_map$cihi_type == 'Case management — online assessment', 
+        "Other Health Testing", 
+         cihi_coronanet_map$type_sub_cat)
+```
+</br>
+
+### 3.1.3 Health Monitoring
+
+The following code maps how CIHI captures health monitoring policies into CoronaNet taxonomy.
+
+* The CIHI taxonomy aims to capture such policies by coding the <code>cihi_category</code> as **Case management** and the <code>cihi_type</code> as **Case management — contact tracing**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the<code>type</code> as **Health Monitoring** and the <code>type_sub_cat</code> as **Who a person has come into contact with over time**.
+
+```{r, eval=FALSE}
+cihi_coronanet_map$type <- ifelse(
+  cihi_coronanet_map$cihi_category == "Case management" & 
+  cihi_coronanet_map$cihi_type == 'Case management — contact tracing', 
+  "Health Monitoring", 
+  cihi_coronanet_map$type)
+
+cihi_coronanet_map$type_sub_cat <- ifelse(
+    cihi_coronanet_map$cihi_category == "Case management" & 
+    cihi_coronanet_map$cihi_type == 'Case management — contact tracing', 
+    "Who a person has come into contact with over time", 
+    cihi_coronanet_map$type_sub_cat)
+```
+</br>
+
+### 3.1.4  Health Quarantine
+
+The following code maps how CIHI captures quarantine policies into CoronaNet taxonomy.
+
+* The CIHI taxonomy aims to capture such policies by coding the <code>cihi_category</code> as **Case management** and the <code>cihi_type</code> as **Case management — self-isolation**. 
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> as **Quarantine**.
+
+```{r, eval=FALSE}
+cihi_coronanet_map$type <- ifelse(
+  cihi_coronanet_map$cihi_category == "Case management" &
+  cihi_coronanet_map$cihi_type == 'Case management — self-isolation', 
+  "Quarantine", 
+  cihi_coronanet_map$type)
+```
+</br>
+
+### 3.1.5  Regulation of Schools
+
+The following code maps how CIHI captures regulation of schools policies, e.g. testing of students and children, into CoronaNet taxonomy.
+
+* The CIHI taxonomy aims to capture such policies by coding the <code>cihi_category</code> as **Case management** and the <code>cihi_type</code> as **Case management — education**.
+
+* The CoronaNet taxonomy broadly aims to capture such policies by coding the<code>type</code> as **Closure and Regulation of Schools** and the <code>type_sub_cat</code> as **"Primary Schools (generally for children ages 10 and below), Secondary Schools (generally for children</br> ages 10 to 18), Higher education institutions (i.e. degree granting institutions)"**. More detailed mapping capturing the testing aspect of such policies is in principal possible, but will be conducted downstream during manual data harmonization. 
+
+```{r, eval=FALSE}
+
+cihi_coronanet_map$type <- ifelse(
+  cihi_coronanet_map$cihi_category == "Case management" &
+  cihi_coronanet_map$cihi_type == 'Case management — education', 
+  "Closure and Regulation of Schools", 
+  cihi_coronanet_map$type)
+
+cihi_coronanet_map$type_sub_cat <- ifelse(
+  cihi_coronanet_map$cihi_category == "Case management" & 
+  cihi_coronanet_map$cihi_type == 'Case management — education', 
+  "Primary Schools (generally for children ages 10 and below), Secondary Schools (generally for 
+  children ages 10 to 18), Higher education institutions (i.e. degree granting institutions)", 
+  cihi_coronanet_map$type_sub_cat)
+```
+</br>
+
+### 3.1.6  Public Awareness Measures
+
+The following code maps how CIHI captures public awareness policies into CoronaNet taxonomy.
+
+* The CIHI taxonomy aims to capture such policies by coding the <code>cihi_category</code> as **Case management** and the <code>cihi_type</code> as **Case management — outbreak definitions**.
+* The CoronaNet taxonomy aims to capture such policies by coding the<code>type</code> as **Public Awareness Measures**.
+
+```{r, eval=FALSE}
+cihi_coronanet_map$type <- ifelse(
+  cihi_coronanet_map$cihi_category == "Case management" &
+  cihi_coronanet_map$cihi_type == 'Case management — outbreak definitions',
+  "Public Awareness Measures", 
+  cihi_coronanet_map$type)
+```
+</br>
+
+## 3.2 Closures/openings:  
+
+<!-- * **Closures/openings — health services** can be captured by 2 different policy types in CoronaNet taxonomy (**Restriction and Regulation of Businesses** or **Health Resources**), therefore CIHI policies are coded as either "Restriction and Regulation of Businesses or Health Resources". -->
+
+<!-- * **Closures/openings — recreation** and **Closures/openings — non-essential services** Intervention types can be potentially coded as 3 different policy types (Restriction and regulation of businesses,  Restrictions of mass gatherings or Restriction and regulation of government services) based on the CoronaNet taxonomy. Therefore, these policies are coded as either "Restriction and regulation of businesses, Restrictions of mass gatherings or Restriction and regulation of government services". -->
+
+### 3.2.1 Closure and Regulation of Schools - daycares
+
+The following code maps how CIHI captures closure and regulation of day care policies into CoronaNet taxonomy.
+
+* The CIHI taxonomy aims to capture such policies by coding the <code>cihi_category</code> as **Closures/openings** and the <code>cihi_type</code> as **Closures/openings — daycares**
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> as **Closure and Regulation of Schools** and the <code>type_sub_cat</code> as **Preschool or childcare facilities (generally for children ages 5 and below)**.
+
+```{r, eval=FALSE}
+cihi_coronanet_map$type <- ifelse(
+  cihi_coronanet_map$cihi_category == "Closures/openings" & 
+    cihi_coronanet_map$cihi_type == 'Closures/openings — daycares', 
+  "Closure and Regulation of Schools", 
+  cihi_coronanet_map$type)
+
+cihi_coronanet_map$type_sub_cat <- ifelse(
+  cihi_coronanet_map$cihi_category == "Closures/openings" & 
+  cihi_coronanet_map$cihi_type == 'Closures/openings — daycares', 
+  "Preschool or childcare facilities (generally for children ages 5 and below)", 
+  cihi_coronanet_map$type_sub_cat)
+```
+
+### 3.2.2 Closure and Regulation of Schools - all schools
+
+The following code maps how CIHI captures general closure and regulation of schools policies into CoronaNet taxonomy.
+
+* The CIHI taxonomy aims to capture such policies by coding the <code>cihi_category</code> as **Closures/openings** and the <code>cihi_type</code> as  or **Closures/openings — education**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> as **Closure and Regulation of Schools** and the <code>type_sub_cat</code> as **Primary Schools (generally for children ages 10 and below), Secondary Schools (generally for children</br> ages 10 to 18), Higher education institutions (i.e. degree granting institutions)**.
+
+```{r, eval=FALSE}
+cihi_coronanet_map$type <- ifelse(
+  cihi_coronanet_map$cihi_category == "Closures/openings" & 
+  cihi_coronanet_map$cihi_type == 'Closures/openings — education', "
+  Closure and Regulation of Schools", cihi_coronanet_map$type)
+
+cihi_coronanet_map$type_sub_cat <- ifelse(
+  cihi_coronanet_map$cihi_category == "Closures/openings" &
+  cihi_coronanet_map$cihi_type == 'Closures/openings — education',
+  "Primary Schools (generally for children ages 10 and below), Secondary Schools (generally for children ages 10 to 18), Higher education institutions (i.e. degree granting institutions)", cihi_coronanet_map$type_sub_cat)
+```
+</br>
+
+### 3.2.3 Health services
+
+The following code maps how CIHI captures closing and openings of health services can be mapped into the CoronaNet taxonomy despite the fact that it  cannot be directly done.
+
+* On manual inspection of the policies coded with the value of **Closures/openings** for the variable <code>cihi_category</code> and  **Closures/openings — health services** for the variable <code>cihi_type</code>, we found that they could be mapped as either **Health Resources** or **Restriction and Regulation of Businesses** in the CoronaNet <code>type</code> variable.
+
+* Because there was no systematic way to map such policies in a one to one manner, we (i) appended the phrase "-health_res" to the <code>unique_id</code> to provide additional information to those manually harmonizing this data downstream as to how such policies were originally coded in CIHI and (ii) mapped such policies as **Health Resources or Restriction and Regulation of Businesses** in the CoronaNet <code>type</code> variable to provide guidance to researchers manually harmonizing this data later downstream. 
+
+
+```{r, eval=FALSE}
+cihi_coronanet_map$unique_id <- ifelse(
+  cihi_coronanet_map$cihi_category == "Closures/openings" &
+  cihi_coronanet_map$cihi_type == 'Closures/openings — health services', 
+  paste0(cihi_coronanet_map$unique_id, "-health_res"), 
+  cihi_coronanet_map$unique_id)
+
+cihi_coronanet_map$type <- ifelse(
+  cihi_coronanet_map$cihi_category == "Closures/openings" &
+    cihi_coronanet_map$cihi_type == 'Closures/openings — health services',
+    "Health Resources or Restriction and Regulation of Businesses", cihi_coronanet_map$type)
+
+```
+</br>
+
+
+### 3.2.4 Recreation; non-essential services 
+
+The following code maps how CIHI closing and openings of recreation and non-essential services policies can be mapped into the CoronaNet taxonomy despite the fact that it cannot be directly done.
+
+* On manual inspection of the policies coded with (a) the value of **Closures/openings** for the variable <code>cihi_category</code> and  **Closures/openings — recreation** for the variable <code>cihi_type</code> as well as (b) the value of **Closures/openings** for the variable <code>cihi_category</code> and  **Closures/openings — — non-essential services** for the variable <code>cihi_type</code> , we found that they could be mapped as either **Restriction and Regulation of Businesses**, **Restriction and Regulation of Government Services**, or **Restrictions of Mass Gatherings** in the CoronaNet <code>type</code> variable.
+
+* Because there was no systematic way to map such policies in a one to one manner, we (i) appended the phrase "-business" to the <code>unique_id</code> to provide additional information to those manually harmonizing this data downstream as to how such policies were originally coded in CIHI and (ii) mapped such policies as **Restriction and Regulation of Businesses or Restriction and Regulation of Government Services or Restrictions of Mass Gatherings** in the CoronaNet <code>type</code> variable to provide guidance to researchers manually harmonizing this data later downstream. 
+ 
+
+```{r, eval=FALSE}
+cihi_coronanet_map$unique_id <- ifelse(
+  cihi_coronanet_map$cihi_type == "Closures/openings — recreation"  |
+  cihi_coronanet_map$cihi_type == "Closures/openings — non-essential services", paste0(cihi_coronanet_map$unique_id, "-business"), cihi_coronanet_map$unique_id)
+
+cihi_coronanet_map$type <- ifelse(
+  cihi_coronanet_map$cihi_type == "Closures/openings — recreation"  | 
+  cihi_coronanet_map$cihi_type == "Closures/openings — non-essential services",
+  "Restriction and Regulation of Businesses or Restriction and Regulation of Government Services 
+  or Restrictions of Mass Gatherings", 
+  cihi_coronanet_map$type)
+```
+</br>
+
+
+ 
+## 3.3  Distancing: 
+
+<!-- The following code maps how CIHI <code>Intervention category</code> variable and <code>Intervention type</code> variable, which captures information on the policy type of the measure, are perfect matches for Coronanet's <code>type</code>. Nevertheless, this section only will be focus on the CIHI Intervention category **Distancing — gatherings** and **Distancing — others**. -->
+
+<!-- It is important to remember that at the beginning of this mapping both categories were recoded under the variable names <code>cihi_category</code> variable and <code>cihi_type</code> variable, respectively. -->
+
+<!-- * **Distancing — gatherings** types can be captured by 2 different policy types based on the CoronaNet taxonomy (Social Distancing or Restrictions of Mass Gatherings), therefore CIHI policies for this Intervention type can be either Social Distancing or Restrictions of Mass Gatherings. -->
+
+<!-- * **Distancing — other** types can be potentially coded as 3 different policy types based on the CoronaNet taxonomy (Lockdown, Curfew or New Task Force or Other). The likelihood of whether it is one or the other is classified on a particular policy types, is according the identification to key terms from the description of the policy.  -->
+
+### 3.3.1 Gatherings
+
+The following code maps how CIHI restrictions on gathering policies can be mapped into the CoronaNet taxonomy despite the fact that it cannot be directly done.
+
+* On manual inspection of the policies coded with the value of **Distancing** for the variable <code>cihi_category</code> and  **Distancing — gatherings** for the variable <code>cihi_type</code>, we found that they could be mapped as either  **Restrictions of Mass Gathering** or **Social Distancing** in the CoronaNet <code>type</code> variable.
+
+* Because there was no systematic way to map such policies in a one to one manner, we (i) appended the phrase "-mass_gatherings" to the <code>unique_id</code> to provide additional information to those manually harmonizing this data downstream as to how such policies were originally coded in CIHI and (ii) mapped such policies as **Restrictions of Mass Gathering or Social Distancing** in the CoronaNet <code>type</code> variable to provide guidance to researchers manually harmonizing this data later downstream. 
+
+
+```{r, eval=FALSE}
+cihi_coronanet_map$unique_id <- ifelse(cihi_coronanet_map$cihi_category == "Distancing" 
+                                       & cihi_coronanet_map$cihi_type == 'Distancing — gatherings', 
+                                       paste0(cihi_coronanet_map$unique_id, "-mass_gatherings"), 
+                                       cihi_coronanet_map$unique_id)
+
+cihi_coronanet_map$type <- ifelse(cihi_coronanet_map$cihi_category == "Distancing" &
+                                    cihi_coronanet_map$cihi_type == 'Distancing — gatherings', 
+                                  "Restrictions of Mass Gatherings or Social Distancing", 
+                                  cihi_coronanet_map$type)
+```
+</br>
+
+### 3.3.2 Other distancing types
+
+The following code maps how CIHI other distancing types can be mapped into the CoronaNet taxonomy despite the fact that it cannot be directly done.
+
+* On manual inspection of the policies coded with the value of **Distancing** for the variable <code>cihi_category</code> and  **Distancing — other** for the variable <code>cihi_type</code>, we found that they could be mapped as either  **Curfew**, **Other Policy Not Listed Above**, **New Task Force, Bureau or Administrative Configuration** or **Lockdown**.
+
+* We found that it was largely possible to make use of regular expressions to categorize this data as either  **Curfew**, **Other Policy Not Listed Above**, **New Task Force, Bureau or Administrative Configuration** or **Lockdown**. Based on keywords in the textual description of these policies, which we identifid based on manual inspection of the CIHI data, we customized the code to sort these policies into different values in CoronaNet's <code>type</code> variable, with **Lockdown** being the default option when no other keyword was found. While this does not provide a perfect mapping of these policies, it is sufficient for a large proportion of the data; downstream manual harmonization will correct for any mis-mappings.
+
+* To aid with downstream manual harmonization,  we  appended the phrase "-soc_dist" to the <code>unique_id</code> to provide additional information to those manually harmonizing this data downstream as to how such policies were originally coded in CIHI. 
+
+```{r, eval=FALSE}
+# Other distancing
+cihi_coronanet_map$unique_id <- ifelse(cihi_coronanet_map$cihi_category == "Distancing" & 
+                                         cihi_coronanet_map$cihi_type == "Distancing — other", 
+                                       paste0(cihi_coronanet_map$unique_id, "-soc_dist"), cihi_coronanet_map$unique_id)
+
+cihi_coronanet_map = cihi_coronanet_map %>%
+  mutate(
+    type = case_when(
+      cihi_coronanet_map$cihi_category == "Distancing" &
+        cihi_coronanet_map$cihi_type == "Distancing — other" &
+        grepl("curfew", description) ~ "Curfew",
+      
+      cihi_coronanet_map$cihi_category == "Distancing" &
+        cihi_coronanet_map$cihi_type == "Distancing — other"  &
+        grepl("\\$", description) ~ 
+        "Other Policy Not Listed Above",
+      
+      cihi_coronanet_map$cihi_category == "Distancing" &
+        cihi_coronanet_map$cihi_type == "Distancing — other"  & 
+        grepl("task force", description) ~ 
+        "New Task Force, Bureau or Administrative Configuration",
+      
+      cihi_coronanet_map$cihi_category == "Distancing" &
+        cihi_coronanet_map$cihi_type == 
+        "Distancing — other" ~ "Lockdown",
+      
+      TRUE ~ type
+    )
+  )
+``` 
+</br>
+
+### 3.3.3 Work from Home
+
+The following code maps how CIHI work from home policies can be mapped into the CoronaNet taxonomy.  
+
+* The CIHI taxonomy aims to capture such policies by coding the <code>cihi_category</code> as **Distancing** and the <code>cihi_type</code> as **Distancing — work from home**
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> as **Restriction and Regulation of Businesses**. More detailed mapping of such policies is in principal possible, but will be conducted downstream during manual data harmonization. 
+
+```{r, eval=FALSE}
+#Distancing — work from home: 
+cihi_coronanet_map$type <- ifelse(cihi_coronanet_map$cihi_category == "Distancing" 
+                                  & cihi_coronanet_map$cihi_type == 'Distancing — work from home', 
+                                  "Restriction and Regulation of Businesses",
+                                  cihi_coronanet_map$type)
+``` 
+</br>
+
+
+## 3.4 Financial and Economic 
+
+<!-- The following code maps how CIHI <code>Intervention category</code> variable and <code>Intervention type</code> variable, which captures information on the policy type of the measure, are perfect matches for Coronanet's <code>type</code>. Nevertheless, this section only will be focus on the CIHI Intervention category **Financial and Economic**. -->
+
+## 3.4.1 Financial and economic assistance
+
+The following code maps how CIHI's financial and economic assistance policies can be mapped into the CoronaNet taxonomy.
+
+* The CIHI taxonomy aims to capture such policies by coding the <code>cihi_category</code> as **Financial and economic** and the <code>cihi_type</code> as **Financial and economic — assistance**
+
+* The CoronaNet taxonomy does not systematically capture such policies but to the extent it records them nevertheless, they are documented in its <code>type</code> as **Other Policy Not Listed Above (econ)**. 
+
+```{r, eval=FALSE}
+cihi_coronanet_map$type <- ifelse(cihi_coronanet_map$cihi_category == "Financial and economic" 
+                                  & cihi_coronanet_map$cihi_type == 'Financial and economic — assistance', 
+                                  "Other Policy Not Listed Above (econ)", 
+                                  cihi_coronanet_map$type)
+``` 
+</br>
+
+## 3.4.2 Financial and economic research and development
+
+The following code maps how CIHI's financial and economic research and development policies can be mapped into the CoronaNet taxonomy, despite the fact that it cannot be directly done. 
+
+* On manual inspection of the policies coded with the value of **Financial and economic** for the variable <code>cihi_category</code> and  **Financial and economic — research and development** for the variable <code>cihi_type</code>, we found that they could be mapped as either  **Health Resources** or **Other Policy Not Listed Above** in the CoronaNet <code>type</code> variable.
+
+* Because there was no systematic way to map such policies in a one to one manner, we (i) appended the phrase "-health_res" to the <code>unique_id</code> to provide additional information to those manually harmonizing this data downstream as to how such policies were originally coded in CIHI and (ii) mapped such policies as **Health Resources or Other Policy Not Listed Above** in the CoronaNet <code>type</code> variable to provide guidance to researchers manually harmonizing this data later downstream. 
+
+
+```{r, eval=FALSE}
+ 
+cihi_coronanet_map$unique_id <- ifelse(cihi_coronanet_map$cihi_category == "Financial and economic" &
+                                         cihi_coronanet_map$cihi_type == 'Financial and economic — research and development',
+                                       paste0(cihi_coronanet_map$unique_id, "-health_res"), 
+                                       cihi_coronanet_map$unique_id)
+
+cihi_coronanet_map$type <- ifelse(cihi_coronanet_map$cihi_category == "Financial and economic" &
+                                  cihi_coronanet_map$cihi_type == 'Financial and economic — research and development',
+                                  "Health Resources or Other Policy Not Listed Above", 
+                                  cihi_coronanet_map$type )
+
+
+
+``` 
+</br>
+
+## 3.5 Health services:
+
+
+## 3.5.1  Resumed and delayed medical procedures
+
+The following code maps how CIHI's resumed and delayed medical medical procedures policies can be mapped into the CoronaNet taxonomy.
+
+* The CIHI taxonomy aims to capture such policies by coding the <code>cihi_category</code> as **Health services** and the <code>cihi_type</code> as **Health services — resumed medical procedures** or **Health services — delayed medical procedures** respectively. 
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> as **Health Resources** and <code>type_sub_cat</code> **Other Health Infrastructure**. Any mis-mappings of such policies will be corrected downstream during manual data harmonization. Additionally, more detailed mapping of such policies is in principal possible, but will also be conducted downstream during manual data harmonization.  
+
+```{r, eval=FALSE}
+cihi_coronanet_map$type <- ifelse(cihi_coronanet_map$cihi_category == "Health services" &
+                                    cihi_coronanet_map$cihi_type %in% c( 'Health services — resumed medical procedures',
+                                                                         'Health services — delayed medical procedures',
+                                                                         
+                                                                         ), 
+                                  "Health Resources", 
+                                  cihi_coronanet_map$type)
+
+
+cihi_coronanet_map$type_sub_cat <- ifelse(cihi_coronanet_map$cihi_category == "Health services" &
+                                            cihi_coronanet_map$cihi_type %in% c( 'Health services — resumed medical procedures',
+                                                                                 'Health services — delayed medical procedures')
+                                          "Other Health Infrastructure", 
+                                          cihi_coronanet_map$type_sub_cat)
+```
+
+
+## 3.5.2  Health services — equipment
+
+The following code maps how CIHI's health equipment policies can be mapped into the CoronaNet taxonomy.
+
+* The CIHI taxonomy aims to capture such policies by coding the <code>cihi_category</code> as **Health services** and the <code>cihi_type</code> as **Health services — equipment**. 
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> as **Health Resources** and <code>type_sub_cat</code> **Unspecified Health Materials**. More detailed mapping  of such policies is in principal possible, but will be conducted downstream during manual data harmonization.
+
+```{r, eval=FALSE}
+cihi_coronanet_map$type <- ifelse(cihi_coronanet_map$cihi_category == "Health services" &
+                                    cihi_coronanet_map$cihi_type == 'Health services — equipment',
+                                  "Health Resources", 
+                                  cihi_coronanet_map$type)
+
+cihi_coronanet_map$type_sub_cat <- ifelse(cihi_coronanet_map$cihi_category == "Health services" &
+                                            cihi_coronanet_map$cihi_type == 'Health services — equipment', 
+                                          "Unspecified Health Materials", 
+                                          cihi_coronanet_map$type_sub_cat)
+
+```
+
+## 3.5.3  Health services — other
+
+The following code maps how CIHI's health equipment policies can be mapped into the CoronaNet taxonomy.
+
+* The CIHI taxonomy aims to capture such policies by coding the <code>cihi_category</code> as **Health services** and the <code>cihi_type</code> as **Health services — other**. 
+
+* Manual inspection of the data suggests that the best match for such policies is to map them in the CoronaNet taxonomy as follows: <code>type</code> as **Health Resources** and <code>type_sub_cat</code> **Health Insurance**. Any mis-mappings of such policies will be corrected downstream during manual data harmonization.
+
+```{r, eval=FALSE}
+#Health services — other:
+cihi_coronanet_map$type <- ifelse(cihi_coronanet_map$cihi_category == "Health services" &
+                                    cihi_coronanet_map$cihi_type == 'Health services — other',
+                                  "Health Resources", 
+                                  cihi_coronanet_map$type)
+
+cihi_coronanet_map$type_sub_cat <- ifelse(cihi_coronanet_map$cihi_category == "Health services" &
+                                            cihi_coronanet_map$cihi_type == 'Health services — other',
+                                          "Health Insurance", 
+                                          cihi_coronanet_map$type_sub_cat)
+```
+
+
+## 3.5.4  Health services — telemedicine
+
+The following code maps how CIHI's telemedicine policies can be mapped into the CoronaNet taxonomy.
+
+* The CIHI taxonomy aims to capture such policies by coding the <code>cihi_category</code> as **Health services** and the <code>cihi_type</code> as **Health services — telemedicine/virtual care**. 
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> as **Health Resources** and <code>type_sub_cat</code> **Unspecified Health Materials**. Any mis-mappings of such policies will be corrected downstream during manual data harmonization. More detailed mapping  of such policies is in principal possible, but will also be conducted downstream during manual data harmonization.
+
+```{r, eval=FALSE}
+#Health services — telemedicine/virtual care
+cihi_coronanet_map$type <- ifelse(cihi_coronanet_map$cihi_category == "Health services" &
+                                    cihi_coronanet_map$cihi_type == 'Health services — telemedicine/virtual care',
+                                  "Health Resources", 
+                                  cihi_coronanet_map$type)
+
+cihi_coronanet_map$type_sub_cat <- ifelse(cihi_coronanet_map$cihi_category == "Health services" & 
+                                            cihi_coronanet_map$cihi_type == 'Health services — telemedicine/virtual care', 
+                                          "Other Health Infrastructure", 
+                                          cihi_coronanet_map$type_sub_cat)
+```
+</br>
+
+
+## 3.5.5  Health services — vistors
+The following code maps how the policies CIHI documents as being about vistors to those in need of health services can be mapped into the CoronaNet taxonomy.  
+
+* The CIHI taxonomy aims to capture such policies by coding the <code>cihi_category</code> as **Health services** and the <code>cihi_type</code> as **Health services — visitors**
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> as **Social Distancing**. More detailed mapping  of such policies is in principal possible, but will also be conducted downstream during manual data harmonization.
+
+
+```{r, eval=FALSE}
+#Health services — visitors:
+cihi_coronanet_map$type <- ifelse(cihi_coronanet_map$cihi_category == "Health services" & 
+                                    cihi_coronanet_map$cihi_type == 'Health services — visitors', 
+                                  "Social Distancing", 
+                                  cihi_coronanet_map$type)
+```
+</br>
+
+## 3.6 Health Workforce:
+
+## 3.6.1  Change in practice and supply management
+
+The following code maps how the policies CIHI documents as being about the change in practice and supply management in the health workforce can be mapped into the CoronaNet taxonomy.  
+
+* The CIHI taxonomy aims to capture such policies by coding the <code>cihi_category</code> as **Health workforce** and the <code>cihi_type</code> as **Health workforce — change in practice** or  **Health workforce — supply management**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> as **Health Resources**. More detailed mapping  of such policies is in principal possible, but will also be conducted downstream during manual data harmonization.
+
+```{r, eval=FALSE}
+ 
+cihi_coronanet_map$type <- ifelse(cihi_coronanet_map$cihi_category == "Health workforce" & 
+                                    cihi_coronanet_map$cihi_type %in% c( 'Health workforce — change in practice',
+                                                                         'Health workforce — supply management'),
+                                  "Health Resources",
+                                  cihi_coronanet_map$type)
+
+ 
+```
+</br>
+
+
+## 3.6.2 Licence reinstatement/reclassification
+
+The following code maps how the policies CIHI documents as being about the licence reinstatement or reclassification in the health workforce can be mapped into the CoronaNet taxonomy.  
+
+* The CIHI taxonomy aims to capture such policies by coding the <code>cihi_category</code> as **Health workforce** and the <code>cihi_type</code> as **Health workforce — licence reinstatement/reclassification**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> as **Restriction and Regulation of Government Services**. More detailed mapping  of such policies is in principal possible, but will also be conducted downstream during manual data harmonization.
+
+```{r, eval=FALSE}
+#Health workforce — licence reinstatement/reclassification
+cihi_coronanet_map$type <- ifelse(cihi_coronanet_map$cihi_category == "Health workforce" & 
+                                    cihi_coronanet_map$cihi_type == 'Health workforce — licence reinstatement/reclassification',
+                                  "Restriction and Regulation of Government Services", 
+                                  cihi_coronanet_map$type)
+```
+</br>
+
+## 3.6.3 Safety guidelines
+
+The following code maps how the policies CIHI documents as being about safety guidelines in the health workforce can be mapped into the CoronaNet taxonomy.  
+
+* The CIHI taxonomy aims to capture such policies by coding the <code>cihi_category</code> as **Health workforce** and the <code>cihi_type</code> as **Health workforce — safety guidelines**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> as **Public Awareness Measures**. More detailed mapping  of such policies is in principal possible, but will also be conducted downstream during manual data harmonization.
+
+
+```{r, eval=FALSE}
+#Health workforce — safety guidelines:
+cihi_coronanet_map$type <- ifelse(cihi_coronanet_map$cihi_category == "Health workforce" & 
+                                    cihi_coronanet_map$cihi_type == 'Health workforce — safety guidelines', 
+                                  "Public Awareness Measures", 
+                                  cihi_coronanet_map$type)
+```
+</br>
+
+## 3.7 Public information
+
+
+### 3.7.1 Launch of web page/resource
+
+
+The following code maps how the policies CIHI documents as being about the launch of web page/resource can be mapped into the CoronaNet taxonomy.  
+
+* The CIHI taxonomy aims to capture such policies by coding the <code>cihi_category</code> as **Public information** and the <code>cihi_type</code> as **Public information — launch of web page/resource**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> as **Public Awareness Measures** and <code>type_sub_cat</code> as **Disseminating information related to COVID-19 to the public that is reliable and factually accurate** . More detailed mapping  of such policies is in principal possible, but will also be conducted downstream during manual data harmonization.
+
+
+```{r, eval=FALSE}
+#Public information — launch of web page/resource:
+cihi_coronanet_map$type <- ifelse(cihi_coronanet_map$cihi_category == "Public information" &
+                                    cihi_coronanet_map$cihi_type == 'Public information — launch of web page/resource', 
+                                  "Public Awareness Measures",
+                                  cihi_coronanet_map$type)
+
+
+cihi_coronanet_map$type_sub_cat <- ifelse(cihi_coronanet_map$cihi_category == "Public information" &
+                                            cihi_coronanet_map$cihi_type == 'Public information — launch of web page/resource', 
+                                          "Disseminating information related to COVID-19 to the public that is reliable and factually accurate", cihi_coronanet_map$type_sub_cat)
+ 
+```
+</br>
+
+### 3.7.2 Projections
+
+The following code maps how the policies CIHI documents as being about the projections of public information can be mapped into the CoronaNet taxonomy.  
+
+* The CIHI taxonomy aims to capture such policies by coding the <code>cihi_category</code> as **Public information** and the <code>cihi_type</code> as **Public information — projectionse**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> as **Public Awareness Measures**. More detailed mapping  of such policies is in principal possible, but will also be conducted downstream during manual data harmonization.
+
+```{r, eval=FALSE}
+#Public information — launch of web page/resource:
+ 
+
+cihi_coronanet_map$type <- ifelse(cihi_coronanet_map$cihi_category == "Public information" &
+                                    cihi_coronanet_map$cihi_type == 'Public information — projections',
+                                  "Public Awareness Measures",
+                                  cihi_coronanet_map$type)
+```
+</br>
+
+
+### 3.7.3 Masks
+
+The following code maps how the policies CIHI documents as being about masks can be mapped into the CoronaNet taxonomy.  
+
+* The CIHI taxonomy aims to capture such policies by coding the <code>cihi_category</code> as **Public information** and the <code>cihi_type</code> as **Public information — masks**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> as **Social Distancing**. More detailed mapping of such policies is in principal possible, but will also be conducted downstream during manual data harmonization.
+ 
+```{r, eval=FALSE}
+#Public information — masks:
+cihi_coronanet_map$type <- ifelse(
+  cihi_coronanet_map$cihi_category == "Public information" &
+  cihi_coronanet_map$cihi_type == 'Public information — masks', 
+  "Social Distancing", 
+  cihi_coronanet_map$type)
+``` 
+</br>
+
+### 3.7.4 Pandemic response plans
+
+The following code maps how the policies CIHI documents as being about pandemic response plans can be mapped into the CoronaNet taxonomy.  
+
+* The CIHI taxonomy aims to capture such policies by coding the <code>cihi_category</code> as **Public information** and the <code>cihi_type</code> as **Public information — pandemic response plans**.
+
+* On manual inspection of these policies, we found that the best match for them would be as **Restriction and Regulation of Businesses** in the CoronaNet <code>type</code> variable. Any mis-mappings of such policies will be corrected downstream during manual data harmonization. More detailed mapping  of such policies is in principal possible, but will also be conducted downstream during manual data harmonization.
+ 
+```{r, eval=FALSE}
+ 
+cihi_coronanet_map$unique_id <- ifelse(
+  cihi_coronanet_map$cihi_category == "Public information" &
+    cihi_coronanet_map$cihi_type == "Public information — pandemic response plans",
+  paste0(cihi_coronanet_map$unique_id, "-business") , 
+  cihi_coronanet_map$unique_id)
+
+cihi_coronanet_map$type <- ifelse(
+  cihi_coronanet_map$cihi_category == "Public information" &
+  cihi_coronanet_map$cihi_type == "Public information — pandemic response plans",
+  "Restriction and Regulation of Businesses",
+  cihi_coronanet_map$type)
+
+
+``` 
+</br>
+
+### 3.7.5 Phase and alert level changes
+
+The following code maps how the policies CIHI documents as being about phase and alert level changes can be mapped into the CoronaNet taxonomy.  
+
+* The CIHI taxonomy aims to capture such policies by coding the <code>cihi_category</code> as **Public information** and the <code>cihi_type</code> as **Public information — phase and alert level changes**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> as **Health Monitoring**. More detailed mapping of such policies is in principal possible, but will also be conducted downstream during manual data harmonization.
+ 
+```{r, eval=FALSE}
+
+cihi_coronanet_map$type <- 
+  ifelse(cihi_coronanet_map$cihi_category == "Public information" &
+           cihi_coronanet_map$cihi_type == 'Public information — phase and alert level changes', 
+         "Health Monitoring", 
+         cihi_coronanet_map$type)
+``` 
+</br>
+
+## 3.8 State of emergency
+
+The following code maps how the policies CIHI documents as being about states of emergency can be mapped into the CoronaNet taxonomy.  
+
+* The CIHI taxonomy aims to capture such policies by coding the <code>cihi_category</code> as **State of emergency** and the <code>cihi_type</code> as **State of emergency**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> as **Declaration of Emergency**.  
+ 
+
+```{r, eval=FALSE}
+cihi_coronanet_map$type <- ifelse(cihi_coronanet_map$cihi_category == "State of emergency" &
+                                    cihi_coronanet_map$cihi_type == 'State of emergency', 
+                                  "Declaration of Emergency", 
+                                  cihi_coronanet_map$type)
+```
+</br>
+
+## 3.9 Travel
+
+## 3.9.1  Travel restrictions
+
+The following code maps how CIHI policies which seek to capture travel restrictions can be mapped into the CoronaNet taxonomy despite the fact that it  cannot be directly done.
+
+* On manual inspection of the policies coded with the value of **Travel** for the variable <code>cihi_category</code> and  **Travel — restrictions** for the variable <code>cihi_type</code>, we found that they could be mapped as either **External Border Restrictions** or **Internal Border Restrictions** in the CoronaNet <code>type</code> variable.
+
+* Because there was no systematic way to map such policies in a one to one manner, we (i) appended the phrase "-externalPborder" to the <code>unique_id</code> to provide additional information to those manually harmonizing this data downstream as to how such policies were originally coded in CIHI and (ii) mapped such policies as **External Border Restrictions or Internal Border Restrictions** in the CoronaNet <code>type</code> variable to provide guidance to researchers manually harmonizing this data later downstream. 
+
+```{r, eval=FALSE}
+cihi_coronanet_map$unique_id <- ifelse(cihi_coronanet_map$cihi_category == "Travel" &
+                                         cihi_coronanet_map$cihi_type == 'Travel — restrictions',
+                                       paste0(cihi_coronanet_map$unique_id, "-external_border"),
+                                       cihi_coronanet_map$unique_id)
+
+cihi_coronanet_map$type <- ifelse(cihi_coronanet_map$cihi_category == "Travel" &
+                                    cihi_coronanet_map$cihi_type == 'Travel — restrictions', 
+                                  "External Border Restrictions or Internal Border Restrictions", 
+                                  cihi_coronanet_map$type)
+```
+</br>
+
+## 3.9.2  Travel restrictions
+The following code maps how the policies CIHI documents as being about self-isolation can be mapped into the CoronaNet taxonomy.  
+
+* The CIHI taxonomy aims to capture such policies by coding the <code>cihi_category</code> as **Travel** and the <code>cihi_type</code> as **Travel — self-isolation**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> as **Quarantine**.  
+ 
+
+```{r, eval=FALSE}
+#Travel — self-isolation: 
+cihi_coronanet_map$type <- ifelse(cihi_coronanet_map$cihi_category == "Travel" & 
+                                    cihi_coronanet_map$cihi_type == 'Travel — self-isolation', 
+                                  "Quarantine", 
+                                  cihi_coronanet_map$type)
+```
+</br>
+
+## 3.10 Vaccine
+
+The following code maps how the policies CIHI documents as being about vaccines can be mapped into the CoronaNet taxonomy.  
+
+* The CIHI taxonomy aims to capture such policies by coding the <code>cihi_category</code> as **Vaccine**  
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> as **COVID-19 Vaccines**.  
+ 
+```{r, eval=FALSE}
+# policy type is the same 
+cihi_coronanet_map$type <- ifelse(cihi_coronanet_map$cihi_category == "Vaccine",
+                                  "COVID-19 Vaccines", 
+                                  cihi_coronanet_map$type)
+```
+</br>
+ 
+### 3.10.1 Implementation plans and frameworks; phase changes and milestones; population to be vaccinated
+
+The following code maps how the policies CIHI documents as being about implementation plans and frameworks; phase changes and milestones; and population to be vaccinated can be mapped into the CoronaNet taxonomy.  
+
+* The CIHI taxonomy aims to capture such policies by coding the <code>cihi_category</code> as **Vaccine** and the <code>cihi_type</code> as  **Vaccine — implementation plans and frameworks**, **Vaccine — phase changes and milestones**, **Vaccine — population to be vaccinated** respectively.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type_sub_cat</code> as **Distribution (shipping, storage, administration) of COVID-19 vaccines**. More detailed mapping of such policies is in principal possible, but will also be conducted downstream during manual data harmonization.
+ 
+```{r, eval=FALSE}
+#sub_types
+cihi_coronanet_map$type_sub_cat <- ifelse(cihi_coronanet_map$cihi_category == "Vaccine" &
+                                            cihi_coronanet_map$cihi_type %in% c(
+                                              "Vaccine — implementation plans and frameworks",
+                                              'Vaccine — phase changes and milestones',
+                                              'Vaccine — population to be vaccinated')
+                                          "Distribution (shipping, storage, administration) of COVID-19 vaccines",
+                                          cihi_coronanet_map$type_sub_cat)
+
+```
+
+
+### 3.10.2 Regulatory approval
+
+The following code maps how the policies CIHI documents as being about regulatory approval process for administering the COVID-19 vaccine can be mapped into the CoronaNet taxonomy.  
+
+* The CIHI taxonomy aims to capture such policies by coding the <code>cihi_category</code> as **Vaccine** and the <code>cihi_type</code> as  **Vaccine — regulatory approval**.
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type_sub_cat</code> as **Regulatory approval process for administering the COVID-19 vaccine**. More detailed mapping of such policies is in principal possible, but will also be conducted downstream during manual data harmonization.
+ 
+
+```{r, eval=FALSE}
+cihi_coronanet_map$type_sub_cat <- ifelse(cihi_coronanet_map$cihi_category == "Vaccine" & 
+                                            cihi_coronanet_map$cihi_type == 'Vaccine — regulatory approval', 
+                                          "Regulatory approval process for administering the COVID-19 vaccine", 
+                                          cihi_coronanet_map$type_sub_cat)
+``` 
+</br>
+
+### 3.10.3 Purchasing and allocation
+
+The following code maps how the policies CIHI documents as being about purchasing and allocation for COVID-19 vaccines can be mapped into the CoronaNet taxonomy.  
+
+* The CIHI taxonomy aims to capture such policies by coding the <code>cihi_category</code> as **Vaccine** and the <code>cihi_type</code> as  **Vaccine — purchasing and allocation**.
+
+* On manual inspection of these policies, we found that the best match for them would be as **Purchase of COVID-19 vaccines or Distribution (shipping, storage, administration) of COVID-19 vaccines** in the CoronaNet <code>type_sub_cat</code> variable. Any mis-mappings of such policies will be corrected downstream during manual data harmonization. More detailed mapping  of such policies is in principal possible, but will also be conducted downstream during manual data harmonization.
+ 
+
+```{r, eval=FALSE}
+ 
+ 
+cihi_coronanet_map$unique_id <- ifelse(cihi_coronanet_map$cihi_category == "Vaccine" & 
+                                         cihi_coronanet_map$cihi_type == 'Vaccine — purchasing and allocation',
+                                       paste0(cihi_coronanet_map$unique_id, "-vac_purchase"), 
+                                       cihi_coronanet_map$unique_id)
+
+cihi_coronanet_map$type_sub_cat <- ifelse(cihi_coronanet_map$cihi_category == "Vaccine" &
+                                            cihi_coronanet_map$cihi_type == 'Vaccine — purchasing and allocation', 
+                                          "Purchase of COVID-19 vaccines or Distribution (shipping, storage, administration) of COVID-19 vaccines",
+                                          cihi_coronanet_map$type_sub_cat)
+``` 
+</br>
+
+
+# 4 Final Map Adjustments
+
+Before finally exporting the data, we remove the <code>cihi_type</code> and <code>cihi_category</code> variables from the dataset. 
+
+```{r, eval=FALSE}
+# excluding not needed columns
+cihi_coronanet_map <- select(cihi_coronanet_map, - cihi_type, -cihi_category )
+```
+</br>
+
+Finally, once all the variables that are possible to harmonize from the CIHI dataset to CoronaNet taxonomy have been identified, the results are exported in an .rds and .csv format, to be consolidated together with the other external databases to be harmonised. The final consolidated dataset is then processed for manual harmonisation into the CoronaNet Research Project dataset.
+
+```{r, eval=FALSE}
+write.csv(cihi_coronanet_map ,"cihi_coronanet_map.csv")
+saveRDS(cihi_coronanet_map ,"cihi_coronanet_map.rds")
+``` 
+<hr>
+

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+    <link rel="stylesheet" type="text/css" href="style2.css">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="L-jK2R0bz2lbCyDSQ7Ulk6MW9il2PZzbXZ9DX6AkuuE" />
+    <meta name="description" content="The CoronaNet Research Project is a worldwide effort that tracks government COVID-19 policies.">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <title>Data Collection Methods</title>
+    <script src="js/fontawesome.js" crossorigin="anonymous" async></script>
+    <script src="js/particles.js"></script>
+    <script src="app.js" async></script>
+    <div id="particles-js" style="position: relative;">
+        <img src="images/logo_transparent_slim.png" style="position: absolute; margin: auto; left: 0; right: 0; text-align: center; height: 80%; z-index: 2; cursor: pointer;" class="logoCoronanet" onclick="window.location='https://www.coronanet-project.org/index.html';"/>
+        <div><a id="menuButton" onclick="openNav()"><i class="fas fa-bars" style="cursor: pointer; font-size: 24px; text-shadow: 0 0 1px #000; z-index: 3;"></i></a></div>
+        <div class="containerMenu">
+            <label id="theme-switch" class="theme-switch" for="checkbox_theme">
+            <input type="checkbox" value='0' id="checkbox_theme" style="display: none;">
+            <i id="darkModeSwitch" class="fas fa-moon" style="background-color: transparent; cursor: pointer; font-size: 24px; text-shadow: 0 0 1px #000;"></i>
+            </label>
+            <a id="emailButton" href="mailto:admin@coronanet-project.org"><i class="fas fa-envelope" style="background-color: transparent; cursor: pointer; font-size: 24px; text-shadow: 0 0 1px #000;"></i></a>
+        </div>
+    </div>
+    <div id="navbarOverlay" style="z-index: 3;"></div>
+    <h1>Data Collection Methods</h1>
+    <div id="mySidenav" class="sidenav" style="display: none; z-index: 3;">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <div class="sidebarOption"><img src="images/favicon_bw.png" style="width: 15px; display: inline;"><a target="_blank" href="index.html">Home</a></div>
+        <div class="sidebarOption"><img src="images/11_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="methods.html">Methodology</a>
+        <div class="sidebarSuboption">
+        <a target="_blank" href="methods.html">Data Collection Methods</a><br>
+        <a target="_blank" href="codebook.html">Codebook</a><br>
+        <a target="_blank" href="validationcheck.html">Validation and Reliability Checks</a>
+        </div></div>
+        <div class="sidebarOption"><img src="images/16_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="visualisations.html">Visualizations</a></div>
+        <div class="sidebarOption"><img src="images/14_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="reports.html">Reports</a></div>
+        <div class="sidebarOption"><img src="images/13_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="publications.html">Publications</a></div>
+        <div class="sidebarOption"><img src="images/10_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="inthemedia.html">In The Media</a></div>
+        <div class="sidebarOption"><img src="images/9_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="about.html">About CoronaNet</a></div>
+        <div class="sidebarOption"><img src="images/12_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="team.html">Our People</a>
+        <div class="sidebarSuboption">
+        <a target="_blank" href="team.html">Team</a><br>
+        <a target="_blank" href="interviews.html">Interviews</a><br>
+        </div></div>
+        <div class="sidebarOption"><img src="images/15_transparent.png" style="width: 15px; display: inline;"><a target="_blank" href="join.html">Join CoronaNet</a></div>
+    </div>
+    <script>
+        function openNav() {
+          document.getElementById("mySidenav").style.display = "block";
+          document.getElementById("navbarOverlay").style.display = "block";
+        }
+
+        function closeNav() {
+          document.getElementById("mySidenav").style.display = "none";
+          document.getElementById("navbarOverlay").style.display = "none";
+        }
+    </script>
+            <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DSF9RY2DVF"></script>
+    <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-DSF9RY2DVF');
+    </script>
+</head>
+    
+    <body>
+        <div class="container">
+        <p class="block">The CoronaNet dataset is collected using a Qualtrics survey instrument, in order to centralize and standardize data collection, while our data is collected by more than 450 research assistants from around the world. <br><br>
+        <b>Frequently Asked Questions:</b>   
+        </p><br>
+            
+        <button class="accordion">Why use a survey design?</button>
+        <div class="panel"><br>
+          There are several advantages of using a survey design for large data collection. Survey designs allow us to: <br><br>
+            <ol> 
+                <li class="numbered">Streamline the data collection effort, as every entry will be subjected to the same relevant and standardised questions that our research assistants will answer.</li> 
+                <li class="numbered">Systematise the collection of very fine-grained data while avoiding coding errors that are common to tools like shared spreadsheets.</li>
+                <li class="numbered">Avoids overwriting existing data, which is more likely in shared spreadsheets.</li>
+                <li class="numbered">Reduces measurement error by coding different conditional logics for different policy dimensions, which helps us avoid logical fallacies in our data.</li>
+                <li class="numbered">Easily links policy events together over time should there be updates to existing ones, as each entry receives a unique record ID, which research assistants can look up.</li>
+                <li class="numbered">Use a forced response option and reduce the amount of missing data. </li>
+            </ol>
+            <br>
+        </div>
+
+        <button class="accordion">How was the survey designed?</button>
+        <div class="panel"><br>
+          As the value of using a survey research design depends on the comprehensiveness of the survey questions, our survey was constructed to capture as much relevant information as possible. To do this, one of our principal investigators collected in-depth time-series data on policy actions taken from one country, along with cross-national data on travel bans implemented by most of the countries (for a total of 245 observed events).<br><br>
+
+          The selected country for in-depth time-series observation was Taiwan, as Taiwan was one of the few countries that had relative success in containing the Covid-19 earlier in the year (as of March 28, 2020). As such, it seemed likely that other countries would choose to emulate some of the policy measures that Taiwan had implemented. During this initial design, we were also able to observe variations of implementations and targets of issued policies, such as different methods of travel (e.g. flights, cruises, land transport), restrictions across borders and within borders, and to whom certain policies may apply (e.g. citizens, travelers, residents).<br><br>
+
+          Following the survey design, we ensure that the survey provides research assistants with descriptions of each policy category to avoid coding errors. In the course of data collection, we also conducted extensive research on other measures that other countries are adopting with the help of our many research assistants, which helps us continuously improve the comprehensiveness of our survey. 
+          <br><br>
+        </div>
+        
+        <button class="accordion">How were research assistants recruited and trained?</button>
+        <div class="panel"><br>
+          We recruit research assistants from around the world regardless of education levels and/or field, though most of our research assistants have a background in research and study (or have expertise) in the areas of political and social sciences, health, and data science. When applying, applicants must outline the reason for joining the project. Applications are examined by CoronaNet’s Project Managers and Senior Research Assistant Managers.<br><br> 
+
+          Once an applicant is accepted, they are obliged to watch a training video that explains how to use the Qualtrics survey instrument and pass a training test, for which they must pass with a minimum score of 70%. Research assistants also receive written guidelines on data collection and a comprehensive codebook. The guide provides the definitions of what is considered a new or updated policy and provides a checklist for research assistants to follow to identify and document different policies. Research assistants also receive instructions on how to check data sources, verify relevant information into the survey, save and upload a PDF of the source they found to record each policy into the Qualtrics survey. The codebook provides descriptions and examples of the different possible response options in the survey.<br><br>
+
+          Before starting their data collection, every research assistant must fill out the CoronaNet Research Assistant Form, in which:<br><br>
+            <ol>
+            <li class="numbered">They identify themselves.</li>
+            <li class="numbered">They certify that they have viewed the training video.</li>
+            <li class="numbered">They certify that they have joined the CoronaNet Slack Workspace.</li> 
+            <li class="numbered">They certify that they understand that their responsibilities entail gathering historical data on Covid-19 government policy actions and providing daily updates for new government policy actions.</li>
+            <li class="numbered">They certify that they can access the data collection guidelines and codebook or post their questions on the CoronaNet Slack Channel should they have any.</li> 
+            <li class="numbered">They certify that they understand the sources of the information that they record in the Qualtrics survey in PDF.</li> 
+            </ol>
+          <br><br>
+          
+          Once research assistants submit their forms, they receive a personalized link to access our survey instrument. With the customized links, we can monitor each research assistants’ work and contribution to the project.
+          <br><br>
+        </div>
+        
+        <button class="accordion">Do we provide feedback for our research assistants’ work?</button>
+        <div class="panel"><br>
+          Internal project communications take place in the CoronaNet Slack workspace. In the workspace, research assistants can post questions or feedback, to which the principal investigators and other research assistants will respond. We also use our workspace to discuss research ideas, as well as to plan future activities.<br>
+        </div>
+
+        <script>
+        var acc = document.getElementsByClassName("accordion");
+        var i;
+
+        for (i = 0; i < acc.length; i++) {
+          acc[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var panel = this.nextElementSibling;
+            if (panel.style.maxHeight) {
+              panel.style.maxHeight = null;
+            } else {
+              panel.style.maxHeight = panel.scrollHeight + "px";
+            } 
+          });
+        }
+        </script></div>
+    </body>
+    
+    <footer>
+      <h2>Partner Universities and Institutions</h2>
+      <br>
+      <a target="_blank" href="https://www.hfp.tum.de/en/home/"><img class="logo" src="images/hochschule%20.png" alt="Hochschule für Politik München logo"></a>
+      
+      <a target="_blank" href="https://www.tum.de/"><img class="logo" src="images/TUM.png" alt="Technical University of Munich logo"></a>
+  
+      <a target="_blank" href="https://nyuad.nyu.edu/en/"><img class="logo" src="images/NYU.png" alt="New York University Abu Dhabi logo"></a>
+  
+      <a target="_blank" href="https://www.wi.tum.de/"><img class="logo" src="images/SOM.png" alt="TUM School of Management at Technical University of Munich logo"></a>
+      
+      <br>
+      <br>
+      
+      <a target="_blank" href="https://nu.edu.kz/"><img class="logo" src="images/NU.png" alt="Nazarbayev University logo"></a>
+      
+      <a target="_blank" href="https://www.jataware.com/"><img class="logo" src="images/jataware_logo.png" alt="Jataware company logo"></a>
+  
+      <a target="_blank" href="https://www.leibniz-krisen.de/en.html"><img class="logo" src="images/LFV_logo.png" alt="Leibniz Research Alliance
+  Crises in a Globalised World logo"></a>
+  
+      <a target="_blank" href="https://www.overton.io/"><img class="logo" src="images/overton_logo.png" alt="Overton company logo"></a>
+      
+      <br>
+      <br>
+      <hr><br>
+      <h2 class="periscope">CoronaNet is part of the PERISCOPE consortium, a project funded by the European Commission under the Horizon 2020 Research and Innovation programme (agreement no. 101016233)</h2>
+      <br>
+      <a target="_blank" href="https://periscopeproject.eu/"><img class="logo funding" src="images/periscope.png" alt="Logo of the PERISCOPE consortium"></a>
+      <a target="_blank" href="https://ec.europa.eu/info/index_en"><img class="logo_eu" src="images/logo-ce-horizontal-en-quadri-lr.png" alt="Logo of the European Commission"></a>
+      <br><br>
+      <a target="_blank" href="https://github.com/saudiwin/corona_tscs"><img src="images/github.png" width="25px" alt="GitHub data repository for CoronaNet"></a>
+      <a target="_blank" href="https://www.linkedin.com/company/coronanet-research-group/mycompany/"><img src="images/linkedin.png" width="25px" alt="CoronaNet Research Group on LinkedIn"></a>
+      <a target="_blank" href="https://twitter.com/CoronaNet_org"><img src="images/twitter.png" width="25px" alt="CoronaNet Research Project on Twitter"></a>
+      <a target="_blank" href="https://www.instagram.com/coronanet_org/"><img src="images/instagram.png" width="25px" alt="CoronaNet Research Project on Instagram"></a>
+      <br>
+      <script src="js/darkMode.js"></script>
+  </footer></html>

@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="" />
+
+
+<title>What’s New With These Indices?</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Policy Intensity Scores</a>
+</li>
+<li>
+  <a href="indices.html">Why New Indices</a>
+</li>
+<li>
+  <a href="download.html">Download</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
+
+
+
+
+<div id="whats-new-with-these-indices" class="section level1">
+<h1>What’s New With These Indices?</h1>
+<hr />
+<p>These indices are the first to combine information from multiple data sources on COVID-19 policies and restrictions. We expect these aggregate results to be less sensitive to data coding errors and other measurement issues that arise whenever we try to accurately describe government policies. These are also continuous measures with a minimum of value of 0 and a maximum value of 100, which may permit more fine-grained distinctions between countries.</p>
+<p>Second, and we think quite importantly, these indices have <em>measures of uncertainty</em>. In other words, we are not just releasing an index value for each country and each day but also a range of plausible index values for each country and each day. By doing so we are sharing not just what we think the best answer is, but also how uncertain we are about other plausible answers. This information can help you figure out whether possible measurement and data coding errors could impact your analyses.</p>
+<p><br></p>
+<button class="accordion">
+How do the indices compare to just using the raw data?
+</button>
+<div class="panel">
+<p><br> The new indices are designed to solve a specific problem: we have a lot of data across multiple datasets but sometimes we really just want an aggregate, summary measure. At present, the only other aggregate measure for COVID-19 policies is the Stringency Index, which gives a single value for each country. By contrast, these indices are at a lower level of aggregation, assigning a value for specific policy domains. So in principle, these indices are best used when you want a measure of a certain policy domain like school restrictions or masking, but you also don’t want to get too lost in the underlying policy details.</p>
+<p>For that reason, it is important to know the differences between the CoronaNet and OxCGRT datasets. The underlying data from CoronaNet, as we mentioned, contains 154 different indicators which are specific details of different policies, such as whether countries provide tests to all of the population or implement restrictions for specific business industries. You can read about all the indicators we have released so far in <a href="https://docs.google.com/document/d/1ScKWFv7jOHYVQlsbqvf--yU0mO2JscTsNEmb0SMXcsg/edit?usp=sharing">this codebook</a>. Note that these 154 indicators are different than the CoronaNet raw data, which contain even more policy information but have not yet been released in this easier to use format.</p>
+<p>The OxCGRT indicators, by contrast, are all coded on a qualitative scale and tend to have a lot more information in each indicator. For example, while CoronaNet has separate indicators for primary, secondary and elementary school closure, the OxCGRT data has this information contained within a single variable. You can learn more about the OxCGRT data on their <a href="https://www.bsg.ox.ac.uk/research/publications/variation-government-responses-covid-19">website</a>.</p>
+Practically speaking, it makes a difference when you are trying to interpret the results of a model or analysis. If you use an index for masks, for example, and find an association with COVID-19 cases, you can interpret that association as applying to a fairly broad array of mask-related restrictions and policies in a country. By contrast, if you use the OxCGRT mask indicator or one of several CoronaNet mask indicators, you can explain an association in terms of very specific mask-related policies and a COVID-19 outcome. <br><br>
+<div class="figure" style="text-align: center">
+<img src="images/figure.png" alt="Figure: Daily Cross-sectional Correlations between the Aggregated Raw Data and Estimated Indices" width="464" />
+<p class="caption">
+Figure: Daily Cross-sectional Correlations between the Aggregated Raw Data and Estimated Indices
+</p>
+</div>
+</div>
+<button class="accordion">
+Is it ever better to use the indices versus the raw data?
+</button>
+<div class="panel">
+<p><br> It is better to use the indices mainly in the following situations:</p>
+<ol style="list-style-type: decimal">
+<li><p>You are concerned about data coding errors affecting your analysis. In that case, you can use our measures of uncertainty to see if different plausible values for policy activity affect your results. We wrote a <a href="https://www.robertkubinec.com/post/err_in_vars/">blog post about how to do this with the R statistical software package</a>.</p></li>
+<li><p>You are trying to measure the simultaneous effect of multiple policies on an outcome. It may not be a good idea to include lots of policy indicators in the same analysis/model because these different policies may interact with each other, rendering interpretation difficult. By using the indices, you can avoid this problem and still obtain clear results because the indices are all independent of each other and combine information from lower-level indicators. <br></p></li>
+</ol>
+</div>
+<button class="accordion">
+Is it ever better to use the raw data versus the indices?
+</button>
+<div class="panel">
+<p><br> It is better to use the raw data in the following situations:</p>
+<ol style="list-style-type: decimal">
+<li><p>Your research question is on a specific attribute or dimension of policy, such as antigen tests as opposed to all possible COVID-19 tests. There are more specific indicators on those types of policies.</p></li>
+<li><p>You are not concerned about measurement error, such as when you are quite familiar with the data and data coding errors are unlikely to affect your analyses. <br></p></li>
+</ol>
+</div>
+<script>
+        var acc = document.getElementsByClassName("accordion");
+        var i;
+
+        for (i = 0; i < acc.length; i++) {
+          acc[i].addEventListener("click", function() {
+            this.classList.toggle("activePanel");
+            var panel = this.nextElementSibling;
+            if (panel.style.maxHeight) {
+              panel.style.maxHeight = null;
+            } else {
+              panel.style.maxHeight = panel.scrollHeight + "px";
+            } 
+          });
+        }
+</script>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

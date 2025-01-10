@@ -1,0 +1,50 @@
+---
+title: "Suriname Country Report"
+description: Return to [CoronaNet](https://coronanet-project.org/)
+author:
+  - name: Heinrich Smuts
+    url: https://www.linkedin.com/in/heinrich-smuts-57101a1a2/
+    affiliation: University of Pretoria
+date: "`r Sys.Date()`"
+output: distill::distill_article
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+<style>
+body {
+text-align: justify}
+</style>
+
+
+Between the northern border of Brazil and the Atlantic Ocean lies the smallest country in South America, the Republic of Suriname. The country has a population of less than 600,000, most of which is concentrated in the area around the capital city of Paramaribo. The majority of the country is covered by the dense rainforest for which South America is famous. Suriname strives to protect its natural resources and implemented policies at the beginning of 2020 to mitigate the country’s contribution to climate change.
+
+Due to investment in sectors including health and infrastructure since 2019, Suriname has been significantly more prepared to respond to Coronavirus (COVID-19) than most other countries in South America.^[Import Export Solutions. 2020. https://import-export.societegenerale.fr/en/country/suriname/economy-country-risk] Before any cases were recorded in the country, Suriname saw a steady growth in GDP in 2019, and opened a new hospital in February 2020. In April, a part of this hospital was converted into a specialized ward to treat COVID-19 patients.^[Star Nieuwes. April 6th, 2020. https://www.starnieuws.com/index.php/welcome/index/nieuwsitem/57981]  
+ 
+Suriname’s first case of COVID-19 was announced on March 13 when a passenger on a flight from the Netherlands tested positive upon arrival in Suriname.^[Vishmohanie, Thomas. March 13th, 2020. Suriname Herald. https://www.srherald.com/suriname/2020/03/13/suriname-sluit-vanaf-middernacht-grenzen-voor-reizigers/] In addition, former Vice President Ashwin Adhin announced various countermeasures to COVID-19 that took effect on March 14.^[Thomas, Vishmohanie. March 13th, 2020. Suriname Herald. https://www.srherald.com/suriname/2020/03/13/suriname-sluit-vanaf-middernacht-grenzen-voor-reizigers/] Among these measures, it was announced that the country’s borders would be closed for 30 days, and social gatherings would be limited to 100 people.  
+ 
+Over the course of the next month, other policies were introduced to curb the spread of COVID-19 in Suriname. On March 16, schools across the country were officially closed.^[Suriname Herald. March 14th, 2020. https://www.srherald.com/suriname/2020/03/14/breaking-alle-scholen-vanaf-maandag-gesloten-wegens-coronavirus/] A curfew between the hours of 8pm and 6am commenced from the March 28.^[Thomas, Vishmohanie, March 28th, 2020. Suriname Herald. https://www.srherald.com/suriname/2020/03/28/regering-garandeert-medische-zorg-voeding-en-orde-met-partial-lockdown/] In addition, casinos were closed and social gatherings were limited to 10 people, with the exception of gatherings of essential and government workers.  
+ 
+The above-mentioned measures, addition of the new hospital as well as other measures taken by the government to strengthen the country’s health care sector, appear to have yielded effective results. The first COVID-19 death occurred on April 3, when the husband of the first confirmed case passed away.^[COVID-19 Suriname. April 3rd, 2020. https://covid-19.sr/suriname-noteert-eerste-covid-19-dode/] It came almost a month after the initial introduction of the virus to the country. After this death, the *Exceptional Situation Act* was approved in a unanimous vote by the Suriname National Assembly.^[Suriname Herald. April 8th, 2020. https://www.srherald.com/suriname/2020/04/08/wet-uitzonderingstoestand-covid-19-goedgekeurd/] Under this legislation, the government officially declared a state of emergency starting April 8. The state of emergency was valid for three months and was later extended. 
+
+Significant power was bestowed on the Suriname COVID-19 response team as a result of the  state of emergency. However, to controversy, this power was not used to introduce measures that many other countries had taken by this point. For example, the wearing of face masks was not mandatory for healthy individuals, only on people who had tested positive for the disease.^[COVID-19 Suriname. April 16th, 2020. https://covid-19.sr/volksgezondheid-meldt-juiste-moment-gebruik-maskers] The official reason for this was that other measures put in place by the government appears to have been successful. The Minister of Health also reported that no community transmission of the virus existed. 
+
+At the same time, the Minister of Education announced that schools could not resume straight away. Thus educational sessions were to be broadcast over the television.^[Waterkant. April 16th, 2020. https://www.waterkant.net/suriname/2020/04/16/onderwijslessen-op-televisie-starten-vandaag-in-suriname/] This method of distance learning is different than what most countries have adopted. It might be due to the lack of access to internet-enabled devices across large parts of the country. 
+ 
+On May 5, it was announced that the last person with COVID-19 had now tested negative on two separate occasions.^[COVID-19 Suriname. May 3rd, 2020. https://covid-19.sr/suriname-vrij-van-covid-19-positieven-grenssituatie-vereist-alertheid/] This means that Suriname had no active cases of the virus as of May 5 (though new cases were later reported), and only one person has died due to the disease. The measures put in place were subsequently slightly relaxed where most notably, the curfew was eased to the hours of 9am to 5am from May 10.^[COVID-19 Suriname. May 9th, 2020. https://covid-19.sr/president-bouterse-kondigt-aangepaste-maatregelen-covid-19-aan/ ] The borders remained closed however. 
+ 
+During this time, the government announced several new measures that they put in place to help citizens cope with the crumbling economy. Financial aid was given on March 11,^[Star Nieuwes. May 11th, 2020. https://www.starnieuws.com/index.php/welcome/index/nieuwsitem/58551] and on March 13, tax and work support programs were rolled out.^[COVID-19 Suriname. May 13th, 2020. https://covid-19.sr/covid-19-belasting-en-arbeid-steunmaatregelen/]  
+ 
+The easing of COVID-19 policies ceased on May 18, when a new infected individual was identified. This man, the 11th case, was arrested for illegally crossing the border into Suriname with nine others.^[COVID-19 Suriname. May 18th, 2020. https://covid-19.sr/wederom-covid-19-besmette-persoon-in-suriname/] The reopening of schools, which was intended to occur on June 1, was cancelled along with other policies. 
+ 
+From May 22, domestic air travel was once again allowed in preparation for the 2020 Suriname Presidential Elections on May 25. While curfew and other lockdown measures were lifted on May 24 and 25, they were implemented again on May 26.^[Suriname Herald. May 21st, 2020. https://www.srherald.com/suriname/2020/05/21/president-geen-lockdown-op-24-en-25-mei/] Despite new cases of the virus, it was decided that the Presidential Elections would continue on May 25. This proved to have negative consequences, as the number of active COVID-19 cases jumped to 23 by May 31. The entire village of Klaaskreek also decided to isolate itself from the rest of the country. This is because individuals who had tested positive for the virus had voted in the village the previous week.^[Star Nieuwes. June 1st, 2020. https://www.starnieuws.com/index.php/welcome/index/nieuwsitem/58913]   
+ 
+Due to the new surge in cases, curfew was extended to between 6pm and 6am on June 1.^[Cairo, Ivan. June 1st, 2020. dwtOnline. http://dwtonline.com/laatste-nieuws/2020/06/01/lockdown-vanaf-2- juni-van-6-tot-6/]  In addition, a total lockdown with stay-at-home orders was to commence on June 4, where only essential services could remain open.^[Suriname Herald. June 3rd, 2020. https://www.srherald.com/suriname/2020/06/03/vanaf-morgen-total-lockdown-in-suriname/]   However, Danielle Viere, the leader of the National COVID-19 Management team at the time, later announced that a total lockdown would begin May 8, as the previous lockdown was not being respected.^[dwtOnline. June 5th, 2020. http://dwtonline.com/laatste-nieuws/2020/06/05/veira-twee-weken-total-lockdown/ ]
+
+Despite the increase in new cases, it was decided that the Presidential Elections would still be held, albeit at the later date of July 12.^[DBS. July 6th, 2020. https://www.dbsuriname.com/2020/07/06/verkiezing-president-en-vicepresident-op-13-juli/] This election resulted in a new President, and ultimately led to a new government for Suriname. While all ministers were replaced, existing COVID-19 policies remained in place. 
+ 
+In summary, the former President of Suriname and his government provided a much better job at curbing the spread of COVID-19 than anyone anticipated. At the time the new government came into power, the country possessed 76 active cases and only three cases of death. It is unclear why the country has had so few deaths, but implementing such strict measures so early on in the pandemic certainly assisted. Furthermore, the addition of a much-needed hospital immediately prior to the start of the pandemic was a significant step in a positive direction.  
+
+
+

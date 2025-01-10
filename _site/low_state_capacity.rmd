@@ -1,0 +1,242 @@
+---
+title: "CoronaNet Guidelines for Low State Capacity States"
+output:
+ rmdformats::robobook:
+    toc_float: true
+
+  
+    
+
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+
+## What is State Capacity?   
+
+State capacity can be conceptualized as the ability to
+
+* the capacity to design and implement policies
+* to make credible committments
+* to run an efficient bureacracy and 
+* to provide constraints on behavior within the borders of a given country. 
+
+For countries with low state capacity, RAs may find it especially difficult to code policies because
+
+* Finding credible sources of information is often difficult
+* Often, NGOs/IOs step in to provide services when the government cannot/the government is absent
+ 
+## How should I use these guidelines?
+
+This is a living document which provides tips and guidelines to help RAs documenting government policies in countries that have low state capacity. 
+
+If an RA encounters different or new situations not covered in these guidelines that make it difficult to document government policies in low state capacity countries then they should:
+
+* Join the [low state capacity Slack channel](https://corona-govt-response.slack.com/archives/C020KBSJ91P) to raise the issue. Note in general all interested RAs are invited to join the Slack channels to discuss problems they may be having in documenting policies in states with low state capacity.
+
+In this document we provide:
+
+* **General guidelines** that RAs can use to address issues they face in finding raw sources to code and;
+* **Problem specific** guidelines for how RAs should resolve particular issues. For each specific problem, there is a:
+  + Description of the problem
+  + Examples of the problem
+  + The known (as reported by RAs) geographical scope of the problem
+  + Guidelines on how to deal with the problem. 
+ 
+These guidelines were  based in part on the discussions conducted during the CoronaNet Low State Capacity Workshop held on April 23, 5-6pm CET ([recording here](https://tum-conf.zoom.us/rec/share/p5a854cdLTHqhKsqj418wGswmwyhO3FuP8a7pyA5wFM3ym7cIpDajyvQ7bs_apzA.3xh7q7kez9j20epA){target="_blank"} [ Passcode: \$3P.a\$yJ  ] ) and further work and feedback provided by:
+
+
+* Rohan Bhavikatti
+* Fiyin Kupolati
+* Paloma Laye
+* Lakshmi Sreedhar
+ 
+
+
+## General Guidelines
+
+If you are having problems finding accurate and consistent information about government policies in your country or subnational region, you can consider the following general strategies for finding more/better sources:
+
+* Use a VPN to access information ‘as if’ you were in the country/subnational region that you are coding
+* Use the Way Back Machine to find information about government policies that have been taken off-line 
+* Use the CoronaNet PDF Sources sheet to find the original pdf sources of previously coded policies 
+* If absolutely no other media sources can be found, use government and institution social media channels, such as Facebook or Twitter. You also can sometimes find news reports and podcasts on Youtube.
+
+## Problem Specific Guidelines {.tabset .tabset-pills .tabset-fade}
+
+In the following, we describe problems facing countries with low state capacity, the countries and subnational regions for which these problems apply, and specific guidelines for how to deal with these issues:
+
+
+### Governments informally announce policies on social media without further available information in from official government sources  {.tabset}
+
+
+Description: Information on what policies governments are implementing are only available from the government on social media accounts like Twitter and Facebook. The timing of these social media posts can often conflict with other information sources about a given policy.
+ 
+#### Examples
+
+#### Geographic scope
+
+This problem is found in the following countries/sub-national regions: 
+
+* Nigerian states
+* East Africa
+* West Africa
+* Central Africa
+
+
+This is a non-exhaustive list. If this problem also applies to the national or subnational region that you are coding, please contact Cindy and she will update this list accordingly. 
+
+
+#### Guideline 
+
+When policies are enacted are at least partly a function of when they are widely announced. If government policies are only announced on government social media platforms, give this information source priority over other information sources and upload screenshots/PDFs of the social media posts in your survey response. 
+
+
+
+### Conflicting information in non-governmental sources about the dates/timing of a policy {.tabset}
+
+Description: The existence of a given policy is not in dispute but there is conflicting information given as to when the policy was started and/or ended in different news sources **and government sources documenting the policy are not available**. 
+
+#### Examples 
+
+##### Example from Ogun, Nigeria
+
+The Ogun State Government in Nigeria announced the distribution of facemasks. 
+
+* Two sources reported the policy on April 24, 2020, and the two sources referenced Friday (April 24, 2020, is a Friday) as the day the governor made the announcement. The two sources alongside the policy to distribute face masks also reported that effective from May 1, 2020, the government would begin enforcing the wearing of face masks. 
+
++ However, one source (Ogun to begin face mask enforcement on May 1 | Pulse Nigeria) reported that the distribution will begin soon after which the enforcement of face masks would begin on May 1, 2020. This source quoted the governor saying “we will begin to distribute face masks to those who cannot afford to buy”. 
+
++ The other source (COVID-19: Ogun to quarantine face mask violators - Vanguard News (vanguardngr.com)) also quoted the governor saying “we will begin to distribute face masks to those who cannot afford to buy”. 
+
+From the two sources, it is clear that there is a policy to distribute face masks but the timing of the policy is unclear. The first source suggests that the distribution of face masks and enforcing the use of face masks follow the same timeline which commences on May 1, 2020. The second source suggests that the distribution of face masks will begin from the announcement date on Friday, April 24, 2020.
+
+##### Example from Oyo, Nigeria
+
+Two sources reported the cancellation of the 10 pm curfew in Oyo State in Nigeria.
+
+* The two sources "COVID-19: Oyo Cancels Curfew, To Issue Advisory To Night Clubs — NNN" and "Oyo scraps curfew, to issue advisory to Night Clubs - Businessday NG"  was published on September 3, 2020.
+* The second source reported that the decision to cancel the curfew was made in a task force meeting on August 31, 2020. The nature of a curfew is such that specific dates need to be given for its commencement or cancellation. 
+
+Since one source reported that the decision was made on August 31, 2020, and the two sources reported the policy on September 3, 2020, it is unclear whether the 10 pm curfew ended on the date of the task force meeting or on the date the sources reported them or on a different date.
+
+#### Geographic scope 
+
+This problem is found in the following countries/sub-national regions: 
+
+* Ogun and Oyo States of Nigeria
+* India
+* East Africa
+
+This is a non-exhaustive list. If this problem also applies to the national or subnational region that you are coding, please contact Cindy and she will update this list accordingly. 
+
+#### Guidelines 
+
+You can use the following tips and tricks to get the most accurate information about the dates policies came into effect:
+
+* Use the dates that occur in the most number of news sources. 
+* A good way to find news sources for relevant/similar policies is to use Google’s ‘Tools’. For example a “keyword of the policy to be searched for” then under ‘Tools’-->’Any time’ → ‘Custom Range'. 
+* If this is not possible, then use the date provided by the most reputable news source possible, using your judgement to assess the reputation of a given news outlet. 
+* Note, some of the sources report that “on wednesday, the governor announced….”. The reference to a day of the week means we can search the calendar for a specific date. It may not be accurate because it can be any wednesday but it gives a starting point to find the correct date
+* Also, peruse the Facebook and Twitter accounts of government officials to see the date they make posts about policies. The dates the official makes Twitter and Facebook posts are usually the most correct announcement date.  
+
+In the ‘notes’ section before submitting your survey response, please explain that the timing of the policy was difficult to ascertain for this reason and note what strategy you employed to deal with it. 
+
+
+### Non-specific information about dates/timing of the policy {.tabset}
+
+Description: Information about a given government-initiated policy are only found in broad reports made available by NGOs or IOs which do not contain any specific information about the dates and timing of a policy. That is, the only information about a given policy initiated by a government is found in NGO or IO reports (no information is found in news sources or government sources) which only contains broad information about the timing of a policy (e.g. that a policy took place in the month of May) as opposed to specific dates
+
+#### Examples 
+
+##### Example from Senegal
+
+“On March 20th, Senegal closed all of its parks and reserves "until further notice." There was no governmental source directly stating the closure of such places. The closest reference found was within the country's first Declaration of Emergency calling for the closure of all public and private spaces. The Twitter/Instagram account of the departments in charge of this sector (DPC_Sénégal Direction du Patrimoine Culturel) was made 5 months after the policy had made in place. Therefore I had to rely on a non-governmental website that publishes articles and guides on the travel, touristic sites, art and culture of Senegal (au-senegal.com). 
+
+Furthermore, this same website along with various news websites published articles about the reopening of museums, however it was not possible to find an article describing its closure on any governmental website except for some mentions by users on social media or a brief reference to it in an article by UNESCO. 
+
+
+#### Geographic scope
+
+This problem is found in the following countries/sub-national regions: 
+
+* Syria
+* Senegal
+* Northern parts of Nigeria
+
+This is a non-exhaustive list. If this problem also applies to the national or subnational region that you are coding, please contact Cindy and she will update this list accordingly. 
+
+
+#### Guidelines 
+
+Such policies are currently not possible to code in our survey. Please save a PDF of such policies in a the [RA Materials](https://github.com/cindyyawencheng/coronanet_ra){target="_blank"} Github repository under the 'low state capacity' folder found for your country or subnational region. If you see a 404 error, you can gain access to this repository by creating a [GitHub](https://github.com){target="_blank"} account and signing up [here](https://docs.google.com/spreadsheets/d/1zQvNOSFAfPmlZ0lANaskJ4z05wL1HVUIbC9ZFkeuHYs/edit#gid=0){target="_blank"}
+
+
+### NGOs and IOs implementing policies that governments normally should {.tabset}
+
+
+Description: Non-governmental actors like NGOs or IOs are enacting measures (e.g. distributing masks, providing medical care) that would be considered as a policy given our taxonomy but cannot currently be documented because they are not initiated by a government actor. 
+
+#### Examples 
+
+##### Example from Nigeria
+
+In its determined effort to support the fight against the spread of Coronavirus in the country, the Nigerian Content Development and Monitoring Board (NCDMB) in partnership with the Petroleum Technology Engineering Association of Nigeria (PTEAN) has donated two ambulances and other COVID-19 Relief Materials to Bayelsa State.
+
+
+##### Example from  Sao Tome Principe
+
+The World Bank, WHO and the government of São Tomé recently signed an agreement to support to the national health system in response to the COVID-19 pandemic and other possible emergencies in the country. The Memorandum of Understanding aims to strengthen the capacity of the government of São Tomé and Principe in its immediate response to the COVID-19 outbreak.The 17-month project will focus on increasing capabilities, training personnel, reinforcing surveillance systems as well as improving laboratories and case handling, both for the response to COVID-19 and other future public health events. The project includes 1.3 million US dollars of support from WHO and 2.5 million US dollars from the World Bank. 
+
+
+
+
+#### Geographic scope
+
+This problem is found in the following countries/sub-national regions: 
+
+* Syria
+* Nigeria
+* East Africa
+* Sao Tome Principe
+
+
+This is a non-exhaustive list. If this problem also applies to the national or subnational region that you are coding, please contact Cindy and she will update this list accordingly. 
+
+
+#### Guidelines
+
+Such policies are currently not possible to code in our survey. Please save a PDF of such policies in a the [RA Materials](https://github.com/cindyyawencheng/coronanet_ra){target="_blank"} Github repository under the 'low state capacity' folder found for your country or subnational region. If you see a 404 error, you can gain access to this repository by creating a [GitHub](https://github.com){target="_blank"} account and signing up [here](https://docs.google.com/spreadsheets/d/1zQvNOSFAfPmlZ0lANaskJ4z05wL1HVUIbC9ZFkeuHYs/edit#gid=0){target="_blank"}
+
+In the rare case where an NGO or IO has a legal agreement with a government to take over government functions (e.g. a memorandum of understanding like in the example for Sao Tome and Principe), then please communicate/check in with your regional/country manager to get a second pair of eyes on the situation. If confirmation is given, then please code these policies and note the NGO or IO in the ‘enforcer’ in the survey. 
+
+
+### Policies are communicated in mediums other than the Internt.{.tabset}
+
+Description: Policies are communicated in a medium other than over the internet because people in a given region generally do not have internet access. While we have general information that the government is active, it is difficult/impossible to document such policies when they are not being communicated over the internet. 
+
+#### Examples
+
+##### Northern Nigeria
+
+This seems to be the case in Northern Nigeria. In  this case, the government may have made announcements via local radio stations and local news bulletins which can only be accessed locally and at the time it was transmitted.  This dimension of low state capacity is that the government only accounts for ways to communicate to their subjects which leaves outside trackers like us without sources. This is a challenge for us is to find ways in which we can have access to these local sources.
+
+#### Geographic scope
+
+This problem is found in the following countries/sub-national regions: 
+
+* Syria
+* Northern Nigeria
+ 
+This is a non-exhaustive list. If this problem also applies to the national or subnational region that you are coding, please contact Cindy and she will update this list accordingly. 
+
+#### Guidelines
+
+Such policies are currently not possible to code in our survey. Please note whether this problem applies to your state/subnational region above and we can try to publicize this/communicate this problem to external stakeholders
+
+

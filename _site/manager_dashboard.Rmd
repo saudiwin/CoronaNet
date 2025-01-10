@@ -1,0 +1,307 @@
+---
+title: "CoronaNet Manager Dashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+---
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>MiniPreview Demo</title>
+
+        <style>
+        
+        
+        .navbar {
+      background-color:#9495BD;
+     border-color:black;
+       font-weight: bold;
+}
+        
+          /* Set border color of tab to white */
+          .nav-tabs-custom > .nav-tabs > li.active {
+          border-top-color: white}
+                    }
+        
+         /* Set tab bar to grey */
+        .tabset { 
+             background-color: grey;
+          }
+        
+          /* Set font color of inactive tab to grey */
+              .nav-tabs-custom .nav-tabs > li > a {
+                color: grey;
+                font-weight: bold;
+              } 
+              
+              /* Set font color of active tab to blue */
+              .nav-tabs-custom .nav-tabs > li.active > a {
+                color: white;
+              } 
+              
+              .nav-tabs-custom .nav-tabs > li.focus > a {
+                color: white;
+              } 
+
+              
+              /* https://stackoverflow.com/questions/31638845/change-to-a-different-colour-for-each-bootstrap-active-tab-css*/
+            .nav-tabs-custom > .nav-tabs > li > a {
+                  background: ;
+                  border-radius: 8px;
+                  margin-right: 8px;
+                  box-shadow:0 0 15px #eceefd;
+            }
+            
+            .nav-tabs > li > a {
+              background-color: #BE9FF8;
+              color: #ffffff;
+            }
+            .nav-tabs > li.active:nth-child(1) > a {
+              background-color: #E8C120;
+            }
+            .nav-tabs > li.active:nth-child(2) > a {
+              background-color: #BE9FF8;
+            }
+            .nav-tabs > li.active:nth-child(3) > a {
+              background-color: #F79488;
+            }
+            .nav-tabs > li.active:nth-child(4) > a {
+              background-color: #3383FF;
+            }
+            .nav-tabs > li.active:nth-child(5) > a {
+              background-color: #7ED684;
+            }
+            
+            .nav-tabs > li.focus:nth-child(1) > a {
+              background-color: #FFC700;
+            }
+            .nav-tabs > li.focus:nth-child(2) > a {
+              background-color: #BE9FF8;
+            }
+            .nav-tabs > li.focus:nth-child(3) > a {
+              background-color: #F79488;
+            }
+            .nav-tabs > li.focus:nth-child(4) > a {
+              background-color: #64B2F0;
+            }
+             .nav-tabs > li.focus:nth-child(5) > a {
+              background-color: #7ED684;
+            }
+           
+          .chart-wrapper,
+          .nav-tabs-custom,
+          .sbframe-commentary
+          {
+            background: ;
+            border: 1px solid #e2e2e2;
+            border-radius: 15px;
+            margin-bottom: 8px;
+            margin-right: 8px;
+            box-shadow:0 0 15px #eceefd;
+          }
+          
+          .chart-title {  /* chart_title  */
+              font-size: 35px;
+              font-weight: bold;
+              color: white;
+            }
+          a {
+            color: white;
+            target-name:new;
+            target-new:tab;
+
+            }
+          body{
+            font-size: 18px;
+            }
+   
+          .break {
+                text-align: center;
+            }
+            
+           
+            #organization{
+                background-color: #E18068;
+              }
+
+
+            #training{
+                background-color: #edae49;
+              }
+            
+        
+            #main{
+                background-color: #BAD0F1;
+              }
+            
+
+
+          
+        summary{
+          color: white;
+        }
+        
+        body {
+          padding: 75px 50px 50px 75px;
+          background-color: white;
+          }
+        
+        </style>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+        <!-- MiniPreview stuff here -->
+        <link href="./jquery.minipreview.css" rel="stylesheet">
+        <script src="./jquery.minipreview.js"></script>
+        <script>
+            $(function() {
+                $('#p1 a').miniPreview({ prefetch: 'pageload' });
+                $('#p2 a').miniPreview({ prefetch: 'parenthover' });
+                $('#p1 a').miniPreview({ prefetch: 'none' });
+            });
+        </script>
+    </head>
+
+<body>
+
+
+ 
+
+    
+Row {data-height=600}
+-------------------------------------
+
+### Main  {data-padding=10}
+
+
+
+ 
+Communication and coordination are the hallmark of this project! 
+
+Please reach out to the Project Management Team on Slack to:
+<small>
+
+* Note when RAs are active or inactive
+* List vacancies in your country or region
+* Request a new Qualtrics Link for an RA
+* Reassign an RA to a new country
+
+</small>
+
+<br>
+
+Find [all docs and sheets relevant to Excomm here](https://drive.google.com/drive/folders/1Go4xPEMrx-Hrb0lDyjVfW2OHp60gZ9TM){target="_blank"}!
+
+<br>
+
+#### FAQs
+
+Have questions about your managing role? Check out the [RM/CM FAQs](https://docs.google.com/document/d/1nviS2sBUQy9tIlRKm_SEPS-u61UBmYKfPpJQKB_cgoE/edit?usp=sharing){target="_blank"} here!
+
+
+Want to get ideas about how to organize your country? Check out these [links to see what other regions are doing](https://docs.google.com/document/d/106G5ZygvJMCWxNxtDltNXH09LJqd9koyO7AO7EFc7SI/edit){target="_blank"} here!
+
+
+
+Row {data-height=400}
+-------------------------------------
+
+
+
+
+### Organization  {data-padding=10}
+
+
+
+<details>
+  <summary> Tableau Manager Dashboard </summary>
+  <small>
+
+This [tableau manager dashboard](https://public.tableau.com/app/profile/rohan.bhavikatti/viz/ManagerDashboard_16354314871390/WorldMap){target="_blank"} provides visualizations of data entered for different countries and RAs within the project. See [here for a pdf](https://syncandshare.lrz.de/getlink/fiTrcE43Ye1jbnMvyRwnW1o4/How%20to%20use%20the%20Main%20Dashboard%28Tableau%29.pdf){target="_blank"} to learn more about the dynamic functions available. 
+  </small>
+</details>
+
+
+<details>
+  <summary> CoronaNet Policy Tracker </summary>
+  <small>
+
+* This [ra policy tracker](https://docs.google.com/spreadsheets/d/17x7oSHM9Lhf6BWiX_f37mcZQxjZRPJcUiD_Ncy9ZXjs/edit#gid=0){target="_blank"} provides stats on how many policies an RA has entered per country
+
+ * This [country policy tracker](https://docs.google.com/spreadsheets/d/1r-V46G2OxDbim_zRn03-5W7uoo98sNWNsaKXLf4ozH8/edit#gid=0){target="_blank"} provides stats on how many policies have been entered per country
+
+ * This [province policy tracker](https://docs.google.com/spreadsheets/d/1KMczyOsaT_atNbOmAEkkNfpsL3v_1HNldbLs8Rm9wsE/edit?usp=drive_web&ouid=104640820980866550414){target="_blank"} provides stats on how many policies have been entered per province for countries that have country managers
+
+ * This [data integration tracker](https://docs.google.com/spreadsheets/d/1l-QmehokxGjU4BfZ0V9Y9PNgSAaItWPb0bqTs5Ez0E0/edit#gid=0) provides stats on how many valid overlap and integration assessments have been done for a given region or country
+
+  </small>
+</details>
+
+<details>
+  <summary> Quarterly Planning </summary>
+  <small>
+
+For each quarter, the quarterly planning sheets provide an overview of the policies in terms of 
+
+* what the RA's internal assessment of a country/subnational region is
+* how many are coded
+* how many need to be cleaned
+* how many there are to integrate
+
+
+You can access the [quarterly planning sheets here](https://drive.google.com/drive/folders/1nvaW6DVWMRoB5sBKZ4-4psgyZvqF5OHK)
+  </small>
+</details>
+
+
+
+<!-- <details> -->
+<!--   <summary> CoronaNet Data Checklist Summaries </summary> -->
+<!--   <small> -->
+
+<!-- The data checklist summaries aggregates the information in the regional and country data checklists to help regional and country managers get a better overview of what is going on in their countries and subnational regions. The Regional Data Checklist summary is for regional managers and the Country Data Checklist summary is for country managers. ** Note we have stopped updating these data checklist summaries as of Fall 2021. RAs can still use the data checklists themselves if they find them useful. If you would like a data checklist summary updated for your region, please contact Cindy**  -->
+
+<!--   * [Regional Data Checklist Summary](https://docs.google.com/spreadsheets/d/1PAq1dNXjpoW1kr3E2ky0jp2kNWzj5YdATVWZtKj4hv4/edit#gid=207546439){target="_blank"} -->
+<!-- * [Country Data Checklist Summary - by Country](https://docs.google.com/spreadsheets/d/1o2PHLd1t5GLcNhx1Xxng79VJZM2qdQDfH5AyGFJXGrQ/edit#gid=65100368){target="_blank"} -->
+<!--   </small> -->
+<!-- </details> -->
+
+<br>
+
+
+
+### Training  {data-padding=10}
+
+
+<details>
+  <summary> Onboarding as an RM/CM </summary>
+  <small>
+
+Managing a region comes with a lot of challenges! Caress and Vanja go over the different responsibilities that regional managers have and provide tips on how to do them well in this [Video](https://tum-conf.zoom.us/rec/share/5vQlCYJ_bJdkb1ugN58KLAUnz29r3MLk9krjtN9LWcAcu3n9XhGbfYJPhK-Tt7ry.JKkqfiVwiliVSWYN){target="_blank"}  (Passcode: NBQz.0Am) and accompanying [slides](https://drive.google.com/file/d/19dVwNVwc07Aa0U3Qd_zb0azI3LEo8Q1j/view?usp=sharing){target="_blank"}
+
+    </small>
+</details>
+
+<details>
+  <summary> Feedback from RAs </summary>
+  <small>
+
+RAs leaving the project are required to fill out exit surveys, which often have feedback for the project overall as well as for different regions and managers in particular. Check out the [Exit Survey Feedback Sheet](https://docs.google.com/spreadsheets/d/1yKVMIoSt7pU0UdXxftsnmZ0nN-mMZl_dtiCvcG1STxc/edit#gid=1274616204){target="_blank"} to get this feedback!
+
+    </small>
+</details>
+
+
+<details>
+  <summary> Saying goodbye as an RM/CM </summary>
+  <small>
+
+  We appreciate the time that you've spent with us! Ideally, it would be great if you could give us 4 weeks notice before you leave so that we can start the process of recruiting and training a new RM/CM for your region. We recognize that you also have accumulated a ton of really valuable knowledge about your region and country! We would hate that knowledge to go to waste and as such ask you to also fill out an exit report so that we can pass on what you've learned about your region or country to the next manager!
+
+* [Regional Manager Exit Report Template](https://docs.google.com/document/d/1RTikALjGQ_-EYDFAWbNybnuW30xBK9259JIcICYMXZY/edit#){target="_blank"}
+
+* Country Manager Exit Report : To be Updated soon!
+<!-- * [Country Manager Exit Report Template](https://docs.google.com/document/d/1XLb-EhLJQ8OH_EX8ng1bA-UYDWL4IjagMncEolGkOUI/edit#) -->
+
+</small>
+

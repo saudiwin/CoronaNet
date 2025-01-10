@@ -1,0 +1,501 @@
+---
+title: "CoronaNet Project Goals"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{css echo=FALSE}
+details summary > * {
+  display: inline;
+}
+
+
+
+<style>
+#customers {
+  font-family: Arial, Helvetica, sans-serif;
+  width: 100%;
+  table-layout:fixed;
+}
+
+#customers td, #customers th {
+  border: 1px back solid #f1f1f1;
+  padding: 10px;
+}
+
+#customers tr:nth-child(even){background-color: #f2f2f2;}
+
+#customers tr:hover {background-color: #f1f1f1;}
+
+#customers th {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-align: center;
+  background-color: #0F4C81;
+  color: white;
+  font-size: 15px;
+  width: 200px;
+}
+
+#customers td + td,
+#customers th + th { 
+  border-left: 1px dashed #A6A6A6; 
+}
+#customers tr + tr { 
+  border-top: 1px dashed #A6A6A6; 
+}
+
+#customers th {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-align: center;
+  background-color:  #0F4C81;
+  color: white;
+  font-size: 15px;
+  border-left: 1px dashed #A6A6A6;
+  border-top: 1px dashed #A6A6A6;
+}
+#customers td {
+  text-align:left;
+  font-size:10pt;
+}
+
+#customers ul {
+    margin-left: 0;
+    padding-left: 20px;
+}
+
+</style>
+  
+  
+```
+
+<br> 
+
+## Why do we need Project Goals? 
+
+This project has always had to deal with **uncertainty** given that we are collecting data in real time and we thus cannot know ahead of time:
+
+- How long the pandemic will last and how governments will react to it
+- How many people are willing to assess, plan, code, clean and validate data
+
+
+Having project-wide goals helps us **coordinate** and make sure that despite the uncertainty, we are doing our best to:
+
+- Collect data for all over the world for the same time periods 
+- Ensure high quality in our data collection efforts 
+
+**Having complete and clean data for many countries over the same time period is crucial to say anything about what the drivers and effects of COVID-19 government policies are**
+
+- In terms of both ethics and feasibility, our ability to use experiments to figure out which policies are effective or what drives them is limited
+- We can however learn something about the drivers and effects of the pandemic by comparing what different countries do and: 
+  * the more variation there is in what different countries do, the more we can potentially answer these questions (e.g. if everyone does the same thing, it is hard to say what would have happened if X other thing happened instead)
+  * the bigger our sample (the more countries over time) we have to compare, the more generalizable our findings (the more the findings will apply not just to a special subset of units/countries, but to a larger group of units/countries)
+
+<br>
+
+## What are the Project Goals? {.tabset}
+
+The **overall** project goals  are to:
+
+* ensure <font color="#4D8339">**complete**</font> and <font color="#0F4C81">**clean**</font> data for all countries. 
+
+
+The time period for which we aim to collect  <font color="#4D8339">**complete**</font> and <font color="#0F4C81">**clean**</font>  data will be different depending on whether a country is a spotlight country or a capsule country and whether subantional data collection is involved:
+
+
+
+![](img/timeline_2023.png)
+
+
+
+
+<details> 
+
+  <summary> <p style="font-family: Arial, Helvetica, sans-serif; font-size:14pt; font-style:normal"><font color="#38b6ff"> **Spotlight national and subnational countries**: Document policies made up until 10/2021 (hard goal) </font>   </p> </summary>
+
+*  <font color="#38b6ff">  EU27 Countries + Eurasia + Senegal 
+    -   Austria, Belgium, Belarus, Bulgaria, Croatia, Cyprus, Czechia, Denmark, Estonia, Finland, **France**, **Germany**, Greece, Hungary, Ireland, **Italy**,  Kazakhstan ,  Kyrgyzstan, Latvia, Lithuania, Luxembourg, Malta, Netherlands, Poland, Portugal, Romania, **Russia**, Senegal, Slovakia, Slovenia, **Spain**, Sweden, Tajikistan, Turkmenistan, Ukraine, and Uzbekistan  </font>
+    - Subnational data collection for bolded countries  
+
+</details>
+
+<br>
+
+<details> <summary> <p style="font-family: Arial, Helvetica, sans-serif; font-size:14pt; font-style:normal"><font color="#ff1616">   **Capsule National Countries**: Document policies made up until 03/2021 (hard goal) + 10/2021 (soft goal)  </font>  </p> </summary>
+
+*  <font color="#ff1616">  Afghanistan, Albania, Algeria, Andorra, Angola, Antigua and Barbuda, Argentina, Armenia,  Azerbaijan, Bahamas, Bahrain, Bangladesh, Barbados, Belarus, Belize, Benin, Bhutan, Bolivia, Bosnia and Herzegovina, Botswana, Brunei, Burkina Faso, Burundi, Cabo Verde, Cambodia, Cameroon, Central African Republic, Chad, Chile, Colombia, Comoros, Costa Rica, Cuba, Democratic Republic of the Congo, Djibouti, Dominica, Dominican Republic, Ecuador, Egypt, El Salvador, Equatorial Guinea, Eritrea, Eswatini, Ethiopia, Fiji, Gabon, Gambia, Georgia, Ghana, Grenada, Guatemala, Guinea, Guinea-Bissau, Guyana, Haiti, Honduras, Hong Kong, Iceland, Indonesia, Iran, Iraq, Israel, Ivory Coast, Jamaica, Jordan, Kenya, Kiribati, Kosovo, Kuwait, Laos, Lebanon, Lesotho, Liberia, Libya, Liechtenstein, Macau, Madagascar, Malawi, Malaysia, Maldives, Mali, Marshall Islands, Mauritania, Mauritius,  Micronesia, Moldova, Monaco, Mongolia, Montenegro, Morocco, Mozambique, Myanmar, Namibia, Nauru, Nepal, New Zealand, Nicaragua, Niger, North Korea, North Macedonia, Northern Cyprus, Norway, Oman, Pakistan, Palau, Paletsine, Panama, Papua New Guinea, Paraguay, Peru, Philippines, Qatar, Republic of the Congo, Rwanda, Saint Kitts and Nevis, Saint Lucia, Saint Vincent and the Grenadines, Samoa, San Marino, Sao Tome and Principe, Saudi Arabia, Serbia, Seychelles, Sierra Leone, Singapore, Solomon Islands, Somalia, South Africa, South Korea, South Sudan, Sri Lanka, Sudan, Suriname, Syria, Taiwan, Tanzania, Thailand, Timor Leste, Togo, Tonga, Trinidad and Tobago, Tunisia, Turkey, Tuvalu, Uganda, United Arab Emirates, United Kingdom, Uruguay, Vanuatu, Vatican, Venezuela, Vietnam, Yemen, Zambia, Zimbabwe</font>
+</details>
+
+<br>
+
+<details> 
+    <summary><p style="font-family: Arial, Helvetica, sans-serif; font-size:14pt; font-style:normal"> <font color="#008037"> **Capsule Subnational Countries**: Document policies made up until 10/2020 (hard goal) + 10/2021 (soft goal) </font></p></summary>
+  *  <font color="#008037"> Australia, Brazil, Canada, China, India, Japan, Mexico, Nigeria, Switzerland, United States </font>
+</details> 
+
+ 
+<br>
+
+<br>
+<!-- - These goals should be seen as 'maximal' goals, that is we may not reach them for every single country, and for this reason, no country should go *past* them.   -->
+
+
+<table id="customers" width="100%">
+  <tr>
+    <th style="font-size:12pt">What is 'complete' data?</th>
+    <th style="font-size:12pt">What is 'clean' data?</th>
+   </tr>
+  <tr>
+  <td align="left" style="font-size:11pt">
+   <header><strong><font color="#4D8339">**Complete data for a given time period:**</font> </strong></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:12pt; font-style:italic"><br> 
+  <ul>
+  
+- *in the abstract* mean documenting all the COVID-19 government policies that a given government made.
+- *in practice*, <font color="#4D8339">**complete data**</font>  is impossible to define beforehand; if we knew what the complete set of policies there were to code, our jobs would already be halfway done! </br>
+
+<br>
+
+We can only judge the ‘completeness’ of the data for any given region using: <br>
+
+- **RA internal assessment** of whether the policies captured in the CoronaNet dataset for their region represent a faithful representation of government policies made in that region for a given time period.
+- **External comparison** of the number and types of policies that other datasets have captured and subsequently <font color="#cb6ce6">**integrating external data** </font>
+
+<br>
+
+<header><i>Why might there be incomplete data?</i></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:12pt; font-style:italic">
+
+- Finding information about policies can be very difficult especially for countries with [low state capacity](https://www.coronanet-project.org/low_state_capacity)
+- Some countries may have not had an RA or inattentive RAs for long periods of time
+ <br>
+</td>
+
+
+
+
+<td align="left" style="font-size:11pt">
+   <header><strong><font color="#0F4C81">Clean data</font> means that for each observation:</strong></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:12pt; font-style:italic"><br>
+      <ul>
+-  **all relevant information is available** and;
+-  **correctly coded according to the latest taxonomy**  </p><br>
+
+We can judge the 'cleanliness' of the data for any given region by <b4>
+
+
+- **RA internal assessment** of whether their region are coded in a way that consistently conforms to the last version of the CoronaNet taxonomy,  which will then later be verified by a country or regional manager,
+ 
+ 
+- **Automated assessment** of problems in the data that can be identified through R code.  
+
+<br>
+
+
+<header><i>Why might there be missing information for a given variable?</i></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:12pt; font-style:italic">
+
+ - We've made a number of changes to the original survey, launched March 28, 2020, in order to keep track of what new things governments have done since then. ---> When questions are added later to the survey however, this data is missing for earlier observations and must subsequently be backcoded<br>
+
+
+<header><i>Why might there be incorrectly coded information for a given variable?</i></header><p style="font-family: Arial, Helvetica, sans-serif; font-size:12pt; font-style:italic">
+
+ - When there are new options or new questions added later, earlier data coded using the older taxonomy may not match the new taxonomy
+- Coding data is hard especially with our taxonomy and its only natural that people make mistakes =) <br></td>
+
+  </tr>
+  
+  
+  </table>
+
+<br>
+
+<br>
+
+## What does this mean for me? 
+
+<br>
+
+<details> 
+
+  <summary> <p style="font-family: Arial, Helvetica, sans-serif; font-size:12pt; font-style:normal"><font color="#38b6ff"> I am coding for a **Spotlight national or subnational country**  </font>   </p> </summary>
+
+<br>
+
+Your RM/CM will have **quarterly-specific goals** designed to help reach the overall project goals which takes into account what the data looks like for your country or subnational region. <br>
+
+In general however, <font color="#38b6ff"> **all spotlight national or subnational countries** </font> should work in coordination as follows:
+
+- Stage 1: Work on collecting <font color="#4D8339">**complete**</font> and <font color="#0F4C81">**clean**</font> data for each policy type until October 1, 2020 <br> 
+- Stage 2: Work on collecting <font color="#4D8339">**complete**</font> and <font color="#0F4C81">**clean**</font> data for each policy type until March 1, 2021<br>
+- Stage 3: Work on collecting <font color="#4D8339">**complete**</font> and <font color="#0F4C81">**clean**</font> data for each policy type until June 1, 2021<br>
+- Stage 4: Work on collecting <font color="#4D8339">**complete**</font> and <font color="#0F4C81">**clean**</font>  data for each policy type until October 1, 2021<br>
+ 
+For each stage, you should work on making sure the data in your region is  <font color="#4D8339">**complete**</font> and <font color="#0F4C81">**clean**</font> before moving on to the next stage. 
+
+
+* *If your country or sub-national region has reached 'Stage 4'* you should **not** code any further for your country or sub-national region--- please coordinate with your regional/country manager to help get other data for other regions <font color="#4D8339">**complete**</font> and <font color="#0F4C81">**clean**</font> at lower stages. 
+ 
+
+</details>
+
+<br>
+
+<details> <summary> <p style="font-family: Arial, Helvetica, sans-serif; font-size:12pt; font-style:normal"><font color="#ff1616">  I am coding for a   **Capsule National Country** </font>  </p> </summary>
+
+<br>
+
+Your RM/CM will have **quarterly-specific goals** designed to help reach the overall project goals which takes into account what the data looks like for your country.  <br>
+
+In general however, <font color="#ff1616"> **all capsule national countries** </font> should work in coordination as follows:
+
+- Stage 1: Work on collecting <font color="#4D8339">**complete**</font> and <font color="#0F4C81">**clean**</font> data for each policy type until October 1, 2020 <br> 
+- Stage 2: Work on collecting <font color="#4D8339">**complete**</font> and <font color="#0F4C81">**clean**</font> data for each policy type until March 1, 2021<br>
+
+For each stage, you should work on making sure the data in your region is  <font color="#4D8339">**complete**</font> and <font color="#0F4C81">**clean**</font> before moving on to the next stage. 
+
+
+* *If your country has reached 'Stage 2'* you should **not** code any further for your country or subnational region--- please coordinate with your regional/country manager to help get other data for other regions <font color="#4D8339">**complete**</font> and <font color="#0F4C81">**clean**</font> at Stage 1
+* *If the great majority of countries have reached Stage 2'*, RAs coding for  <font color="##ff1616"> **all capsule national countries** </font> may continue coding until June 1, 2021 ---> if and when this happens, a general announcement will be made by the PIs in conferral with regional and country managers. 
+</details> 
+ 
+<br>
+
+<details> 
+    <summary><p style="font-family: Arial, Helvetica, sans-serif; font-size:12pt; font-style:normal"> <font color="#008037"> I am coding for a **Capsule Subnational Country** </font></p></summary>
+    
+<br>
+    
+Your RM/CM will have **quarterly-specific goals** designed to help reach the overall project goals which takes into account what the data looks like for your country.  <br>
+
+In general however, <font color="#008037"> **all capsule subnational countries** </font> should work in coordination as follows:
+
+- Stage 1: Work on collecting <font color="#4D8339">**complete**</font> and <font color="#0F4C81">**clean**</font> data for each policy type until October 1, 2020 <br> 
+
+*If your subnational region has reached 'Stage 1'* you should **not** code any further for your subnational region--- please coordinate with your country manager to help get data for other subnational regions in your country <font color="#4D8339">**complete**</font> and <font color="#0F4C81">**clean**</font> at Stage 1
+
+</details> 
+
+<br>
+
+<details> 
+    <summary><p style="font-family: Arial, Helvetica, sans-serif; font-size:12pt; font-style:normal"> <font color="#808080"> I am a **regional or country manager** </font></p></summary>
+  <br>
+
+*  Regional and country managers should devise region or country specific quarterly goals to plan for reaching each of the project-level goals. More details will be forthcoming. 
+
+</details> 
+
+
+<br>
+
+
+## What tools and processes will we use to help us reach these goals? {.tabset}
+
+### Workflow Overview
+
+In general, the workflow for achieving these goals will look like: 
+
+![](img/CoronaNet WorkChart.png)
+
+### Workflow Timeline
+
+
+For **Fall 2021** we will aim to stick to the following timeline: 
+
+![](img/summer_timeline_notitle.png)
+
+### Workflow Table
+
+To access the some of the elements listed in the workflow Chart, please see the table below:
+
+<table id="customers" width="100%>
+	<colgroup width="50"></colgroup>
+	<colgroup width="200"></colgroup>
+	<colgroup width="200"></colgroup>
+	<tr>
+		<th height="21" align="left" valign=bottom><font color="#000000"><br></font></td>
+		<th align="left" valign=bottom>How to get to complete data?</td>
+		<th align="left" valign=bottom>How to get to clean <br> data?</td>
+	</tr>
+	<tr>
+		<td rowspan=7 height="101" align="left" valign=bottom><font color="#000000">Processes </td>
+		<td colspan=2 align="center" valign=bottom><b><font color="#000000">Quarterly Survey </b></td>
+		</tr>
+	<tr>
+		<td colspan=2 text-align=center valign="center"><font color="#000000">Goal Making</td>
+		</tr>
+	<tr>
+		<td align="left" valign=bottom> For RMs/CMs: Region/country specific completeness goals (e.g. number of policies to integrate, checking government sources or sources on Overton/Jataware until a certain date) </font></td>
+		<td align="left" valign=bottom> For RMs/CMs: Region/country specific cleaning goals (e.g. policy types to check for cleanliness, fixing X problems  through automated assessment of data problems)</font></td>
+	</tr>
+	<tr>
+		<td colspan=2 align="center" valign=bottom><font color="#000000">Assessment of Current State of the data</font></td>
+		</tr>
+	<tr>
+		<td align="left" valign=bottom>For RAs: Internal assessment of e.g. completeness, complexity of the policy-making process via the RA Internal Survey <a href ="https://tummgmt.eu.qualtrics.com/jfe/form/SV_88q5mz5RZWo61Ce" target="_blank"> (link for August 2021 survey here) </a></font></td>
+		<td align="left" valign=bottom>For RAs: internal assessment of the quality of the data via the RA Internal Survey <a href ="https://tummgmt.eu.qualtrics.com/jfe/form/SV_88q5mz5RZWo61Ce" target="_blank"> (link for August 2021 survey here)</font></td>
+	</tr>
+		<tr>
+		<td colspan=2 align="center" valign=bottom><font color="#000000">Monthly RM/CM Feedback on the region and progress towards goals (ideally should take 15-20 minutes to fill out )</font></td>
+		</tr>
+	<tr>
+		<td align="left" valign=bottom>For RMs/CMs: Update on whether quarterly regional/country goals are on track </font></td>
+		<td align="left" valign=bottom>For RMs/CMs: Feedback on problems/developments in the region </font></td>
+	</tr>
+	<tr>
+		<td rowspan=6 height="127" align="left" valign=bottom><font color="#000000">Tools</font></td>
+		<td colspan=2 align="center" valign=bottom><b><font color="#000000"> Data Overviews </font></b></td>
+		</tr>
+	<tr>
+	
+		<td align="left" valign=bottom><a href ="https://public.tableau.com/app/profile/rohan.bhavikatti" target="_blank"> CoronaNet Tableau Visualization Overview </a>:  <br> - Overview of number of policies currently coded in CoronaNet per country/province and policy type over time in both visual and table formats <br>   <br> - Overview of number of policies to integrate from other datasets per country/province and policy type over time</font></td>
+		<td align="left" valign=bottom> <a href = "https://docs.google.com/spreadsheets/d/1jsSnJQpNYBBuXuIc4DtA1l5JmSY96lGnJ69HevgVphs/edit#gid=323762820" target = "_blank"> Automated Data Quality Checks </a>  <br> - Identification of which policies need to be cleaned according to the automated assessment  <br>  <br>- Identification which policies have the 'wrong' policy type according to data science models  in both visual and table formats (along with update and correction links; forthcoming)</font></td>
+	</tr>
+	<tr>
+		<td align="left" valign=bottom><b>Data Integration  </font></b></td>
+		<td align="left" valign=bottom><b>CornEdit App [link TBD] </font></b></td>
+	</tr>
+	<tr>
+		<td align="left" valign=bottom><a href ="https://www.coronanet-project.org/data_integration_guidelines" target="_blank"> Data Integration Sheets  </a> <br> -  Data from external data which allows RAs to i) assess the overlap between external data and CoronaNet data ii) integrate/recode data into CoronaNet taxonomy</font></td>
+		<td align="left" valign=bottom>Easy to use tool for making corrections to common mistakes</font></td>
+	</tr>
+	<tr>
+		<td colspan=2 align="center" valign=bottom><b><font color="#000000">  Shiny App</font></b></td>
+		</tr>
+	<tr>
+		<td colspan=2 align="left" valign=bottom><font color="#000000"><a href ="http://kubinec.shinyapps.io/corona_validate/" target="_blank"> Use the Shiny App  for: <br> </a> - Visualization of a timeline of policies<br>- Access to table format of policies<br>- Update and correction links for policies in Qualtrics</font></td>
+		</tr>
+	<tr>
+		<td rowspan=14 height="147" align="left" valign=bottom><font color="#000000">Information Resources</font></td>
+	
+	</tr>
+	
+
+		<tr>
+		<td colspan=2 align="left" valign=bottom><font color="#000000"> <a href="https://www.coronanet-project.org/dashboard" target="_blank"> CoronaNet Dashboard </a>: Main portal which has detailed information on all resources and up to date information on changes in the project </font></td>
+		</tr>
+		
+		
+				<tr>
+		<td colspan=2 align="left" valign=bottom><font color="#000000"> <a href="https://corona-govt-response.slack.com/" target="_blank"> Slack </a>: Main communication platform for the project, interact with other project members here! </font></td>
+		</tr>
+	
+		<tr>
+		<td align="left" valign=bottom>   
+<a href="https://docs.google.com/spreadsheets/d/1lpAsH-aJic9AbJR6YT4-tbwMDp4vCgmS_R-5djCl2f8/edit?usp=sharing" target="_blank"> Overton Raw Sources </a>/<a href="https://docs.google.com/spreadsheets/d/1EW-Vsue2fQ7k41gC31hWjIUr290VPDO-0w-Ig_Wh71E/edit?ts=5e865e7d#gid=0" target="_blank">Jataware/Starsift Raw Sources</a>: Access to potential raw sources about government COVID-19 actions</font></td>
+
+		<td align="left" valign=bottom><font color="#000000"> <a href = "https://docs.google.com/spreadsheets/d/1khoRcd-P6vE9MjY3BO7YH-ZvGlPXsEqRIlueqZYMw_E/edit#gid=0" target="_blank"> CoronaNet Previously Uploaded PDFs </a>: PDFs of previously coded policies</font></td>
+	</tr>
+		
+		<tr>
+		<td align="left" valign=bottom> <a href = "https://www.coronanet-project.org/low_state_capacity" target="_blank"> Low State Capacity Guidelines: Guidelines for how to document policies for countries with low state capacity </a> </font></td>
+		<td align="left" valign=bottom><font color="#000000"><a href = "https://www.coronanet-project.org/coding_guide" target="_blank" >  CoronaNet Coding Guide </a> </font></td>
+		</tr>
+	
+	<tr>
+		<td colspan=2 align="left" valign=bottom><font color="#000000"> <a href="https://github.com/CoronaNetDataScience/coronanet_ra" target="_blank"> CoronaNet RA Previous Materials </a>: Access to materials and information generated by RAs</font></td>
+		</tr>
+	<tr>
+		<td colspan=2 align="left" valign=bottom><font color="#000000"><a href=" https://www.coronanet-project.org/coronanet_skeleton" target="_blank">CoronaNet Skeleton </a>: Details and examples of how the data should in theory be structured</font></td>
+		</tr>
+	<tr>
+		<td colspan=2 align="left" valign=bottom><font color="#000000"> <a href = "https://www.coronanet-project.org/survey" target="_blank"> CoronaNet Survey </a> : R markdown version of the Qualtrics survey</font></td>
+		</tr>
+	<tr>
+		<td colspan=2 align="left" valign=bottom><font color="#000000"> <a href = "https://www.coronanet-project.org/assets/CoronaNet_Codebook.pdf" target="_blank"> CoronaNet PDF Codebook </a>: Detailed information on each survey question</font></td>
+		</tr>
+		<tr>
+		<td colspan=2 align="left" valign=bottom><font color="#000000"><a href = "https://www.coronanet-project.org/taxonomy.html?" target="_blank"> CoronaNet Condensed Taxonomy </a>: Detailed information how a subset of variables related to each other</font></td>
+		</tr>
+		
+				<tr>
+		<td colspan=2 align="left" valign=bottom><font color="#000000"><a href = "https://duplicate-detector.herokuapp.com?" target="_blank"> CoronaNet Duplicate Detector </a>: Helps you assess whether a policy you are thinking of coding is already in the dataset or not</font></td>
+		</tr>
+		
+						<tr>
+		<td colspan=2 align="left" valign=bottom><font color="#000000"><a href = "https://covid-gov-app.herokuapp.com/2.predict.html" target="_blank"> CoronaNet Policy Predictor </a>: Helps predict the best policy type for coding a given policy</font></td>
+		</tr>
+		
+	<tr>
+		<td colspan=2 align="left" valign=bottom><font color="#000000">RA FAQs [Link TBD] : Summary of commonly asked questions asked in ra-chat</font></td>
+		</tr>
+</table>
+
+
+
+<br>
+
+## FAQs
+
+
+<details> 
+    <summary><p style="font-family: Arial, Helvetica, sans-serif; font-size:12pt; font-style:normal"> <font color="#808080"> How should I prioritize coding different policy types under this overall strategy?  </font></p></summary>
+  <br>
+
+As before, wherever possible, RAs should still prioritize coding the following policy types first wherever possible. Having the same priorities for policy types also helps ensure consistency and completeness along this dimension of the data, which improves cross-regional analysis of the data for these policy types. 
+
+
+Group 1 
+
+* Lockdown  
+* Curfew  
+* Quarantine  
+
+Group 2: 
+
+* External Border Restrictions  
+* Internal Border Restrictins  
+
+
+Group 3:
+
+* Restrictions of Mass Gatherings 
+*  Social Distancing 
+
+Group 4
+
+* Closure and Regulation of Schools  
+* Restrictions and Regulations of Businesses 
+* Restrictions and Regulations of Government Services 
+
+
+Group 5:
+
+* Health Monitoring  
+* Health Testing  
+* Health Resources  
+* Hygiene
+
+Group 6:
+
+* Declaration of Emergencies
+* New Task Forces  
+* Public Awareness Measures
+* Anti-disinformation Measures
+
+Group 7:
+
+* COVID-19 Vaccines
+
+
+</details> 
+
+<details> 
+    <summary><p style="font-family: Arial, Helvetica, sans-serif; font-size:12pt; font-style:normal"> <font color="#808080"> What do we do with the data checklists?   </font></p></summary>
+  <br>
+
+We will be relying on the RA Internal Survey for much of the information that we used to get from the data checklists. However, if you've found them to be useful tools for yourself, we'll still keep them around and you're free to use them if you find them helpful!
+
+
+</details> 
+
+
+
+<br>
+  
+
+
+
+

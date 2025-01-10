@@ -1,0 +1,1114 @@
+---
+title: "WHO PHSMs - CoronaNet Taxonomy Map"
+author: "CoronaNet Research Project"
+date: '`r format(Sys.Date())`'
+output:
+  rmdformats::robobook
+---
+
+```{css, echo= FALSE}
+.tabset {
+  background: transparent;
+}
+```
+
+```{r setup, include=FALSE, eval=FALSE}
+knitr::opts_knit$set(root.dir = "../")
+# library(readr)
+# library(dplyr)
+# library(magrittr)
+# library(tidyr)
+# library(stringr)
+# library(jsonlite)
+# library(data.table)
+# library(purrr)
+# library(here)
+# library(readxl)
+# #who = jsonlite:::fromJSON(  "./data/collaboration/who/CLEAN_PHSM.json", flatten = TRUE) %>%
+# #  data.frame 
+#  
+# coronanet = readRDS( here("data", "CoronaNet", "coronanet_internal.rds"))
+# # colnames(who) = sub('value.', "", colnames(who))
+```
+
+# 0 Introduction
+
+This document maps the WHO PHSM taxonomy used to document government policies made in response to COVID-19 into the CoronaNet taxonomy. Each section  maps the general area for which the taxonomy is mapped and each sub-section provides further detail as necessary. Following each explanation for how the mapping is conceptualized, there is R code for operationalizing this mapping. Please refer to the WHO Taxonomy [accessible through their website](https://www.who.int/emergencies/diseases/novel-coronavirus-2019/phsm) and the [CoronaNet Codebook](https://www.coronanet-project.org/assets/CoronaNet_Codebook.pdf) for more information on their respective taxonomies. 
+
+Note that the code below is customized to adjust for errors and idiosyncrasies in the WHO PHSM data as of September 8, 2021. You can access (i) this original version of the WHO PHSM dataset, which was provided into two files: "phsm_dataset_2019-20f807c38a-5185-481a-bd48-a686e746a888.xlsx" and "phsm_datatset_2021eadcbe7b-7f81-4655-82e0-cda8e00f7296.xlsx"  as well as (ii) the version which transforms this version of the WHO PHSM dataset into the CoronaNet taxonomy (the rest of this document details how this transformation was implemented) from the [CoronaNet pubic git repo](https://github.com/CoronaNetDataScience/corona_tscs/tree/master/data/collaboration/who). 
+
+# 1 Setup
+
+To create replicate this taxonomy mapping exercise, users will need to load the following R packages and to read in the original WHO PHSM data. 
+
+Note, because at the time, the WHO PHSM made its data available in two separate files, we first need to read and combine the two files, which the following code does. The following code also reads in data on predicted policy types, see the 'Add in model-based predictions' section for more information. 
+
+```{r combine, warning = FALSE, message = FALSE, eval=FALSE }
+library(readr)
+library(dplyr)
+library(magrittr)
+library(tidyr)
+library(stringr)
+library(jsonlite)
+library(data.table)
+library(purrr)
+library(here)
+library(readxl)
+
+# who phsm data
+who_1 = read_xlsx( here("data", "collaboration", "who", "phsm_dataset_2019-20f807c38a-5185-481a-bd48-a686e746a888.xlsx"))
+who_2 = read_xlsx( here("data", "collaboration", "who", "phsm_datatset_2021eadcbe7b-7f81-4655-82e0-cda8e00f7296.xlsx"))
+  
+who_1$date_processed = as.character(who_1$date_processed )
+who = rbind(who_1, who_2)
+names(who) = toupper(names(who))
+
+# prediction data
+who_predicts = read_csv( here("data", "collaboration", "who", "who_predict.csv"))
+```
+</br>
+
+# 2 Map Creation 
+
+The following code creates a map to translate the WHO data to the CoronaNet taxonomy. The WHO unique id is captured in the first variable name to allow for cross-checking while the rest of the variable names follow the CoronaNet taxonomy.
+
+* This unique id is created by counting the policies with the same 'WHO_ID' and appending the corresponding number in the group. This is further elaborated in the Data Prep section of this document.
+
+Where there is a straightforward one-to-one relationship between the two taxonomies, these are directly mapped in the below:
+
+* WHO's 'COMMENTS' variable is a close approximation to CoronaNet's 'description' variable. The main difference is that (at least in theory), CoronaNet's description variable must always contain certain information (the policy initiator, the type of policy, the date the policy started, and if applicable: the geographic target of the policy, the demographic target of the policy and the end date of the policy) while there does not appear to be the same amount of information consistently captured in the WHO's 'COMMENTS' variable. As such, it will likely be necessary to back code for this information for observations in the WHO dataset that are not in the CoronaNet dataset.
+
+* WHO's 'DATE_START' variable, seems to be a good match for CoronaNet's 'date_start' variable, the latter of which captures when a policy was implemented.
+
+* WHO's 'COUNTRY_TERRETORY_AREA' variable and 'ISO' variable, which captures information on the initiating country, are perfect matches for Coronanet's 'country' variable and 'ISO_A3' variable. The latter needs to be adjusted a bit to fit the Coronanet taxonomy. This will be explained in the data prep section as well.
+
+* WHO's 'LINK' variable, which captures information on the URL link for the raw source of information on which the policy is based, is a perfect match for CoronaNet's 'link' variable.
+
+* WHO's 'DATE_ENTRY' variable, which captures information on when a policy was recorded, is a perfect match for CoronaNet's 'recorded_date' variable.
+
+* WHO's original 'who_id' as well as the 'dataset' are also saved to facilitate tracking of original records later on in the harmonization process, should it be necessary. 
+
+```{r map creation, eval=FALSE}
+who_coronanet_map = data.frame(unique_id = NA,
+                               who_id = who$WHO_ID,
+                               dataset = who$DATASET,
+                               coronanet_id = NA,
+                               entry_type = NA,
+                               correct_type= NA,
+                               update_type= NA,
+                               update_level= NA,
+                               description= who$COMMENTS,
+                               date_announced= NA,
+                               date_start= as.Date(who$DATE_START),
+                               date_end= as.Date(who$DATE_END),
+                               country = who$COUNTRY_TERRITORY_AREA,
+                               ISO_A3 = who$ISO,
+                               ISO_A2 = NA,
+                               init_country_level= NA,
+                               domestic_policy= NA,
+                               province = NA,
+                               city= NA,
+                               init_other = NA,
+                               type= NA,
+                               type_sub_cat= NA,
+                               type_mass_gathering = NA,
+                               type_text= NA,
+                               institution_status= NA,
+                               target_country= NA,
+                               target_geog_level= NA,
+                               target_region= NA,
+                               target_province= NA,
+                               target_city= NA,
+                               target_other= NA,
+                               target_who_what= NA,
+                               target_who_gen = NA,
+                               target_direction= NA,
+                               travel_mechanism= NA,
+                               compliance= NA,
+                               enforcer= NA,
+                               index_high_est= NA,
+                               index_med_est= NA,
+                               index_low_est= NA,
+                               index_country_rank= NA,
+                               institution_cat= NA,
+                               link = who$LINK,
+                               date_updated = NA,
+                               recorded_date = who$DATE_ENTRY)
+                               
+```
+</br>
+<hr>
+
+# 3 Data Preparation
+
+As mentioned above the WHO data needs a more preprocessing because many options for a number of important fields are not standardized. The following code in this section fixes smaller issues that can be found in all the policies.
+
+## 3.1 Unique IDs
+
+This code adds a unique_id for each of the WHO policies by counting the occurrences of a 'WHO_ID' and adding the corresponding numbers to the existing id. (e.g. 4 policies existing --> They will get labeled x_1, x_2, x_3, x_4). This was necessary because the existing WHO_ID does not have unique values. 
+
+```{r unique_id, eval=FALSE}
+who <- who %>%
+  group_by(WHO_ID) %>%
+  mutate(nPol = 1:n()) %>%
+  ungroup()
+who$unique_id = paste(who$WHO_ID, who$nPol, sep = "_")
+who_coronanet_map$unique_id = who$unique_id
+``` 
+
+</br>
+
+## 3.2 Add in model-based predictions
+
+This code adds in model-based predictions for the 'type' of policy an observation is provided in the who_predicts.csv file. This data was provided by the Coronanet Data Science Team. The models used to create those predictions were trained on the Coronanet data, those predictions might therefore not be accurate and are to be treated as suggestive. 'type_alt' refers to the more confident guess by the models and 'type_alt_alt' contains the second best predictions from these predictive models. 
+
+```{r, eval=FALSE}
+who_predicts = who_predicts %>%
+  group_by(WHO_ID) %>%
+  mutate(nPol = 1:n()) %>%
+  ungroup() %>%
+  mutate(unique_id = paste(WHO_ID, nPol, sep = '_'))
+who_coronanet_map = who_coronanet_map %>% 
+  left_join(who_predicts%>% select(unique_id , type_alt = predict_1, type_alt_2 = predict_2))  
+```
+</br>
+
+## 3.3 Countries
+
+The following code adjusts the names of various regions to be standardardized to the CoronaNet taxonomy. 
+
+* In the WHO data, Taiwan, Hong Kong, and Macao have the ISO3 code CHN. The CoronaNet data has coded these regions as separate entities. The WHO data has been adjusted to match the CoronaNet taxonomy. 
+
+* The WHO's spelling of Macao is changed to match that used by Coronanet, Macau.
+
+* The WHO data does not distinguish between Northern Cyprus and Cyprus, which CoronaNet does and which the code below adjust for. 
+
+* WHO has two different ISO_A3 codes for Kosovo: 'XKX' and 'SRB'; in the code below we standardize it to 'XKX'. 
+
+* WHO lists policies emanating from Puerto Rico as national-level policies; CoronaNet considers them provincial-level policies which the code below adjusts for. 
+
+```{r countries_fix, eval=FALSE}
+countries_fix <- who %>%
+ select(WHO_ID, unique_id, COUNTRY_TERRITORY_AREA, ISO, AREA_COVERED) %>%
+  mutate(
+         ISO_A3 = case_when(
+           ISO == 'PRI' ~ 'USA', # recode puerto rico as being part of the us
+           ISO == 'CHN' & str_detect(AREA_COVERED, 'Taiwan')~ 'TWN',
+           ISO == 'CHN' & str_detect(AREA_COVERED, 'Hong Kong')~ 'HKG',
+           ISO == 'CHN' & str_detect(AREA_COVERED, 'Macao|Macao')~ 'MAC',
+           str_detect(AREA_COVERED, 'Kosovo') ~ 'XKX',
+           TRUE ~ as.character(ISO)
+           ),
+         country = case_when(
+            ISO == 'PRI'  ~ 'United States of America',
+           ISO == 'CYP' & str_detect(AREA_COVERED, 'Northern Cyprus') ~ 'Northern Cyprus',
+           ISO == 'CHN' & str_detect(AREA_COVERED, 'Taiwan')~ 'Taiwan',
+           ISO == 'CHN' & str_detect(AREA_COVERED, 'Hong Kong')~ 'Hong Kong',
+           ISO == 'CHN' & str_detect(AREA_COVERED, 'Macao|Macao')~ 'Macau',
+           TRUE ~ as.character(COUNTRY_TERRITORY_AREA)
+         )
+        )
+countries_fix$COUNTRY_TERRITORY_AREA = NULL
+countries_fix$ISO= NULL
+countries_fix$AREA_COVERED = NULL
+countries_fix$WHO_ID = NULL
+who_coronanet_map = rows_update(who_coronanet_map, countries_fix, by = 'unique_id')
+```
+</br>
+
+## 3.4 Initiating Government
+
+A few minor fixes are implemented in the code below regarding the initiating governmental entity. The code below:
+
+* Places Puerto Rico as a province of the US for coding purposes.
+
+* Adjusts policies emanating from Hong Kong, Macao to be 'national' level policies for coding purposes. 
+
+* Adjusts policies that emanate from Copenhagen and Brussels to be city-level policies instead of country-level policies. 
+
+```{r prov_fix, eval=FALSE}
+who_init_gov = who%>%
+ mutate(
+   city = case_when(
+     grepl("Copenhagen", AREA_COVERED) ~ 'Copehnhagen',
+     grepl("Brussels|Bruxel", AREA_COVERED) ~ 'Brussels',
+     TRUE ~ as.character(NA),
+   ),
+    province = case_when(
+          ISO == 'PRI' ~ 'Puerto Rico',
+          ISO == 'CHN' & str_detect(AREA_COVERED, 'Taiwan')  ~ as.character(NA),  
+            ISO == 'CHN' & str_detect(AREA_COVERED, 'Hong Kong') ~ as.character(NA), 
+           ISO == 'CHN' & str_detect(AREA_COVERED, 'Macau|Macao') ~ as.character(NA),
+      !is.na(AREA_COVERED) & ADMIN_LEVEL == 'state' & !grepl("Copenhagen|Brussels|Brux|Metro Manila", AREA_COVERED) ~ AREA_COVERED,
+      TRUE~as.character(NA)
+    ),
+    init_other = case_when(
+      !is.na(AREA_COVERED) & ADMIN_LEVEL == 'other' ~ AREA_COVERED,
+      TRUE ~as.character(NA)
+    ),
+    init_country_level =
+      case_when(
+       ISO == 'CHN' & str_detect(AREA_COVERED, 'Taiwan')  ~ 'National',  
+        ISO == 'CHN' & str_detect(AREA_COVERED, 'Hong Kong')  ~ 'National', 
+       ISO == 'CHN' & str_detect(AREA_COVERED, 'Macau|Macao')  ~ 'National',
+      grepl("Copenhagen|Brussel|Metro Manila", city) ~ 'Municipal', 
+      ADMIN_LEVEL == 'national' ~ 'National',
+      ADMIN_LEVEL == 'state' ~ 'Provincial',
+      ADMIN_LEVEL == 'other' ~ "Other (e.g., county)",
+      TRUE ~ as.character(NA)
+  ),
+  who_id = WHO_ID) %>%
+  select(
+   unique_id, province, init_other, init_country_level
+  )
+who_coronanet_map = rows_update(who_coronanet_map, who_init_gov, by = 'unique_id')  
+```
+
+</br>
+
+## 3.5 Compliance
+
+The WHO data has split the information on compliance with the policies and possible penalties into two variables, ENFORCEMENT and NON_COMPLIANCE_PENALTY. The CoronaNet data stores this information in one variable 'compliance'. The following code checks for certain combinations to fill as much of the compliance information of policies as possible.
+
+```{r compliance, eval=FALSE}
+comp_fix = who %>%
+  select(unique_id, ENFORCEMENT, NON_COMPLIANCE_PENALTY) %>%
+  mutate(compliance = case_when(
+    ENFORCEMENT == "recommended" ~ "Voluntary/Recommended but No Penalties",
+  ENFORCEMENT == "required" | ENFORCEMENT == "monitored" ~ "Mandatory (Unspecified/Implied)")) %>%
+  mutate(compliance = case_when(
+    NON_COMPLIANCE_PENALTY == "fines" ~ "Mandatory with Fines",
+    NON_COMPLIANCE_PENALTY == "up to detention" ~ "Mandatory with Legal Penalties (Jail Time)",
+    NON_COMPLIANCE_PENALTY == "legal action" ~ "Mandatory with Legal Penalties (Jail Time)",
+    NON_COMPLIANCE_PENALTY == "arrest/detention" ~ "Mandatory with Legal Penalties (Jail Time)",
+    TRUE ~ compliance
+  ))
+comp_fix$ENFORCEMENT = NULL
+comp_fix$NON_COMPLIANCE_PENALTY = NULL
+who_coronanet_map = rows_patch(who_coronanet_map, comp_fix, by = 'unique_id')
+```
+
+</br>
+
+## 3.6 Policy Initiator
+
+The WHO information on the policy initiator needs to be adapted to semantically match the CoronaNet taxonomy. While  Coronanet has an option for 'other' initiators in the variable that they use to capture this information, 'init_country_level', they use it to refer to governments that are not at either the national, provincial or municipal level. Meanwhile the WHO data appears to use their 'other' option to refer to  cities or municipalities. Therefore the best option seems to be translate  WHO's 'other' option as Coronanet's 'Municipal' option, which the following code does. 
+
+```{r pol_initiator, eval=FALSE}
+initiator = who %>%
+  select(unique_id, ADMIN_LEVEL) %>%
+  mutate(init_country_level = case_when(
+    ADMIN_LEVEL == "national" ~ "National",
+    ADMIN_LEVEL == "state" ~ "Provincial",
+    ADMIN_LEVEL == "other" ~ "Municipal"
+  ))
+initiator$ADMIN_LEVEL = NULL
+who_coronanet_map = rows_patch(who_coronanet_map, initiator, by = 'unique_id')
+```
+
+</br>
+
+```{r targets test, eval=FALSE, include=FALSE, eval=FALSE}
+# This code is just in here for completeness' sake. It basically just splits WHO' 'TARGETED' into is singular targets and counts their occurances. The idea was that there might be 20-30 different targets that have been used 90% of the time but that are being used in various permutations and that's why the unique(TARGETED) count is so high. Turns out that is not the case so the idea was ditched.
+length(unique(who$TARGETED))
+#initial cleaning (only keeping the ',' and '-'. Numbers might be important later)
+who$TARGETED = gsub("([,-])|[[:punct:]]", "\\1", who$TARGETED)
+# splitting targets into a matrix
+who_targets = str_split(who$TARGETED, ',', simplify = T)
+length(unique(as.vector(who_targets)))
+# cleaning:
+# all lower case
+who_targets= tolower(who_targets)
+# trim whitspaces at the beginning and end
+for (i in 1:ncol(who_targets)) {
+  who_targets[,i] = str_trim(who_targets[,i])
+}
+length(unique(as.vector(who_targets)))
+# target occurrences in data frame
+target_freq = as.data.frame(table(unlist(who_targets))) # 112 targets used >100 times
+```
+
+## 3.7 Cleaning Function
+
+The following code creates a cleaning function that returns a data frame which lists the targets  used in the specified WHO 'subcategory' in the global environment. Cleaning this variable facilitates understanding of the policy targets, which can then subsequently inform the mapping of fields related to capturing information on policy types. 
+
+```{r targets_clean, eval=FALSE}
+targets_clean = function(df) {
+  # A data table is created, so extra characters are easier to spot.  
+  targets <- as.data.table(df[, TARGETED])
+  targets <- na.omit(targets)
+  targets[, V1:= tolower(V1)] # lower case
+  targets$V1 = gsub(">", "", targets$V1)
+  targets$V1 = gsub("<", "", targets$V1)
+  targets$V1 = gsub('[0-9]+', "", targets$V1)
+  
+  # converting it to list 
+  targets <- targets$V1
+  targets<- unlist(strsplit(targets, ","))
+  
+  # cut all spaces before and after elements of a list
+  targets <- trimws(targets, "l")
+  targets <- trimws(targets, "r")
+  
+  # creating frequency table from clean targets (convert targets to table again)
+  
+  targets <- as.data.table(table(targets))
+  df[, TARGETED:= tolower(TARGETED)]
+  
+    .GlobalEnv$targets  = targets
+}
+```
+<hr>
+</br>
+
+# 4 Policy Types
+
+In the following section, the 'WHO_CATEGORY', 'WHO_SUBCATEGORY', and 'WHO_SUBCATEGORY' will be mapped to the CoronaNet 'type' and 'type_sub_cat'. Both groups of variables conceptually capture information about the type of COVID-19 policy that a government has implemented for their respective datasets. The following sections are organized by options available in the 'WHO_CATEGORY' variable, which are reflected in the section titles. 
+
+## 4.1 Social and Physical Distancing Measures
+
+### 4.1.1 Domestic Travel
+
+#### 4.1.1.1 Closing Internal Land Borders
+
+The following code maps how the WHO dataset captures policies regarding the closure of internal land borders to the CoronaNet taxonomy. Indeed such policies are semantically similar to policies that CoronaNet stores under its Internal Border Restrictions type, and with exceptions (discussed below), can be mapped as such.
+
+* We assume that if the WHO COMMENTS section states that a government has implemented a quarantine, this can be  best mapped to the CoronaNet 'Quarantine' policy type. By searching for various case-sensitive spellings of the word snippet "quaran", we can implement this mapping. 
+
+* If the type is Internal Border Restriction the 'target_who_what' variable can automatically be filled with 'All Residents (Citizen Residents + Foreign Residents)' according to the Coronanet coding guidelines
+
+* Note that at least some of these policies should be coded as 'External Border Restrictions' in the CoronaNet taxonomy though there is no way to automatically extract this information in the given data because it is not systematically documented. We leave this to be done manually later on in the data harmonisation process.  
+
+```{r int_borders, eval=FALSE}
+who = as.data.table(who)
+int_borders <- who[WHO_CATEGORY == "Social and physical distancing measures" & 
+                     WHO_SUBCATEGORY == "Domestic travel" &
+                     WHO_MEASURE == "Closing internal land borders" ]
+int_borders$type <- ifelse(grepl("quaran", int_borders$TARGETED), "Quarantine", "Internal Border Restrictions") 
+int_borders  = int_borders %>%
+  select(unique_id, type) %>%
+  mutate(target_who_what = case_when(
+    type == "Internal Border Restrictions" ~ "All Residents (Citizen Residents + Foreign Residents)"
+  ))
+  
+who_coronanet_map = rows_patch(who_coronanet_map, int_borders, by = 'unique_id')
+```
+
+</br>
+
+#### 4.1.1.2 Restricting Entry
+
+The following code maps how the WHO dataset captures policies regarding the restriction of entry into a given jurisdiction to the CoronaNet taxonomy. There was no strict one to one mapping possible in this case and regular expression searches of the text available in the COMMENTS variable were used to find the best matches to the CoronaNet taxonomy. We elaborate on this in the below: 
+
+
+* We assume that if the WHO COMMENTS section states that a government has implemented a lockdown, this can be  best mapped to the CoronaNet 'Lockdown' policy type. By searching for various case-sensitive spellings of the word snippets "lockdown" or 'stay at home', we can implement this mapping.  
+
+*  We assume that if the WHO COMMENTS section states that a government has implemented a curfew, this can be  best mapped to the CoronaNet 'Curfew' policy type. By searching for various case-sensitive spellings of the word snippets "curfew" or 'stay at home', we can implement this mapping.   
+
+* We assume that if the WHO COMMENTS section states that a government has implemented a quarantine, this can be  best mapped to the CoronaNet 'Quarantine' policy type. By searching for various case-sensitive spellings of the word snippet "quaran", we can implement this mapping. 
+
+* If the policy targets all travelers the information need to be adapted to the Coronanet taxonomy. If the policy is not focused on travelers the target is all residents, since the category is domestic travel. 
+
+```{r rest_entry_int, eval=FALSE}
+who = as.data.table(who)
+rest_entry_int <- who[WHO_CATEGORY == "Social and physical distancing measures" &
+                        WHO_SUBCATEGORY == "Domestic travel" &
+                        WHO_MEASURE == "Restricting entry" ]
+targets_clean(rest_entry_int)
+rest_entry_int = rest_entry_int %>%
+  mutate(
+    type = case_when(
+      grepl('lockdown|Lockdown|Stay at Home', COMMENTS) ~ 'Lockdown',
+      grepl('curfew|Curfew', COMMENTS) ~ 'Curfew',
+      grepl("quaran", TARGETED) ~ "Quarantine",
+      grepl("quaran|Quaran", COMMENTS) ~ "Quarantine",
+      TRUE ~ "Internal Border Restrictions"
+    )
+  )
+rest_entry_int$target_who_what <- ifelse(grepl("all travellers", rest_entry_int$TARGETED), "All Travelers (Citizen Travelers + Foreign Travelers )", NA) 
+rest_entry_int$target_who_what[is.na(rest_entry_int$target_who_what)] = "All Residents (Citizen Residents + Foreign Residents)"
+rest_entry_int  = rest_entry_int %>%
+  select(unique_id, type, target_who_what)
+  
+  
+who_coronanet_map = rows_patch(who_coronanet_map, rest_entry_int, by = 'unique_id')
+```
+
+</br>
+
+#### 4.1.1.3 Stay-at-Home Order
+
+The following code maps how the WHO dataset captures stay-at-home orders to the CoronaNet taxonomy. The WHO_ MEASURE 'Stay at home' needs to be split into two different categories to fit the CoronaNet taxonomy, which makes disticntions between lockdowns, which do not have a time-limit, and curfews, which do. We also found likely miscodings of policies in this category (i.e. policies coded as stay-at-home orders that more likely should be coded as quarantine or emergency measures) and attempted to correct as many as possible through the search of regular expressions. 
+
+* Splitting one policy into two categories has proven difficult (this is further explained in the 'schools' chapter), thus we make use of the textual information in the COMMENTS field to help make these distinctions. 
+
+* We assume that if the WHO COMMENTS section states that a government has implemented a lockdown, this can be  best mapped to the CoronaNet 'Lockdown' policy type. We undertook a qualitative examination of a sample of the data coded in this category and found a list of word snippets in both the TARGETED and COMMENTED variables which we used to map policies as lockdowns in the CoronaNet taxonomy. 
+
+*  We assume that if the WHO COMMENTS section states that a government has implemented a curfew, this can be  best mapped to the CoronaNet 'Curfew' policy type. We undertook a qualitative examination of a sample of the data coded in this category and found a list of word snippets in both the TARGETED and COMMENTED variables which we used to map policies as curfews in the CoronaNet taxonomy.   
+
+*  We assume that if the WHO COMMENTS section states that a government has implemented emergency measures, this can be  best mapped to the CoronaNet 'Declaration of Emergency' policy type. We undertook a qualitative examination of a sample of the data coded in this category and found a list of word snippets in both the TARGETED and COMMENTED variables which we used to map policies as a declaration of emergency in the CoronaNet taxonomy. 
+
+* We assume that if the WHO COMMENTS section states that a government has implemented a quarantine, this can be  best mapped to CoronaNet 'Quarantine' policy type. By searching for various case-sensitive spellings of the word snippet "quaran", we can implement this mapping. 
+
+* Policies targeting people of a certain 'age' are also recorded in the target_who_gen variable which records such information in the Coronanet taxonomy.
+
+```{r stay_home, eval=FALSE}
+who = as.data.table(who)
+stay_home <- who[WHO_CATEGORY == "Social and physical distancing measures" & WHO_SUBCATEGORY == "Domestic travel" &  
+              WHO_MEASURE == "Stay-at-home order" ]
+targets_clean(stay_home)
+stay_home = stay_home %>%
+  mutate(
+    type = case_when(
+       grepl("home|cordon sanitaire", TARGETED) ~ "Lockdown",
+      grepl('lockdown|Lockdown', COMMENTS) ~ 'Lockdown',
+      grepl('curfew' ,TARGETED) ~ 'Curfew',
+      grepl('curfew|Curfew|o clock|Partial restriction with alternating periods' ,COMMENTS) ~ 'Curfew',
+      grepl('stay home|confinement|taying home|tay at home|leave the house|outside of the home|Elderly persons, persons with chronic diseases and persons with disabilities are urged and warned', COMMENTS) ~ "Lockdown",
+      grepl('age', TARGETED) ~ 'Lockdown',
+      grepl("state of emergency", TARGETED) ~ "Declaration of Emergency",
+      grepl("Executive Order|executive order", COMMENTS) ~ "Declaration of Emergency",
+      grepl('Quarantine|quarantine' ,COMMENTS) ~ 'Quarantine',
+      TRUE ~ as.character(NA)
+    )
+  )
+stay_home$target_who_gen <- ifelse(grepl("age", stay_home$TARGETED), "People of a certain age (please note age range in the text entry)", NA) 
+stay_home$type[is.na(stay_home$type)] = "Curfew"
+stay_home  = stay_home %>%
+  select(unique_id, type, target_who_gen)
+  
+  
+who_coronanet_map = rows_patch(who_coronanet_map, stay_home, by = 'unique_id')
+```
+
+</br>
+
+#### 4.1.1.4 Suspending or Restricting Movement
+
+The following code maps how the WHO dataset captures the restriction of movement policies to the CoronaNet taxonomy. WHO's policies about the restriction of momevent can be characterized as either being about the restriction of transport or the restriction of travel into certain areas. There was no strict one to one mapping possible in this case and regular expression searches of the text available in the COMMENTS variable were used to find the best matches to the CoronaNet taxonomy. We elaborate on this in the below: 
+
+* When the word snippets "public transport" and "private transport" were found in TARGETED or COMMENTS, we mapped policies as a Social Distancing type in the CoronaNet taxonomy accordingly.
+
+* When the word snippets "inter-regional travel", "cordon sanitaire", "domestic flights", as well as a few other word snippets, were found in TARGETD or COMMENTS, we mapped policies as a Internal Border Restrictions type in the CoronaNet taxonomy accordingly.  
+
+* It was virtually impossible to figure out whether the policy should be transcribed as internal or external border restriction because the WHO taxonomy does not systematically make such distinctions. Since this WHO_MEASURE also has the WHO_SUBCATEGORY 'Domestic Travel', for the purposes of this taxonomy mapping we assume that the policies are internal travel restrictions. 
+
+*  We assume that if the WHO COMMENTS section states that a government has implemented emergency measures, this can be  best mapped to the CoronaNet 'Declaration of Emergency' policy type. We undertook a qualitative examination of a sample of the data coded in this category and found a list of word snippets in the COMMENTED variables which we used to map policies as a declaration of emergency in the CoronaNet taxonomy. 
+
+* We assume that if the WHO COMMENTS section states that a government has implemented a lockdown, this can be  best mapped to the CoronaNet 'Lockdown' policy type. We undertook a qualitative examination of a sample of the data coded in this category and found a list of word snippets in both the TARGETED and COMMENTED variables which we used to map policies as lockdowns in the CoronaNet taxonomy. 
+
+*  We assume that if the WHO COMMENTS section states that a government has implemented a curfew, this can be  best mapped to the CoronaNet 'Curfew' policy type. We undertook a qualitative examination of a sample of the data coded in this category and found a list of word snippets in both the TARGETED and COMMENTED variables which we used to map policies as curfews in the CoronaNet taxonomy.   
+
+*  We undertook a qualitative examination of a sample of the data coded in this category and found a list of word snippets in both the TARGETED and COMMENTED variables which we used to map policies as health monitoring in the CoronaNet taxonomy.   
+
+
+* Policies targeting people of a certain 'age' are also recorded in the target_who_gen variable which records such information in the Coronanet taxonomy.
+
+```{r sus_mvt, eval=FALSE}
+who = as.data.table(who)
+sus_mvt <- who[WHO_CATEGORY == "Social and physical distancing measures" & WHO_SUBCATEGORY == "Domestic travel" &  
+              WHO_MEASURE == "Suspending or restricting movement" ]
+targets_clean(sus_mvt)
+sus_mvt = sus_mvt %>%
+  mutate(
+    type = 
+      case_when(
+        grepl("Curfew|curfew| pm |:00", COMMENTS) ~ "Curfew",
+        grepl('Quarantine|quarantine', COMMENTS) ~ "Quarantine",
+        grepl("lockdown|tay home|Lockdown|tay at home", COMMENTS) ~ "Lockdown",
+        grepl("age group", TARGETED) ~ "Lockdown",
+        grepl("public transport|public tranpsort|public tranport|publci transport|pulic transport|publictransport", TARGETED) ~ 'Social Distancing',
+        grepl("private transport|private tranpsort",  TARGETED) ~ 'Social Distancing',
+        grepl("travel",  TARGETED) ~ 'Internal Border Restrictions',
+        grepl("cordon",  TARGETED) ~ 'Internal Border Restrictions',
+        grepl("flights",  TARGETED) ~ 'Internal Border Restrictions',
+        grepl("travel",  COMMENTS) ~ 'Internal Border Restrictions',
+        grepl("cordon",  COMMENTS) ~ 'Internal Border Restrictions',
+        grepl("flights",  COMMENTS) ~ 'Internal Border Restrictions',
+        grepl("inter-regional transport",  TARGETED) ~ 'Internal Border Restrictions',
+        grepl("State of Emergency|state of emergency", COMMENTS) ~ "Declaration of Emergency",
+        grepl("public transport|traffic|trains|Road closure|Taxi|taxi", COMMENTS) ~ 'Social Distancing',
+        grepl("zones", TARGETED) ~ "Health Monitoring",
+        grepl("nucleic acid test", TARGETED) ~ "Internal Border Restriction",
+         
+        TRUE ~ as.character(NA)
+      )
+  )
+sus_mvt$target_who_gen <- ifelse(grepl("age", sus_mvt$TARGETED), "People of a certain age (please note age range in the text entry)", NA) 
+# Replacing the NAs might prove relevant for some applications but is not needed here.
+# sus_mvt$type[is.na(sus_mvt$type)] = "Social Distancing"
+sus_mvt  = sus_mvt %>%
+    select(unique_id, type, target_who_gen)
+  
+  
+who_coronanet_map = rows_patch(who_coronanet_map, sus_mvt, by = 'unique_id')
+```
+
+</br>
+
+### 4.1.2 Offices, Businesses, Institutions, and Operations
+
+The following code maps how the WHO dataset captures office, and business institution closures to the CoronaNet taxonomy, which records this information in its 'Restriction and Regulation of Businesses' type.
+WHO's policies about offices, businesses, institutions and operations is almost a direct fit for the Coronanet type 'Restriction and Regulation of Businesses'. They are separated by essential and non-essential businesses via TARGETED. This information is stored in instituation_cat in the Coronanet data.
+
+* While there might be an opportunity to filter for 'Restriction and Regulation of Government Services', there does not seem to be a consistent enough information documented in the TARGETED variable to separate the policies. Previous efforts to filter by words in either TARGETED and/or COMMENTS did not lead to positive results.
+
+```{r off_closures, eval=FALSE}
+off_closure = who %>%
+  filter(WHO_CATEGORY == "Social and physical distancing measures" & 
+           WHO_SUBCATEGORY == "Offices, businesses, institutions and operations") %>%
+  select(unique_id, TARGETED) %>%
+  mutate(type = "Restriction and Regulation of Businesses",
+         institution_cat = case_when(
+           TARGETED == 'essential businesses' ~ 'Essential Businesses',
+           TRUE ~ 'Non-Essential Businesses'
+         )
+         )
+off_closure$TARGETED = NULL
+who_coronanet_map = rows_patch(who_coronanet_map, off_closure, by = 'unique_id')
+```
+
+</br>
+
+### 4.1.3 Gatherings, Businesses, and Services
+
+The following code maps how the WHO dataset captures restrictions regarding the number of people allowed in certain places to the CoronaNet taxonomy.
+
+WHO's 'Gatherings, businesses and services' category almost exclusively focused on restrictions with regards to the number of people allowed to gather in a given place. Unfortunately, we were unable to find a way to separate the policies about e.g. restriction of the number of customers in a store versus restrictions on gathering more generally, which CoronaNet separates into two dfferent policy types (the former as Restrictions and Regulations of Businesses and the latter as Restrictions of Mass Gathering). Using the 'predictions', type_alt' and 'type_alt_alt' for each of the policies helps address this issue.
+
+* We used the purrr library to help us identify the the number of people restricted from gathering in general from WHO's TARGETED variable, which we then subsequently mapped to CoronaNet's type_mass_gathering variable, which documents this information. 
+* The TARGETED variable can contain more than one number however. By comparing the occurrences of numbers in the TARGETED with the previously created column (type_mass_gathering), we could determine whether TARGETED contained more than one number. 
+* If the occurrence of numbers did not match between the TARGETED and tyep_mass_gathering variable (meaning there was more than one number in TARGETED, making it impossible to systematically ascertain which number was more relevant) or the TARGETED variable includes a '%' (meaning the number that was extracted might be a percentage of allowed customers and not an actual limit of people), the policies were marked with an 'x' in type_mass_gatherings.
+* After cleaning the data frame the type, as well as type_mass_gathering (if extracted) can be added to the map.
+
+```{r gatherings, warning=FALSE, eval=FALSE}
+gatherings = who %>%
+  filter(WHO_CATEGORY == "Social and physical distancing measures" & 
+           WHO_SUBCATEGORY == "Gatherings, businesses and services") %>%
+  select(unique_id, TARGETED) %>%
+  mutate(type = "Restrictions of Mass Gatherings")
+gatherings = gatherings %>%
+  mutate(type_mass_gathering = readr::parse_number(as.character(TARGETED)))
+gatherings$n_int_var = nchar(gsub("[^0-9]+", "", gatherings$TARGETED))  
+gatherings$n_int_type_mass_gathering = nchar(gsub("[^0-9]+", "", gatherings$type_mass_gathering))
+gatherings = gatherings %>%
+  mutate(type_mass_gathering = case_when(
+    n_int_var != n_int_type_mass_gathering ~ "x",
+    str_detect(TARGETED, "%") == TRUE ~ "x",
+    TRUE ~ as.character(type_mass_gathering)
+  )
+  )
+gatherings$type_mass_gathering = na_if(gatherings$type_mass_gathering, "x")
+gatherings$n_int_var = NULL
+gatherings$n_int_type_mass_gathering = NULL
+gatherings$TARGETED = NULL
+who_coronanet_map = rows_patch(who_coronanet_map, gatherings, by = 'unique_id')
+```
+
+</br>
+
+### 4.1.4 School Measures
+
+The following code maps how the WHO dataset captures school closures or restrictions to the CoronaNet taxonomy. WHO's policies about school closures can be transcribed entirely to the Coronanet taxonomy with only minor modifications to the name of the category.
+
+```{r, eval=FALSE}
+schools = who %>%
+  filter(WHO_CATEGORY == "Social and physical distancing measures" & 
+           WHO_SUBCATEGORY == "School measures") %>%
+  mutate(type = "Closure and Regulation of Schools",
+          target_who_what = "All Residents (Citizen Residents + Foreign Residents)",)
+targets_clean(schools)
+schools = schools %>%
+  mutate(
+    higher_ed_dum = ifelse(grepl("post secondary|post-secondary|higher|niversit|all schools|all educatio|al educat|all ", TARGETED), "Higher education institutions (i.e. degree granting institutions)", NA ),
+    pre_school_dum = ifelse(grepl("child care|preschool|kiner|kinder|childcare|all schools|all educatio|al educat|all", TARGETED), "Preschool or childcare facilities (generally for children ages 5 and below)", NA ),
+    prim_school_dum = ifelse(grepl("primary|all schools|all educatio|al educat|all", TARGETED),  "Primary Schools (generally for children ages 10 and below)", NA ),
+    sec_school_dum = ifelse(grepl(" secondary scchools|^secondary| secondary schools|all schools|\\,secondary schools|\\, secondary schools|secondry|seconadry|seconday|secodary|all educatio|al educat|all", TARGETED), "Secondary Schools (generally for children ages 10 to 18)", NA )) %>%
+  unite(type_sub_cat, pre_school_dum, prim_school_dum, sec_school_dum,  higher_ed_dum, na.rm = TRUE, sep = ',' )
+ who_coronanet_map  = who_coronanet_map %>% full_join(schools %>% select( unique_id))
+ 
+ # The following code shows a different attempt made to separate the school policies, but was abandoned. It has been left in for the sake of transparency.
+ # schools = schools %>% 
+ #  separate_rows(
+ #    type_sub_cat, sep = ','
+ #  )%>%
+ #  group_by(unique_id) %>%
+ #  mutate(
+ #   unique_school_id = paste(unique_id, sep = '_school', 1:n())
+ #  ) %>% 
+ #  ungroup() %>%
+ #  select(unique_id,
+ #         unique_school_id,
+ #         type,
+ #         type_sub_cat,
+ #         target_who_what)
+# who_coronanet_map = who_coronanet_map %>%
+#   mutate(unique_id = ifelse(!is.na(unique_school_id) ,unique_school_id, unique_id)) %>%
+#   select(-unique_school_id)
+who_coronanet_map = rows_patch(who_coronanet_map, schools %>% select(unique_id,  type, type_sub_cat, target_who_what), by = 'unique_id')
+```
+
+</br>
+
+### 4.1.5 Special Populations
+
+Special populations is the first policy group that differs substantially from the CoronaNet taxonomy. We therefore accorded it special attention:
+
+#### 4.1.5.1 Protecting Displaced Populations
+
+The following code maps how the WHO dataset captures policies regarding the protection of displaced population to the CoronaNet taxonomy. Upon qualitative examination of a sample of the data, we found that the WHO's category 'Protecting displaced populations' often maps to  'lockdown' and 'social distancing policies' in the Coronanet taxonomy, though not always, which we elaborate on in the below. 
+
+* We identified policies related to 'Asylum/refugee seekers' from TARGETED and mapped them to CoronaNet's target_who_gen variable, which records information on a policy's demographic targets.
+
+* A rough mapping can also be done by filtering for 'visit' in COMMENTS to distinguish between 'Social Distancing' and 'Lockdown' policies in the CoronaNet taxonomy. While this mapping will not always be accurate, we anticipate fixing any subsequent errors in the manual harmonisation stage. 
+
+* We undertook a qualitative examination of a sample of the data coded in this category and found a list of word snippets in both the TARGETED and COMMENTED variables which we used to map policies as quarantine, curfew or school closures in the CoronaNet taxonomy. 
+
+```{r disp_pop, eval=FALSE}
+who = as.data.table(who)
+disp_pop <- who[WHO_CATEGORY == "Social and physical distancing measures" &
+                  WHO_SUBCATEGORY == "Special populations" &
+                  WHO_MEASURE == "Protecting displaced populations" ]
+targets_clean(disp_pop)
+disp_pop$target_who_gen <- ifelse(grepl("refug", disp_pop$TARGETED), "Asylum/refugee seekers", NA) 
+disp_pop$target_who_gen <- ifelse(grepl("asylum", disp_pop$TARGETED), "Asylum/refugee seekers", disp_pop$target_who_gen) 
+disp_pop$target_who_gen <- ifelse(grepl("camp", disp_pop$TARGETED), "Asylum/refugee seekers", disp_pop$target_who_gen) 
+disp_pop = disp_pop %>%
+  mutate(
+    type = 
+      case_when(
+        grepl("visit", COMMENTS) ~ "Social Distancing",
+        grepl("Quara|quaran", COMMENTS) ~ "Quarantine",
+        grepl("Curfew|curfew", COMMENTS) ~ "Curfew",
+        grepl("School|school", COMMENTS) ~ "Closure and Regulation of Schools",
+        TRUE ~ 'Lockdown'
+      )
+  )
+  
+disp_pop  = disp_pop %>%
+  select(unique_id, type, target_who_gen)
+  
+  
+who_coronanet_map = rows_patch(who_coronanet_map, disp_pop, by = 'unique_id')
+```
+
+</br>
+
+#### 4.1.5.2 Protecting Populations in Closed Settings
+
+The following code maps how the WHO dataset captures policies regarding the protection of the population in closed settings to the CoronaNet taxonomy.
+
+
+* Upon qualitative examination of a sample of the data, we found that the WHO's category 'Protecting populations in closed settings' can often broadly be mapped to 'lockdown' and 'social distancing policies' in the Coronanet taxonomy.
+
+* A rough mapping can be done by filtering for 'visit' in COMMENTS to distinguish between 'social Distancing' and 'Lockdown'. While this mapping will not always be accurate, we anticipate fixing any subsequent errors in the manual harmonisation stage.
+
+```{r pop_close, eval=FALSE}
+who = as.data.table(who)
+pop_close <- who[WHO_CATEGORY == "Social and physical distancing measures" &
+                   WHO_SUBCATEGORY == "Special populations" &
+                   WHO_MEASURE == "Protecting populations in closed settings" ]
+targets_clean(pop_close)
+pop_close$type <- ifelse(grepl("visit", pop_close$COMMENTS), "Social Distancing", "Lockdown")
+pop_close  = pop_close %>%
+  select(unique_id, type)
+  
+  
+who_coronanet_map = rows_patch(who_coronanet_map, pop_close, by = 'unique_id')
+```
+
+</br>
+
+#### 4.1.5.3 Shielding Vulnerable Groups
+
+The following code maps how the WHO dataset captures policies regarding the protection of vulnerable population to the CoronaNet taxonomy. 
+
+* Upon qualitative examination of a sample of the data, we found that the WHO's measure 'Shielding Vulnerable groups' fits closest to the Coronanet type 'Lockdown'.
+* Policies targeting people of a certain 'age' are also recorded in the target_who_gen variable which records such information in the Coronanet taxonomy.
+
+```{r vul_groups, eval=FALSE}
+who = as.data.table(who)
+vul_groups <- who[WHO_CATEGORY == "Social and physical distancing measures" &
+                    WHO_SUBCATEGORY == "Special populations" &
+                    WHO_MEASURE == "Shielding vulnerable groups" ]
+targets_clean(vul_groups)
+vul_groups$type <- "Lockdown"
+vul_groups$target_who_gen <- ifelse(grepl("age", vul_groups$TARGETED), "People of a certain age (please note age range in the text entry)", NA) 
+vul_groups$target_who_gen <- ifelse(grepl("elderly", vul_groups$TARGETED), "People of a certain age (please note age range in the text entry)", vul_groups$target_who_gen) 
+vul_groups$target_who_gen <- ifelse(grepl("young", vul_groups$TARGETED), "People of a certain age (please note age range in the text entry)", vul_groups$target_who_gen) 
+vul_groups  = vul_groups %>%
+  select(unique_id, type, target_who_gen)
+  
+  
+who_coronanet_map = rows_patch(who_coronanet_map, vul_groups, by = 'unique_id')
+```
+<hr>
+</br>
+
+## 4.2 Other Measures
+
+### 4.2.1 Communications and Engagement
+
+The following code maps how the WHO dataset captures policies about (non-) government communication to the CoronaNet taxonomy.
+The WHO subcategory 'Communications and engagement' is an almost perfect match for the Coronanet type 'Public Awareness Measure' and we map it as such. 
+
+```{r communication, eval=FALSE}
+communication = who %>%
+  filter(WHO_CATEGORY == "Other measures" & 
+           WHO_SUBCATEGORY == "Communications and engagement") %>%
+  select(unique_id) %>%
+  mutate(type = "Public Awareness Measures")
+who_coronanet_map = rows_patch(who_coronanet_map, communication, by = 'unique_id')
+```
+</br>
+
+### 4.2.2 Financial Packages
+
+WHO's policies about Financial packages are not included in this mapping as CoronaNet does not at the time of this mapping collect financial policies.
+
+<hr>
+</br>
+
+## 4.3 International Travel Measures
+
+### 4.3.1 Entry Screening and Isolation/ Quarantine
+
+The following code maps how the WHO dataset captures policies regarding entry screenings, isolation, and quarantine to the CoronaNet taxonomy. As can be seen in the below, WHO's measure 'Entry screening and isolation or quarantine' fits multiple CoronaNet types.
+
+* Filtering for "quarantine" in TARGETED provides the separation of 'Quarantine' policies and 'External Border Restrictions'. That is, if a policy does not contain the text snippet "quarantine", we map it as an External Border Restriction. 
+*  Policies targeting travelers are also recorded in the target_who_what variable which records such information in the Coronanet taxonomy. 
+* Because these policies are aimed at screening entries into a country, we code these as 'Inbound' policies in CoronaNet's target_direction variable. 
+
+```{r entry_screen_quar_ext, eval=FALSE}
+who = as.data.table(who)
+entry_screen_quar_ext <- who[WHO_CATEGORY == "International travel measures" &
+                         WHO_MEASURE == "Entry screening and isolation or quarantine" ]
+targets_clean(entry_screen_quar_ext)
+entry_screen_quar_ext$type <- ifelse(grepl("quarantine", entry_screen_quar_ext$TARGETED), "Quarantine", "External Border Restrictions") 
+entry_screen_quar_ext$target_who_what <- ifelse(grepl("travellers", entry_screen_quar_ext$TARGETED), "All Travelers (Citizen Travelers + Foreign Travelers)", NA) 
+entry_screen_quar_ext$target_direction = 'Inbound' 
+entry_screen_quar_ext  = entry_screen_quar_ext %>%
+  select(unique_id, type, target_who_what, target_direction)
+  
+who_coronanet_map = rows_patch(who_coronanet_map, entry_screen_quar_ext, by = 'unique_id')
+```
+
+</br>
+
+### 4.3.2 Exit Screening and Isolation/ Quarantine
+
+The following code maps how the WHO dataset captures policies regarding exit screenings, isolation, and quarantine to the CoronaNet taxonomy.
+
+* The WHO measure 'Exit screening and isolation or quarantine' is transcribed as 'External Border Restrictions' since the filtering out of policies regarding quarantine has proven difficult and would have required the addition of duplicate rows. The reason for not going this route has been explained in the 'schools' chapter.
+*  Policies targeting travelers are also recorded in the target_who_what variable which records such information in the Coronanet taxonomy. 
+* Because these policies are aimed at screening exits from a country, we code these as 'Outbound' policies in CoronaNet's target_direction variable. 
+
+```{r exit_screen_quar_ext, eval=FALSE}
+who = as.data.table(who)
+exit_screen_quar_ext <- who[WHO_CATEGORY == "International travel measures" &
+                              WHO_MEASURE == "Exit screening and isolation or quarantine" ]
+targets_clean(exit_screen_quar_ext)
+exit_screen_quar_ext$type <- "External Border Restrictions"
+exit_screen_quar_ext$target_who_what <- ifelse(grepl("travellers", exit_screen_quar_ext$TARGETED), "All Travelers (Citizen Travelers + Foreign Travelers)", NA) 
+exit_screen_quar_ext$target_direction = 'Outbound' 
+exit_screen_quar_ext  = exit_screen_quar_ext %>%
+  select(unique_id, type, target_who_what, target_direction)
+  
+who_coronanet_map = rows_patch(who_coronanet_map, exit_screen_quar_ext, by = 'unique_id')
+```
+
+</br>
+
+### 4.3.3 Other External Border Policies
+
+The following code maps how the WHO dataset captures other policies regarding external border restrictions to the CoronaNet taxonomy.
+
+* All WHO's 'International travel measures' are mapped as 'External Border restriction' in the Coronanet taxonomy.
+*  Policies targeting travelers are also recorded in the target_who_what variable which records such information in the Coronanet taxonomy. 
+
+```{r ext_border_rest, eval=FALSE}
+ext_border_rest = who %>%
+  filter(WHO_CATEGORY == "International travel measures" & 
+           WHO_MEASURE != "Exit screening and isolation or quarantine" &
+           WHO_MEASURE != "Entry screening and isolation or quarantine") %>%
+  select(unique_id) %>%
+  mutate(type = "External Border Restrictions",
+         target_who_what = "All Travelers (Citizen Travelers + Foreign Travelers")
+who_coronanet_map = rows_patch(who_coronanet_map, ext_border_rest, by = 'unique_id')
+```
+<hr>
+</br>
+
+## 4.4 Surveillance and Response Measures
+
+### 4.4.1 Detecting and Isolating Cases
+
+#### 4.4.1.1 Active Case Detection
+
+The following code maps how the WHO dataset captures policies regarding active COVID-19 case detection to the CoronaNet taxonomy.
+WHO's measure 'Active case detection' can be split up into three potential types in the Coronanet taxonomy.
+
+* Filtering for the word snippet "test" in TARGETED provides the separation of 'Health Testing' policies and 'Health Monitoring'. That is, if a policy does not contain the text snippet "test", we map it as a health monitoring policy. 
+
+* Following this, we then filtering for the word snippet "schools" in TARGETED extracts the policies that should be coded as 'Closure and Regulation of Schools' in the Coronanet data.
+
+* Since there are many of policies with potentially multiple 'target_who_gen' only "everyone" and "anyone" is specified and transcribed to the CoronaNet target_who_gen's variable as 'No special population targeted'.
+
+```{r active_cases, eval=FALSE}
+who = as.data.table(who)
+active_cases <- who[WHO_CATEGORY == "Surveillance and response measures" &
+                      WHO_SUBCATEGORY == "Detecting and isolating cases" &
+                      WHO_MEASURE == "Active case detection" ]
+targets_clean(active_cases)
+active_cases$type <- ifelse(grepl("test", active_cases$COMMENTS), "Health Testing", "Health Monitoring") 
+active_cases$type <- ifelse(grepl("school", active_cases$TARGETED), "Closure and Regulation of Schools", active_cases$type) 
+active_cases$target_who_gen <- ifelse(grepl("anyone", active_cases$TARGETED), "No special population targeted", NA) 
+active_cases$target_who_gen <- ifelse(grepl("everyone", active_cases$TARGETED), "No special population targeted", active_cases$target_who_gen) 
+active_cases  = active_cases %>%
+  select(unique_id, type, target_who_gen)
+  
+  
+who_coronanet_map = rows_patch(who_coronanet_map, active_cases, by = 'unique_id')
+```
+</br>
+
+#### 4.4.1.2 Isolation
+
+The following code maps how the WHO dataset captures isolation policies to the CoronaNet taxonomy.
+WHO's measure "Isolation" could potentially be split into multiple policies to fit the Coronanet taxonomy. Since this would mean creating additional rows to the original data, we decided that doing so would increase rather decrease the complexity of the harmonisation exercise (for more information see 'schools' chapter and 'targets'(created by the code below)). That being said, vast majority of these policies can be categorized as 'Quarantine' in the Coronanet data and were mapped as such. For possible other fitting types see 'type_alt' and 'type_alt_alt'. 
+
+```{r isolation, eval=FALSE}
+who = as.data.table(who)
+isolation <- who[WHO_CATEGORY == "Surveillance and response measures" &
+                   WHO_SUBCATEGORY == "Detecting and isolating cases" &
+                   WHO_MEASURE == "Isolation" ]
+targets_clean(isolation)
+isolation$type <- "Quarantine"
+isolation  = isolation %>%
+  select(unique_id, type)
+  
+  
+who_coronanet_map = rows_patch(who_coronanet_map, isolation, by = 'unique_id')
+```
+</br>
+
+#### 4.4.1.3 Passive Case Detection
+
+The following code maps how the WHO dataset captures passive COVID-19 case detection to the CoronaNet taxonomy.
+WHO's measure 'Passive case detection' can be transcribed as "Health Testing" and "Health Monitoring" in the Coronanet taxonomy. 
+
+* Filtering for the word snippet "test" in TARGETED provides the separation of 'Health Testing' policies and 'Health Monitoring'. That is, if a policy does not contain the text snippet "test", we map it as a health monitoring policy.
+* This filtering is rather coarse and in theory it would be possible to split these policies into multiple policies to fit the CoronaNet taxonomy. Since this would mean creating additional rows to the original data, we decided that doing so would increase rather decrease the complexity of the harmonisation exercise.  
+
+```{r passive_cases, eval=FALSE}
+who = as.data.table(who)
+passive_cases <- who[WHO_CATEGORY == "Surveillance and response measures" &
+                       WHO_SUBCATEGORY == "Detecting and isolating cases" &
+                       WHO_MEASURE == "Passive case detection" ]
+targets_clean(passive_cases)
+passive_cases$type <- ifelse(grepl("test", passive_cases$COMMENTS), "Health Testing", "Health Monitoring") 
+passive_cases  = passive_cases %>%
+  select(unique_id, type)
+  
+  
+who_coronanet_map = rows_patch(who_coronanet_map, passive_cases, by = 'unique_id')
+```
+
+</br>
+
+### 4.4.2 Tracing and Quarantining Contacts
+
+#### 4.4.2.1 Contact Tracing
+
+The following code maps how the WHO dataset captures contact tracing policies to the CoronaNet taxonomy.
+
+* WHO's measure 'Contact Tracing' can be mapped directly to CoronaNet's type 'Health Monitoring'.
+
+```{r, eval=FALSE}
+contact_tracing = who %>%
+  filter(WHO_CATEGORY == "Surveillance and response measures" & 
+           WHO_SUBCATEGORY == "Tracing and quarantining contacts" &
+           WHO_MEASURE == "Contact tracing") %>%
+  select(unique_id) %>%
+  mutate(type = "Health Monitoring")
+  
+who_coronanet_map = rows_patch(who_coronanet_map, contact_tracing, by = 'unique_id')
+```
+</br>
+
+#### 4.4.2.2 Quarantine of Contacts
+
+The following code maps how the WHO dataset captures policies regarding the quarantine of contact persons to the CoronaNet taxonomy.
+
+* WHO's measure 'Quarantine of Contacts' can be directly mapped to CoronaNet's type 'Quarantine'.
+
+```{r quarantine_contacts, eval=FALSE}
+quarantine_contacts = who %>%
+  filter(WHO_CATEGORY == "Surveillance and response measures" & 
+           WHO_SUBCATEGORY == "Tracing and quarantining contacts" &
+           WHO_MEASURE == "Quarantine of contacts") %>%
+  select(unique_id) %>%
+  mutate(type = "Quarantine")
+  
+who_coronanet_map = rows_patch(who_coronanet_map,quarantine_contacts, by = 'unique_id')
+```
+</br>
+
+## 4.5 Individual Measures
+
+The following code maps how the WHO dataset captures policies individuals should take to curb the spread of the virus to the CoronaNet taxonomy.
+
+* Every WHO policy in the category 'Individual measures' (other than measure = 'Wearing a mask') can be split into either 'Social distancing' or 'Public Awareness Measure' in the Coronanet taxonomy.
+* When the WHO_MEASURE is coded as 'Physical Distancing' or 'Using other personal protective equipment' this is mapped to CoronaNet's Social Distancing type
+* Otherwise, policies under this category are mapped as Public Awareness Measures
+
+```{r ind_measures, eval=FALSE}
+ind_measures = who %>%
+  filter(WHO_CATEGORY == "Individual measures" & 
+           WHO_MEASURE != "Wearing a mask") %>%
+  select(unique_id, WHO_MEASURE) %>%
+  mutate(type = case_when(
+    WHO_MEASURE == "Physical distancing" ~ "Social Distancing",
+    WHO_MEASURE == "Using other personal protective equipment" ~ "Social Distancing",
+    TRUE ~ "Public Awareness Measures"))
+ind_measures$WHO_MEASURE = NULL
+who_coronanet_map = rows_patch(who_coronanet_map, ind_measures, by = 'unique_id')
+```
+</br>
+
+Mask policies in the Coronanet data can be separated into 'Closure and Regulation of Schools', 'Restriction and Regulation of Businesses' or 'Social Distancing' in the CoronaNet taxonomy because the CoronaNet taxonomy makes distinctions as to where a mask policy was implemented.
+
+* Policies that match 'education' in TARGETED are mapped into the Closure and Regulation of Schools type in the CoronaNet taxonomy
+* Policies that match 'businesses' in TARGETED are mapped into the Restriction and Regulation of Businesses type in the CoronaNet taxonomy
+* All other policies not matched above are mapped into the Social Distancing type in the CoronaNet taxonomy
+
+```{r masks, eval=FALSE}
+masks = who %>%
+  filter(WHO_CATEGORY == "Individual measures" & 
+           WHO_MEASURE == "Wearing a mask") %>%
+  select(unique_id, TARGETED) %>%
+  mutate(type = case_when(
+    TARGETED == "education" ~ "Closure and Regulation of Schools",
+    TARGETED == "businesses" ~ "Restriction and Regulation of Businesses",
+    TRUE ~ "Social Distancing"))
+masks$TARGETED = NULL
+who_coronanet_map = rows_patch(who_coronanet_map, masks, by = 'unique_id')
+```
+</br>
+
+## 4.6 Biological Measures
+
+The following code maps how the WHO dataset captures policies regarding biological measures to curb the spread of the virus to the CoronaNet taxonomy.
+
+* WHO's 'Biological measures' can be split into 'Health resources' and 'COVID-19 Vaccines' to match the CoronaNet taxonomy. 
+* When the WHO_MEASURE is coded as 'Using antibodies for prevention' this is mapped to CoronaNet's Health Resources type
+* Otherwise, policies under this category are mapped as COVID-19 Vaccines type in the CoronaNet taxonomy
+
+```{r bio_measures, eval=FALSE}
+bio_measures = who %>%
+  filter(WHO_CATEGORY == "Biological measures") %>%
+  select(unique_id, WHO_MEASURE) %>%
+  mutate(type = case_when(
+    WHO_MEASURE == "Using antibodies for prevention" ~ "Health Resources",
+    TRUE ~ "COVID-19 Vaccines"))
+bio_measures$WHO_MEASURE = NULL
+who_coronanet_map = rows_patch(who_coronanet_map, bio_measures, by = 'unique_id')
+```
+</br>
+
+## 4.7 Environmental Measures
+
+The following code maps how the WHO dataset captures environmental measures taken to curb the spread of the virus to the CoronaNet taxonomy.
+
+* WHO's 'Envronmental Measures' can in large part be mapped to the CoronaNet type 'Hygiene' since they mostly focus on disinfecting surfaces and similar measures.
+
+```{r env_measures, eval=FALSE}
+env_measures = who %>%
+  filter(WHO_CATEGORY == "Environmental measures") %>%
+  select(unique_id) %>%
+  mutate(type = "Hygiene")
+who_coronanet_map = rows_patch(who_coronanet_map, env_measures, by = 'unique_id')
+```
+</br>
+
+## 4.8 Drug Based Measures
+
+The following code maps how the WHO dataset captures drug-based measures to curb the spread of the virus to the CoronaNet taxonomy.
+
+* WHO's 'Drug-based' measures can be mapped to the Coronanet type 'Health Resources'.
+
+```{r drug_measures, eval=FALSE}
+drug_measures = who %>%
+  filter(WHO_CATEGORY == "Drug-based measures") %>%
+  select(unique_id) %>%
+  mutate(type = "Health Resources")
+who_coronanet_map = rows_patch(who_coronanet_map, drug_measures, by = 'unique_id')
+```
+</br>
+
+## 4.9 Financial Packages
+
+As mentioned above CoronaNet does not currently collect economic policies. WHO's measure 'Financial packages' is therefore transcribed to CoronaNet's type 'Other Policy Not Listed Above (econ)'.
+
+```{r finance, eval=FALSE}
+finance = who %>%
+  filter(
+    WHO_MEASURE == 'Financial packages'
+  ) %>%
+  select(unique_id) %>%
+  mutate(type = 'Other Policy Not Listed Above (econ)')
+who_coronanet_map = rows_patch(who_coronanet_map, finance , by = 'unique_id')
+```
+</br>
+
+## 4.10 Legal Measures
+
+The following code maps how the WHO dataset captures various legal measures regarding COVID-19 to the CoronaNet taxonomy.
+
+* WHO's measure 'Legal and policy regulations' contain a variety of policies, which are contained in separate categories in the CoronaNet taxonomy.  
+
+*  We undertook a qualitative examination of a sample of the data coded in this category and found a list of word snippets in both the TARGETED and COMMENTED variables which we used to map policies as New Task Force, Bureau or Administrative Configuration, Declaration of Emergency, Anti-Disinformation Measures, Lockdown, Curfew, COVID-19 Vacines, Quarantine, Health Testing, External Border Restrictions, Health Resources, Restriction and Regulation of Businesses, Closure and Regulation of Schools, Restrictions of Mass Gatherings, Hygiene, Restriction and Regulation of Government Services in the CoronaNet taxonomy
+
+```{r legal, eval=FALSE}
+legal = who %>% 
+  filter(WHO_MEASURE == "Legal and policy regulations") %>%
+  mutate(
+  type = case_when(
+    WHO_MEASURE == "Legal and policy regulations" & grepl("Team|Task Force|Centre|centre|group|team|task-force|orking group|askforce|Coordination group|Jobs and Investment Council|Compliance Unit|Operational Headquarters|national coordinator|Response Cell|committee|Committee|task force|working group|comitee", COMMENTS) ~ "New Task Force, Bureau or Administrative Configuration",
+    WHO_MEASURE == "Legal and policy regulations" & grepl("calamity|SoE|isaster|Royal decree|state of Alarm|state of emergeny|state of exception|Epidemic Act|health alert|public health emergenci|mergency Response|mergency response|state of calamity|emergency response|Emergency Epidemic
+                                                          public emergency|public calamity|ealth Emergency|Emergency Powers|ealth emergency|national emergency|Public Calamity|state of Emergency|state of emergency|Emergency state|emergency state|SOE|state of Public Calamity", COMMENTS) ~ "Declaration of Emergency",
+    WHO_MEASURE == "Legal and policy regulations" & grepl("false news", COMMENTS) ~ "Anti-Disinformation Measures",
+    
+    
+     WHO_MEASURE == "Legal and policy regulations" & grepl("lockdown|Lockdown|stay-at-home", COMMENTS) ~ "Lockdown",
+    WHO_MEASURE == "Legal and policy regulations" & grepl("Curfew|curfew", COMMENTS) ~ "Curfew",
+    WHO_MEASURE == "Legal and policy regulations" & grepl("vacc|inovac", COMMENTS) ~ "COVID-19 Vaccines",
+    WHO_MEASURE == "Legal and policy regulations" & grepl("uarantine", COMMENTS) ~ "Quarantine",
+    WHO_MEASURE == "Legal and policy regulations" & grepl("test|PCR|antigen", COMMENTS) ~ "Health Testing",
+    WHO_MEASURE == "Legal and policy regulations" & grepl("foreigner|visa|Visa|flight|travel|assport|irport", COMMENTS) ~ "External Border Restrictions",
+    WHO_MEASURE == "Legal and policy regulations" & grepl("alcohol|shopping|grocery|economy|worker|business|employ", COMMENTS) ~ "Restriction and Regulation of Businesses",
+    WHO_MEASURE == "Legal and policy regulations" & grepl("school|School|childcare|teach|learn", COMMENTS) ~ "Closure and Regulation of Schools",
+    WHO_MEASURE == "Legal and policy regulations" & grepl("export", COMMENTS) ~ "Health Resources",
+    WHO_MEASURE == "Legal and policy regulations" & grepl("venues|event|uneral", COMMENTS) ~ "Restrictions of Mass Gatherings",
+    WHO_MEASURE == "Legal and policy regulations" & grepl("pay rent|Evict|evict|xpenditure|pricing|tax|insurer|sickness", COMMENTS) ~ "Other Policy Not Listed Above (econ)",
+    WHO_MEASURE == "Legal and policy regulations" & grepl("election|Election|elect|Elect", COMMENTS) ~ "Restriction and Regulation of Government Services",
+    WHO_MEASURE == "Legal and policy regulations" & grepl("burial|cremation", COMMENTS) ~ "Hygiene",
+    
+    WHO_MEASURE == "Legal and policy regulations" & grepl("declar|emergency|Emergency|level|Level", COMMENTS) ~ "Declaration of Emergency",
+    TRUE ~ as.character(NA)
+  )) %>%
+  select(unique_id, type)
+who_coronanet_map = rows_patch(who_coronanet_map,  legal , by = 'unique_id')
+```
+</br>
+
+# 5 Final Mapping
+
+Finally, once all the variables that are possible to harmonize from the WHO PHSM dataset to CoronaNet taxonomy have been identified, the results are exported in an .rds and .csv format, to be consolidated together with the other external databases to be harmonised. The final consolidated dataset is then processed for manual harmonisation into the CoronaNet Research Project dataset.
+
+```{r write output, include=FALSE, eval=FALSE}
+write.csv(who_coronanet_map,  here("data", "collaboration", "who", "who_coronanet_map_2b.csv"))
+saveRDS(who_coronanet_map , here("data", "collaboration", "who", "who_coronanet_map_2b.rds"))
+```
+<hr>
+

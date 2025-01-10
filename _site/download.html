@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+    <link rel="stylesheet" type="text/css" href="style2.css">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="L-jK2R0bz2lbCyDSQ7Ulk6MW9il2PZzbXZ9DX6AkuuE" />
+    <meta name="description" content="The CoronaNet Research Project is a worldwide effort that tracks government COVID-19 policies.">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <title>CoronaNet Research Project</title>
+    <script src="js/fontawesome.js" crossorigin="anonymous" async></script>
+    <script src="js/particles.js"></script>
+    <script src="app.js" async></script>
+    <div id="particles-js" style="position: relative;">
+        <img src="images/logo_transparent_slim.png" style="position: absolute; margin: auto; left: 0; right: 0; text-align: center; height: 80%; z-index: 2; cursor: pointer;" class="logoCoronanet" onclick="window.location='https://www.coronanet-project.org/index.html';"/>
+        <div><a id="menuButton" onclick="openNav()"><i class="fas fa-bars" style="cursor: pointer; font-size: 24px; text-shadow: 0 0 1px #000; z-index: 3;"></i></a></div>
+        <div class="containerMenu">
+            <label id="theme-switch" class="theme-switch" for="checkbox_theme">
+            <input type="checkbox" value='0' id="checkbox_theme" style="display: none;">
+            <i id="darkModeSwitch" class="fas fa-moon" style="cursor: pointer; font-size: 24px; text-shadow: 0 0 1px #000;"></i>
+            </label>
+            <a id="emailButton" href="mailto:admin@coronanet-project.org"><i class="fas fa-envelope" style="cursor: pointer; font-size: 24px; text-shadow: 0 0 1px #000;"></i></a>
+        </div>
+    </div>
+    <h1> Explore and Download Datasets </h1>
+    <div id="navbarOverlay" style="z-index: 3;"></div>
+    <div id="mySidenav" class="sidenav" style="display: none; z-index: 3;">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <div class="sidebarOption"><img src="images/favicon_bw.png" style="width: 15px; display: inline;"><a href="index.html">Home</a></div>
+        <div class="sidebarOption"><img src="images/11_transparent.png" style="width: 15px; display: inline;"><a href="methods.html">Methodology</a>
+        <div class="sidebarSuboption">
+        <a href="methods.html">Data Collection Methods</a><br>
+        <a href="codebook.html">Codebook</a><br>
+        <a href="validationcheck.html">Validation and Reliability Checks</a>
+        </div></div>
+        <div class="sidebarOption"><img src="images/16_transparent.png" style="width: 15px; display: inline;"><a href="visualisations.html">Visualizations</a></div>
+        <div class="sidebarOption"><img src="images/14_transparent.png" style="width: 15px; display: inline;"><a href="reports.html">Reports</a></div>
+        <div class="sidebarOption"><img src="images/13_transparent.png" style="width: 15px; display: inline;"><a href="publications.html">Publications</a></div>
+        <div class="sidebarOption"><img src="images/10_transparent.png" style="width: 15px; display: inline;"><a href="inthemedia.html">In The Media</a></div>
+        <div class="sidebarOption"><img src="images/9_transparent.png" style="width: 15px; display: inline;"><a href="about.html">About CoronaNet</a></div>
+        <div class="sidebarOption"><img src="images/12_transparent.png" style="width: 15px; display: inline;"><a href="team.html">Our People</a>
+        <div class="sidebarSuboption">
+        <a href="team.html">Team</a><br>
+        <a href="interviews.html">Interviews</a><br>
+        </div></div>
+        <div class="sidebarOption"><img src="images/15_transparent.png" style="width: 15px; display: inline;"><a href="join.html">Join CoronaNet</a></div>
+    </div>
+    <script>
+        function openNav() {
+          document.getElementById("mySidenav").style.display = "block";
+          document.getElementById("navbarOverlay").style.display = "block";
+        }
+
+        function closeNav() {
+          document.getElementById("mySidenav").style.display = "none";
+          document.getElementById("navbarOverlay").style.display = "none";
+        } 
+        function getLastDataUpdate(url, id) {
+            var r = new XMLHttpRequest();
+            r.responseType = 'json';
+            r.onreadystatechange = function() { 
+                if (this.readyState == 4 && this.status == 200) {
+                    var d = document.getElementById(id);
+                    var lastUpdate = this.response[0].commit.committer.date;
+                    var lastUpdateText = lastUpdate;
+                    lastUpdateText = lastUpdateText.replace("Z", "");
+                    lastUpdateText = lastUpdateText.replace("T", ", ");
+                    d.textContent = lastUpdateText;
+                    d.setAttribute("datetime", lastUpdate);
+                }
+            }
+            r.open("GET", url, true); // true for asynchronous 
+            r.send(null);
+        }
+        getLastDataUpdate('https://api.github.com/repos/saudiwin/corona_index/commits?path=coronanet/index_long_model_biz.rds&page=1&per_page=1', 'lastUpdatePanel');
+        getLastDataUpdate('https://api.github.com/repos/saudiwin/corona_tscs/commits?path=data/CoronaNet/data_bulk/coronanet_release.csv.gz&page=1&per_page=1', 'lastUpdateEvent');
+        getLastDataUpdate('https://api.github.com/repos/saudiwin/corona_tscs/commits?path=data/CoronaNet/data_bulk/coronanet_release_allvars.csv.gz&page=1&per_page=1', 'lastUpdateExtended');
+        getLastDataUpdate('https://api.github.com/repos/saudiwin/corona_tscs/commits?path=data/CoronaNet/data_country/coronanet_release/coronanet_release_Afghanistan.csv&page=1&per_page=1', 'lastUpdateCountry');
+    </script>
+</head>
+    
+    <body>
+        <div class="container">
+            <p class="block">
+            Please note that while we make every effort to clean this data, the speed and scale with which it was collected means that we cannot validate all of it. If you find an error in the data, please file an issue on this <a href="https://github.com/saudiwin/corona_tscs/issues"><b>Github page</b></a>.<br><br></p>
+            <form target="_blank" rel="nofollow noreferrer">
+                <button formaction= "https://github.com/saudiwin/corona_tscs/issues" class="button button1">Report Issues</button>
+            </form>
+                <br>
+        
+            <h3>Explore Our Data Online</h3><br>
+            <p class="block">
+            The CoronaNet research project <a href="https://kubinec.shinyapps.io/coronanet/"><b>public data dashboard</b></a> allows users to explore the data collected by our research assistants. The application makes it possible to filter the data by policy categories, policy levels, and initiating countries, cities, or provinces. The resulting selection can be then exported in CSV format.
+            </p><br>
+            
+            <h3>Download CoronaNet Datasets</h3><br>
+            <p class="block">
+               
+                <b>CoronaNet Database Version 1.0 (Panel Format)</b><br><br>
+                <i>Updated Monthly – Last updated on <time id="lastUpdatePanel" datetime="2020-10-08">2020-10-08</time></i><br>
+                Based on the event-dataset with more than 68,000 policies, we created a panel format (country-date-policy). The current version of the dataset covers 189 countries for each day from January 1st, 2020 to January 15th,2021 and contains 76,380 country-day observations. The codebook for the core dataset can be found <a href="assets/CoronaNet_Codebook_Panel.pdf"><b>here</b></a>.<br>
+                The CoronaNet Research Project has collaborated with the Oxford COVID-19 Government Response Tracker (OxCGRT) to create six new indices that provide the first comprehensive and statistically-validated summary on policy responses to the COVID-19 pandemic.</p>
+                
+            <form>
+                <button formaction= "https://github.com/CoronaNetDataScience/corona_index/tree/main/coronanet" class="button button1">Download Panel Dataset</button>
+                </form><br>
+            
+            <p class="block">
+                <b>CoronaNet Database Version 1.0 (Event Format)</b><br><br>
+                <i>Updated Weekly – Last updated on <time id="lastUpdateEvent" datetime="2020-10-08">2020-10-08</time></i><br>
+                This  file  contains  variables  from  the  CoronaNet  government  response  project,  representing  national  and  sub-national policy event data from more than 190 countries since January 1st, 2020. The data include source links, descriptions, targets (i.e. other countries), the type and level of enforcement, and a comprehensive set of policy types. For more detail on this data, you can see our codebook <a href="assets/CoronaNet_Codebook.pdf"><b>here</b></a>.
+            </p>
+            
+                <form>
+                <button formaction= "https://github.com/saudiwin/corona_tscs/raw/master/data/CoronaNet/data_bulk/coronanet_release.csv.gz" class="button button1">Download Event Dataset</button>
+                </form><br>
+            
+            <p class="block">
+                <b>CoronaNet Database Version 1.0 (extended)</b><br><br>
+                <i>Updated Weekly – Last updated on <time id="lastUpdateExtended" datetime="2020-10-08">2020-10-08</time></i><br>
+                This file contains the government response information from the core data along with the following datasets:<br>
+                
+            </p>
+            <ol class="circle">
+                <li class="numbered">Tests from the CoronaNet testing database (see http://coronanet-project.org for more info);</li>
+                <li class="numbered">Cases/deaths/recovered from the JHU data repository (https://github.com/CSSEGISandData/COVID-19);</li>
+                <li class="numbered">Country-level covariates including GDP, V-DEM democracy scores, human rights indices, power-sharing indices, and press freedom indices from the Niehaus World Economics and Politics Dataverse (https://niehaus.princeton.edu/news/world-economics-and-politics-dataverse)</li>
+            </ol>
+            <form>
+                <button formaction= "https://github.com/saudiwin/corona_tscs/raw/master/data/CoronaNet/data_bulk/coronanet_release_allvars.csv.gz" class="button button1">Download Extended Dataset</button>
+            </form><br>
+            
+            <p class="block">
+                <b>CoronaNet Database Version 1.0 (core by country)</b><br><br>
+                <i>Updated Weekly – Last updated on <time id="lastUpdateCountry" datetime="2020-10-08">2020-10-08</time></i><br>
+                This folder contains the data presented in the core dataset split by country.
+            </p><br>
+            <form>
+                <button formaction= "https://github.com/saudiwin/corona_tscs/tree/master/data/CoronaNet/data_country/coronanet_release" class="button button1">Download Core Dataset by Country</button>
+            </form>
+
+            <br>
+            
+            <h3>CoronaNet Learning Platform</h3><br>
+            <p class="block">
+            We are an open data science initiative. This means that we want to invite everyone to work with our data. For people who are not familiar with statistical programs, we have designed a Learning Platform that shows you how to work with our data via RStudio.<br><br>
+            Please follow this link to enter the <a href="https://lumesserschmidt.github.io/stats_CoronaNet/index.html"><b>CoronaNet Learning Platform</b></a>.
+            </p><br>
+            
+            <h3>License</h3><br>
+            <p class="block">
+                <b>Attribution-NonCommercial 2.0 Generic (CC BY-NC 2.0)</b><br><br>
+
+                <b>Please cite the project and dataset as:</b><br>
+                Cheng, Cindy, Joan Barceló, Allison Spencer Hartnett, Robert Kubinec, and Luca Messerschmidt. "COVID-19 Government Response Event Dataset (CoronaNet v. 1.0)." Nature human behaviour 4, no. 7 (2020): 756-768. https://www.coronanet-project.org.
+            </p>
+                  
+        </div>
+    </body>
+    
+    <footer>
+    <h2>Partner Universites and Institutions</h2>
+    <br>
+    <a href="https://www.hfp.tum.de/en/home/"><img class="logo" src="images/hochschule%20.png" alt="Hochschule für Politik München logo"></a>
+    
+    <img class="logo" src="images/TUM.png" alt="Technical University of Munich logo">
+
+    <img class="logo" src="images/NYU.png" alt="New York University Abu Dhabi logo">
+
+    <img class="logo" src="images/SOM.png" alt="TUM School of Management at Technical University of Munich logo">
+    
+    <br>
+    <br>
+    
+    <img class="logo" src="images/NU.png" alt="Nazarbayev University logo">
+    
+    <a href="https://www.jataware.com/"><img class="logo" src="images/jataware_logo.png" alt="Jataware company logo"></a>
+
+    <a href="https://www.leibniz-krisen.de/en.html"><img class="logo" src="images/LFV_logo.png" alt="Leibniz Research Alliance
+Crises in a Globalised World logo"></a>
+
+    <a href="https://www.overton.io/"><img class="logo" src="images/overton_logo.png" alt="Overton company logo"></a>
+    
+    <br>
+    <br>
+    <hr>
+    <br>
+    <h2 style="font-size: 14px; margin-left: 100px; margin-right: 100px;">CoronaNet is part of the PERISCOPE consortium, a project funded by the European Commission under the Horizon 2020 Research and Innovation programme (agreement no. 101016233)</h2>
+    <br>
+    <a href="https://periscopeproject.eu/"><img class="logo" src="images/periscope.png" alt="Logo of the PERISCOPE consortium"></a>
+    <img class="logo" src="images/logo-ce-horizontal-en-quadri-lr.png" alt="Logo of the European Commission">
+    <br>
+    <br>
+    <a href="https://github.com/saudiwin/corona_tscs"><img src="images/github.png" width="25px" alt="GitHub data repository for CoronaNet"></a>
+    <a href="https://www.linkedin.com/company/coronanet-research-group/mycompany/"><img src="images/linkedin.png" width="25px" alt="CoronaNet Research Group on LinkedIn"></a>
+    <a href="https://twitter.com/CoronaNet_org"><img src="images/twitter.png" width="25px" alt="CoronaNet Research Project on Twitter"></a>
+    <a href="https://www.instagram.com/coronanet_org/"><img src="images/instagram.png" width="25px" alt="CoronaNet Research Project on Instagram"></a>
+    <br>
+    <script src="js/darkMode.js"></script>
+</footer>
+</html>

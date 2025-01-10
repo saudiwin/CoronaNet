@@ -1,0 +1,213 @@
+---
+title: "CoronaNet German Data Assessment"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(magrittr)
+library(here)
+library(ggplot2)
+library(googlesheets4)
+library(kableExtra)
+library(lubridate)
+
+internal<-readRDS(here("data", "Coronanet", "coronanet_internal_germany.rds") )
+int_assess_agg_ger <- readRDS(here("data", "dataQuality", "internal_survey", "quarterly_assessment", "full_quarterly_assessment_clean_germany.rds"))
+backfill <-readRDS( here("data", "dataQuality", "automate_qc_check/backfill_germany.rds") )
+error <-readRDS(here("data", "dataQuality", "automate_qc_check/error_germany.rds" ))
+int_assess_managers <- gs4_get("https://docs.google.com/spreadsheets/d/1PI4IBf32vCIxM2elGwI1DvKlKnW9fpTVMaLHNp8E9EI/edit#gid=1519375722") %>%
+  range_read(sheet = "Sheet1")
+
+```
+
+
+In this document, we provide an assessment of the CoronaNet Germany data. We first provide some descriptive statistics of the current state of the data, followed by an assessment of the completeness and cleanliness of the data. The R code used to generate this information is also shown in the below to allow for reproducibility and transparency. 
+
+
+## Descriptive Statistics of the Current State of the Data
+
+
+There are `r dim(internal)[1]` policies in the dataset documented for Germany as of `r max(internal$recorded_date) %>% as.Date()`. By comparison, we evaluated and mapped data collected for Germany from 6 external datasets ([ACAPS](https://www.acaps.org/projects/covid19/data), [COVIDAMP](https://covidamp.org), [John-Hopkins HIT-COVID](https://github.com/HopkinsIDD/hit-covid/tree/master/documentation),   [OxCGRT](https://github.com/OxCGRT/covid-policy-tracker), [WHO PHSMs (CDC and WHO EURO data)](https://www.who.int/emergencies/diseases/novel-coronavirus-2019/phsm)) coded by September 10, 2021 and found that collectively, they had documented 1086 policies for Germany. 
+
+
+
+### Administrative Level
+
+The following plot and table shows the distribution of policies collected at the national, provincial and municipal levels for Germany.  From the plot and table, we can see that most German policies in the CoronaNet dataset are documented at the provincial level. 
+
+* Note that there is 1 policy for which there is currently no information on the administrative level coded (i.e. the policies labeled as 'NA' in the plot). This is due to the fact that the first days of the data collection, it was possible to submit information on a policy without having this information filled. We are working on fixing this problem for affected policies. 
+
+
+```{r admin_level}
+internal %>%
+  select(init_country_level) %>% table %>%
+      kbl() %>%
+  kable_styling()
+
+
+ggplot(internal, aes(x = init_country_level))+
+  geom_bar(stat="count", width=0.7, fill="steelblue")+
+  theme_minimal()
+
+
+```
+
+
+### Distribution by province
+
+The following plot and table shows the distribution of policies by province/Bundesländer in the CoronaNet data. Note that provinces that are labeled as 'NA' are national level policies. 
+
+```{r province}
+
+internal %>%
+  select(province) %>% 
+  table %>%
+    kbl() %>%
+  kable_styling()
+
+
+ggplot(internal, aes(x = province))+
+  geom_bar(stat="count", width=0.7, fill="steelblue")+
+    theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
+
+```
+
+
+
+### Distribution by policy type
+
+
+The following plot and table shows the distribution of policies by policy type. For more information about how these policy types are defined, please see:
+
+* [An R Markdown version of our data collection instrument](https://www.coronanet-project.org/survey)
+* [A table of our policy type specific taxonomy](https://www.coronanet-project.org/taxonomy.html?)
+* [A pdf of our full codebook](https://www.coronanet-project.org/assets/CoronaNet_Codebook.pdf?)
+
+```{r type}
+
+internal %>%
+  select(type) %>% table %>% 
+      kbl() %>%
+  kable_styling()
+
+
+ggplot(internal, aes(x = type))+
+  geom_bar(stat="count", width=0.7, fill="steelblue")+
+    theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
+
+```
+
+
+## Overall Asssessment
+
+In the following, we provide an overall assessment of the Germany data based on internal surveys of our research assistants as well as the judgment of our country managers for Germany who are in charge of monitoring and supporting data collection for Germany. For each province/Bundesländer, the table below provides the joint assessment of managers and research assistants working on the German data as to
+
+* The average actual date (actual_date) that the data is coded up until
+* How complete (complete_sum) the data is until the actual_date, where the scale can be understood as follows:
+  * 1: Looks complete to me
+  * 2: Mostly there
+  * 3: About halfway there
+  * 4: A lot of work left to do
+* How clean (clean_sum) the data is until the actual date, where the scale can be understood as follows:
+  * 1: Looks clean to me
+  * 2: Mostly there
+  * 3: About halfway there
+  * 4: A lot of work left to do
+  
+  
+As can be seen in more detail in the table below, on average, most provinces are coded up until around April 1, 2021. In addition, the following provinces should be complete until October 1, 2021:
+
+* Meckelburg-Vorpommern
+* Saarland
+* Thuringia 
+
+
+```{r overall, warning = FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+int_assess_agg_ger_sum <- int_assess_agg_ger  %>% 
+  group_by(country, province) %>%
+  summarise(actual_date = mean(actual_date, na.rm = TRUE),
+            target_date = mean(target_date, na.rm = TRUE),
+            complete_sum = mean(complete_sum, na.rm = TRUE),
+            clean_sum = mean(clean_sum, na.rm = TRUE),
+            complexit_sum = mean(clean_sum, na.rm = TRUE),
+            assessor_name = unique(assessor_name)) %>%
+  mutate(province = ifelse(is.na(province), 'National', province))
+
+ 
+rbind(int_assess_managers %>%
+        mutate(country = 'Germany') %>% 
+        select(country, 1:4) , 
+      int_assess_agg_ger_sum %>% select(1:3, 5:6)
+      ) %>%
+group_by(country, province) %>%
+  summarise(actual_date = as.Date(mean(actual_date, na.rm = TRUE)),
+            complete_sum = round(mean(complete_sum, na.rm = TRUE), 2),
+            clean_sum = round(mean(clean_sum, na.rm = TRUE),2)) %>% 
+  kbl() %>%
+  kable_styling()
+
+
+```
+
+
+
+## Assessment of Cleanliness
+
+In addition to a general assessment of the cleanliness of the CoronaNet German data above, we have also identified issues with specific policies that we are actively addressing. The specific problems and frequency of these problems by province are shown in the table below. 
+
+```{r errors}
+
+error %>% 
+  filter(country == 'Germany')   %>%
+  select(error, province) %>% table %>%
+   kbl() %>%
+  kable_styling()
+
+
+```
+
+
+
+
+## Assessment of Completeness
+
+Aside from the completeness of the data over time, which we provide an assessment in the above, we can also assess the completeness of data in terms of specific variable fields. Data collection for the CoronaNet data started on March 28, 2020 via a survey instrument. Since then, some questions were added to the survey in order to more accurately capture the government policy making process. This means however, that in some cases, earlier data needs to backcoded in order to be fully compliant with the current taxonomy. In particular, data may need to be backfilled for:
+
+* Policy sub-types: Some questions were added to the survey after initial data collection to provide more detail on the sub type of a given policy. The information in the table below reflects the number of policies that are still missing information for sub types for some policies. 
+* Demographic target of the variable: The target_who_gen variable documents whether a policy was targeted toward a special population (e.g. Asylum seekers/Refugees; Prisoners) and was added to the survey on June 5, 2020. The information in the table below reflects the number of policies that are still missing information for target_who_gen.  
+* End dates: The date_end variable documents the end date of a policy and has been a part of data collection since the beginning. However, as we started collecting more data, we found that there were a number of cases in which the end date is not clearly specified and we added a new question, date_end_spec on January 20, 2021 to try to capture these distinctions. The information in the table below reflects the number of policies that are still missing information for date_end_spec. Please see the below for more information as to what the date_end_spec variable captures and how it is processed. 
+
+ 
+
+  * The policy has a clear end date: The end date of the policy is clearly announced by the policy initiator
+  * The policy is a one-time measure: The policy is a one-time event such that the execution of the policy occurs over a very short time span; e.g. the publication or translation of government documents related to COVID-19. The end date (date_end) of such policies are automatically set to be one date after the start date (date_start).
+  * The policy has an imprecise natural end date: The policy is an event that is executed over a discrete period of time which is related to how long it takes to execute the policy, but that period of time is not necessarily known in advance (e.g. the distribution of 10 million masks). In general the end date (date_end) is automatically set to be 14 days after the start date (date_start) except for the case of distribution of vaccines; in this case the end date is set to be 120 days after the start date. 
+  * The policy has an unlimited time span: The policy is executed continuously over time such that unless there is an explicity second policy that directly counters it, this policy can in theory go on forever. These are often laws which can be only repelead by another law or general recommendations that continue to be applicable after they are issued unless counter recommendations are created (e.g. recommendations to wash ones hands). The end date is set to be the 'present', that is, whenever the data is last processed. 
+  * The policy's end date is unknown or unreported: At the time of announcement of the start of a particular policy, there is no known or reported end date. 
+
+For more information on when certain variables were added to the dataset, please refer to the [CoronaNet Data Availability Sheet](https://docs.google.com/spreadsheets/d/1FJqssZZqjQcA-jZhRnC_Av9rlii3abG8r7utBeuzTEQ/edit#gid=1284601862). 
+
+```{r backfill}
+
+
+
+
+rbind(backfill %>% 
+  select(error, province),
+  internal %>% 
+  filter(is.na(date_end_spec)) %>%
+  mutate(error = 'Missing information on end dates') %>%
+    select(error, province)) %>% 
+   table %>%
+   kbl() %>%
+  kable_styling()
+
+
+```
+
+

@@ -1,0 +1,8 @@
+name: "CoronaNet"
+output_dir: "."
+navbar:
+  title: "CoronaNet"
+  left:
+    - text: "Home"
+      href: index.html
+  

@@ -1,0 +1,361 @@
+---
+title: "Data Pipeline Troubleshooting"
+output: 
+  rmdformats::robobook:
+  # html_document:
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+
+library(dplyr)
+library(magrittr)
+library(knitr)
+library(kableExtra)
+
+# read raw data
+qualtrics_prematched_sample <- readRDS( "./data/dataQuality/data_pipeline_testing/qualtrics_prematched_sample.rds")
+qualtrics_afterunmatched_sample<- readRDS(  "./data/dataQuality/data_pipeline_testing/qualtrics_afterunmatched_sample.rds")
+qualtrics_afterfill_sample<- readRDS(  "./data/dataQuality/data_pipeline_testing/qualtrics_afterfill_sample.rds")
+qualtrics_afterdedupe_sample<- readRDS(  "./data/dataQuality/data_pipeline_testing/qualtrics_afterdedupe_sample.rds")
+ra_data_pull_purified_all_sample<- readRDS( "./data/dataQuality/data_pipeline_testing/ra_data_pull_purified_all_sample.rds")
+
+
+# read test data
+
+test_policy_ids = c(
+  29187 # Anke: end dates aren't pulling through correctly 
+) %>% as.character()
+
+```
+
+
+# Intro
+
+This document provides documentation for changes to the pipeline made to solve previously found bugs in the pipeline. Its purpose is to help ensure that any future changes to the pipeline to solve newly found bugs do not recreate older bugs (and to limit the extent such changes might create new ones).
+
+Each previously solved problem gets its own section with a brief description of the problem provided in the heading. Subheadings then capture:
+
+1. Further **details** about a given problem
+2. An **example** which illustrates the problem for a given record_id/policy_id
+3. Documentation of **all known record_id/policy_ids this problem affected**
+4. The **code snippet** which resolved the problem
+5. A **check** to see if the current version of the dataset matches a screenshot of an older version that has correctly processed the given example as well as the record_id/policy_id which exemplifies the new bug we want to fix
+
+In this version of the markdown, we are testing to make sure that any changes to solve problems reported with the following policy_ids: `r test_policy_ids`   maintain consistency with previously solved issues.  
+
+
+
+# Multiple corrections to the same update need to be properly processed 
+
+## Details
+
+Previously when there were multiple corrections to the same update, only one of the corrections would overwrite the update, leaving the other correction still hanging out there in the dataset as an unresolved duplicate.
+
+## Example
+
+The 4th and 5th entries in the attached screenshot are both corrections to the update (3rd entry). But only one of them overwrites the update entry while the other one transforms into a new extraneous update during processing .
+
+![](imgs/3313228.png)
+
+## Record or policy ids this affected
+
+This problem is known to have affected the following ids: 
+
+```{r }
+
+policy_id<- c(3313228)
+```
+
+## Code which resolves this issue
+
+This code can be found in 2b: 
+
+```{r eval=FALSE}
+kept_corrected_updates <- qualtrics %>%
+  group_by(correct_record_id) %>%
+  arrange(desc(recorded_date), .group_by = TRUE) %>%
+  filter(entry_type %in% 'update') %>%
+  filter(any(
+    correct_dum %in% 'correction' &
+      entry_type %in% 'update' & !is.na(update_id_qurl)
+  )) %>%
+  ungroup() %>%
+  group_by(record_id_overwrite) %>% # This part of the code fixes this problem deletes multiple corrections to the same update
+  arrange(desc(recorded_date)) %>% # This part of the code fixes this problem deletes multiple corrections to the same update
+  slice(1) %>%                    # This part of the code fixes this problem deletes multiple corrections to the same update
+  ungroup()%>%
+  group_by(correct_record_id) %>%
+  filter(ResponseId %!in% update_id_qurl) %>%
+  ungroup() %>%
+  group_by(correct_record_id, update_id_qurl) %>%
+  mutate(index = 1:n()) %>%
+  filter(case_when(
+    all(correct_dum == 'original') ~ TRUE,
+    all(correct_dum == 'correction') &
+      min(index) ~ TRUE
+  )) %>%
+  ungroup() 
+
+```
+
+
+## Check if code still works
+
+* The output of the code below for 3313228 should match the should match the screenshot (taken on June 5, 2021)  below insofar as:
+
+  + new entry: 'On February 26, 2021, the Governor of Aichi Prefecture (Japan) ŌMURA Hideaki announced that, “to prevent further spread of COVID-19, the Aichi Prefectural Government has declared a critical stage.” Therefore, the Aichi Prefectural Government requested residents to “avoid going outside” after 9pm. The requested period is 14 days, starting from March 1, 2021 through March 14, 2021."
+  + update 1: 'On March 10, 2021, the Governor of Aichi Prefecture (Japan) ŌMURA Hideaki announced that the requested period for this measure has been extended until March 21, 2021.'
+
+
+Note: that the record ids may change if there are future corrections and that ii. there may be additional updates to this policy to come
+
+![](imgs/3313228_correct.png)
+
+
+
+```{r echo = FALSE}
+
+ra_data_pull_purified_all_sample %>%
+  filter(policy_id %in% c( 3313228,
+                           test_policy_ids
+                           
+                           )) %>%
+  arrange(policy_id) %>% 
+ select(record_id, policy_id,correct_record_id,  correct_dum, recorded_date, entry_type,  link_type, description_update, type,  date_end_spec, date_end)%>%
+   kbl(caption = "Check whether multiple corrections to the same update are removed/processed") %>%
+  kable_styling(c("striped", "hover"), full_width = F, font_size = 11) %>%
+  column_spec(8, width_min = '3in') 
+   ```
+
+ 
+
+
+# Keep multiple updates to a new entry (while also making sure to remove multiple corrections to the same update as noted above)
+
+## Details
+
+When there are multiple updates to the same new_entry, it is important to not delete them while at the same time removing multiple corrections to a given update. 
+
+
+##  Example 
+
+In the example below, the following code correctly keeps all updates to a given new_entry(223262) but fails to delete multiple corrections to a given update (3313228)
+
+```{r eval = FALSE}
+kept_corrected_updates_1 <- qualtrics %>%
+  group_by(correct_record_id) %>%
+  arrange(desc(recorded_date), .group_by = TRUE) %>%
+  filter(entry_type %in% 'update') %>%
+  filter(any(correct_dum %in% 'correction' & entry_type %in% 'update' & !is.na(update_id_qurl))) %>%
+  filter(record_id %!in% update_id_qurl) %>%
+  group_by(correct_record_id, update_id_qurl) %>%
+  slice(1) %>%
+  ungroup()
+
+```
+![](imgs/correct_223262_incorrect_3313228.png)
+
+
+Conversely the following code incorrectly deletes some updates to a given new_entry (223262) but correctly deletes multiple corrections to a given update (3313228)
+
+```{r eval = FALSE}
+
+kept_corrected_updates <- qualtrics %>%
+  group_by(correct_record_id) %>%
+  arrange(desc(recorded_date), .group_by = TRUE) %>%
+  filter(entry_type %in% 'update') %>%
+  filter(any(correct_dum %in% 'correction' & entry_type %in% 'update' & !is.na(update_id_qurl))) %>%
+  filter(record_id %!in% update_id_qurl) %>%
+  ungroup() 
+ 
+```
+
+
+![](imgs/incorrect_223262_correct_3313228.png)
+
+
+
+ 
+## Record or policy ids this affected
+
+This problem is known to have affected the following ids: 
+
+```{r  echo=FALSE}
+
+policy_id <- c(2223262)
+```
+
+
+## Solution
+
+The following code both keeps multiple updates to the same new_entry while also deleting multipe corrections to the same update
+
+
+``` {r eval = FALSE}
+
+kept_corrected_updates <- qualtrics %>%
+  group_by(correct_record_id) %>%
+  arrange(desc(recorded_date), .group_by = TRUE) %>%
+  filter(entry_type %in% 'update') %>%
+  filter(any(
+    correct_dum %in% 'correction' &
+      entry_type %in% 'update' & !is.na(update_id_qurl)
+  )) %>%
+  ungroup() %>%
+  group_by(record_id_overwrite) %>% # This part of the code fixes this problem deletes multiple corrections to the same update
+  arrange(desc(recorded_date)) %>% # This part of the code fixes this problem deletes multiple corrections to the same update
+  slice(1) %>%                     # This part of the code fixes this problem deletes multiple corrections to the same update
+  ungroup()%>%
+  group_by(correct_record_id) %>%
+  filter(ResponseId %!in% update_id_qurl) %>%
+  ungroup() %>%
+  group_by(correct_record_id, update_id_qurl) %>% # This part of the code makes sure we keep multiple updates to the same new entry
+  mutate(index = 1:n()) %>%  # This part of the code makes sure we keep multiple updates to the same new entry
+  filter(case_when( # This part of the code makes sure we keep multiple updates to the same new entry
+    all(correct_dum == 'original') ~ TRUE, # This part of the code makes sure we keep multiple updates to the same new entry
+    all(correct_dum == 'correction') & # This part of the code makes sure we keep multiple updates to the same new entry
+      min(index) ~ TRUE # This part of the code makes sure we keep multiple updates to the same new entry
+  )) %>%
+  ungroup() 
+
+
+```
+
+## Check if code still works
+
+* The output of the code below for 2223262 should match the screenshot (taken on June 5, 2021) below insofar as the policy history in the description should include the following ( i. note that the record ids may change if there are future corrections and that ii. there may be additional updates to this policy to come)
+  + new entry: "Canada, Manitoba, March 23, 2020. Public health officials “are recommending that anyone who returns from [domestic] travel … should self-isolate … for 14 days following their return. This recommendation does not include: the commercial transportation of goods and services; workers, including health-care workers who live in a neighbouring jurisdiction and travel to Manitoba for work; or normal personal travel in border communities including visits to a cottage"
+  + update 1: "Canada, Manitoba, April 17, 2020. “The chief provincial public health officer has updated public health orders that take effect on April 17, and will be in effect until May 1, 2020. They mandate that anyone entering Manitoba, regardless of whether it was from another country or another province must self-isolate for 14 days.”"
+  + update 2: "Canada, Manitoba, April 29, 2020. “Requirements for self-isolation for 14 days following travel will continue” indefinitely."
+  + update 3: "Canada, Manitoba, June 21, 2020. Prime Minister Brian Pallister announces that Manitoba will be “allowing people from British Columbia, Alberta, Saskatchewan, Yukon, Northwest Territories and Nunavut, and people living in the area of the northwestern Ontario (west of Terrace Bay) to visit Manitoba without having to self-isolate for 14 days"
+
+* The output of the code below for 3313228 should match the should match the screenshot (taken on June 5, 2021)  below insofar as ( i. note that the record ids may change if there are future corrections and that ii. there may be additional updates to this policy to come):
+
+  + new entry: 'On February 26, 2021, the Governor of Aichi Prefecture (Japan) ŌMURA Hideaki announced that, “to prevent further spread of COVID-19, the Aichi Prefectural Government has declared a critical stage.” Therefore, the Aichi Prefectural Government requested residents to “avoid going outside” after 9pm. The requested period is 14 days, starting from March 1, 2021 through March 14, 2021."
+  + update 1: 'On March 10, 2021, the Governor of Aichi Prefecture (Japan) ŌMURA Hideaki announced that the requested period for this measure has been extended until March 21, 2021.'
+ 
+
+
+![](imgs/223262_correct.png)
+![](imgs/3313228_correct.png)
+
+
+```{r}
+
+ra_data_pull_purified_all_sample %>%
+  filter(policy_id %in% c( 2223262,
+                           3313228,
+                           test_policy_ids
+                           )) %>%
+  arrange(policy_id)  %>%   
+  select(record_id, policy_id,correct_record_id,  correct_dum, recorded_date, entry_type,  link_type, description_update, type,  date_end_spec, date_end)%>%
+   kbl(caption = "Check whether multiple updates to the same new_entry are kept") %>%
+  kable_styling(c("striped", "hover"), full_width = F, font_size = 11) %>%
+  column_spec(8, width_min = '3in') 
+   
+```
+
+
+ 
+
+
+
+
+## Details
+
+Corrections RAs make to a new_entry should percolate down to teh whole policy thread; previously it didn't
+
+
+##  Example 
+
+In the example below, the new entry was originally coded as  'External Border Restrictions' but was then corrected to be a 'Quarantine'. However, the update for this new_entry remained 'External Border Restrictions'
+
+
+![](imgs/1620615.png)
+## Record or policy ids this affected
+
+This problem is known to have affected the following ids: 
+
+```{r  echo=FALSE}
+
+policy_id <- c(1620615)
+```
+
+
+
+## Solution
+
+```{r eval = FALSE}
+
+qualtrics_with_dateendspec_filled <- qualtrics_with_dateendspec %>%
+  mutate_if(is.character, list(~na_if(., ""))) %>%
+  group_by(record_id_overwrite) %>%
+  arrange(policy_id, record_id_overwrite, recorded_date) %>%
+  fill(all_of(miss_vars), .direction = "down") %>%
+  ungroup() %>%
+  group_by(policy_id, entry_type) %>%
+  arrange(policy_id, entry_type, recorded_date) %>%
+  fill(all_of(miss_vars_noend), .direction = "down") %>%
+  ungroup()%>%
+  group_by(policy_id) %>%
+  arrange(policy_id, entry_type, recorded_date) %>%  # arranginging by entry_type solves this issue
+  fill(all_of(miss_vars_noend[-which(grepl('update', miss_vars_noend))]), .direction = "down") %>%
+  ungroup()
+
+qualtrics_without_dateendspec_filled <- qualtrics_without_dateendspec %>%
+  mutate_if(is.character, list(~na_if(., ""))) %>%
+  group_by(record_id_overwrite) %>%
+  arrange(policy_id, record_id_overwrite, recorded_date) %>%
+  fill(all_of(miss_vars), .direction = "down") %>%
+  ungroup() %>%
+  group_by(policy_id, entry_type) %>%
+  arrange(policy_id, entry_type, recorded_date) %>% 
+  fill(all_of(miss_vars), .direction = "down") %>%
+  ungroup()%>%
+  group_by(policy_id) %>%
+  arrange(policy_id, entry_type, recorded_date) %>% # arranginging by entry_type solves this issue
+  fill(all_of(miss_vars[-which(grepl('update', miss_vars))]), .direction = "down") %>%
+  ungroup()
+
+
+```
+
+
+
+## Check code still works
+
+* The output of the code below should match the screenshot for policy_id 1620615 insofar as the 'type' of policy for new_entry and all subsequent updates should be 'Quarantine'
+
+
+![](imgs/1620615_correct.png)
+
+```{r}
+
+ra_data_pull_purified_all_sample %>%
+  filter(policy_id %in% c( 1620615,
+                           test_policy_ids
+                           
+                           )) %>%
+  arrange(policy_id) %>% 
+    select(record_id, policy_id,correct_record_id,  correct_dum, recorded_date, entry_type,  link_type, type,  date_end_spec, date_end)  %>%
+     kbl(caption = "Check whether corrections to new entries flow through to updates") %>%
+  kable_styling(c("striped", "hover"), full_width = F, font_size = 11) %>%
+  column_spec(8, width_min = '3in') 
+```
+
+
+NOTE:  there is more than one type of policy for a given tested record, there is a problem with the code
+
+```{r}
+ra_data_pull_purified_all_sample %>%
+  filter(policy_id %in% c( 1620615,
+                           test_policy_ids
+                           )) %>%
+  group_by(policy_id) %>%
+  summarise(unique_types = length(unique(type)))%>%
+  ungroup
+
+```

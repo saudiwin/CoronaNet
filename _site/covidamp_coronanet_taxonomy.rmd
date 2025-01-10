@@ -1,0 +1,878 @@
+---
+title: "COVID AMP - CoronaNet Taxonomy Map"
+author: "CoronaNet Research Project"
+date: '`r format(Sys.Date())`'
+output:
+  rmdformats::robobook
+---
+  
+```{css, echo= FALSE}
+.tabset {
+  background: transparent;
+}
+```
+  
+
+```{r setup, include=FALSE, eval=FALSE}
+#knitr::opts_knit$set(root.dir = "../")
+# library(readr)
+# library(dplyr)
+# library(magrittr)
+# library(tidyr)
+# library(stringr)
+# library(readxl)
+# library(here)
+# covidamp = read_excel( here("data", "collaboration", "covidamp", "COVID AMP - Data Export 2021-09-10.xlsx" ), skip = 6 , sheet = "Policies")
+# coronanet = readRDS( here("data", "CoronaNet", "coronanet_internal.rds" ))
+# amp_predicts = read_csv( here("data", "collaboration", "covidamp", "amp_predict.csv"))
+# colnames(covidamp) = gsub("\\s*\\([^\\)]+\\)","",as.character(colnames(covidamp)))
+# colnames(covidamp) = gsub('[[:punct:] ]+',' ', colnames(covidamp))
+# colnames(covidamp) = gsub(' ', '_', colnames(covidamp))
+# for (i in 1:ncol(covidamp)) {
+#   temp = covidamp[1,i, drop = T]
+#   if (class(temp) == "Date") {
+#     next
+#   }
+#   covidamp[,i] = replace(covidamp[,i], covidamp[,i] == "N/A", NA)
+#   covidamp[,i] = replace(covidamp[,i], covidamp[,i] == "", NA)
+# }
+# colnames(covidamp)[1] = "unique_id"
+```
+
+# 0 Introduction
+
+This document maps the taxonomy used by the COVID Analysis and Maping of Policies (COVID AMP) dataset to document government policies made in response to COVID-19 into the CoronaNet Research Project taxonomy. Each section  maps the general area for which the taxonomy is mapped and each sub-section provides further detail as necessary. Following each explanation for how the mapping is conceptualized, there is R code for operationalizing this mapping. Please refer to the COVID AMP Data Dictionary and Documentation [accessible through their website](https://covidamp.org/about/doc) and the [CoronaNet Codebook](https://www.coronanet-project.org/assets/CoronaNet_Codebook.pdf) for more information on their respective taxonomies. 
+
+Note that the code below is customized to adjust for errors and idiosyncrasies in the COVID AMP data as of September 10, 2021. You can access (i) this original version of the COVID AMP dataset, "COVID AMP - Data Export 2021-09-10.xlsx", as well as (ii) the version which transforms this version of the COVID AMP  dataset into the CoronaNet taxonomy, "amp_coronanet_map.csv" (the rest of this document details how this transformation was implemented) from the [CoronaNet pubic git repo](https://github.com/CoronaNetDataScience/corona_tscs/tree/master/data/collaboration/covidamp). 
+<hr>
+</br>
+ 
+
+# 1 Setup
+
+To create replicate this taxonomy mapping exercise, users will need to load the following R packages and to read in the original COVID AMP data. It also reads in data on predicted policy types, see the 'Add in model-based predictions' section for more information. 
+
+```{r, eval=FALSE}
+library(readr)
+library(dplyr)
+library(magrittr)
+library(tidyr)
+library(stringr)
+library(readxl)
+library(here)
+
+# original data
+covidamp = read_excel( here("data", "collaboration", "covidamp", "COVID AMP - Data Export 2021-09-10.xlsx" ), skip = 6 , sheet = "Policies")
+
+# clean column names
+colnames(covidamp) = gsub("\\s*\\([^\\)]+\\)","",as.character(colnames(covidamp)))
+colnames(covidamp) = gsub('[[:punct:] ]+',' ', colnames(covidamp))
+colnames(covidamp) = gsub(' ', '_', colnames(covidamp))
+for (i in 1:ncol(covidamp)) {
+  temp = covidamp[1,i, drop = T]
+  if (class(temp) == "Date") {
+    next
+  }
+  covidamp[,i] = replace(covidamp[,i], covidamp[,i] == "N/A", NA)
+  covidamp[,i] = replace(covidamp[,i], covidamp[,i] == "", NA)
+}
+
+colnames(covidamp)[1] = "unique_id"
+# prediction data
+amp_predicts = read_csv( here("data", "collaboration", "covidamp", "amp_predict.csv"))
+```
+<hr>
+<br>
+ 
+ 
+# 2 Map Creation 
+
+The following code creates a map to translate the COVID AMP data to the CoronaNet taxonomy. The COVID AMP unique id is captured in the first variable name to allow for cross-checking while the rest of the variable names follow the CoronaNet taxonomy.
+
+Where there is a straightforward one-to-one relationship between the two taxonomies, these are directly mapped in the below:
+
+* The COVID AMP <code>Unique_ID</code> variable allows each unique observation to be identifiable. This is conceptually the same as CoronaNet's <code>record_id</code> variable. To match how this variable is named in the other external datasets, we rename this variable as <code>unique_id</code>.
+
+* The COVID AMP <code>Policy description</code> variable is a close approximation to CoronaNet's <code>description</code> variable. The main difference is that (at least in theory), CoronaNet's <code>description</code> variable must always contain certain information (the policy initiator, the type of policy, the date the policy started, and if applicable: the geographic target of the policy, the demographic target of the policy and the end date of the policy) while there does not appear to be the same amount of information consistently captured in the COVID AMP's <code>Policy description</code>  variable. As such, it will likely be necessary to back code for this information for observations in the COVID AMP dataset that are not in the CoronaNet dataset
+
+
+* The COVID AMP  <code>Issued date</code> variable documents when a policy or law was initially announced and/or issued, which provides a direct match for the <code>date_announced</code> variable in the CoronaNet taxonomy.
+
+* The COVID AMP  <code>Effective_start_date</code> documents when a policy was (or will be) enacted, which provides a direct match for the <code>date_start</code> variable in the CoronaNet taxonomy.
+
+
+* The COVID AMP  <code>Authorizing_country_name</code> variable, which captures the name of the country from which a policy is initiated, is a direct conceptual match for the <code>country</code> variable in CoronaNet. Further cleaning must be done however to match these codes, which is done in a section below. 
+
+
+* The COVID AMP  <code>Authorizing country ISO</code> variable, which captures the ISO code for the country from which a policy is intiated, is a direct conceptual match for the <code>ISO_A3</code> variable in CoronaNet. Further cleaning must be done however to match these codes, which is done in a section below. 
+
+* The COVID AMP  <code>Authorizing state/province</code> which  captures the name of the state or province from which a policy is initiated, is a direct Coronanet's <code>province</code> variable. Further cleaning must be done however to match these names, which is done in a section below. 
+
+* The COVID AMP  <code>Authorizing_local_area</code> which  captures the name of the local area (e.g. city, county)  from which a policy is initiated, is a direct Coronanet's <code>init_other</code> variable.
+
+ * The COVID AMP  <code>Affected_country_name</code> variable, which captures the name of the country a policy is targeting, is a direct conceptual match for the <code>target_country</code> variable in CoronaNet. Further cleaning must be done however to match these names however, which will be done downstream in the manual harmonisation of the data. 
+
+* The COVID AMP  <code>Affected state/province</code> which  captures the name of the state or province a policy is targeting is a direct Coronanet's <code>target_province</code> variable. Further cleaning must be done however to match these names however, which will be done downstream in the manual harmonisation of the data. 
+
+* The COVID AMP  <code>Affected_local_area</code> which  captures the name of the local area (e.g. city, county)  a policy is targeting, is a direct Coronanet's <code>target_other</code> variable. Further cleaning must be done however to match these names however, which will be done downstream in the manual harmonisation of the data. 
+
+* The COVID AMP  <code>Data source for policy announcement</code> and variable <code>Data_source_for_law_policy</code> captures information on the URL link for the raw source of information on which the policy is based depending on whether the source records a policy announcement or a law. These are combined to map into the <code>link</code> variable in the CoronaNet taxonomy.
+
+* The COVID AMP  <code>Attachment_for_policy</code> and variable <code>PDF_file_name_of_law_policy</code> captures information on the PDF link for the raw source of information on which the policy is based depending on whether the source records a policy announcement or a law. These are combined to map into the <code>pdf_link</code> variable in the CoronaNet taxonomy.
+ 
+
+```{r, eval=FALSE}
+ 
+amp_coronanet_map = data.frame(unique_id = covidamp$unique_id,
+                               entry_type = NA,
+                               correct_type= NA,
+                               update_type= NA,
+                               update_level= NA,
+                               description= covidamp$Policy_description,
+                               date_announced= as.Date(covidamp$Issued_date),
+                               date_start= as.Date(covidamp$Effective_start_date),
+                               date_end= NA, 
+                               country = covidamp$Authorizing_country_name,
+                               ISO_A3 = covidamp$Authorizing_country_ISO,
+                               ISO_A2 = NA,
+                               init_country_level = NA,
+                               domestic_policy = NA,
+                               target_init_same = NA,
+                               province = covidamp$Authorizing_state_province_if_applicable,
+                               city=NA,
+                               init_other = covidamp$Authorizing_local_area,
+                               type= NA,
+                               type_sub_cat= NA,
+                               type_text= NA,
+                               institution_status= NA,
+                               target_country= covidamp$Affected_country_name,
+                               target_geog_level= NA,
+                               target_region= NA,
+                               target_province= covidamp$Affected_state_province,
+                               target_city= covidamp$Affected_local_area,
+                               target_other= NA,
+                               target_who_what= NA,
+                               target_who_gen = NA,
+                               target_direction= NA,
+                               travel_mechanism= NA,
+                               institution_cat = NA,
+                               compliance= NA,
+                               enforcer= NA,
+                               link = ifelse(!is.na(covidamp$Data_source_for_policy_announcement),covidamp$Data_source_for_policy_announcement,
+                                             ifelse(!is.na(covidamp$Data_source_for_law_policy), covidamp$Data_source_for_law_policy,
+                                            covidamp$Policy_law_name)),
+                               pdf_link = ifelse(!is.na(covidamp$Attachment_for_policy),covidamp$Attachment_for_policy,
+                                                 ifelse(!is.na(covidamp$PDF_file_name_of_law_policy), covidamp$PDF_file_name_of_law_policy, NA)),
+
+                               date_updated = NA)
+```
+</br>
+
+
+## 2.1 Add Model-Based Predictions
+
+This code adds in model-based predictions for the 'type' of policy an observation is provided in the who_predicts.csv file. This data was provided by the Coronanet Data Science Team. The models used to create those predictions were trained on the Coronanet data, those predictions might therefore not be accurate and are to be treated as suggestive. 'type_alt' refers to the more confident guess by the models and 'type_alt_alt' contains the second best predictions from these predictive models. 
+
+```{r, eval=FALSE}
+amp_coronanet_map = amp_coronanet_map %>%  
+  left_join(amp_predicts %>% 
+  dplyr::select(unique_id = `Unique ID` , 
+                type_alt = predict_1,
+                type_alt_2 = predict_2))  
+```
+<hr>
+</br>
+
+
+## 2.2 Countries
+
+The following code adjust for the different ways each tracker documents policies originating from certain regions of the world. In particular:
+
+* COVID AMP categorizes England, Northern Ireland, Scotland and Wales as separate countries. The CoronaNet taxonomy considers these regions as provinces within the United Kingdom and the following code adjusts this data accordingly. 
+
+* COVID AMP categorizes tribal nations in the United States as separate countries. The CoronaNet taxonomy considers these regions as local governmental levels within the United States and the following code adjusts this data accordingly. 
+
+```{r countries_fix, eval=FALSE}
+amp_coronanet_map = amp_coronanet_map %>% 
+  mutate(
+      province = case_when(
+      is.na(country) & country == "England (GB-ENG)" ~ "England",
+      is.na(country) & country ==  "Northern Ireland (GB-NIR)" ~ "Northern Ireland",
+      is.na(country) & country ==  "Scotland (GB-SCT)" ~ "Scotland", 
+      is.na(country) & country == "Wales (GB-WLS)" ~ "Wales" ,
+      grepl("Tribe|Sac and Fox Nation|Yavapai Nation|Blackfeet Nation|Navajo|Crow Nation|Community|Colony|Reservation|Potawatomi Nation|Tohono O'odham|Luik", province) ~ as.character(NA),
+      TRUE ~ province),
+    init_other = case_when(
+grepl("Tribe|Sac and Fox Nation|Yavapai Nation|Blackfeet Nation|Navajo|Crow Nation|Community|Colony|Reservation|Potawatomi Nation|Tohono O'odham|Luik", country) ~ country,
+      TRUE~init_other),
+    country = case_when(
+      is.na(country) & country == "England (GB-ENG)" ~ "United Kingdom" ,
+      is.na(country) & country ==  "Northern Ireland (GB-NIR)" ~ "United Kingdom",
+      is.na(country) & country ==  "Scotland (GB-SCT)" ~ "United Kingdom",
+      is.na(country) & country == "Wales (GB-WLS)"  ~ "United Kingdom",
+      grepl("Tribe|Sac and Fox Nation|Yavapai Nation|Blackfeet Nation|Navajo|Crow Nation|Community|Colony|Reservation|Potawatomi Nation|Tohono O'odham|Luik", country) ~ "United States of America",
+      TRUE~ country),
+    ISO_A3 = 
+      case_when(
+        ISO_A3 %in% c('GB-SCT', "GB-ENG", 'GB-WLS', "GB-NIR")~ "GBR",
+        grepl("Tribe|Sac and Fox Nation|Yavapai Nation|Blackfeet Nation|Navajo|Crow Nation|Community|Colony|Reservation|Potawatomi Nation|Tohono O'odham|Luik", init_other) ~ "USA",
+        TRUE ~ ISO_A3
+      ),
+    
+  )
+ 
+```
+</br>
+
+## 2.3 Cities and Counties
+
+The COVID AMP variable <code>Authorizing_local_area</code> does not make distinctions between cities and counties whereas the CoronaNet taxonomy does. To the extent possible, the following code separates out cities and counties through the use of regular expressions into the <code>city</code> and <code>init_other</code> variables in the CoronaNet taxonomy accordingly.
+
+```{r init_other_fix, eval=FALSE}
+init <- covidamp %>%
+  mutate(
+    init_other  = case_when(
+         grepl("County|county", Authorizing_local_area) ~ Authorizing_local_area,
+         TRUE ~ as.character(NA)
+    ),
+    city = case_when(
+      grepl("Luik", Authorizing_local_area) ~ Authorizing_local_area,
+      grepl("city|City", Authorizing_local_area) ~ Authorizing_local_area,
+      is.na(init_other) ~  Authorizing_local_area,
+      TRUE ~ as.character(NA)
+    )
+  ) %>% select(
+    unique_id, init_other, city
+  )
+amp_coronanet_map = rows_patch(amp_coronanet_map, init, "unique_id")
+```
+</br>
+
+## 2.4 End dates
+
+COVID AMP captures information on end dates in two separate variables, the <code>anticipated end date</code>  and <code>actual end date</code>. The closest match for these variables in the CoronaNet taxonomy is its  <code>date_end</code> (Note, additionally the CoronaNet taxonomy also captures qualitative information about end dates in its <code>date_end_spec</code> variable but this is not a close conceptual match ot the COVID AMP variables). In order to retain as much information as possible from COVID AMP about the end dates, the following information is mapped into the CoronaNet <code>date_end</code> variable. 
+
+* If te <code>anticipated end date</code> is the same as the actual end date and neither of them is NA, the <code>actual end date</code> is used.
+* If the <code>anticipated end date</code> is different than the <code>actual end date</code> and neither of them is NA, both of the end dates are used. 
+* If there is only an <code>actual end date</code> captured and no <code>anticipated end date</code>, the actual end date is used.
+* If there is only an <code>anticipated end date</code> captured and no <code>actual end date</code>, the <code>anticipated end date</code> is used.
+* If there is no information recorded in either <code>anticipated end date</code>  and <code>actual end date</code>, then no end date is recorded. 
+
+```{r end date, eval=FALSE}
+end_date =
+  covidamp %>%
+  mutate(
+    date_end =
+      case_when(
+        !is.na(Actual_end_date) & !is.na(Anticipated_end_date) & Actual_end_date == Anticipated_end_date ~  Actual_end_date,
+        !is.na(Actual_end_date) & !is.na(Anticipated_end_date) & Actual_end_date != Anticipated_end_date ~  paste0("Actual end date:",  Actual_end_date, ' ; anticipated end date: ', Anticipated_end_date),
+        !is.na(Actual_end_date) & is.na(Anticipated_end_date)  ~   Actual_end_date,
+        is.na(Actual_end_date) & !is.na(Anticipated_end_date)  ~   Anticipated_end_date,
+        !is.na(Actual_end_date) & !is.na(Anticipated_end_date) ~ as.character(NA)
+      )
+  ) %>% select(unique_id, date_end)
+amp_coronanet_map = rows_patch(amp_coronanet_map,end_date, "unique_id")
+```
+</br>
+
+## 2.5 Policy Level
+
+COVID AMP captures information on the level of government that authorizes a given policy action in its <code>Authorizing_level_of_government</code> variable, which is a direct conceptual match for CoronaNet's <code>init_country_level</code> variable. The values for this field however need to be adjusted slightly to match the CoronaNet taxonomy:
+
+* Policies originating from England, Northern Ireland, Scotland and Wales are changed from policies that originate at the **Country** level in the COVID AMP taxonomy to the **Provincial** level in the CoronaNet taxonomy, since CoronaNet considers these regions as provinces of Great Britain rather than as separate countries as COVID AMP does. 
+* Policies coded as taking the value of **Country** in the COVID AMP taxonomy are renamed as **National** to match the CoronaNet taxonomy
+* Policies coded as taking the value of **State/Province** in the COVID AMP taxonomy are renamed as **Provincial** to match the CoronaNet taxonomy
+* Policies coded as taking the value of **Tribal nation** in the COVID AMP taxonomy are kept as is although there is no corresponding category in the CoronaNet taxonomy. These policies will be processed later during the harmonisation process.
+* Policies coded as taking the value of **Local** in the COVID AMP taxonomy are alternatively coded as taking the value of **Other (e.g., county)** or **Municipal** depending on whether the kewords of country or city are present in the localities name. 
+
+In addition, the CoronaNet taxonommy also documents whether the government which initiates a policy is the same as the geographic target of the policy in its <code>target_init_same</code> variable. We extract this information from the COVID AMP data as follows:
+
+* <code>target_init_same</code> (i.e. whether the geographical target of the policy matches the geographical location the authorizing governemnt body sits in) takes the value of **Yes** if the <code>Authorizing_country_name</code> is the same as the <code>Affected_country_name</code> and **No** otherwise. 
+
+```{r policy_level, eval=FALSE}
+pol_level = covidamp %>%
+  select(unique_id, Authorizing_level_of_government, Authorizing_country_ISO,Authorizing_country_name, Affected_country_ISO, Authorizing_local_area) %>%
+  mutate(init_country_level = case_when(
+  Authorizing_country_name  %in% c( "England (GB-ENG)", 
+                         "Northern Ireland (GB-NIR)",
+                         "Scotland (GB-SCT)",
+                         "Wales (GB-WLS)") ~ "Provincial",
+    # grepl("Tribe|Sac and Fox Nation|Yavapai Nation|Blackfeet Nation|Navajo|Crow Nation|Community|Colony|Reservation|Potawatomi Nation|Tohono O'odham|Luik", Authorizing_country_name)~ "Other (e.g., county)",
+    Authorizing_level_of_government == "Country" ~ "National",
+    Authorizing_level_of_government == "State / Province" ~ "Provincial",
+    Authorizing_level_of_government == "Tribal nation" ~ "Tribal nation",
+    Authorizing_level_of_government == "Local"  &    grepl("County|county", Authorizing_local_area) ~ "Other (e.g., county)",
+    Authorizing_level_of_government == "Local"  &    grepl("city|City", Authorizing_local_area) ~ "Municipal",
+       Authorizing_level_of_government == "Local"  &    !grepl("city|City|County|county", Authorizing_local_area) ~ "Other (e.g., county)",
+  )) %>%
+  mutate(target_init_same = case_when(
+    Authorizing_country_name == Affected_country_name ~ "Yes",
+    TRUE ~ "No"
+  )) %>%
+  select(unique_id, init_country_level)
+amp_coronanet_map = rows_patch(amp_coronanet_map, pol_level, "unique_id")
+```
+</br>
+
+## 2.6 Target Regions
+
+The CoronaNet taxonommy also documents what level of government a policy targets in its <code>target_geog_level</code> variable. We extract this information from the COVID AMP data as follows:
+
+* If a policy does not recorded a state or province or local area that it specifically targets, <code>target_geog_level</code> takes on the value of **One or more countries, but not all countries**
+* If a policy records state or province that it specifically targets but no local area that it specifically targets, <code>target_geog_level</code> takes on the value of **One or more provinces within a country**
+* If a policy records a local area that it specifically targets, <code>target_geog_level</code> takes on the value of **One or more cities within a country**
+
+```{r target_regions, eval=FALSE}
+target_reg = covidamp %>%
+  select(unique_id, Affected_country_name, Affected_state_province, Affected_local_area) %>%
+  mutate(target_geog_level = case_when(
+    is.na(Affected_state_province) & is.na(Affected_local_area) ~ "One or more countries, but not all countries",
+    is.na(Affected_local_area) ~ "One or more provinces within a country",
+    !is.na(Affected_local_area) ~ "One or more cities within a country"
+  )) %>%
+  select(-c(2,3,4))
+  
+amp_coronanet_map = rows_patch(amp_coronanet_map, target_reg, "unique_id")
+```
+</br>
+
+## 2.7 Policy update level 
+
+* The COVID AMP <code>Policy_relaxing_or_restricting</code>, which records whether a policy is relaxing or strenthening over tie, is nearly direct conceptual match for CoronaNet's <code>update_level</code>. Both CoronaNet and COVID AMP refer to policies that ease over time as *Relaxing*. COVID AMP refers to policies that become more restrictive over time as **Restricting** while CoronaNet refers to such policies as **Strenthening**. 
+
+* However, COVID AMP's value 9of **Other** for the variable cannot be directly mapped to the CoronaNet taxonomy; such mappings with be done downstream during manual harmonisation. For the purposes of this mapping, these are recoded as NA. 
+
+```{r policy_update_level, eval=FALSE}
+
+amp_coronanet_map$update_level = covidamp$Policy_relaxing_or_restricting
+amp_coronanet_map$update_level = na_if(amp_coronanet_map$update_level, "Other")
+```
+
+
+## 2.8 Target Who/ What 
+
+The COVID AMP taxonomy captures information as to the demographics of a policy in its <code>Policy_subtargets</code>, which is a direct conceptual map to the <code>target_who_gen</code> variable in the CoronaNet taxonomy. Not all values within this variable are directly mappable however. The following code maps as many values as are directly mappable as possible and leaves the rest for manual harmonisation to resolve downstream. 
+
+```{r target_gen_who, eval=FALSE}
+temp = covidamp %>% 
+  select(unique_id, Policy_subtarget) %>%
+  mutate(target_who_gen = case_when(
+    grepl("Nursing homes/assisted living facility", Policy_subtarget) ~ "People in nursing homes/long term care facilities",
+    grepl("Homeless shelters/homeless individuals", Policy_subtarget) ~ "Homeless population",
+    grepl("Non essential workers (inclusive)", Policy_subtarget) ~ "Non-essential workers (please note their occupation in the text entry where applicable)",
+    grepl("Essential workers (inclusive)",Policy_subtarget) ~ "Essential workers (please note their occuption in the text entry where applicable)",
+    grepl("Migrant workers/Refugees/asylum seekers", Policy_subtarget) ~ "Migrant workers (please note their occupation in the text entry where applicable)",
+  ),
+  target_who_what = case_when(grepl("Travelers", Policy_subtarget) ~ "All Travelers (Citizen Travelers + Foreign Travelers)"
+    )) %>%
+  select(-c(2))
+amp_coronanet_map = rows_patch(amp_coronanet_map, temp, "unique_id")
+```
+<hr>
+</br>
+
+# 2.9 Categories Cleaning
+
+The following code fixes some issues with the policy categories and subcategories in the COVID AMP dataset. In particular, it appears that some of the COVID AMP policy subcategories are not mapped to the correct policy category. We fix these issues in the below in order to make the subsequent mapping of the COVID AMP taxonomy into the CoronaNet taxonomy as error-free as possible. 
+
+```{r categories_fix, eval=FALSE}
+temp = covidamp %>%
+  select(unique_id, Policy_category, Policy_subcategory) %>%
+  mutate(type = case_when(
+    grepl("Domestic travel restriction|International travel restriction", Policy_subcategory) ~ "Travel restrictions",
+    grepl("General emergency declaration|Public health emergency declaration", Policy_subcategory) ~ "Emergency declarations",
+    grepl("Other labor protections|Support for essential workers|Budget modifications|Relief funding|Anti-price gouging measures|Tax delay",Policy_subcategory) ~ "Enabling and relief measures",
+    grepl("Other measures to support public health and clinical capacity|Risk Communication|Other measures to support public health and clinical capacity|Coverage for cost of testing|Elective procedure delay or cancellation", Policy_subcategory) ~ "Support for public health and clinical capacity",
+    grepl("Authorization", Policy_subcategory) ~ "Authorization and enforcement",
+    grepl("Testing|Contact tracing", Policy_subcategory) ~ "Contact tracing/Testing",
+    grepl("Health screening|Adaptation and mitigation measures|Distancing mandate|Mass gathering restrictions|Quarantine|School closures|Quarantine|Curfews|Lockdown|Event delays or cancellations|Public service closures|Isolation|Stay at home|Private sector closures|Alternative election measures|Other forms of social distancing", Policy_subcategory) ~ "Social distancing",
+    grepl("Face mask", Policy_subcategory) ~ "Face mask",
+    TRUE ~ Policy_category
+  )) %>%
+  select(-c(2,3)) %>%
+  rename(Policy_category = type)
+
+covidamp = rows_update(covidamp, temp, "unique_id")
+```
+<hr>
+</br>
+
+
+# 3 Policy Type
+
+
+## 3.1 Social Distancing
+
+The following code maps how COVID AMP captures social distancing  policies to the CoronaNet taxonomy. While when there is no one to one matching of the **Social distancing** <code>Policy_category</code> to the CoronaNet taxonomy, it is possible to use the <code>Policy_subcategory</code> to create one to one matchings for the <code>type</code> variable in the CoronaNet taxonomy. In particular, the following code matches the following for policies that take on the value of **Social distancing** in the <code>Policy_category</code> variable::
+
+
+* Observations that take on the value of **Other forms of social distancing**, **Visitor restrictions**, **Distancing mandate**, **Face covering** or takes on no value in <code>Policy_subcategory</code> variable can be mapped as **Social Distancing** for the <code>type</code> variable in the CoronaNet taxonomy. 
+
+* Observations that take on the value of **Lockdown**, **Stay at home**, **Safer at home** or **Isolation** in the  <code>Policy_subcategory</code> variable can be mapped as **Lockdown** for the <code>type</code> variable in the CoronaNet taxonomy. 
+
+* Observations that take on the value of **Alternative election measures**, **Public service closures** or **Election delays** in the  <code>Policy_subcategory</code> variable can be mapped as **Restriction and Regulation of Government Services** for the <code>type</code> variable in the CoronaNet taxonomy. 
+
+* Observations that take on the value of **Private sector closures** or **Adaptation and mitigation measures** in the  <code>Policy_subcategory</code> variable can be mapped as **Restriction and Regulation of Businesses** for the <code>type</code> variable in the CoronaNet taxonomy. 
+
+* Observations that take on the value of **Mass gathering restrictions**, **Event delays or cancellations**, or **Prison population reduction** in the  <code>Policy_subcategory</code> variable can be mapped as **Restrictions of Mass Gatherings** for the <code>type</code> variable in the CoronaNet taxonomy. 
+
+* Observations that take on the value of **School closures** in the  <code>Policy_subcategory</code> variable can be mapped as **Closure and Regulation of Schools** for the <code>type</code> variable in the CoronaNet taxonomy. 
+
+* Observations that take on the value of **Quarantine** in the  <code>Policy_subcategory</code> variable can be mapped as **Quarantine** for the <code>type</code> variable in the CoronaNet taxonomy. 
+ 
+* Observations that take on the value of **Curfews** in the  <code>Policy_subcategory</code> variable can be mapped as **Curfew** for the <code>type</code> variable in the CoronaNet taxonomy.
+
+* Observations that take on the value of **Health screening** in the  <code>Policy_subcategory</code> variable can be mapped as **Health Monitoring** for the <code>type</code> variable in the CoronaNet taxonomy.
+ 
+```{r social_distancing, eval=FALSE}
+
+social_distancing = covidamp %>%
+  filter(Policy_category == "Social distancing") %>%
+  select(unique_id, Policy_category, Policy_subcategory) %>%
+  mutate(type = case_when(
+  
+  Policy_subcategory %in% c(
+    "Other forms of social distancing",
+    "Visitor restrictions",
+    "Distancing mandate" ,
+    "Face covering"
+    ) ~ "Social Distancing",
+  
+  Policy_subcategory %in% c( 
+      "Lockdown",
+      "Stay at home",
+      "Safer at home",
+      "Isolation") ~ "Lockdown",
+  
+  Policy_subcategory %in% c( 
+    "Alternative election measures",
+    "Public service closures",
+    "Election delays"
+    ) ~ "Restriction and Regulation of Government Services",
+  
+  Policy_subcategory %in% c(
+    "Private sector closures",
+    "Adaptation and mitigation measures"
+    )~ "Restriction and Regulation of Businesses",
+  
+  
+  Policy_subcategory %in% c( 
+    "Mass gathering restrictions",
+    "Event delays or cancellations",
+    "Prison population reduction")~ "Restrictions of Mass Gatherings",
+  
+    
+  Policy_subcategory == "School closures" ~ "Closure and Regulation of Schools",
+  Policy_subcategory == "Quarantine" ~ "Quarantine",
+  Policy_subcategory == "Curfews" ~ "Curfew",
+  Policy_subcategory == "Health screening" ~ "Health Monitoring",
+  
+  
+  is.na(Policy_subcategory) ~ "Social Distancing",
+  
+  
+  
+  TRUE ~ as.character(NA)
+  ))%>%
+  select(-c(2,3))
+
+amp_coronanet_map = rows_patch(amp_coronanet_map, social_distancing, "unique_id")
+```
+</br>
+
+## 3.2 Contact tracing/Testing
+
+The following code maps how COVID AMP captures contact tracing and testing policies to the CoronaNet taxonomy. Though there is no one to one matching of the **Contact tracing/Testing** <code>Policy_category</code> to the CoronaNet taxonomy, it is possible to use the <code>Policy_subcategory</code> to create one to one matchings for the <code>type</code> variable in the CoronaNet taxonomy. In particular, the following code matches the following for policies that take on the value of **Contact tracing/Testing** in the <code>Policy_category</code> variable:
+
+
+* Observations that take on the value of **Testing** or no vaolue <code>Policy_subcategory</code> variable can be mapped as **Health Testing** for the <code>type</code> variable in the CoronaNet taxonomy. 
+
+* Observations that take on the value of **Contact tracing** <code>Policy_subcategory</code> variable can be mapped as **Health Monitoring** for the <code>type</code> variable in the CoronaNet taxonomy.  A more detailed mapping of to policy subtypes in the CoronaNet taxonomy would theoretically be possible but would not be possible to do easily. As such it was not done in this initial mapping but rather reserved for downstream manual data harmonization.
+
+
+```{r contacts, eval=FALSE}
+contacts = covidamp %>%
+  filter(Policy_category == "Contact tracing/Testing") %>%
+  select(unique_id, Policy_category, Policy_subcategory) %>%
+  mutate(type = case_when(
+    Policy_subcategory == "Testing" ~ "Health Testing",
+    Policy_subcategory == "Contact tracing" ~ "Health Monitoring",
+    is.na(Policy_subcategory) ~ "Health Testing",
+     TRUE ~ as.character(NA)
+  ))%>%
+  select(-c(2,3))
+amp_coronanet_map = rows_patch(amp_coronanet_map, contacts, "unique_id")
+```
+</br>
+
+## 3.3 Support for public health and clinical capacity
+
+The following code maps how COVID AMP captures support for public health and clinical capacity to the CoronaNet taxonomy. 
+
+* The COVID AMP taxonomy aims to capture such policies by coding the <code>Policy_category</code> as **Support for public health and clinical capacity**  
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> variable as **Health Resources** 
+
+* Note while it may have been possible to addtionally map policy sub types within this larger policy type, such mappings would have been imprecise and we reserved them for downstream manual data harmoization. 
+
+```{r support_health, eval=FALSE}
+support_health = covidamp %>%
+  filter(Policy_category == "Support for public health and clinical capacity") %>%
+  select(unique_id, Policy_category, Policy_subcategory) %>%
+  mutate(type =  "Health Resources")%>%
+  select(-c(2,3))
+amp_coronanet_map = rows_patch(amp_coronanet_map, support_health, "unique_id")
+```
+</br>
+
+## 3.4 Enabling and relief measures
+
+The following code maps how COVID AMP captures relief measure policies to the CoronaNet taxonomy. Though there is no one to one matching of the **Enabling and relief measures** <code>Policy_category</code> to the CoronaNet taxonomy, it is possible to use the <code>Policy_subcategory</code> to create one to one matchings for the <code>type</code> variable in the CoronaNet taxonomy. In particular, the following code matches the following for policies that take on the value of **Enabling and relief measures** in the <code>Policy_category</code> variable:
+
+
+* Observations that take on the value of 
+      **Regulatory relief**, **Other relief measures**,
+      **Relief funding** ,
+      **Eviction and foreclosure delays**,
+      **Budget modifications**,
+      **Modification of unemployment benefits**,
+      **Leave entitlement adjustments**,
+      **Other labor protections**,
+      **Anti-price gouging measures**,
+      **Utility payment delay**,
+      **Utility payment**,
+      **Stimulus payments**,
+      **Mortgage payment support**,
+      **Hazard pay"**,  or takes on no value in <code>Policy_subcategory</code> variable can be mapped as **Other Policy Not Listed Above (econ)** for the <code>type</code> variable in the CoronaNet taxonomy. 
+
+* Observations that take on the value of **Extension of public services**, **Tax delay**, **Remote Notarization** in the  <code>Policy_subcategory</code> variable can be mapped as **Restriction and Regulation of Government Services** for the <code>type</code> variable in the CoronaNet taxonomy. 
+
+* Observations that take on the value of **Support for essential workers** in the  <code>Policy_subcategory</code> variable can be mapped as **Health Resources** for the <code>type</code> variable in the CoronaNet taxonomy. 
+
+* Observations that take on the value of **Early prison release** in the  <code>Policy_subcategory</code> variable can be mapped as **Restrictions of Mass Gatherings** for the <code>type</code> variable in the CoronaNet taxonomy. 
+
+
+```{r relief_measures, eval=FALSE}
+relief_measures = covidamp %>%
+  filter(Policy_category == "Enabling and relief measures") %>%
+  select(unique_id, Policy_category, Policy_subcategory) %>%
+  mutate(type = case_when(
+    Policy_subcategory %in% c(
+      "Regulatory relief",
+      "Other relief measures",
+      "Relief funding" ,
+      "Eviction and foreclosure delays",
+      "Budget modifications",
+      "Modification of unemployment benefits" ,
+      "Leave entitlement adjustments",
+      "Other labor protections" ,
+      "Anti-price gouging measures",
+      "Utility payment delay",
+      "Utility payment",
+      "Stimulus payments",
+      "Mortgage payment support",
+      "Hazard pay")~ "Other Policy Not Listed Above (econ)",
+    
+    Policy_subcategory %in% c(
+      "Extension of public services",
+      "Tax delay",
+      "Remote Notarization"
+    ) ~ "Restriction and Regulation of Government Services",
+  
+    Policy_subcategory == "Support for essential workers" ~ "Health Resources",
+    Policy_subcategory == "Early prison release" ~ "Restrictions of Mass Gatherings",
+
+    is.na(Policy_subcategory) ~ "Other Policy Not Listed Above (econ)",
+    
+    TRUE ~ as.character(NA)
+  ))%>%
+  select(-c(2,3))
+
+amp_coronanet_map = rows_patch(amp_coronanet_map, relief_measures, "unique_id")
+```
+</br>
+
+## 3.5 Travel restrictions
+
+The following code maps how COVID AMP captures travel restriction policies to the CoronaNet taxonomy. Though there is no one to one matching of the **Travel restrictions** <code>Policy_category</code> to the CoronaNet taxonomy, it is possible to use the <code>Policy_subcategory</code> to create one to one matchings for the <code>type</code> variable in the CoronaNet taxonomy. In particular, the following code matches the following for policies that take on the value of **Travel restrictions** in the <code>Policy_category</code> variable:
+
+* Observations that take on the value of **International travel restriction**, **Domestic travel restrictions (interstate)** or take on no value in the  <code>Policy_subcategory</code> variable can be mapped as **External Border Restrictions** for the <code>type</code> variable in the CoronaNet taxonomy. 
+
+* Observations that take on the value of **Domestic travel restriction** or **Domestic travel restrictions (intrastate)** in the  <code>Policy_subcategory</code> variable can be mapped as **Internal Border Restrictions** for the <code>type</code> variable in the CoronaNet taxonomy. 
+
+```{r travel, eval=FALSE}
+travel_restrictions = covidamp %>%
+  filter(Policy_category == "Travel restrictions") %>%
+  select(unique_id, Policy_category, Policy_subcategory) %>%
+  mutate(type = case_when(
+    Policy_subcategory %in% c(
+      "International travel restriction",
+       "Domestic travel restrictions (interstate)") ~ "External Border Restrictions",
+    Policy_subcategory %in% c(
+      "Domestic travel restriction",
+      "Domestic travel restrictions (intrastate)")~ "Internal Border Restrictions",
+
+    is.na(Policy_subcategory) ~ "External Border Restrictions",
+  TRUE ~ as.character(NA)
+  ))%>%
+  select(-c(2,3))
+amp_coronanet_map = rows_patch(amp_coronanet_map, travel_restrictions, "unique_id")
+```
+</br>
+
+## 3.6 Emergency declarations
+
+The following code maps how COVID AMP captures declarations of emergency to the CoronaNet taxonomy.
+
+ 
+* The COVID AMP taxonomy aims to capture such policies by coding the <code>Policy_category</code> as **Emergency declarations**  
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> variable as **Declaration of Emergency** 
+
+```{r emergency, eval=FALSE}
+emergency = covidamp %>%
+  filter(Policy_category == "Emergency declarations") %>%
+  select(unique_id, Policy_category, Policy_subcategory) %>%
+  mutate(type = "Declaration of Emergency"
+  )%>%
+  select(-c(2,3))
+amp_coronanet_map = rows_patch(amp_coronanet_map, emergency, "unique_id")
+```
+</br>
+
+## 3.7 Military mobilization
+
+The following code maps how COVID AMP captures military mobilization to the CoronaNet taxonomy.
+
+* The COVID AMP taxonomy aims to capture such policies by coding the <code>Policy_category</code> as *Military mobilization**  
+
+* The CoronaNet taxonomy does not systematically capture policies about military mobilization. As such, these policies have been mapped such that the<code>type</code> variable takes the value of **Other Policy Not Listed Above** 
+
+CoronaNet does not capture policies about military mobilization, therefore it has been mapped to 'Other Policy Not Listed Above'.
+
+```{r military, eval=FALSE}
+military = covidamp %>%
+  filter(Policy_category == "Military mobilization") %>%
+  select(unique_id, Policy_category, Policy_subcategory) %>%
+  mutate(type = "Other Policy Not Listed Above"
+  ) %>%
+  select(-c(2,3))
+amp_coronanet_map = rows_patch(amp_coronanet_map, military, "unique_id")
+```
+</br>
+
+## 3.8 Authorization and Enforcement
+
+The following code maps how COVID AMP captures policies focused on giving various (non-) governmental bodies more authorization and how the enforcment of policies is handled to the CoronaNet taxonomy despite the fact that it cannot be directly done. Note that while CoronaNet captures how policies are enforced, but does not capture changes in the enforcement as stand-alone policies but rather in its <code>compliance</code> variable. 
+
+* On manual inspection of the policies coded with the value of **Authorization and enforcement** for the variable <code>Policy_category</code> and  **Enforcement** for the variable <code>Policy_subcategory</code>, we found that they could be mapped as either **New Task Force, Bureau or Administrative Configuration**, **Restriction and Regulation of Businesses**,  **Restrictions of Mass Gatherings**, **Restriction and Regulation of Government Services**, **Social Distancing**,   **Curfew**, **Quarantine**,**Lockdown**, **Health Testing**, **External Border Restrictions**, **Internal Border Restrictions** or **Other Policy Not Listed Above** 
+
+* Based on keywords in the textual description of these policies, which we identified based on manual inspection of the  data, we customized the code to sort these policies into different values in CoronaNet's <code>type</code> variable, with **Other Policy Not Listed Above** being the default option when no other keyword was found. While this does not provide a perfect mapping of these policies, it is sufficient for a large proportion of the data; downstream manual harmonization will correct for any mis-mappings
+
+
+```{r authorization, eval=FALSE}
+authorization = covidamp %>%
+  filter(Policy_category == "Authorization and enforcement") %>%
+  select(unique_id, Policy_category, Policy_subcategory, Policy_description) %>%
+  mutate(type = case_when(
+    Policy_subcategory == "Authorization" ~ "New Task Force, Bureau or Administrative Configuration",
+    
+    Policy_subcategory == "Enforcement"  & grepl("fitness|bars|kiosk|Business|alcohol|workplace|employ|worker|food|store|business|sport|Bank|bank|Personal care servi|Floral|estaurant", Policy_description) ~ "Restriction and Regulation of Businesses",
+    Policy_subcategory == "Enforcement"  & 
+      grepl("density|together in a public|together in public|gathering", Policy_description) ~ "Restrictions of Mass Gatherings",
+    Policy_subcategory == "Enforcement"  & 
+      grepl("public seating|campground|license", Policy_description) ~ "Restriction and Regulation of Government Services" ,
+    Policy_subcategory == "Enforcement"  & 
+      grepl("education|school", Policy_description) ~ "Restriction and Regulation of Government Services" ,
+    Policy_subcategory == "Enforcement"  & 
+      grepl("physical distanc|face cover|nursing|6ft|mask|meter|social distancing", Policy_description) ~ "Social Distancing" ,
+    Policy_subcategory == "Enforcement"  & grepl("urfew", Policy_description) ~ "Curfew" ,
+    Policy_subcategory == "Enforcement"  & grepl("quarantine", Policy_description) ~ "Quarantine" ,
+    Policy_subcategory == "Enforcement"  & grepl("isolation", Policy_description) ~ "Lockdown or Quarantine" ,
+    Policy_subcategory == "Enforcement"  & grepl("stay at home|lockdown|Lockdown", Policy_description) ~ "Lockdown" ,
+    Policy_subcategory == "Enforcement"  & grepl("test", Policy_description) ~ "Health Testing" ,
+    Policy_subcategory == "Enforcement"  & grepl("travel|border closure", Policy_description) ~ "External Border Restrictions" ,
+    Policy_subcategory == "Enforcement"  & grepl("Incorporates provinces of Alberta and Saskatchewan", Policy_description) ~ "New Task Force, Bureau or Administrative Configuration" ,
+    Policy_subcategory == "Enforcement"  & grepl("road closure", Policy_description) ~ "Internal Border Restriction" ,
+    Policy_subcategory == "Enforcement" ~ "Other Policy Not Listed Above",
+    Policy_subcategory == "Courts" ~ "Other Policy Not Listed Above",
+    is.na(Policy_subcategory) ~ "Other Policy Not Listed Above",
+    TRUE ~ as.character(NA)
+  ))%>%
+  select(unique_id, type)
+amp_coronanet_map = rows_patch(amp_coronanet_map, authorization, "unique_id")
+```
+</br>
+
+## 3.9 Face mask
+
+The following code maps how COVID AMP captures face mask policies to the CoronaNet taxonomy.
+
+ 
+* The COVID AMP taxonomy aims to capture such policies by coding the <code>Policy_category</code> as **Face mask**  
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> variable as **Social Distancing**. A more detailed mapping of to policy subtypes in the CoronaNet taxonomy would theoretically be possible but would not be possible to do easily. As such, it was not done in this initial mapping but rather reserved for downstream manual data harmonization. 
+
+
+```{r face_mask, eval=FALSE}
+mask = covidamp %>%
+  filter(Policy_category == "Face mask") %>%
+  select(unique_id, Policy_category, Policy_subcategory) %>%
+  mutate(type =  "Social Distancing"
+  )%>%
+  select(-c(2,3))
+amp_coronanet_map = rows_patch(amp_coronanet_map, mask, "unique_id")
+```
+</br>
+
+## 3.10 Vaccine
+
+The following code maps how COVID AMP captures vaccination policies to the CoronaNet taxonomy.
+
+ 
+* The COVID AMP taxonomy aims to capture such policies by coding the <code>Policy_category</code> as **Vaccinations**  
+
+* The CoronaNet taxonomy aims to capture such policies by coding the <code>type</code> variable as **COVID-19 Vaccine**. In a section below, we further map sub types for COVID-19 vaccinations. 
+
+```{r vaccines, eval=FALSE}
+vaccine = covidamp %>%
+  filter(Policy_category == "Vaccinations") %>%
+  select(unique_id, Policy_category, Policy_subcategory) %>%
+  mutate(type = "COVID-19 Vaccines"
+  )%>%
+  select(-c(2,3))
+amp_coronanet_map = rows_patch(amp_coronanet_map, vaccine, "unique_id")
+```
+<hr>
+</br>
+
+# 4 Policy Subtypes
+
+In the following section, we further map the policy subtypes documented in the COVID AMP variable <code>Policy_subtarget</code> to the corresponding CoronaNet variable <code>type_sub_cat</code> for a subset of the dataset. 
+ 
+
+## 4.1 Business Restrictions
+
+The following code maps how COVID AMP captures policies regarding business restrictions to the CoronaNet taxonomy despite the fact that it cannot be directly done.  
+
+* The following code extracts keywords from the <code>Policy_subtarget</code> variable in the COVID AMP taxonomy to determine whether as a business should be mapped as a **Non-essential business** or an **Essential business** in the <code>business_cat</code> variable. These keywords were chosen based on a manual inspection of the COVID AMP data.  
+
+* The following code extracts keywords from the <code>Policy_subtarget</code> variable in the COVID AMP taxonomy to determine what type of business is being targeted into the <code>type_sub_cat</code> variable. These keywords were chosen based on a manual inspection of the COVID AMP data.  
+ 
+
+```{r business_sub, eval=FALSE}
+temp = amp_coronanet_map %>%
+  filter(type == "Restriction and Regulation of Businesses") %>%
+  select(unique_id)
+
+temp = covidamp[covidamp$unique_id %in% temp$unique_id,]
+business_cat = temp %>%
+  select(unique_id, Policy_subtarget) %>%
+  mutate(
+    non_essential_dum = ifelse(grepl("Non essential business", Policy_subtarget, ignore.case = F),
+                               "Non-Essential Businesses", 
+                               NA ),
+    essential_dum = ifelse(grepl("Essential business", Policy_subtarget, ignore.case = F),
+                           "Essential Businesses", NA )) %>%
+  unite(institution_cat, 
+        essential_dum, 
+        non_essential_dum, na.rm = TRUE, sep = ',' ) %>%
+  select(-c(2))
+amp_coronanet_map = rows_patch(amp_coronanet_map, business_cat, "unique_id")
+
+
+business_type = temp %>%
+  select(unique_id, Policy_subtarget) %>%
+  mutate(
+    grocery_dum = ifelse(grepl("Grocery store", Policy_subtarget, ignore.case = F), "Supermarkets/grocery stores", NA ),
+    hotel_dum = ifelse(grepl("Hotels/lodging", Policy_subtarget, ignore.case = F), "Paid lodgings (e.g. hotels)", NA ),
+    personal_dum = ifelse(grepl("Personal care facilities", Policy_subtarget, ignore.case = F), "Personal Grooming Businesses (e.g. hair salons)", NA ),
+    pharmacy_dum = ifelse(grepl("Pharmacy", Policy_subtarget, ignore.case = F), "Pharmacies", NA ),
+    rest_dum = ifelse(grepl("Restaurants/bars", Policy_subtarget, ignore.case = F), "Restaurants,Bars", NA ),
+    retail_dum = ifelse(grepl("Retail stores (not including food)", Policy_subtarget, ignore.case = F), "Retail Businesses", NA ),
+    farm_dum  = ifelse(grepl("Farming/Agriculture/Food processing", Policy_subtarget, ignore.case = F), "Agriculture, forestry and fishing", NA)) %>%
+  unite(type_sub_cat, grocery_dum, hotel_dum, personal_dum, pharmacy_dum, rest_dum, retail_dum, farm_dum, na.rm = TRUE, sep = ',' ) %>%
+  select(-c(2))
+
+amp_coronanet_map = rows_patch(amp_coronanet_map, business_type, "unique_id")
+```
+</br>
+
+## 4.2 Schools
+
+The following code maps how COVID AMP captures school closures/ restrictions to the CoronaNet taxonomy.
+
+* COVID AMP and CoronaNet document whether a policy is targeted toward preschools, primary schools, secondary schools and higher eduction institutions but they use slightly different language to do so. The following extracts this information from the <code>Policy_subtarget</code> variable in the COVID AMP taxonomy to determine what school type is being targeted into the <code>type_sub_cat</code> variable. These keywords were chosen based on a manual inspection of the COVID AMP data.  
+
+
+```{r schools_sub, eval=FALSE}
+temp = amp_coronanet_map %>%
+  filter(type == "Closure and Regulation of Schools") %>%
+  select(unique_id)
+temp = covidamp[covidamp$unique_id %in% temp$unique_id,]
+school_type = temp %>%
+  select(unique_id, Policy_subtarget) %>%
+  mutate(
+    nurs_dum = ifelse(grepl("Childcare facilities (preschool or other daycare)", Policy_subtarget, ignore.case = F), "Preschool or childcare facilities (generally for children ages 5 and below)", NA ),
+    prim_dum = ifelse(grepl("Primary education", Policy_subtarget, ignore.case = F), "Primary Schools (generally for children ages 10 and below)", NA ),
+    sec_dum = ifelse(grepl("Secondary education", Policy_subtarget, ignore.case = F), "Secondary Schools (generally for children ages 10 to 18)", NA ),
+    high_dum = ifelse(grepl("Higher education", Policy_subtarget, ignore.case = F), "Higher education institutions (i.e. degree granting institutions)", NA )) %>%
+  unite(type_sub_cat, nurs_dum, prim_dum, sec_dum, high_dum, na.rm = TRUE, sep = ',' ) %>%
+  select(-c(2))
+amp_coronanet_map = rows_patch(amp_coronanet_map, school_type, "unique_id")
+``` 
+</br>
+
+## 4.3 Mass Gatherings
+
+The following code maps how COVID AMP captures restrictions of mass gathering policies to the CoronaNet taxonomy.
+
+* COVID AMP and CoronaNet document whether a policy is targeted toward places of worship, prisons, and funeral homes but they use slightly different language to do so. The following extracts this information from the <code>Policy_subtarget</code> variable in the COVID AMP taxonomy to determine what gathering type is being targeted into the <code>type_sub_cat</code> variable in the CoronaNet taxonom. These keywords were chosen based on a manual inspection of the COVID AMP data.  
+
+```{r mass_sub, eval=FALSE}
+temp = amp_coronanet_map %>%
+  filter(type == "Restrictions of Mass Gatherings") %>%
+  select(unique_id)
+temp = covidamp[covidamp$unique_id %in% temp$unique_id,]
+mass_type = temp %>%
+  select(unique_id, Policy_subtarget) %>%
+  mutate(
+    relig_dum = ifelse(grepl("Churches/places of worship", Policy_subtarget, ignore.case = F), "Attendance at religious services restricted (e.g. mosque/church closings)", NA ),
+    pris_dum = ifelse(grepl("Criminal justice system/prisons/jails/incarcerated persons", Policy_subtarget, ignore.case = F), "Prison population reduced (e.g. early release of prisoners)", NA ),
+    fun_dum = ifelse(grepl("Funeral home/mortuary", Policy_subtarget, ignore.case = F), "Funerals and mourning rituals", NA )) %>%
+  unite(type_sub_cat, relig_dum, pris_dum, fun_dum, na.rm = T, sep = ',' ) %>%
+  select(-c(2))
+amp_coronanet_map = rows_patch(amp_coronanet_map, mass_type, "unique_id") 
+```
+</br>
+
+## 4.4 Vaccines
+
+The following code maps how COVID AMP captures vaccination policies to the CoronaNet taxonomy in more detail than the initial mapping shown above.
+
+* COVID AMP and CoronaNet document whether a policy is targeted the administration, distribution, logistics and prioritization of COVID-19 vaccines but they use slightly different language to do so. The following maps this information from <code>Policy_subtarget</code> variable in the COVID AMP taxonomy into the <code>type_sub_cat</code> variable in the CoronaNet taxonomy.  
+
+ 
+```{r vaccines_sub, eval=FALSE}
+vaccine_sub = covidamp %>%
+  filter(Policy_category == "Vaccinations") %>%
+  select(unique_id, Policy_category, Policy_subcategory) %>%
+  mutate(type_sub_cat = case_when(
+    Policy_subcategory == "Vaccine administration, distribution, and logistics" ~ "Distribution of COVID-19 vaccines",
+    Policy_subcategory == 'Vaccine prioritization' ~ "Distribution of COVID-19 vaccines",
+    TRUE ~ as.character(NA)
+  ))%>%
+  select(-c(2,3))
+amp_coronanet_map = rows_patch(amp_coronanet_map, vaccine, "unique_id")
+```
+<hr>
+
+# 5 Final Mapping
+
+Finally, once all the variables that are possible to harmonize from the COVIDMP dataset to CoronaNet taxonomy have been identified, the results are exported in an .rds and .csv format, to be consolidated together with the other external databases to be harmonized. The final consolidated dataset is then processed for manual harmonisation into the CoronaNet Research Project dataset.
+
+```{r output, eval=FALSE}
+
+write.csv(amp_coronanet_map,  here("data", "collaboration", "covidamp", "amp_coronanet_map.csv"))
+saveRDS(amp_coronanet_map , file = here("data", "collaboration", "covidamp", "amp_coronanet_map.rds"))
+```

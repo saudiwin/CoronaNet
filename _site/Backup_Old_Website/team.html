@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+    <link rel="stylesheet" type="text/css" href="style2.css">
+<head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="L-jK2R0bz2lbCyDSQ7Ulk6MW9il2PZzbXZ9DX6AkuuE" />
+    <meta name="description" content="The CoronaNet Research Project is a worldwide effort that tracks government COVID-19 policies.">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <title>Our People</title>
+    <script src="js/jquery-3.5.1.min.js"></script>
+    <link rel="stylesheet" href="css/DataTables-1.10.22/css/jquery.dataTables.min.css">
+    <script charset="utf8" src="js/datatables.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/dataTables.responsive.min.css">
+    <script type="text/javascript" charset="utf8" src="js/dataTables.responsive.min.js"></script>
+    <script src="js/fontawesome.js" async></script>
+    <script src="js/particles.js"></script>
+    <script src="app.js" async></script>
+    <div id="particles-js" style="position: relative;">
+        <img src="images/logo_transparent_slim.png" style="position: absolute; margin: auto; left: 0; right: 0; text-align: center; height: 90%; z-index: 2; cursor: pointer;" class="logoCoronanet" onclick="window.location='https://www.coronanet-project.org/index.html';"/>
+        <div><a id="menuButton" onclick="openNav()"><i class="fas fa-bars" style="cursor: pointer; font-size: 24px; text-shadow: 0 0 1px #000; z-index: 3;"></i></a></div>
+        <div class="containerMenu">
+            <label id="theme-switch" class="theme-switch" for="checkbox_theme">
+            <input type="checkbox" value='0' id="checkbox_theme" style="display: none;">
+            <i id="darkModeSwitch" class="fas fa-moon" style="cursor: pointer; font-size: 24px; text-shadow: 0 0 1px #000;"></i>
+            </label>
+            <a id="emailButton" href="mailto:admin@coronanet-project.org"><i class="fas fa-envelope" style="cursor: pointer; font-size: 24px; text-shadow: 0 0 1px #000;"></i></a>
+        </div>
+    </div>
+    <div id="navbarOverlay" style="z-index: 3;"></div>
+    <h1>Our People</h1>
+    <div id="mySidenav" class="sidenav" style="display: none; z-index: 3;">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <div class="sidebarOption"><img src="images/favicon_bw.png" style="width: 15px; display: inline;"><a href="index.html">Home</a></div>
+        <div class="sidebarOption"><img src="images/11_transparent.png" style="width: 15px; display: inline;"><a href="methods.html">Methodology</a>
+        <div class="sidebarSuboption">
+        <a href="methods.html">Data Collection Methods</a><br>
+        <a href="codebook.html">Codebook</a><br>
+        <a href="validationcheck.html">Validation and Reliability Checks</a>
+        </div></div>
+        <div class="sidebarOption"><img src="images/16_transparent.png" style="width: 15px; display: inline;"><a href="visualisations.html">Visualizations</a></div>
+        <div class="sidebarOption"><img src="images/14_transparent.png" style="width: 15px; display: inline;"><a href="reports.html">Reports</a></div>
+        <div class="sidebarOption"><img src="images/13_transparent.png" style="width: 15px; display: inline;"><a href="publications.html">Publications</a></div>
+        <div class="sidebarOption"><img src="images/10_transparent.png" style="width: 15px; display: inline;"><a href="inthemedia.html">In The Media</a></div>
+        <div class="sidebarOption"><img src="images/9_transparent.png" style="width: 15px; display: inline;"><a href="about.html">About CoronaNet</a></div>
+        <div class="sidebarOption"><img src="images/12_transparent.png" style="width: 15px; display: inline;"><a href="team.html">Our People</a>
+        <div class="sidebarSuboption">
+        <a href="team.html">Team</a><br>
+        <a href="interviews.html">Interviews</a><br>
+        </div></div>
+        <div class="sidebarOption"><img src="images/15_transparent.png" style="width: 15px; display: inline;"><a href="join.html">Join CoronaNet</a></div>
+    </div>
+    <script>
+        function openNav() {
+          document.getElementById("mySidenav").style.display = "block";
+          document.getElementById("navbarOverlay").style.display = "block";
+        }
+
+        function closeNav() {
+          document.getElementById("mySidenav").style.display = "none";
+          document.getElementById("navbarOverlay").style.display = "none";
+        }
+    </script>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-DSF9RY2DVF"></script>
+        <script>
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-DSF9RY2DVF');
+        </script>    
+</head>
+
+<body>
+    <div class="container" style="margin-left: 5%; margin-right: 5%;">
+        <div class="roleSelect">
+        <button class="button languageButton selected" value="all" onclick="selectLanguage(this)">All Roles</button>
+        <button class="button languageButton" value="piTable" onclick="selectLanguage(this)">Principal Investigators</button>
+        <button class="button languageButton" value="pmTable" onclick="selectLanguage(this)">Project Managers</button>
+        <button class="button languageButton" value="srmTable" onclick="selectLanguage(this)">Senior Research Assistant Managers</button>
+        <button class="button languageButton" value="rmTable" onclick="selectLanguage(this)">Regional Managers</button>
+        <button class="button languageButton" value="valTable" onclick="selectLanguage(this)">Data Validation Team</button>
+        <button class="button languageButton" value="cleaningTable" onclick="selectLanguage(this)">Data Cleaning Team</button>
+        <button class="button languageButton" value="dsTable" onclick="selectLanguage(this)">Data Science Team</button>
+        <button class="button languageButton" value="wsTable" onclick="selectLanguage(this)">Website Team</button>
+        <button class="button languageButton" value="raTable" onclick="selectLanguage(this)">Research Assistants</button>
+        </div><br><br>
+        
+        <p>
+            <label for="mySearch">Search</label>
+            <input type="text" placeholder="Search..." id="mySearch">
+        </p>
+        
+        <div class="roleTable piTable">
+        <h3 style="text-align: center;">Principal Investigators</h3><br>
+        <p class="block">
+            Our principal investigators for this project are:<br>
+            </p><br>
+            
+            <ol class="circle">
+                <li class="unordered">Cindy Cheng, Hochschule für Politik at the Technical University of Munich</li>
+                
+                <li class="unordered">Luca Messerschmidt, Hochschule für Politik at the Technical University of Munich</li>
+            </ol><br>
+            
+            <p class="block">
+            Co-Principal investigators for this project are:<br>
+            </p><br>
+            
+            <ol class="circle">
+                <li class="unordered">Joan Barceló, New York University Abu Dhabi</li>
+                <li class="unordered">Vanja Grujic, Universidade de Brasília</li>
+                <li class="unordered">Allison Spencer Hartnett, University of Southern California</li>
+                <li class="unordered">Robert Kubinec, New York University Abu Dhabi</li>
+                <li class="unordered">Timothy A. Model, Havighurst Fellow at the Miami University</li>
+                <li class="unordered">Caress Schenk, Nazarbayev University</li>
+                <li class="unordered">Svanhildur Thorvaldsdottir, Hochschule für Politik at the Technical University of Munich</li>
+            </ol><br>
+        <br>
+        <br>
+        </div>
+        
+        <div class="roleTable pmTable">
+        <h3 style="text-align: center;">Project Managers</h3><br>
+        This role is responsible for the selection, training, allocation, and monitoring of research assistants.
+        <br>
+        <br>
+        <table id="pmTable" class="display" style="background-color: transparent; width:100%; height:100%">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Vita</th>
+                <th>Affiliation</th>
+                <th>Social Media</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>Name</th>
+                <th>Vita</th>
+                <th>Affiliation</th>
+                <th>Social Media</th>
+            </tr>
+        </tfoot>
+        </table>
+        <br>
+        <br>
+        </div>
+        
+        <div class="roleTable srmTable">
+        <h3 style="text-align: center; background-color: transparent;">Senior Research Assistant Managers</h3><br>
+         In this role, the RA is responsible for the integration and onboarding of new RAs into the project as well as the general wellbeing of the assigned RAs.
+        <br>
+        <br>
+        <table id="srmTable" class="display" style="background-color: transparent; width:100%; height:100%">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Vita</th>
+                <th>Affiliation</th>
+                <th>Social Media</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>Name</th>
+                <th>Vita</th>
+                <th>Affiliation</th>
+                <th>Social Media</th>
+            </tr>
+        </tfoot>
+        </table>
+        <br>
+        <br>
+        </div>
+        
+        <div class="roleTable rmTable">
+        <h3 style="text-align: center;">Regional and Country Managers</h3><br>
+        This role comes along with the responsibility of leading a group of RAs. It involves the oversight and support of RAs as well as the conduction of regular performance and activity appraisals to guarantee the development of a consistent and up-to-date dataset.
+        <br>
+        <br>
+        <table id="rmTable" class="display" style="background-color: transparent; width:100%; height:100%">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Vita</th>
+                <th>Affiliation</th>
+                <th>Social Media</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>Name</th>
+                <th>Vita</th>
+                <th>Affiliation</th>
+                <th>Social Media</th>
+            </tr>
+        </tfoot>
+        </table>
+        <br>
+        <br>
+        </div>
+        
+        
+        <div class="roleTable valTable">
+        <h3 style="text-align: center;">Data Validation Team</h3><br>
+         This role involves re-coding data previously collected by other RAs and requires high expertise in coding and knowledge of the codebook.
+        <br>
+        <br>
+        <table id="valTable" class="display" style="background-color: transparent; width:100%; height:100%">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Vita</th>
+                <th>Affiliation</th>
+                <th>Social Media</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>Name</th>
+                <th>Vita</th>
+                <th>Affiliation</th>
+                <th>Social Media</th>
+            </tr>
+        </tfoot>
+        </table>
+        <br>
+        <br>
+        </div>
+        
+        <div class="roleTable cleaningTable">
+        <h3 style="text-align: center;">Data Cleaning Team</h3><br>
+         This role requires the RA to use R-Studio in order to clean errors that were detected in the policy entries.
+        <br>
+        <br>
+        <table id="cleaningTable" class="display" style="background-color: transparent; width:100%; height:100%">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Vita</th>
+                <th>Affiliation</th>
+                <th>Social Media</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>Name</th>
+                <th>Vita</th>
+                <th>Affiliation</th>
+                <th>Social Media</th>
+            </tr>
+        </tfoot>
+        </table>
+        <br>
+        <br>
+        </div>
+        
+        <div class="roleTable dsTable">
+        <h3 style="text-align: center;">Data Science Team</h3><br>
+               The work of data scientists at CoronaNet consists of the technical management of the rapidly evolving database and the analysis of the large amount of data the RAs are collecting.
+        <br>
+        <br>
+        <table id="dsTable" class="display" style="background-color: transparent; width:100%; height:100%">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Vita</th>
+                <th>Affiliation</th>
+                <th>Social Media</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>Name</th>
+                <th>Vita</th>
+                <th>Affiliation</th>
+                <th>Social Media</th>
+            </tr>
+        </tfoot>
+        </table>
+        <br>
+        <br>
+        </div>
+        
+        <div class="roleTable wsTable">
+        <h3 style="text-align: center;">Website Team</h3><br>
+        <table id="wsTable" class="display" style="background-color: transparent; width:100%; height:100%">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Vita</th>
+                <th>Affiliation</th>
+                <th>Social Media</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>Name</th>
+                <th>Vita</th>
+                <th>Affiliation</th>
+                <th>Social Media</th>
+            </tr>
+        </tfoot>
+        </table>
+        <br>
+        <br>
+        </div>
+        
+        <div class="roleTable raTable">
+        <h3 style="text-align: center;">Research Assistants</h3><br>
+               Research assistants identify information on government policies made in response to COVID-19 from various sources and document them following the procedures and classification scheme outlined in the <a href="codebook.html">CoronaNet codebook</a>.
+        <br>
+        <br>
+        <table id="raTable" class="display" style="background-color: transparent; width:100%; height:100%">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Country</th>
+                <th>Vita</th>
+                <th>Affiliation</th>
+                <th>Social Media</th>
+                <th>Start Date</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>Name</th>
+                <th>Country</th>
+                <th>Vita</th>
+                <th>Affiliation</th>
+                <th>Social Media</th>
+                <th>Start Date</th>
+            </tr>
+        </tfoot>
+        </table>
+        <br>
+        <br>
+        </div>
+        
+    </div>
+    <br>
+    <br>
+    
+    <script type="text/javascript" charset="UTF-8">
+    $("#raTable").DataTable({
+        "ajax": {
+            "url": "data/roles/contribution.json",
+            "dataType": "json",
+            "cache": true,
+            "dataSrc": ""
+        },
+        "columns": [{"data": "Name", className: "dt-left"},
+                       {"data": "Country", width: "15%", className: "dt-left"},
+                       {"data": "Vita", "defaultContent": "", className: "dt-left"},
+                       {"data": "Affiliation", "defaultContent": "", width: "15%", className: "dt-left"},
+                       {"data": "Social Media", "defaultContent": "", width: "15%", className: "dt-left"},
+                       {"data": "Start Date", "defaultContent": "", width: "15%", className: "dt-left"}],
+        "responsive": true,
+        "rowCallback": function(row, data, index) {
+          if (localStorage.getItem("theme") === "dark") {
+              if (row.classList.contains("odd")) {
+                  $('td', row).css("background-color", "rgba(35, 43, 50, 255)");
+              } else {
+                  $('td', row).css("background-color", "rgba(54, 62, 69, 255)");
+              }
+          }
+        },
+        "dom": '<"top"i>rt<"bottom">p<"clear">',
+        "initComplete": function () {
+            // Apply the search
+            this.api().columns().every( function () {
+                var that = this;
+ 
+                $( 'input', this.footer() ).on( 'keyup change clear', function () {
+                    if ( that.search() !== this.value ) {
+                        that.search( this.value ).draw();
+                    }
+                } );
+            } );
+    }});
+    $("#pmTable").DataTable({
+    "ajax": {
+        "url": "data/roles/project_managers.json",
+        "dataType": "json",
+        "cache": true,
+        "dataSrc": ""
+    },
+    "columns": [{"data": "Name", className: "dt-left"},
+                   {"data": "Vita", "defaultContent": "", className: "dt-left"},
+                   {"data": "Affiliation", "defaultContent": "", className: "dt-left"},
+                   {"data": "Social Media", "defaultContent": "", className: "dt-left"}],
+    "responsive": true,
+    "rowCallback": function(row, data, index) {
+      if (localStorage.getItem("theme") === "dark") {
+          if (row.classList.contains("odd")) {
+              $('td', row).css("background-color", "rgba(35, 43, 50, 255)");
+          } else {
+              $('td', row).css("background-color", "rgba(54, 62, 69, 255)");
+          }
+      }
+    },
+    "dom": '<"top"i>rt<"bottom">p<"clear">',
+    "initComplete": function () {
+        // Apply the search
+        this.api().columns().every( function () {
+            var that = this;
+
+            $( 'input', this.footer() ).on( 'keyup change clear', function () {
+                if ( that.search() !== this.value ) {
+                    that.search( this.value ).draw();
+                }
+            } );
+        } );
+    }});
+    $("#rmTable").DataTable({
+    "ajax": {
+        "url": "data/roles/managers.json",
+        "dataType": "json",
+        "cache": true,
+        "dataSrc": ""
+    },
+    "columns": [{"data": "Name", className: "dt-left"},
+                   {"data": "Vita", "defaultContent": "", className: "dt-left"},
+                   {"data": "Affiliation", "defaultContent": "", className: "dt-left"},
+                   {"data": "Social Media", "defaultContent": "", className: "dt-left"}],
+    "responsive": true,
+    "rowCallback": function(row, data, index) {
+      if (localStorage.getItem("theme") === "dark") {
+          if (row.classList.contains("odd")) {
+              $('td', row).css("background-color", "rgba(35, 43, 50, 255)");
+          } else {
+              $('td', row).css("background-color", "rgba(54, 62, 69, 255)");
+          }
+      }
+    },
+    "dom": '<"top"i>rt<"bottom">p<"clear">',
+    "initComplete": function () {
+        // Apply the search
+        this.api().columns().every( function () {
+            var that = this;
+
+            $( 'input', this.footer() ).on( 'keyup change clear', function () {
+                if ( that.search() !== this.value ) {
+                    that.search( this.value ).draw();
+                }
+            } );
+        } );
+    }});
+    $("#srmTable").DataTable({
+    "ajax": {
+        "url": "data/roles/senior_ra.json",
+        "dataType": "json",
+        "cache": true,
+        "dataSrc": ""
+    },
+    "columns": [{"data": "Name", className: "dt-left"},
+                   {"data": "Vita", "defaultContent": "", className: "dt-left"},
+                   {"data": "Affiliation", "defaultContent": "", className: "dt-left"},
+                   {"data": "Social Media", "defaultContent": "", className: "dt-left"}],
+    "responsive": true,
+    "rowCallback": function(row, data, index) {
+      if (localStorage.getItem("theme") === "dark") {
+          if (row.classList.contains("odd")) {
+              $('td', row).css("background-color", "rgba(35, 43, 50, 255)");
+          } else {
+              $('td', row).css("background-color", "rgba(54, 62, 69, 255)");
+          }
+      }
+    },
+    "dom": '<"top"i>rt<"bottom">p<"clear">',
+    "initComplete": function () {
+        // Apply the search
+        this.api().columns().every( function () {
+            var that = this;
+
+            $( 'input', this.footer() ).on( 'keyup change clear', function () {
+                if ( that.search() !== this.value ) {
+                    that.search( this.value ).draw();
+                }
+            } );
+        } );
+    }});
+    $("#valTable").DataTable({
+    "ajax": {
+        "url": "data/roles/validation.json",
+        "dataType": "json",
+        "cache": true,
+        "dataSrc": ""
+    },
+    "columns": [{"data": "Name", className: "dt-left"},
+                   {"data": "Vita", "defaultContent": "", className: "dt-left"},
+                   {"data": "Affiliation", "defaultContent": "", className: "dt-left"},
+                   {"data": "Social Media", "defaultContent": "", className: "dt-left"}],
+    "responsive": true,
+    "rowCallback": function(row, data, index) {
+      if (localStorage.getItem("theme") === "dark") {
+          if (row.classList.contains("odd")) {
+              $('td', row).css("background-color", "rgba(35, 43, 50, 255)");
+          } else {
+              $('td', row).css("background-color", "rgba(54, 62, 69, 255)");
+          }
+      }
+    },
+    "dom": '<"top"i>rt<"bottom">p<"clear">',
+    "initComplete": function () {
+        // Apply the search
+        this.api().columns().every( function () {
+            var that = this;
+
+            $( 'input', this.footer() ).on( 'keyup change clear', function () {
+                if ( that.search() !== this.value ) {
+                    that.search( this.value ).draw();
+                }
+            } );
+        } );
+    }});
+    $("#cleaningTable").DataTable({
+    "ajax": {
+        "url": "data/roles/cleaning.json",
+        "dataType": "json",
+        "cache": true,
+        "dataSrc": ""
+    },
+    "columns": [{"data": "Name", className: "dt-left"},
+                   {"data": "Vita", "defaultContent": "", className: "dt-left"},
+                   {"data": "Affiliation", "defaultContent": "", className: "dt-left"},
+                   {"data": "Social Media", "defaultContent": "", className: "dt-left"}],
+    "responsive": true,
+    "rowCallback": function(row, data, index) {
+      if (localStorage.getItem("theme") === "dark") {
+          if (row.classList.contains("odd")) {
+              $('td', row).css("background-color", "rgba(35, 43, 50, 255)");
+          } else {
+              $('td', row).css("background-color", "rgba(54, 62, 69, 255)");
+          }
+      }
+    },
+    "dom": '<"top"i>rt<"bottom">p<"clear">',
+    "initComplete": function () {
+        // Apply the search
+        this.api().columns().every( function () {
+            var that = this;
+
+            $( 'input', this.footer() ).on( 'keyup change clear', function () {
+                if ( that.search() !== this.value ) {
+                    that.search( this.value ).draw();
+                }
+            } );
+        } );
+    }});
+    $("#dsTable").DataTable({
+    "ajax": {
+        "url": "data/roles/datascience.json",
+        "dataType": "json",
+        "cache": true,
+        "dataSrc": ""
+    },
+    "columns": [{"data": "Name", className: "dt-left"},
+                   {"data": "Vita", "defaultContent": "", className: "dt-left"},
+                   {"data": "Affiliation", "defaultContent": "", className: "dt-left"},
+                   {"data": "Social Media", "defaultContent": "", className: "dt-left"}],
+    "responsive": true,
+    "rowCallback": function(row, data, index) {
+      if (localStorage.getItem("theme") === "dark") {
+          if (row.classList.contains("odd")) {
+              $('td', row).css("background-color", "rgba(35, 43, 50, 255)");
+          } else {
+              $('td', row).css("background-color", "rgba(54, 62, 69, 255)");
+          }
+      }
+    },
+    "dom": '<"top"i>rt<"bottom">p<"clear">',
+    "initComplete": function () {
+        // Apply the search
+        this.api().columns().every( function () {
+            var that = this;
+
+            $( 'input', this.footer() ).on( 'keyup change clear', function () {
+                if ( that.search() !== this.value ) {
+                    that.search( this.value ).draw();
+                }
+            } );
+        } );
+    }});
+    $("#wsTable").DataTable({
+    "ajax": {
+        "url": "data/roles/website.json",
+        "dataType": "json",
+        "cache": true,
+        "dataSrc": ""
+    },
+    "columns": [{"data": "Name", className: "dt-left"},
+                   {"data": "Vita", "defaultContent": "", className: "dt-left"},
+                   {"data": "Affiliation", "defaultContent": "", className: "dt-left"},
+                   {"data": "Social Media", "defaultContent": "", className: "dt-left"}],
+    "responsive": true,
+    "rowCallback": function(row, data, index) {
+      if (localStorage.getItem("theme") === "dark") {
+          if (row.classList.contains("odd")) {
+              $('td', row).css("background-color", "rgba(35, 43, 50, 255)");
+          } else {
+              $('td', row).css("background-color", "rgba(54, 62, 69, 255)");
+          }
+      }
+    },
+    "dom": '<"top"i>rt<"bottom">p<"clear">',
+    "initComplete": function () {
+        // Apply the search
+        this.api().columns().every( function () {
+            var that = this;
+
+            $( 'input', this.footer() ).on( 'keyup change clear', function () {
+                if ( that.search() !== this.value ) {
+                    that.search( this.value ).draw();
+                }
+            } );
+        } );
+    }});
+    </script>
+    
+    <script>
+        function selectLanguage(element) {
+            var selectedValue = element.value;
+            var otherButtons = Array.from(document.getElementsByClassName("languageButton"));
+            otherButtons = otherButtons.filter(x => x.value !== selectedValue);
+            otherButtons.map(x => x.classList.remove("selected"));
+            element.classList.add("selected");
+            var panels = document.getElementsByClassName("roleTable");
+            if (selectedValue === "all") {
+                Array.from(panels).map(x => {
+                    x.style.display = "block";
+                })
+            } else {
+                Array.from(panels).map(x => {
+                    x.style.display = (x.classList.contains(selectedValue)) ? "block" : "none";
+                })
+            }
+        }
+    </script>
+    <script>
+    $(document).ready( function () {
+        $('tfoot th').each( function () {
+        var title = $(this).text();
+        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+    } );
+      $('#mySearch').on( 'keyup click', function () {
+        $.fn.dataTable.tables({ api: true }).search($(this).val()).draw();
+      });
+        
+    } );
+    </script>
+
+</body>
+<footer>
+    <h2>Partner Universites and Institutions</h2>
+    <br>
+    <a href="https://www.hfp.tum.de/en/home/"><img class="logo" src="images/hochschule%20.png" alt="Hochschule für Politik München logo"></a>
+    
+    <img class="logo" src="images/TUM.png" alt="Technical University of Munich logo">
+
+    <img class="logo" src="images/NYU.png" alt="New York University Abu Dhabi logo">
+
+    <img class="logo" src="images/SOM.png" alt="TUM School of Management at Technical University of Munich logo">
+    
+    <br>
+    <br>
+    
+    <img class="logo" src="images/NU.png" alt="Nazarbayev University logo">
+    
+    <a href="https://www.jataware.com/"><img class="logo" src="images/jataware_logo.png" alt="Jataware company logo"></a>
+
+    <a href="https://www.leibniz-krisen.de/en.html"><img class="logo" src="images/LFV_logo.png" alt="Leibniz Research Alliance
+Crises in a Globalised World logo"></a>
+
+    <a href="https://www.overton.io/"><img class="logo" src="images/overton_logo.png" alt="Overton company logo"></a>
+    
+    <br>
+    <br>
+    <hr>
+    <br>
+    <h2 style="font-size: 14px; margin-left: 100px; margin-right: 100px;">CoronaNet is part of the PERISCOPE consortium, a project funded by the European Commission under the Horizon 2020 Research and Innovation programme (agreement no. 101016233)</h2>
+    <br>
+    <a href="https://periscopeproject.eu/"><img class="logo" src="images/periscope.png" alt="Logo of the PERISCOPE consortium"></a>
+    <img class="logo" src="images/logo-ce-horizontal-en-quadri-lr.png" alt="Logo of the European Commission">
+    <br>
+    <br>
+    <a href="https://github.com/saudiwin/corona_tscs"><img src="images/github.png" width="25px" alt="GitHub data repository for CoronaNet"></a>
+    <a href="https://www.linkedin.com/company/coronanet-research-group/mycompany/"><img src="images/linkedin.png" width="25px" alt="CoronaNet Research Group on LinkedIn"></a>
+    <a href="https://twitter.com/CoronaNet_org"><img src="images/twitter.png" width="25px" alt="CoronaNet Research Project on Twitter"></a>
+    <a href="https://www.instagram.com/coronanet_org/"><img src="images/instagram.png" width="25px" alt="CoronaNet Research Project on Instagram"></a>
+    <br>
+    <script src="js/darkMode.js"></script>
+</footer></html>
